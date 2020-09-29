@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "ViewRequestPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="document-center">
+        <div class="container-fluid site-width">
+            <h4 class="mb-4">View Request Customer name</h4>
+            <div class="row">
+                <div class="col-md-5 col-xl-5">
+                    @Html.Partial("~/Views/Home/RequestPayment/_addDeleteRequestPayment.cshtml")
+                </div>
+
+                <div class="col-md-7 col-xl-7">
+                    <div class="custom-tabs">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active bg-white mr-3" id="summary-tab" data-toggle="pill" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bg-white mr-3" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false">Notes</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bg-white mr-3" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payments</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                                @Html.Partial("~/Views/Home/RequestPayment/_summary.cshtml")
+                            </div>
+                            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                @Html.Partial("~/Views/Home/RequestPayment/_notes.cshtml")
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                @Html.Partial("~/Views/Home/RequestPayment/_payment.cshtml")
+                            </div>
+
+                            <div class="tab-pane fade" id="attached-file" role="tabpanel" aria-labelledby="attached-tab">
+                                @Html.Partial("~/Views/Home/RequestPayment/_attachedFile.cshtml")
+                            </div>
+
+                            <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
+                                @Html.Partial("~/Views/Home/RequestPayment/_counsel.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@Html.Partial("~/Views/Home/RequestPayment/_addEditNotes.cshtml")
+
+@Html.Partial("~/Views/Home/RequestPayment/_addEditPayment.cshtml")
+
+@Html.Partial("~/Views/Home/RequestPayment/_associateInfo.cshtml")
+
+@Html.Partial("~/Views/Home/RequestPayment/_manageInvoices.cshtml")
+
+@Html.Partial("~/Views/Home/RequestPayment/_addInvoices.cshtml")
+
+@Html.Partial("~/Views/Home/RequestPayment/_editInvoices.cshtml")
+
+<!-- START: Back to top-->
+<a href="#" class="scrollup text-center">
+    <i class="icon-arrow-up"></i>
+</a>

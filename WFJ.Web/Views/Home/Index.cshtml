@@ -1,0 +1,462 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div>
+    <main>
+        <div class="container-fluid site-width">
+            <div class="row">
+                <div class="col-12 align-self-center">
+                    <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                        <div class="w-sm-100 mr-auto">
+                            <h4 class="mb-0">
+                                Welcome Test Admin to the WFJ Client Extranet
+                            </h4>
+                            <p>
+                                Click on the menu above to view Documents, Files and Manage
+                                Your Account.
+                            </p>
+                        </div>
+                        <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-12 mt-3">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="height-235">
+                                            <canvas id="chartjs-other-pie"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-12 col-xl-6">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 mt-3">
+                                    <div class="card bg-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex px-0 px-lg-2 py-2 align-self-center">
+                                                <i class="icon-basket icons card-liner-icon mt-2 text-white"></i>
+                                                <div class="card-liner-content">
+                                                    <h2 class="card-liner-title text-white">2,390</h2>
+                                                    <h6 class="card-liner-subtitle text-white">
+                                                        Today's Orders
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div id="apex_primary_chart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 mt-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex px-0 px-lg-2 py-2 align-self-center">
+                                                <i class="icon-user icons card-liner-icon mt-2"></i>
+                                                <div class="card-liner-content">
+                                                    <h2 class="card-liner-title">9,390</h2>
+                                                    <h6 class="card-liner-subtitle">
+                                                        Today's Visitors
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <span class="bg-primary card-liner-absolute-icon text-white card-liner-small-tip">+4.8%</span>
+                                            <div id="apex_today_visitors"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 mt-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex px-0 px-lg-2 py-2 align-self-center">
+                                                <i class="icon-bag icons card-liner-icon mt-2"></i>
+                                                <div class="card-liner-content">
+                                                    <h2 class="card-liner-title">$4,390</h2>
+                                                    <h6 class="card-liner-subtitle">Today's Sale</h6>
+                                                </div>
+                                            </div>
+                                            <div id="apex_today_sale"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 mt-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex px-0 px-lg-2 py-2 align-self-center">
+                                                <span class="card-liner-icon mt-1">$</span>
+                                                <div class="card-liner-content">
+                                                    <h2 class="card-liner-title">$4,390</h2>
+                                                    <h6 class="card-liner-subtitle">Total Profit</h6>
+                                                </div>
+                                            </div>
+                                            <div id="apex_today_profit"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+                    <div class="card overflow-hidden">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="card-title">Todo List</h6>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body p-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="tasks">
+                                            <li class="outline-badge-success border-0 d-flex py-3 px-2 zoom">
+                                                <label class="chkbox d-flex">
+                                                    <input type="checkbox" checked="checked" />
+                                                    <img src="~/Images/author.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <img src="~/Images/author2.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <span class="mb-0 ml-2 my-auto font-w-600">
+                                                        Aenean ligula porttitor consequat vitae 
+                                                        eleifend enim.
+                                                    </span>
+                                                    <span class="checkmark mt-1"></span>
+                                                </label>
+                                                <div class="ml-auto d-flex my-auto">
+                                                    <a href="#"><i class="ion ion-edit"></i></a>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="ion ion-trash-a"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="outline-badge-warning border-0 d-flex py-3 px-2 zoom">
+                                                <label class="chkbox d-flex">
+                                                    <input type="checkbox" />
+                                                    <img src="~/Images/author2.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <img src="~/Images/author3.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <span class="mb-0 ml-2 my-auto font-w-600">
+                                                        In enim justo, rhoncus ut imperdiet a,
+                                                        venenatis vitae justo.
+                                                    </span>
+                                                    <span class="checkmark mt-1"></span>
+                                                </label>
+                                                <div class="ml-auto d-flex my-auto">
+                                                    <a href="#"><i class="ion ion-edit"></i></a>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="ion ion-trash-a"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+
+                                            <li class="outline-badge-info border-0 d-flex py-3 px-2 zoom">
+                                                <label class="chkbox d-flex">
+                                                    <input type="checkbox" />
+                                                    <img src="~/Images/author3.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <img src="~/Images/author7.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <span class="mb-0 ml-2 my-auto font-w-600">
+                                                        Cras dapibus vivamus elementum semper
+                                                        nisi.
+                                                    </span>
+                                                    <span class="checkmark mt-1"></span>
+                                                </label>
+                                                <div class="ml-auto d-flex my-auto">
+                                                    <a href="#"><i class="ion ion-edit"></i></a>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="ion ion-trash-a"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="outline-badge-secondary border-0 d-flex py-3 px-2 zoom">
+                                                <label class="chkbox d-flex">
+                                                    <input type="checkbox" />
+                                                    <img src="~/Images/author6.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <img src="~/Images/author8.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <span class="mb-0 ml-2 my-auto font-w-600">
+                                                        Donec quam felis ultricies nec, pellentesque eu
+                                                        pretium quis.
+                                                    </span>
+
+                                                    <span class="checkmark mt-1"></span>
+                                                </label>
+                                                <div class="ml-auto d-flex my-auto">
+                                                    <a href="#"><i class="ion ion-edit"></i></a>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="ion ion-trash-a"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="outline-badge-primary border-0 d-flex py-3 px-2 zoom">
+                                                <label class="chkbox d-flex">
+                                                    <input type="checkbox" />
+                                                    <img src="~/Images/author.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <img src="~/Images/author8.jpg" alt="author" width="30" height="30" class="rounded-circle" />
+                                                    <span class="mb-0 ml-2 my-auto font-w-600">
+                                                        Donec quam felis ultricies nec, pellentesque eu
+                                                        pretium quis.
+                                                    </span>
+
+                                                    <span class="checkmark mt-1"></span>
+                                                </label>
+                                                <div class="ml-auto d-flex my-auto">
+                                                    <a href="#"><i class="ion ion-edit"></i></a>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="ion ion-trash-a"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+                    <div class="card">
+                        <div class="card-header justify-content-between align-items-center">
+                            <h6 class="card-title">Visits by Countries</h6>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table font-w-600 mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Country</th>
+                                        <th>Visits</th>
+                                        <th>Sessions</th>
+                                        <th>Page View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="zoom">
+                                        <td>France</td>
+                                        <td class="text-success">
+                                            2,51,520 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>United States</td>
+                                        <td class="text-success">
+                                            1,40,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>China</td>
+                                        <td class="text-success">
+                                            2,70,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>Spain</td>
+                                        <td class="text-success">
+                                            7,60,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>Italy</td>
+                                        <td class="text-success">
+                                            6,70,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>United Kingdom</td>
+                                        <td class="text-success">
+                                            8,40,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>Malaysia</td>
+                                        <td class="text-success">
+                                            4,90,000 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                    <tr class="zoom">
+                                        <td>India</td>
+                                        <td class="text-success">
+                                            12,51,520 <i class="ion ion-arrow-graph-up-right"></i>
+                                        </td>
+                                        <td class="text-danger">
+                                            3,23,55,479
+                                            <i class="ion ion-arrow-graph-down-right"></i>
+                                        </td>
+                                        <td class="text-info">23,27,346</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-eq-height">
+                <div class="col-12 col-md-12 mt-3">
+                    <div class="card">
+                        <div class="card-body d-md-flex text-center">
+                            <ul class="d-md-flex m-0 pl-0 list-unstyled">
+                                <li class="pill cl-personal py-1 px-2 mr-md-2 text-center my-1">
+                                    Personal
+                                </li>
+
+                                <li class="pill cl-professional py-1 px-2 mr-md-2 text-center my-1">
+                                    Professional
+                                </li>
+                                <li class="pill cl-work py-1 px-2 mr-md-2 text-center my-1">
+                                    Work
+                                </li>
+
+                                <li class="pill cl-home py-1 px-2 mr-md-2 text-center my-1">
+                                    Home
+                                </li>
+                                <li class="pill cl-office py-1 px-2 text-center my-1">
+                                    Office
+                                </li>
+                            </ul>
+                            <a href="#"
+                               class="btn btn-outline-success font-w-600 my-auto text-nowrap ml-auto add-event"
+                               data-toggle="modal"
+                               data-target="#addevent"><i class="icon-calendar"></i> Add Event</a>
+
+                            <!-- Modal -->
+                            <div id="addevent" class="modal fade" role="dialog">
+                                <div class="modal-dialog text-left">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="model-header">
+                                                Add Event
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="start-date" class="">Event Title:</label>
+                                                            <div class="d-flex event-title">
+                                                                <input id="title"
+                                                                       type="text"
+                                                                       placeholder="Enter Title"
+                                                                       class="form-control"
+                                                                       name="title" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-12">
+                                                        <div class="form-group start-date">
+                                                            <label for="start-date" class="">From:</label>
+                                                            <div class="d-flex">
+                                                                <input id="start-date"
+                                                                       placeholder="Start Date"
+                                                                       class="form-control"
+                                                                       type="text" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-12">
+                                                        <div class="form-group end-date">
+                                                            <label for="end-date" class="">To:</label>
+                                                            <div class="d-flex">
+                                                                <input id="end-date"
+                                                                       placeholder="End Date"
+                                                                       type="text"
+                                                                       class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="taskdescription" class="">Event Description:</label>
+                                                            <div class="d-flex event-description">
+                                                                <textarea id="taskdescription"
+                                                                          placeholder="Enter Description"
+                                                                          rows="3"
+                                                                          class="form-control"
+                                                                          name="taskdescription"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="inputColor" class="">Color:</label>
+
+                                                            <input type="color"
+                                                                   class="border-0 m-2"
+                                                                   id="inputColor"
+                                                                   value="#a7f4ec" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="discard"
+                                                    class="btn btn-outline-primary"
+                                                    data-dismiss="modal">
+                                                Discard
+                                            </button>
+                                            <button id="add-event"
+                                                    class="btn btn-primary eventbutton">
+                                                Add Event
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 mt-3">
+                    <div class="card h-100">
+                        <div class="card-body h-100">
+                            <div id="calendar" class="h-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

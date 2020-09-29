@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[WFJ_Users] (
+    [UserID]                 NVARCHAR (50) NULL,
+    [UserName]               NVARCHAR (50) NULL,
+    [Password]               NVARCHAR (50) NULL,
+    [Title]                  NVARCHAR (50) NULL,
+    [FirstName]              NVARCHAR (50) NULL,
+    [LastName]               NVARCHAR (50) NULL,
+    [Telephone]              NVARCHAR (50) NULL,
+    [Fax]                    NVARCHAR (50) NULL,
+    [Image]                  NVARCHAR (50) NULL,
+    [DateAdded]              NVARCHAR (50) NULL,
+    [UserType]               NVARCHAR (50) NULL,
+    [UserAccess]             NVARCHAR (50) NULL,
+    [LogonCount]             NVARCHAR (50) NULL,
+    [Email]                  NVARCHAR (50) NULL,
+    [ClientID]               NVARCHAR (50) NULL,
+    [AttorneyID]             NVARCHAR (50) NULL,
+    [PasswordExpirationDate] NVARCHAR (50) NULL,
+    [Active]                 NVARCHAR (50) NULL,
+    [IsCollector]            NVARCHAR (50) NULL,
+    [HireDate]               NVARCHAR (50) NULL,
+    [Birthdate]              NVARCHAR (50) NULL,
+    [AccessClientExtranet]   NVARCHAR (50) NULL,
+    [profileText]            NVARCHAR (50) NULL
+);
+

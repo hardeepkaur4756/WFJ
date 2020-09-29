@@ -1,0 +1,585 @@
+﻿<div class="modal fade" id="updateAssociateInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">Update Associate Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-4 col-xl-3">
+                            <h4 class="mb-4">Firm Search</h4>
+
+                            <div class="card mt-3 mb-5 mb-md-0">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label>Firm Name</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Attorney Name</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                <input type="text" class="form-control" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>State / Province</label>
+                                                <select id="inputState" class="form-control">
+                                                    <option selected="">Select...</option>
+                                                    <option>CA (USA)</option>
+                                                    <option>FI (USA)</option>
+                                                    <option>LA (USA)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Country</label>
+                                                <select id="inputState" class="form-control">
+                                                    <option selected="">Select...</option>
+                                                    <option>Brazil</option>
+                                                    <option>CANADA</option>
+                                                    <option>Columbia</option>
+                                                </select>
+                                            </div>
+                                            <div class="clearfix">
+                                                <button type="submit" class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
+                                                    Search
+                                                </button>
+                                                <button type="button" class="btn btn-primary float-right document-search-btn" data-toggle="modal" data-target="#newdocument">
+                                                    Add New Firm
+                                                </button>
+                                            </div>
+
+                                            <!-- Enter new document Modal -->
+                                            <div class="modal fade"
+                                                 id="newdocument"
+                                                 tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="exampleModalLabel">
+                                                                Add New Firm
+                                                            </h5>
+                                                            <button type="button"
+                                                                    class="close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Firm Name</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Phone</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Attorney Name</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">
+                                                                                Direct Line
+                                                                            </label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Address</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Fax</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Suite</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">EMail</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">City</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Web Site</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">State/Province</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Federal Tax ID</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Zip Code</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Country</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Check</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">W9</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">ALQ</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">General Bar</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Wright Holmes</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Do Not Use</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Notes</label>
+                                                                            <textarea class="form-control"
+                                                                                      id="exampleFormControlTextarea1"
+                                                                                      rows="3"
+                                                                                      placeholder=""></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button"
+                                                                    class="btn btn-secondary"
+                                                                    data-dismiss="modal">
+                                                                Delete
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">
+                                                                Save changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Local Counsel Search Results. -->
+                                            <div class="modal fade"
+                                                 id="localcounselmodal"
+                                                 tabindex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="exampleModalLabel"
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="exampleModalLabel">
+                                                                Add New Firm
+                                                            </h5>
+                                                            <button type="button"
+                                                                    class="close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Firm Name</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Phone</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Attorney Name</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">
+                                                                                Direct Line
+                                                                            </label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Address</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Fax</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Suite</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">EMail</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">City</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Web Site</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">State/Province</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Federal Tax ID</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Zip Code</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Country</label>
+                                                                            <input type="text"
+                                                                                   class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Check</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">W9</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">ALQ</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">General Bar</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Wright Holmes</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <div class="custom-control custom-checkbox custom-control-inline mr-0">
+                                                                                <input type="checkbox"
+                                                                                       class="custom-control-input"
+                                                                                       checked="checked"
+                                                                                       id="customCheck3" />
+                                                                                <label class="custom-control-label"
+                                                                                       for="customCheck3">Do Not Use</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="inputDate">Notes</label>
+                                                                            <textarea class="form-control"
+                                                                                      id="exampleFormControlTextarea1"
+                                                                                      rows="3"
+                                                                                      placeholder=""></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button"
+                                                                    class="btn btn-secondary"
+                                                                    data-dismiss="modal">
+                                                                Delete
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">
+                                                                Save changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-xl-9">
+                            <h4 class="mb-4">Local Counsel Search Results.</h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="firmSearch"
+                                               class="display table dataTable table-striped layout-primary table-bordered document-center-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Firm Name</th>
+                                                    <th>Contact Name</th>
+                                                    <th>attorney Name</th>
+                                                    <th>city</th>
+                                                    <th>State</th>
+                                                    <th>Country</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Myra L. Graubard (4)</td>
+                                                    <td>DO NOT USE!!!</td>
+                                                    <td></td>
+                                                    <td>Stamford</td>
+                                                    <td>CT</td>
+                                                    <td></td>
+                                                    <td>
+                                                        <a href="#"
+                                                           data-dismiss="modal"
+                                                           class="anchor-design">Select</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#"
+                                                           class="anchor-design"
+                                                           data-toggle="modal"
+                                                           data-target="#localcounselmodal">View Details</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{567C7FE0-1887-4863-A5CF-8212C0E16EE8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WFJ.Repository</RootNamespace>
+    <AssemblyName>WFJ.Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\WFJ.Web\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\WFJ.Web\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityModel\AccessLevel.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Address.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\area.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\AssociateCounsel.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\author.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Category.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\clickCount.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Client.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\clientCollector.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Clientsx.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Code.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\columnInfo.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\contactType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\currency.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\distributionList.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Document.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\documentClient.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\DocumentUsage.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\dtproperty.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\dt_getpropertiesbyid_Result.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\dt_getpropertiesbyid_u_Result.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\element.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\elementCategory.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EMailCopy.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EmployeeCategory.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EmployeeEvent.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EmployeeNew.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\enews_clients.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Event.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EventCategory.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EventDate.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FAQ.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FieldType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Form.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormAddressData.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormData.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\formDataSheet.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormField.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormNotesUser.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\formSection.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormSelectionList.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormsX.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormUser.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FormUserType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\FunctionsTable.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\hiddenRequestNote.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\hrDocument.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\LegalAssistant.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Letter.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\LetterSchedule.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Level.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\ListField.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\localCounselInvoice.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailform.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailformResult.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailformType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailing.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailingAd.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailingList.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\mailingListName.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\message.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\News.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Newsletter.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Notification.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\page.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\pageContent.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Payment.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PaymentType.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Personnel.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PersonnelClient.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PersonnelRequest.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\picture.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PracticeArea.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PracticeAreaPersonnel.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PrepaidBenefit.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Question.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\QuestionAnswer.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\QuestionnaireRespons.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\QuestionnaireSection.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Region.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Request.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\RequestDocument.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\RequestNote.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\RequestNotice.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Resource.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\SearchResult.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\section.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\sectionContent.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\sequence.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\StatusCode.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\TableColumn.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\tableInfo.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\TableRow.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\User.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\UserAttorney.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\UserLevel.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\UserLoginsTable.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\UserRegion.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\UserStatusCodePermission.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\User_Function.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\User_Type.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\WebPage.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\WFJModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WFJModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\WFJModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\WFJModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WFJModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="GenericRepository.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IUserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserRepository.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="EntityModel\WFJModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WFJModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityModel\WFJModel.edmx.diagram">
+      <DependentUpon>WFJModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntityModel\WFJModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WFJModel.edmx</DependentUpon>
+      <LastGenOutput>WFJModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityModel\WFJModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WFJModel.edmx</DependentUpon>
+      <LastGenOutput>WFJModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\WFJ.Web\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

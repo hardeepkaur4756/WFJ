@@ -1,0 +1,123 @@
+﻿
+<div class="card">
+    <div class="card-body">
+        <ul class="attached-file">
+            <li>Click on 'Remove' to remove a file.</li>
+            <li>
+                Be sure to click the 'Submit' button to save
+                changes to this Service Request form before
+                attaching files to this Service Request
+            </li>
+            <li>
+                To send a notice to the Requestor and Assigned
+                Attorney regarding any of the files below, check
+                the box next to the file and press the 'Submit'
+                button below.
+            </li>
+            <li>To add files, follow the directions below.</li>
+        </ul>
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="d-block">Send Notice</label>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               checked="checked"
+                               id="customCheck3" />
+                        <label class="custom-control-label"
+                               for="customCheck3"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Document Type</label>
+                    <select id="inputState" class="form-control">
+                        <option selected="">Select</option>
+                        <option>Contingent</option>
+                        <option>Hourly</option>
+                        <option>Flat Fee</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>File Name</label>
+                    <p class="for-bold">scredit1234567890.pdf</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="invisible d-block">dummy</label>
+                <button type="submit"
+                        class="btn btn-primary document-search-btn">
+                    Remove
+                </button>
+            </div>
+        </div>
+
+        <label class="for-bold">Attach a document to this request</label>
+        <p>
+            Attach copies of Purchase Orders, Account
+            Statements, Unpaid Invoices, Preliminary Notices and
+            any other pertinent documents by locating the file
+            from your computer and pressing the "Upload File"
+            button below. Be sure to save your changes made to
+            the request information above by pressing the
+            'Submit' button before attaching files to this
+            request!
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Upload Document</label>
+                <div class="custom-file">
+                    <input type="file"
+                           class="custom-file-input"
+                           id="customFile" />
+                    <label class="custom-file-label n-custom-file-label"
+                           for="customFile">Choose file</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Document Type</label>
+                    <select id="inputState" class="form-control">
+                        <option selected="">Select</option>
+                        <option>Contingent</option>
+                        <option>Hourly</option>
+                        <option>Flat Fee</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               checked="checked"
+                               id="customCheck3" />
+                        <label class="custom-control-label"
+                               for="customCheck3">
+                            To send a notice to the Requestor and
+                            Assigned Attorney regarding this new file,
+                            check the box to the right
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 text-right">
+                <button type="submit"
+                        class="btn btn-primary document-search-btn">
+                    Upload File
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

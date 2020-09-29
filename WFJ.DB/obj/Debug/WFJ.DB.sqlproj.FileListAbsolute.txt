@@ -1,0 +1,8 @@
+F:\WFJProject\WFJ.Web\WFJ.DB\bin\Debug\WFJ.DB.dacpac
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\WFJ.DB.sqlprojAssemblyReference.cache
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\Model.xml
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\refactor.xml
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\postdeploy.sql
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\predeploy.sql
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\WFJ.DB.dll
+F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\WFJ.DB.pdb

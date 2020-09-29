@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1">
+        <EntityTypeShape EntityType="WFJDBModel.AccessLevel" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.AssociateCounsel" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.author" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.clickCount" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.clientCollector" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Client" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Clientsx" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Code" Width="1.5" PointX="8.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.columnInfo" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.contactType" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.currency" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.documentClient" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.DocumentUsage" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.dtproperty" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EMailCopy" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EmployeeCategory" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EmployeeEvent" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EmployeeNew" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EventCategory" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.EventDate" Width="1.5" PointX="14.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Event" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FAQ" Width="1.5" PointX="14.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FieldType" Width="1.5" PointX="14.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormAddressData" Width="1.5" PointX="14.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormData" Width="1.5" PointX="2.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.formDataSheet" Width="1.5" PointX="8.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormField" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormNotesUser" Width="1.5" PointX="16.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Form" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.formSection" Width="1.5" PointX="16.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormSelectionList" Width="1.5" PointX="16.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormsX" Width="1.5" PointX="10.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormType" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormUser" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FormUserType" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.FunctionsTable" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.hiddenRequestNote" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.hrDocument" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.LegalAssistant" Width="1.5" PointX="12.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Letter" Width="1.5" PointX="18.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.LetterSchedule" Width="1.5" PointX="18.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Level" Width="1.5" PointX="14.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.ListField" Width="1.5" PointX="16.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.localCounselInvoice" Width="1.5" PointX="18.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailformResult" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailform" Width="1.5" PointX="4.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailingAd" Width="1.5" PointX="6.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailingListName" Width="1.5" PointX="8.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailingList" Width="1.5" PointX="20.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailing" Width="1.5" PointX="20.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.News" Width="1.5" PointX="20.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Newsletter" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Notification" Width="1.5" PointX="10.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Payment" Width="1.5" PointX="20.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PaymentType" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Personnel" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PersonnelClient" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PersonnelRequest" Width="1.5" PointX="22.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.picture" Width="1.5" PointX="22.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PracticeAreaPersonnel" Width="1.5" PointX="22.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PracticeArea" Width="1.5" PointX="22.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PrepaidBenefit" Width="1.5" PointX="6.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.QuestionAnswer" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.QuestionnaireRespons" Width="1.5" PointX="0.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.QuestionnaireSection" Width="1.5" PointX="24.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Question" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Region" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.RequestDocument" Width="1.5" PointX="12.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="24.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.RequestNotice" Width="1.5" PointX="14.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Request" Width="1.5" PointX="16.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Resource" Width="1.5" PointX="24.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.SearchResult" Width="1.5" PointX="24.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.StatusCode" Width="1.5" PointX="8.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.TableColumn" Width="1.5" PointX="18.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.tableInfo" Width="1.5" PointX="20.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.TableRow" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.User_Function" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.User_Type" Width="1.5" PointX="26.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.UserAttorney" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.UserLevel" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.UserLoginsTable" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.UserRegion" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="26.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.UserStatusCodePermission" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.WebPage" Width="1.5" PointX="10.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.Address" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.area" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.distributionList" Width="1.5" PointX="28.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.elementCategory" Width="1.5" PointX="28.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.element" Width="1.5" PointX="28.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.enews_clients" Width="1.5" PointX="28.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.mailformType" Width="1.5" PointX="28.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.message" Width="1.5" PointX="28.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.pageContent" Width="1.5" PointX="28.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.page" Width="1.5" PointX="28.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.sectionContent" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.section" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.sequence" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

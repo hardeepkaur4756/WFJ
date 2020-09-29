@@ -1,0 +1,196 @@
+﻿<form>
+    <div class="form-group">
+        <label for="inputState">Client</label>
+        <select id="inputState" class="form-control">
+            <option selected="">Select</option>
+            <option>ABF Printing</option>
+            <option>Action Advertising and Flags</option>
+            <option>Ad Specialties by ken</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="inputDate">Begin Date</label>
+        <input type="text"
+               class="form-control datepicker"
+               id="inputDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="inputDate">End Date</label>
+        <input type="text"
+               class="form-control datepicker"
+               id="inputDate" />
+    </div>
+    <div class="text-right">
+        <button type="submit"
+                class="btn btn-primary document-search-btn">
+            Search
+        </button>
+    </div>
+
+    <!-- Enter new document Modal -->
+    <div class="modal fade"
+         id="newdocument"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Add Documents
+                    </h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputState">State</label>
+                                    <select id="inputState"
+                                            class="form-control"
+                                            required>
+                                        <option selected="">All</option>
+                                        <option>Alabama</option>
+                                        <option>Alaska</option>
+                                        <option>All States</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputState">Document Type</label>
+                                    <select id="inputState"
+                                            class="form-control">
+                                        <option selected="">All</option>
+                                        <option>Form</option>
+                                        <option>Letter</option>
+                                        <option>Pleading</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputState">Project Type</label>
+                                    <select id="inputState"
+                                            class="form-control">
+                                        <option selected="">All</option>
+                                        <option>Private</option>
+                                        <option>Public</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputState">Client</label>
+                                    <select id="inputState"
+                                            class="form-control">
+                                        <option selected="">All</option>
+                                        <option>ABF Printing</option>
+                                        <option>
+                                            Action Advertising and Flags
+                                        </option>
+                                        <option>Ad Specialties by ken</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="inputState">Practice Area</label>
+                                    <select id="inputState"
+                                            class="form-control">
+                                        <option selected="">All</option>
+                                        <option>Adoption</option>
+                                        <option>Auto Accident</option>
+                                        <option>Banking</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="inputState">Category (for WFJ Use)</label>
+                                    <select id="inputState"
+                                            class="form-control">
+                                        <option selected="">All</option>
+                                        <option>
+                                            Commercial Litigation ---&gt;
+                                            Category Name 1
+                                        </option>
+                                        <option>
+                                            Commercial Litigation ---&gt;
+                                            Category Name 2
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">Document Name</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">WFJ File #</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="inputDate">Notify Days</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="inputDate">Description</label>
+                                    <textarea class="form-control"
+                                              id="exampleFormControlTextarea1"
+                                              rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="custom-file">
+                                    <input type="file"
+                                           class="custom-file-input"
+                                           id="customFile" />
+                                    <label class="custom-file-label n-custom-file-label"
+                                           for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

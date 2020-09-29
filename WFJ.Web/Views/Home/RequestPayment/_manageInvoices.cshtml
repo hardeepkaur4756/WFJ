@@ -1,0 +1,82 @@
+﻿<div class="modal fade" id="manageInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Manage Invoices</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="row align-items-end">
+                        <div class="col-md-6">
+                            <ul class="update-associate">
+                                <li>Total Invoices:<span> $0.00</span></li>
+                                <li>Total Amount Paid:<span>&nbsp;$0.00</span></li>
+                                <li>Balance Due:<span> $0.00</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-6 text-right">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-primary"
+                                        data-toggle="modal"
+                                        data-target="#addNewInvoiceModal">
+                                    Add Invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="manageInvoice"
+                                       class="display table dataTable table-striped layout-primary table-bordered document-center-table">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Invoice Date</th>
+                                            <th>Invoice Number</th>
+                                            <th>Reason</th>
+                                            <th>Fees</th>
+                                            <th>Costs</th>
+                                            <th>Total</th>
+                                            <th>Currency</th>
+                                            <th>Check Number</th>
+                                            <th>Date Paid</th>
+                                            <th>Entered By</th>
+                                            <th>Attachment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href=""
+                                                   class="anchor-design"
+                                                   data-toggle="modal"
+                                                   data-target="#editinvoicemodel">Edit</a>
+                                            </td>
+                                            <td>9/7/2020</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                            <td>0.00</td>
+                                            <td>USD</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Test Admin</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

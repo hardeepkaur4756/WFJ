@@ -1,0 +1,138 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<!-- START: Head-->
+<head>
+    <meta charset="UTF-8" />
+    <title>WFJ Law Firm</title>
+    <!--<link rel="shortcut icon" href="dist/images/favicon.ico" />-->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- START: Template CSS-->
+    <link rel="stylesheet"
+          href="dist/vendors/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="dist/vendors/jquery-ui/jquery-ui.min.css" />
+    <link rel="stylesheet"
+          href="dist/vendors/jquery-ui/jquery-ui.theme.min.css" />
+    <link rel="stylesheet"
+          href="dist/vendors/simple-line-icons/css/simple-line-icons.css" />
+    <link rel="stylesheet"
+          href="dist/vendors/flags-icon/css/flag-icon.min.css" />
+
+    <!-- END Template CSS-->
+    <!-- START: Page CSS-->
+    <link rel="stylesheet"
+          href="dist/vendors/social-button/bootstrap-social.css" />
+    <!-- END: Page CSS-->
+    <!-- START: Custom CSS-->
+    <link rel="stylesheet" href="dist/css/main.css" />
+    <!-- END: Custom CSS-->
+</head>
+<!-- END Head-->
+<!-- START: Body-->
+<body id="main-container" class="default">
+    <div class="login-background">
+        <!-- START: Main Content-->
+        <div class="container">
+            <div class="row vh-100 justify-content-between align-items-center">
+                <div class="col-12">
+                    <form action="#" class="row row-eq-height lockscreen mt-5 mb-5">
+                        <div class="lock-image login-img col-12 col-sm-5">
+                            <img src="dist/images/logo.png" class="d-block w-100" alt="" />
+                        </div>
+                        <div class="login-form col-12 col-sm-7">
+                            <div class="form-group mb-3">
+                                <label for="password">New Password</label>
+                                <input class="form-control"
+                                       type="password"
+                                       id="txtPasseord"
+                                       required=""
+                                       placeholder="" />
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input class="form-control"
+                                       type="password"
+                                       required=""
+                                       id="txtConformPassword"
+                                       placeholder="" />
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="">
+                                    <label class="password-required">
+                                        *Minimum one capital letter,one small letter,one number
+                                        and one special characters is required
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <button class="btn btn-primary" type="submit" onclick="ChangePassword();">
+                                    Change Password
+                                </button>
+                            </div>
+                        </div>
+                        <div class="forget-password col-12 col-sm-7 d-none">
+                            <div class="form-group mb-3">
+                                <label for="emailaddress">Email address</label>
+                                <input class="form-control"
+                                       type="email"
+                                       id="emailaddress"
+                                       required=""
+                                       placeholder="Enter your email" />
+                            </div>
+                            <div class="form-group mb-0">
+                                <input type="hidden" id="userId" value="@ViewBag.UserID" />
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                            <div class="mt-2">
+                                <a id="backToLogin" class="anchor-design">Back to login</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- END: Content-->
+    </div>
+
+    <!-- START: Template JS-->
+    <script src="dist/vendors/jquery/jquery-3.3.1.min.js"></script>
+    <script src="dist/vendors/jquery-ui/jquery-ui.min.js"></script>
+    <script src="dist/vendors/moment/moment.js"></script>
+    <script src="dist/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="dist/vendors/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- END: Template JS-->
+    <script type="text/javascript">
+      $("#backToLogin").click(function () {
+        $(".login-form").removeClass("d-none");
+        $(".forget-password").addClass("d-none");
+      });
+      $("#goToforgetPassword").click(function () {
+        $(".login-form").addClass("d-none");
+        $(".forget-password").removeClass("d-none");
+      });
+
+        function ChangePassword() {
+            jQuery.ajax({
+            type: "POST",
+            url: "/Account/ChangePassword",
+            data: {
+                "newPassword": jQuery('#txtPasseord').val().trim(),
+                "newConfirmPassword": jQuery('#txtConformPassword').val().trim(),
+                "userId": jQuery('#userId').val().trim()
+            },
+            success: function (data) {
+            }
+        });
+        }
+    </script>
+</body>
+<!-- END: Body-->
+</html>
+
+

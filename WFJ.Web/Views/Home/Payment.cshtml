@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="document-center">
+        <div class="container-fluid site-width">
+            <h4 class="mb-4">Payments Report</h4>
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <div class="card mb-5 mb-md-0">
+                        <div class="card-content">
+                            <div class="card-body">
+                                @Html.Partial("~/Views/Home/_paymentSearch.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Partial("~/Views/Home/_paymentReport.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@Html.Partial("~/Views/Home/_addEditPaymentDocument.cshtml")
+<a href="#" class="scrollup text-center">
+    <i class="icon-arrow-up"></i>
+</a>
