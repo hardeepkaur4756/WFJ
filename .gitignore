@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/WFJ.Helper/bin/Debug
+/WFJ.Helper/obj/Debug
+/WFJ.Models/bin/Debug
+/WFJ.Models/obj/Debug
+/WFJ.Repository/bin/Debug
+/WFJ.Repository/obj/Debug
+/WFJ.Service/bin/Debug
+/WFJ.Service/obj/Debug
+/WFJ.Web/.vs/WFJ.Web/v16
+/WFJ.Web/bin
+/WFJ.Web/obj/Debug
+/WFJ.Web/packages
+/.vs
+*.dbmdl

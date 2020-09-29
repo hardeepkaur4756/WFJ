@@ -11,7 +11,8 @@ namespace WFJ.Service.Interfaces
     public interface IUserService
     {
         void EncryptionPassword();
-        string SendForgotPasswordMail(string email);
-        void UpdatePassword(string newPassword, string newConfirmPassword, int userId);
+        ResultModel SendForgotPasswordMail(string email);
+        ResultModel UpdatePassword(string newPassword, string newConfirmPassword, int userId);
+        ResultModel ChangePassword(string currentPassword, string newPassword, string newConfirmPassword);
     }
 }

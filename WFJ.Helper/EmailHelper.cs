@@ -18,7 +18,7 @@ namespace WFJ.Helper
             mail.To.Add("kapil.kumar.sharma475@gmail.com");
             mail.Subject = subject;
             mail.Body = body;
-
+            mail.IsBodyHtml = true;
             SmtpServer.Port = 587;
             SmtpServer.Credentials = new System.Net.NetworkCredential("nt26797@gmail.com", "9219250730");
             SmtpServer.EnableSsl = true;
