@@ -1683,7 +1683,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="showHRSection" Type="tinyint" />
           <Property Name="dashboardUser" Type="tinyint" />
           <Property Name="Salt" Type="nvarchar(max)" />
-          <Property Name="PasswordExpireDate" Type="datetime" />
         </EntityType>
         <EntityType Name="UserStatusCodePermissions">
           <Key>
@@ -5569,7 +5568,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="WFJDBModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="PasswordExpireDate" ColumnName="PasswordExpireDate" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />

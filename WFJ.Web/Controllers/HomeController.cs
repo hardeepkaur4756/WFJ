@@ -5,8 +5,10 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
+using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
+using WFJ.Web.CustomAttribute;
 
 namespace WFJ.Web.Controllers
 {
@@ -47,9 +49,27 @@ namespace WFJ.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        //[AuthorizeActivity((int)Web.Models.Enums.UserType.WFJAdmin)]
         public ActionResult EditProfile()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult EditProfile(UserModel userModel)
+        {
+            if (Session["UserId"] != null)
+            {
+                userModel.UserID = Convert.ToInt32(Session["UserId"].ToString());
+                IUserService userService = new UserService();
+                userModel = userService.EditProfile(userModel);
+                return View(userModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
     }
 }

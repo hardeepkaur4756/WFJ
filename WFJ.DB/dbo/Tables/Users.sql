@@ -34,7 +34,6 @@
     [showHRSection]          TINYINT        NULL,
     [dashboardUser]          TINYINT        NULL,
     [Salt]                   NVARCHAR (MAX) NULL,
-    [PasswordExpireDate] DATETIME NULL, 
     CONSTRAINT [PK_UserTable$] PRIMARY KEY CLUSTERED ([UserID] ASC)
 );
 

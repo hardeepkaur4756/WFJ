@@ -25,6 +25,10 @@ namespace WFJ.Repository
         {
             return context.Users.FirstOrDefault(x => x.EMail == email);
         }
+        public User GetByEmailAndPassword(string email,string password)
+        {
+            return context.Users.FirstOrDefault(x => x.EMail.ToLower() == email.ToLower() && x.Password == password);
+        }
 
 
     }

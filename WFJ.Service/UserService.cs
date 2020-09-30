@@ -39,7 +39,7 @@ namespace WFJ.Service
             ResultModel resultModel = new ResultModel();
             if (!string.IsNullOrEmpty(email))
             {
-                bool isValidemail = ValidateEmail(email);
+                bool isValidemail = Util.ValidateEmail(email);
                 if (isValidemail)
                 {
                     try
@@ -82,15 +82,6 @@ namespace WFJ.Service
             return resultModel;
         }
 
-        public static bool ValidateEmail(string email)
-        {
-            string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
-                  @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
-                  @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})$";
-            //@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"
-            bool isVaidEmail = Regex.IsMatch(email, strRegex, RegexOptions.IgnoreCase);
-            if (isVaidEmail) { return (true); } else { return (false); }
-        }
         public ResultModel UpdatePassword(string newPassword, string newConfirmPassword, int userId)
         {
             IUserRepository userRepo = new UserRepository();
@@ -117,11 +108,10 @@ namespace WFJ.Service
             return resultModel;
         }
 
-        public ResultModel ChangePassword(string currentPassword,string newPassword, string newConfirmPassword)
+        public ResultModel ChangePassword(int userId,string currentPassword,string newPassword, string newConfirmPassword)
         {
             IUserRepository userRepo = new UserRepository();
             ResultModel resultModel = new ResultModel();
-            int userId = 0;
             //userid = HttpContext.Current.User.Identity.Name;
             if (newPassword == newConfirmPassword)
             {
@@ -153,5 +143,82 @@ namespace WFJ.Service
             }
             return resultModel;
         }
+
+        public ResultModel Login(LoginModel loginModel)
+        {
+            ResultModel resultModel = new ResultModel();
+            IUserRepository userRepo = new UserRepository();
+            if (!string.IsNullOrEmpty(loginModel.EMail))
+            {
+                bool validEmail = Util.ValidateEmail(loginModel.EMail.Trim());
+                if (validEmail)
+                {
+                    var ph = new Microsoft.AspNet.Identity.PasswordHasher();
+                    var hash = ph.HashPassword(loginModel.Password);
+                    User user = userRepo.GetByEmail(loginModel.EMail);
+                    //User user = userRepo.GetByEmailAndPassword(userModel.EMail, hash);
+                    if (user != null)
+                    {
+                        if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(90))))
+                        {
+                            resultModel.IsPasswordExpire = true;
+                            resultModel.Message = "";
+                        }
+                        else if (ph.VerifyHashedPassword(user.Password, loginModel.Password).ToString() == "Success")
+                        {
+                            HttpContext.Current.Session["UserType"] = user.UserType;
+                            HttpContext.Current.Session["UserId"] = user.UserID.ToString();
+                            resultModel.IsSuccess = true;
+                            resultModel.Message = "";
+                        }
+                        else
+                        {
+                            resultModel.IsSuccess = false;
+                            resultModel.Message = "Your passeord is invalid. Please enter valid password";
+                        }
+                    }
+                    else
+                    {
+                        //User Name not found in SponsorInputs345x and also in Sponsor_Closed_Accounts
+                        resultModel.IsSuccess = false;
+                        resultModel.Message = "Your  username is invalid. Please enter vaild username";
+                        //resultModel.Message = "Your  username or passeord is invalid. Please try again";
+                    }
+                }
+                else
+                {
+                    resultModel.IsSuccess = false;
+                    resultModel.Message = "Not a valid email format";
+                }
+            }
+            else
+            {
+                resultModel.IsSuccess = false;
+                resultModel.Message = "Email address can not be set Empty";
+            }
+            return resultModel;
+        }
+
+        public UserModel EditProfile(UserModel userModel)
+        {
+            ResultModel resultModel = new ResultModel();
+            IUserRepository userRepo = new UserRepository();
+            User user = userRepo.GetById(userModel.UserID);
+            if (user !=null)
+            {
+                user.FirstName = userModel.FirstName;
+                user.LastName = userModel.LastName;
+                user.Telephone = userModel.Telephone;
+                user.Address1 = userModel.Telephone;
+                user.Address2 = userModel.LastName;
+                user.City = userModel.City;
+                user.State = userModel.State;
+                user.PostalCode = userModel.PostalCode;
+                user.EMail = userModel.EMail;
+                userRepo.Update(user);
+            }
+            return userModel;
+        }
+       
     }
 }

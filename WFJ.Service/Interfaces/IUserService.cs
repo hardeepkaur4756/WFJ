@@ -13,6 +13,8 @@ namespace WFJ.Service.Interfaces
         void EncryptionPassword();
         ResultModel SendForgotPasswordMail(string email);
         ResultModel UpdatePassword(string newPassword, string newConfirmPassword, int userId);
-        ResultModel ChangePassword(string currentPassword, string newPassword, string newConfirmPassword);
+        ResultModel ChangePassword(int userId, string currentPassword, string newPassword, string newConfirmPassword);
+        ResultModel Login(LoginModel loginModel);
+        UserModel EditProfile(UserModel userModel);
     }
 }

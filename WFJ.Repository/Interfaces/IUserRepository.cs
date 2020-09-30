@@ -11,5 +11,6 @@ namespace WFJ.Repository.Interfaces
     {
         //IEnumerable<User> GetAll();
         User GetByEmail(string email);
+        User GetByEmailAndPassword(string email, string password);
     }
 }

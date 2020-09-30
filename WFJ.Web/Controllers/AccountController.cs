@@ -17,10 +17,26 @@ namespace WFJ.Web.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            LoginModel loginModel = new LoginModel();
+            loginModel.UserCookieCheck = true;
+            System.Web.HttpCookie loginUserCookie = HttpContext.Request.Cookies.Get("loginUserCookie");
+            if (loginUserCookie != null && loginUserCookie.HasKeys)
+            {
+                string emailaddress = loginUserCookie["emailaddress"];
+                string password = loginUserCookie["password"];
+                if (!string.IsNullOrEmpty(emailaddress) && !string.IsNullOrEmpty(password))
+                {
+                    //loginUserCookie.Values["emailaddress"] = "";
+                    //loginUserCookie.Values["password"] = "";
+                    loginModel.EMail = emailaddress;
+                    loginModel.Password = password;
+                    loginModel.UserCookieCheck = true;
+                }
+            }
+            return View(loginModel);
         }
 
         public ActionResult ForgotPassword(string forgotEmailAddress)
@@ -28,9 +44,9 @@ namespace WFJ.Web.Controllers
             IUserService userService = new UserService();
             ResultModel resultModel = new ResultModel();
             resultModel = userService.SendForgotPasswordMail(forgotEmailAddress);
-            return Json(new { success=resultModel.IsSuccess,message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
         }
-        
+
         public ActionResult ResetPassword()
         {
             string queryString = "";
@@ -51,7 +67,7 @@ namespace WFJ.Web.Controllers
         {
             IUserService userService = new UserService();
             ResultModel resultModel = new ResultModel();
-            resultModel= userService.UpdatePassword(newPassword, newConfirmPassword, userId);
+            resultModel = userService.UpdatePassword(newPassword, newConfirmPassword, userId);
             return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -63,10 +79,64 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string newConfirmPassword)
         {
-            IUserService userService = new UserService();
+            if (Session["UserId"] != null)
+            {
+                int userId = Convert.ToInt32(Session["UserId"].ToString());
+                IUserService userService = new UserService();
+                ResultModel resultModel = new ResultModel();
+                resultModel = userService.ChangePassword(userId,currentPassword, newPassword, newConfirmPassword);
+                return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+                //return View(userModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginModel loginModel)
+        {
             ResultModel resultModel = new ResultModel();
-            resultModel = userService.ChangePassword(currentPassword,newPassword, newConfirmPassword);
-            return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+            IUserService userService = new UserService();
+            resultModel = userService.Login(loginModel);
+            if (resultModel.IsPasswordExpire)
+            {
+                TempData["IsPasswordExpire"] = true;
+                return RedirectToAction("ChangePassword", "Account");
+            }
+            if (resultModel.IsSuccess)
+            {
+                if (Convert.ToBoolean(loginModel.UserCookieCheck))
+                {
+                    //Adding username and password in cookies
+                    AddUserCookie(loginModel.EMail, loginModel.Password);
+                }
+                else
+                {
+                    AddUserCookie("", "");
+                }
+                return RedirectToAction("Index", "Home");
+
+            }
+            else
+            {
+                ModelState.AddModelError("Password", resultModel.Message);
+                return View();
+            }
+
+        }
+
+        private void AddUserCookie(string username, string password)
+        {
+            // Set cookies
+            System.Web.HttpCookie loginUserCookie = new System.Web.HttpCookie("loginUserCookie");
+            loginUserCookie["emailaddress"] = username;
+            loginUserCookie["password"] = password;
+            loginUserCookie.Expires = DateTime.Now.AddMonths(3);
+            // Add cookie to response
+            Response.Cookies.Add(loginUserCookie);
         }
     }
 }
