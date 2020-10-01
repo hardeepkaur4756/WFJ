@@ -5,6 +5,11 @@
 );
 
 
+
+
+GO;
+
+
 GO
 GRANT UPDATE
     ON OBJECT::[dbo].[contactTypes] TO [wfjuser]

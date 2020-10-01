@@ -7,6 +7,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_PracticeAreaPersonnel_1]
     ON [dbo].[PracticeAreaPersonnel]([PersonnelID] ASC) WITH (FILLFACTOR = 90);
@@ -23,10 +25,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[PracticeAreaPersonnel] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -35,8 +41,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[PracticeAreaPersonnel] TO [wfjuser]
     AS [dbo];
+
+
 

@@ -15,10 +15,14 @@
 );
 
 
+
+
 GO
 GRANT UPDATE
     ON OBJECT::[dbo].[QuestionnaireResponses] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -27,14 +31,20 @@ GRANT SELECT
     AS [dbo];
 
 
+
+
 GO
 GRANT INSERT
     ON OBJECT::[dbo].[QuestionnaireResponses] TO [wfjuser]
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[QuestionnaireResponses] TO [wfjuser]
     AS [dbo];
+
+
 

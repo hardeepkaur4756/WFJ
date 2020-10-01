@@ -8,6 +8,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_FormData_28_1296723672__K3_K2_K1_4_4364]
     ON [dbo].[FormData]([FormFieldID] ASC, [RequestID] ASC, [ID] ASC)
@@ -45,10 +47,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[FormData] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -57,8 +63,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[FormData] TO [wfjuser]
     AS [dbo];
+
+
 

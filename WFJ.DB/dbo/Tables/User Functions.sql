@@ -6,10 +6,14 @@
 );
 
 
+
+
 GO
 GRANT UPDATE
     ON OBJECT::[dbo].[User Functions] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -18,14 +22,20 @@ GRANT SELECT
     AS [dbo];
 
 
+
+
 GO
 GRANT INSERT
     ON OBJECT::[dbo].[User Functions] TO [wfjuser]
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[User Functions] TO [wfjuser]
     AS [dbo];
+
+
 

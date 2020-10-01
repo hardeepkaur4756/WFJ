@@ -6,6 +6,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_FormUserTypes_1]
     ON [dbo].[FormUserTypes]([FormID] ASC) WITH (FILLFACTOR = 90);
@@ -22,10 +24,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[FormUserTypes] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -34,8 +40,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[FormUserTypes] TO [wfjuser]
     AS [dbo];
+
+
 

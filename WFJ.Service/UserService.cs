@@ -244,5 +244,13 @@ namespace WFJ.Service
         {
             return _userRepo.CheckDuplicateByEmailAndUser(email, userId);
         }
+        public List<UserModel> GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno)
+        {
+            IUserRepository userRepository = new UserRepository();
+            var users = userRepository.GetUsers(clientid, active, name, param, pageno);
+            return MappingExtensions.MapList<User, UserModel>(users);
+
+        }
+
     }
 }

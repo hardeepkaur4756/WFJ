@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WFJ.Models;
+using WFJ.Repository.EntityModel;
 
 namespace WFJ.Models
 {
@@ -43,5 +45,11 @@ namespace WFJ.Models
         public Nullable<byte> showHRSection { get; set; }
         public Nullable<byte> dashboardUser { get; set; }
         public string Salt { get; set; }
+        public string ClientName { get; set; }
+        public string LevelName { get; set; }
+        public string AccessLevelName { get; set; }
+        //public  Client Client { get; set; }
+        //public  AccessLevel AccessLevel { get; set; }
     }
+
 }

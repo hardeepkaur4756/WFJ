@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Users] (
     [UserID]                 INT            IDENTITY (1, 1) NOT NULL,
     [UserName]               NVARCHAR (30)  NULL,
-    [Password]               NVARCHAR (500)  NULL,
+    [Password]               NVARCHAR (500) NULL,
     [Title]                  NVARCHAR (50)  NULL,
     [FirstName]              NVARCHAR (20)  NULL,
     [LastName]               NVARCHAR (20)  NULL,
@@ -33,9 +33,13 @@
     [ProfileText]            VARCHAR (5000) NULL,
     [showHRSection]          TINYINT        NULL,
     [dashboardUser]          TINYINT        NULL,
-    [IsPasswordHashed] BIT NOT NULL DEFAULT 0, 
-    CONSTRAINT [PK_UserTable$] PRIMARY KEY CLUSTERED ([UserID] ASC)
+    [IsPasswordHashed]       BIT            DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_UserTable$] PRIMARY KEY CLUSTERED ([UserID] ASC),
+    CONSTRAINT [FK_UserAccessID] FOREIGN KEY ([UserAccess]) REFERENCES [dbo].[AccessLevels] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT [FK_UserClientID] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Clients] ([ID])
 );
+
+
 
 
 GO
@@ -44,10 +48,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Users] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -56,8 +64,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[Users] TO [wfjuser]
     AS [dbo];
+
+
 

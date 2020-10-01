@@ -26,6 +26,8 @@
 );
 
 
+
+
 GO
 CREATE STATISTICS [_dta_stat_702625546_2_1_3_1912]
     ON [dbo].[Personnel]([Type], [ID], [FirstName]);
@@ -37,10 +39,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Personnel] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -49,8 +55,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[Personnel] TO [wfjuser]
     AS [dbo];
+
+
 

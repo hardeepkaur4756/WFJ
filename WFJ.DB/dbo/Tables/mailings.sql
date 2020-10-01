@@ -13,10 +13,14 @@
 );
 
 
+
+
 GO
 GRANT UPDATE
     ON OBJECT::[dbo].[mailings] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -25,14 +29,20 @@ GRANT SELECT
     AS [dbo];
 
 
+
+
 GO
 GRANT INSERT
     ON OBJECT::[dbo].[mailings] TO [wfjuser]
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[mailings] TO [wfjuser]
     AS [dbo];
+
+
 

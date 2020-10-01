@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[columnInfos] (
+CREATE TABLE [dbo].[columnInfos] (
     [columnInfoID]      INT            IDENTITY (1, 1) NOT NULL,
     [tableName]         VARCHAR (50)   NULL,
     [columnName]        VARCHAR (50)   NULL,
@@ -20,6 +20,8 @@
     [tinyintText]       VARCHAR (20)   NULL,
     CONSTRAINT [PK_columnInfos] PRIMARY KEY CLUSTERED ([columnInfoID] ASC)
 );
+
+
 
 
 GO

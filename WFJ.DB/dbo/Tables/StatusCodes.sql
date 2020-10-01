@@ -14,6 +14,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_StatusCodes_28_512720879__K3_K4_K5_2_9850]
     ON [dbo].[StatusCodes]([ClientID] ASC, [FormID] ASC, [StatusLevel] ASC)
@@ -121,10 +123,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[StatusCodes] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -133,8 +139,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[StatusCodes] TO [wfjuser]
     AS [dbo];
+
+
 

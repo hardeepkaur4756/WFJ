@@ -37,6 +37,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_Requests_8]
     ON [dbo].[Requests]([RequestDate] ASC);
@@ -193,10 +195,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Requests] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -205,8 +211,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[Requests] TO [wfjuser]
     AS [dbo];
+
+
 

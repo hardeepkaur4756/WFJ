@@ -7,6 +7,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_Regions_1]
     ON [dbo].[Regions]([DivisionID] ASC) WITH (FILLFACTOR = 90);
@@ -23,10 +25,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Regions] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -35,8 +41,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[Regions] TO [wfjuser]
     AS [dbo];
+
+
 

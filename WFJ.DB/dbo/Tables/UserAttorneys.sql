@@ -5,10 +5,14 @@
 );
 
 
+
+
 GO
 GRANT UPDATE
     ON OBJECT::[dbo].[UserAttorneys] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -17,14 +21,20 @@ GRANT SELECT
     AS [dbo];
 
 
+
+
 GO
 GRANT INSERT
     ON OBJECT::[dbo].[UserAttorneys] TO [wfjuser]
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[UserAttorneys] TO [wfjuser]
     AS [dbo];
+
+
 

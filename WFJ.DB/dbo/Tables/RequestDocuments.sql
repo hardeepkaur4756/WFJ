@@ -8,6 +8,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_RequestDocuments]
     ON [dbo].[RequestDocuments]([RequestID] ASC) WITH (FILLFACTOR = 90);
@@ -19,10 +21,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[RequestDocuments] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -31,8 +37,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[RequestDocuments] TO [wfjuser]
     AS [dbo];
+
+
 

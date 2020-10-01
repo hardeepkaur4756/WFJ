@@ -18,8 +18,12 @@
 );
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Clientsx] TO [wfjuser]
     AS [dbo];
+
+
 

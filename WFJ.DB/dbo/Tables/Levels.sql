@@ -18,6 +18,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [_dta_index_Levels_28_500196832__K13_K2_1_3_4_5_6_7_8_9_10_11_12_14_15]
     ON [dbo].[Levels]([ParentID] ASC, [Name] ASC)
@@ -50,10 +52,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[Levels] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -62,8 +68,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[Levels] TO [wfjuser]
     AS [dbo];
+
+
 

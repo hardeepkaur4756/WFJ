@@ -17,6 +17,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IX_RequestNotes_2]
     ON [dbo].[RequestNotes]([FollowupDate] ASC) WITH (FILLFACTOR = 90);
@@ -38,10 +40,14 @@ GRANT UPDATE
     AS [dbo];
 
 
+
+
 GO
 GRANT SELECT
     ON OBJECT::[dbo].[RequestNotes] TO [wfjuser]
     AS [dbo];
+
+
 
 
 GO
@@ -50,8 +56,12 @@ GRANT INSERT
     AS [dbo];
 
 
+
+
 GO
 GRANT DELETE
     ON OBJECT::[dbo].[RequestNotes] TO [wfjuser]
     AS [dbo];
+
+
 
