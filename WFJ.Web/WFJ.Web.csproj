@@ -3429,7 +3429,9 @@
     <Content Include="vendors\weather-icons\fonts\pe-icon-set-weather.ttf" />
     <Content Include="vendors\weather-icons\fonts\pe-icon-set-weather.woff" />
     <Content Include="Scripts\Login.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
