@@ -43,15 +43,16 @@
         lengthChange: false,
     });
 
-    $("#managemylogin").DataTable({
-        responsive: true,
-        searching: false,
-        lengthChange: false,
-    });
+    //$("#manageMyUsers").DataTable({
+    //    responsive: true,
+    //    searching: false,
+    //    lengthChange: false,
+    //});
 
     $("#paymentreport").DataTable({
         responsive: true,
         searching: false,
         lengthChange: false,
     });
+   
 })(jQuery);

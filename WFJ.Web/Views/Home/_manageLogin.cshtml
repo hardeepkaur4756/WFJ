@@ -1,21 +1,33 @@
-﻿<form>
+﻿@model WFJ.Models.ManagerUserFilterViewModel
+<form>
+    <span id="errormessage"></span>
     <div class="form-group">
         <label for="inputState">Client</label>
-        <select id="inputState" class="form-control">
-            <option selected="">All</option>
-            <option>ABF Printing</option>
-            <option>Action Advertising and Flags</option>
-            <option>Ad Specialties by ken</option>
+        <select id="ddlClient" name="ddlClient" class="form-control">
+            <option selected="" value="-1">All</option>
+            @{
+                foreach (var item in Model.Clients)
+                {
+                    <option value="@item.ID">@item.ClientName</option>
+                }
+            }
         </select>
     </div>
-
+    <div class="form-group">
+        <label for="active">Active</label>
+        <select id="ddlActive" name="ddlActive" class="form-control">
+            <option selected="" value="-1">All</option>
+            <option value="1">Yes</option>
+            <option value="2">No</option>
+        </select>
+    </div>
     <div class="form-group">
         <label for="inputDate">Name</label>
-        <input type="text" class="form-control" />
+        <input type="text" id="txtname" name="txtname" class="form-control" />
     </div>
 
     <div class="clearfix">
-        <button type="submit"
+        <button type="button" onclick="SearchBy();"
                 class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
             Search
         </button>
@@ -227,4 +239,45 @@
             </div>
         </div>
     </div>
+    
+    @*<script>
+
+        function SearchBy() {
+
+            var clientid = $('#ddlClient option:selected').val();
+            var activeid = $('#ddlActive option:selected').val();
+            var name = $('#txtname').val();
+            //if (clientid ==-1) {
+            //    alert('error');
+            //    $('#errormessage').text('Please Select atleast one value for searching');
+
+            //}
+            //else {
+            jQuery.ajax({
+                type: "POST",
+                url: "/Home/ManageUsers",
+                data: {
+                    clientId: clientid,
+                    active: activeid,
+                    name: name
+                },
+                beforeSend: function (xhr) {
+                    if (clientid == -1 && activeid == -1 && name == "") {
+                        alert('error');
+                        $('#errormessage').text('Please Select atleast one value for searching').css("color", "red");
+                        xhr.abort();
+                        return false;
+                    }
+                },
+                success: function () {
+                    $('#errormessage').text('');
+
+                }
+            });
+
+            //}
+
+        }
+
+    </script>*@
 </form>

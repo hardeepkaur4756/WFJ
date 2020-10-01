@@ -1,18 +1,20 @@
-﻿@{
-    ViewBag.Title = "ManageLogin";
+﻿@model WFJ.Models.ManageUserViewModel 
+
+@{
+    ViewBag.Title = "ManageUsers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <main>
     <div class="document-center">
         <div class="container-fluid site-width">
-            <h4 class="mb-4">Manage My Login</h4>
+            <h4 class="mb-4">Manage Users</h4>
             <div class="row">
                 <div class="col-md-4 col-xl-3">
                     <div class="card mb-5 mb-md-0">
                         <div class="card-content">
                             <div class="card-body">
-                                @Html.Partial("~/Views/Home/_manageLogin.cshtml")
+                                @Html.Partial("~/Views/Home/_manageLogin.cshtml",Model.ManagerUserFilterViewModel)
                             </div>
                         </div>
                     </div>
