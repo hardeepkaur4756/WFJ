@@ -90,7 +90,6 @@
         <EntityTypeShape EntityType="WFJDBModel.UserLevel" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserLoginsTable" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserRegion" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="26.75" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserStatusCodePermission" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.WebPage" Width="1.5" PointX="10.75" PointY="27.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Address" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
@@ -106,6 +105,7 @@
         <EntityTypeShape EntityType="WFJDBModel.sectionContent" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.section" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.sequence" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="25.375" PointY="26.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

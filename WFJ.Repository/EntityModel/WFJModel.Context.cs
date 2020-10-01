@@ -112,7 +112,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<UserLevel> UserLevels { get; set; }
         public virtual DbSet<UserLoginsTable> UserLoginsTables { get; set; }
         public virtual DbSet<UserRegion> UserRegions { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserStatusCodePermission> UserStatusCodePermissions { get; set; }
         public virtual DbSet<WebPage> WebPages { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
@@ -128,6 +127,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<sectionContent> sectionContents { get; set; }
         public virtual DbSet<section> sections { get; set; }
         public virtual DbSet<sequence> sequences { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

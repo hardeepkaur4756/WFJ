@@ -3544,47 +3544,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="RegionID" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ManagerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DateAdded" Type="DateTime" Precision="0" />
-          <Property Name="UserType" Type="Int32" />
-          <Property Name="UserAccess" Type="Int32" />
-          <Property Name="LogonCount" Type="Int32" />
-          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ManagerUserID" Type="Int32" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="AttorneyID" Type="Int32" />
-          <Property Name="levelID" Type="Int32" />
-          <Property Name="PasswordExpirationDate" Type="DateTime" Precision="0" />
-          <Property Name="Active" Type="Byte" />
-          <Property Name="IsCollector" Type="Byte" />
-          <Property Name="IsAdminStaff" Type="Byte" />
-          <Property Name="HireDate" Type="DateTime" Precision="0" />
-          <Property Name="Birthdate" Type="DateTime" Precision="0" />
-          <Property Name="AccessClientExtranet" Type="Byte" />
-          <Property Name="ProfileText" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
-          <Property Name="showHRSection" Type="Byte" />
-          <Property Name="dashboardUser" Type="Byte" />
-          <Property Name="Salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PasswordExpireDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="UserStatusCodePermission">
           <Key>
             <PropertyRef Name="UserID" />
@@ -3851,7 +3810,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySet Name="UserLevels" EntityType="Self.UserLevel" />
           <EntitySet Name="UserLoginsTables" EntityType="Self.UserLoginsTable" />
           <EntitySet Name="UserRegions" EntityType="Self.UserRegion" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserStatusCodePermissions" EntityType="Self.UserStatusCodePermission" />
           <EntitySet Name="WebPages" EntityType="Self.WebPage" />
           <EntitySet Name="Addresses" EntityType="Self.Address" />
@@ -4017,6 +3975,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <Parameter Name="vchLoginName" Mode="In" Type="String" />
             <Parameter Name="vchPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Users" EntityType="WFJDBModel.User" />
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4030,6 +3989,46 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Type="String" Name="uvalue" Nullable="true" MaxLength="255" />
           <Property Type="Binary" Name="lvalue" Nullable="true" MaxLength="Max" />
         </ComplexType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ManagerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateAdded" Type="DateTime" Precision="0" />
+          <Property Name="UserType" Type="Int32" />
+          <Property Name="UserAccess" Type="Int32" />
+          <Property Name="LogonCount" Type="Int32" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ManagerUserID" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="AttorneyID" Type="Int32" />
+          <Property Name="levelID" Type="Int32" />
+          <Property Name="PasswordExpirationDate" Type="DateTime" Precision="0" />
+          <Property Name="Active" Type="Byte" />
+          <Property Name="IsCollector" Type="Byte" />
+          <Property Name="IsAdminStaff" Type="Byte" />
+          <Property Name="HireDate" Type="DateTime" Precision="0" />
+          <Property Name="Birthdate" Type="DateTime" Precision="0" />
+          <Property Name="AccessClientExtranet" Type="Byte" />
+          <Property Name="ProfileText" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="showHRSection" Type="Byte" />
+          <Property Name="dashboardUser" Type="Byte" />
+          <Property Name="Salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5565,47 +5564,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="WFJDBModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Salt" ColumnName="Salt" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
-                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="UserAccess" ColumnName="UserAccess" />
-                <ScalarProperty Name="LogonCount" ColumnName="LogonCount" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="ManagerUserID" ColumnName="ManagerUserID" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="AttorneyID" ColumnName="AttorneyID" />
-                <ScalarProperty Name="levelID" ColumnName="levelID" />
-                <ScalarProperty Name="PasswordExpirationDate" ColumnName="PasswordExpirationDate" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="IsCollector" ColumnName="IsCollector" />
-                <ScalarProperty Name="IsAdminStaff" ColumnName="IsAdminStaff" />
-                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
-                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
-                <ScalarProperty Name="AccessClientExtranet" ColumnName="AccessClientExtranet" />
-                <ScalarProperty Name="ProfileText" ColumnName="ProfileText" />
-                <ScalarProperty Name="showHRSection" ColumnName="showHRSection" />
-                <ScalarProperty Name="dashboardUser" ColumnName="dashboardUser" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserStatusCodePermissions">
             <EntityTypeMapping TypeName="WFJDBModel.UserStatusCodePermission">
               <MappingFragment StoreEntitySet="UserStatusCodePermissions">
@@ -5846,6 +5804,47 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <FunctionImportMapping FunctionImportName="dt_verstamp007" FunctionName="WFJDBModel.Store.dt_verstamp007" />
           <FunctionImportMapping FunctionImportName="dt_whocheckedout" FunctionName="WFJDBModel.Store.dt_whocheckedout" />
           <FunctionImportMapping FunctionImportName="dt_whocheckedout_u" FunctionName="WFJDBModel.Store.dt_whocheckedout_u" />
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="WFJDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="dashboardUser" ColumnName="dashboardUser" />
+                <ScalarProperty Name="showHRSection" ColumnName="showHRSection" />
+                <ScalarProperty Name="ProfileText" ColumnName="ProfileText" />
+                <ScalarProperty Name="AccessClientExtranet" ColumnName="AccessClientExtranet" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="IsAdminStaff" ColumnName="IsAdminStaff" />
+                <ScalarProperty Name="IsCollector" ColumnName="IsCollector" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PasswordExpirationDate" ColumnName="PasswordExpirationDate" />
+                <ScalarProperty Name="levelID" ColumnName="levelID" />
+                <ScalarProperty Name="AttorneyID" ColumnName="AttorneyID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ManagerUserID" ColumnName="ManagerUserID" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="LogonCount" ColumnName="LogonCount" />
+                <ScalarProperty Name="UserAccess" ColumnName="UserAccess" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -49,6 +49,5 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> showHRSection { get; set; }
         public Nullable<byte> dashboardUser { get; set; }
         public string Salt { get; set; }
-        public Nullable<System.DateTime> PasswordExpireDate { get; set; }
     }
 }
