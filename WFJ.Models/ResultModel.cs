@@ -10,5 +10,6 @@ namespace WFJ.Models
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
+        public bool IsPasswordExpire { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model WFJ.Models.ProfileViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
     <main>
@@ -10,7 +11,7 @@
                         <div class="card mb-5 mb-md-0">
                             <div class="card-content">
                                 <div class="card-body">
-                                    @Html.Partial("~/Views/Home/_editProfile.cshtml")
+                                    @Html.Partial("~/Views/Home/_editProfile.cshtml",Model)
                                 </div>
                             </div>
                         </div>

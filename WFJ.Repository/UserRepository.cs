@@ -16,16 +16,32 @@ namespace WFJ.Repository
             context = new WFJEntities();
         }
 
-        //public IEnumerable<User> GetAll()
-        //{
-        //    return context.Users.Where(x=>x.Salt == null && !string.IsNullOrEmpty(x.Password));
-        //}
-
         public User GetByEmail(string email)
         {
-            return context.Users.FirstOrDefault(x => x.EMail == email);
+            return context.Users.FirstOrDefault(x => x.EMail.ToLower() == email.ToLower());
         }
 
+        public User GetByEmailOrUserName(string email)
+        {
+            return context.Users.FirstOrDefault(x => x.EMail.ToLower() == email.ToLower() || x.UserName.ToLower() == email.ToLower());
+        }
 
+        public User GetByEmailAndPassword(string email, string password)
+        {
+            return context.Users.FirstOrDefault(x => x.EMail.ToLower() == email.ToLower() && x.Password == password);
+        }
+
+        public bool CheckDuplicateByEmailAndUser(string email, int userId)
+        {
+            User user = context.Users.FirstOrDefault(x => x.EMail.ToLower() == email.ToLower() && x.UserID != userId);
+            if (user != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

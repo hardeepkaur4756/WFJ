@@ -2,22 +2,23 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_LoginPartial.cshtml";
 }
+@model WFJ.Models.LoginViewModel
 
     <div class="login-background">
         <div class="container">
             <div class="row vh-100 justify-content-between align-items-center">
                 <div class="col-12">
-                    <form action="#" class="row row-eq-height lockscreen mt-5 mb-5">
+                    <div class="row row-eq-height lockscreen mt-5 mb-5">
                         <div class="lock-image login-img col-12 col-sm-5">
                             <img src="~/Images/logo.png" class="d-block w-100" alt="" />
                         </div>
                         <div class="login-form col-12 col-sm-7">
-                            @Html.Partial("~/Views/Account/_login.cshtml", null)
+                            @Html.Partial("~/Views/Account/_login.cshtml", Model)
                         </div>
                         <div class="forget-password col-12 col-sm-7 d-none">
                             @Html.Partial("~/Views/Account/_forgotPassword.cshtml", null)
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
