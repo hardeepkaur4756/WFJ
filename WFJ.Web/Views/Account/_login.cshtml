@@ -1,4 +1,4 @@
-﻿@model WFJ.Models.LoginModel
+﻿@model WFJ.Models.LoginViewModel
 @{
     ViewBag.Title = "_login";
 }
@@ -12,44 +12,28 @@
     {
         <div class="form-group mb-3">
             <label for="emailaddress">Username / Email address</label>
-            @Html.TextBoxFor(m => m.EMail, new { @placeholder = "Enter your Username / Email address", @class = "form-control login-text" })
-            @Html.ValidationMessageFor(m => m.EMail)
-            @*<input class="form-control login-text"
-                type="email"
-                id="txtEmailaddress"
-                required=""
-                placeholder="Enter your Username / Email address" />*@
+            @Html.TextBoxFor(m => m.Email, new { @placeholder = "Enter your Username / Email address", @class = "form-control login-text" })
+            @Html.ValidationMessageFor(m => m.Email)
         </div>
 
         <div class="form-group mb-3">
             <label for="password">Password</label>
             @Html.TextBoxFor(m => m.Password, new { @type = "password", @placeholder = "Enter your password", @class = "form-control login-text" })
             @Html.ValidationMessageFor(m => m.Password)
-            @*<input class="form-control login-text"
-                type="password"
-                required=""
-                id="txtPassword"
-                placeholder="Enter your password" />*@
         </div>
 
         <div class="form-group mb-3">
             <div class="custom-control custom-checkbox">
-                @*<input type="checkbox"
-                    class="custom-control-input"
-                    id="checkbox-signin"
-                    checked="" />*@
                 @Html.CheckBoxFor(m => m.UserCookieCheck, new { @id = "checkbox-signin", @class = "custom-control-input"})
                 <label class="custom-control-label" for="checkbox-signin"> Remember me</label>
             </div>
         </div>
 
         <div class="form-group mb-0">
-            @*<input class="btn btn-primary" id="btnSubmit" type="submit" value="submit" />*@
             <button class="btn btn-primary" type="submit">Log In</button>
         </div>
         <div class="mt-2">
             <a href="javascript:void(0)" id="goToforgotPassword" class="anchor-design">Forget Your Password</a>
-            @*<a href="/Home/ForgotPassword" id="goToforgotPassword" class="anchor-design">Forget Your Password</a>*@
         </div>
     }
 

@@ -1682,7 +1682,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="ProfileText" Type="varchar" MaxLength="5000" />
           <Property Name="showHRSection" Type="tinyint" />
           <Property Name="dashboardUser" Type="tinyint" />
-          <Property Name="Salt" Type="nvarchar(max)" />
+          <Property Name="IsPasswordHashed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserStatusCodePermissions">
           <Key>
@@ -4027,7 +4027,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="ProfileText" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="showHRSection" Type="Byte" />
           <Property Name="dashboardUser" Type="Byte" />
-          <Property Name="Salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsPasswordHashed" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5807,7 +5807,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="WFJDBModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="IsPasswordHashed" ColumnName="IsPasswordHashed" />
                 <ScalarProperty Name="dashboardUser" ColumnName="dashboardUser" />
                 <ScalarProperty Name="showHRSection" ColumnName="showHRSection" />
                 <ScalarProperty Name="ProfileText" ColumnName="ProfileText" />

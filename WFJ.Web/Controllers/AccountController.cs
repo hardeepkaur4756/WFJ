@@ -1,27 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
+using WFJ.Web.CustomAttribute;
 
 namespace WFJ.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private IUserService _userService = new UserService();
         // GET: Account
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpGet]
         public ActionResult Login()
         {
-            LoginModel loginModel = new LoginModel();
-            loginModel.UserCookieCheck = true;
+            LoginViewModel loginViewModel = new LoginViewModel();
+            loginViewModel.UserCookieCheck = true;
             System.Web.HttpCookie loginUserCookie = HttpContext.Request.Cookies.Get("loginUserCookie");
             if (loginUserCookie != null && loginUserCookie.HasKeys)
             {
@@ -29,21 +29,17 @@ namespace WFJ.Web.Controllers
                 string password = loginUserCookie["password"];
                 if (!string.IsNullOrEmpty(emailaddress) && !string.IsNullOrEmpty(password))
                 {
-                    //loginUserCookie.Values["emailaddress"] = "";
-                    //loginUserCookie.Values["password"] = "";
-                    loginModel.EMail = emailaddress;
-                    loginModel.Password = password;
-                    loginModel.UserCookieCheck = true;
+                    loginViewModel.Email = emailaddress;
+                    loginViewModel.Password = password;
+                    loginViewModel.UserCookieCheck = true;
                 }
             }
-            return View(loginModel);
+            return View(loginViewModel);
         }
 
-        public ActionResult ForgotPassword(string forgotEmailAddress)
+        public ActionResult ForgotPassword(string email)
         {
-            IUserService userService = new UserService();
-            ResultModel resultModel = new ResultModel();
-            resultModel = userService.SendForgotPasswordMail(forgotEmailAddress);
+            ResultModel resultModel = _userService.SendForgotPasswordMail(email);
             return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
         }
 
@@ -53,54 +49,49 @@ namespace WFJ.Web.Controllers
             int userId = 0;
             if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
             {
-
                 queryString = Util.Decode(Request.QueryString.ToString());
                 string[] temp = queryString.Split('=');
                 userId = Convert.ToInt32(temp[1]);
             }
-            ViewBag.UserID = userId;
+            ViewBag.UserId = userId;
             return View("~/Views/Account/Forgot.cshtml");
         }
 
         [HttpPost]
         public ActionResult ResetPassword(string newPassword, string newConfirmPassword, int userId)
         {
-            IUserService userService = new UserService();
-            ResultModel resultModel = new ResultModel();
-            resultModel = userService.UpdatePassword(newPassword, newConfirmPassword, userId);
+            ResultModel resultModel = _userService.UpdatePassword(newPassword, newConfirmPassword, userId);
             return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
         }
+
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         [HttpGet]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string newConfirmPassword)
         {
             if (Session["UserId"] != null)
             {
                 int userId = Convert.ToInt32(Session["UserId"].ToString());
-                IUserService userService = new UserService();
-                ResultModel resultModel = new ResultModel();
-                resultModel = userService.ChangePassword(userId,currentPassword, newPassword, newConfirmPassword);
+                ResultModel resultModel = _userService.ChangePassword(userId, currentPassword, newPassword, newConfirmPassword);
                 return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
-                //return View(userModel);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-            
+
         }
 
         [HttpPost]
-        public ActionResult Login(LoginModel loginModel)
+        public ActionResult Login(LoginViewModel loginViewModel)
         {
-            ResultModel resultModel = new ResultModel();
-            IUserService userService = new UserService();
-            resultModel = userService.Login(loginModel);
+            ResultModel resultModel = _userService.Login(loginViewModel);
             if (resultModel.IsPasswordExpire)
             {
                 TempData["IsPasswordExpire"] = true;
@@ -108,17 +99,16 @@ namespace WFJ.Web.Controllers
             }
             if (resultModel.IsSuccess)
             {
-                if (Convert.ToBoolean(loginModel.UserCookieCheck))
+                if (Convert.ToBoolean(loginViewModel.UserCookieCheck))
                 {
                     //Adding username and password in cookies
-                    AddUserCookie(loginModel.EMail, loginModel.Password);
+                    AddUserCookie(loginViewModel.Email, loginViewModel.Password);
                 }
                 else
                 {
                     AddUserCookie("", "");
                 }
                 return RedirectToAction("Index", "Home");
-
             }
             else
             {

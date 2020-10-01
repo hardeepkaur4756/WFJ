@@ -14,7 +14,11 @@ namespace WFJ.Service.Interfaces
         ResultModel SendForgotPasswordMail(string email);
         ResultModel UpdatePassword(string newPassword, string newConfirmPassword, int userId);
         ResultModel ChangePassword(int userId, string currentPassword, string newPassword, string newConfirmPassword);
-        ResultModel Login(LoginModel loginModel);
-        UserModel EditProfile(UserModel userModel);
+        ResultModel Login(LoginViewModel loginViewModel);
+        ProfileViewModel GetById(int userId);
+        ProfileViewModel UpdateProfile(ProfileViewModel profileViewModel);
+        bool CheckDuplicateByEmailAndUser(string email, int userId);
+
+
     }
 }

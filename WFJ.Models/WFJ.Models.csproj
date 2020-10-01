@@ -44,10 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoginModel.cs" />
+    <Compile Include="LoginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultModel.cs" />
-    <Compile Include="UserModel.cs" />
+    <Compile Include="ProfileViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

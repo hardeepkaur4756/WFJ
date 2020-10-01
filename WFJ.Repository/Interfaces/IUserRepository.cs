@@ -11,6 +11,8 @@ namespace WFJ.Repository.Interfaces
     {
         //IEnumerable<User> GetAll();
         User GetByEmail(string email);
+        User GetByEmailOrUserName(string email);
         User GetByEmailAndPassword(string email, string password);
+        bool CheckDuplicateByEmailAndUser(string email, int userId);
     }
 }

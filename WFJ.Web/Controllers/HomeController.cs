@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
-using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
@@ -14,62 +9,94 @@ namespace WFJ.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private IUserService _userService = new UserService();
+
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult DocumentCenter()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult RequestServices()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult ManageLogin()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult Payment()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult ViewRequest()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult ViewRequestPayment()
         {
             return View();
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         [HttpGet]
-        //[AuthorizeActivity((int)Web.Models.Enums.UserType.WFJAdmin)]
         public ActionResult EditProfile()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult EditProfile(UserModel userModel)
         {
             if (Session["UserId"] != null)
             {
-                userModel.UserID = Convert.ToInt32(Session["UserId"].ToString());
-                IUserService userService = new UserService();
-                userModel = userService.EditProfile(userModel);
-                return View(userModel);
+                ProfileViewModel profileViewModel = new ProfileViewModel();
+                profileViewModel.UserId = Convert.ToInt32(Session["UserId"].ToString());
+                profileViewModel= _userService.GetById(profileViewModel.UserId);
+                return View(profileViewModel);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
-            
+        }
+
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
+        [HttpPost]
+        public ActionResult EditProfile(ProfileViewModel profileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Session["UserId"] != null)
+                {
+                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"].ToString());
+                    if (_userService.CheckDuplicateByEmailAndUser(profileViewModel.Email,profileViewModel.UserId))
+                    {
+                        ModelState.AddModelError("Email", "Email address already exist.");
+                        return View(profileViewModel);
+                    }
+                    profileViewModel = _userService.UpdateProfile(profileViewModel);
+                    profileViewModel.Message = "Updated Successfully.";
+                    return View(profileViewModel);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+            }
+            else
+            {
+                return View(profileViewModel);
+            }
         }
     }
 }

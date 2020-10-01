@@ -9,6 +9,7 @@ namespace WFJ.Helper
 {
     public class Util
     {
+        // Change encode and decode.
         public static string Encode(string stringToEncode)
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(stringToEncode));
@@ -22,7 +23,6 @@ namespace WFJ.Helper
             string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" +
                   @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" +
                   @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})$";
-            //@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z"
             bool isVaidEmail = Regex.IsMatch(email, strRegex, RegexOptions.IgnoreCase);
             if (isVaidEmail) { return (true); } else { return (false); }
         }

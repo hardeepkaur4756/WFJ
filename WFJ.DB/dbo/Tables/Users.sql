@@ -33,7 +33,7 @@
     [ProfileText]            VARCHAR (5000) NULL,
     [showHRSection]          TINYINT        NULL,
     [dashboardUser]          TINYINT        NULL,
-    [Salt]                   NVARCHAR (MAX) NULL,
+    [IsPasswordHashed] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_UserTable$] PRIMARY KEY CLUSTERED ([UserID] ASC)
 );
 

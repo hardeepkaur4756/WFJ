@@ -18,32 +18,25 @@ namespace WFJ.Web.CustomAttribute
             }
         }
 
-        //public bool RequiredSponsorId { get; set; }
-        private new List<string> UserTypes { get; set; }
+        private List<string> UserTypes { get; set; }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            string userTypeId = Convert.ToString(HttpContext.Current.Session["UserType"]);
-            if (string.IsNullOrEmpty(userTypeId))
-            {
-                string actionName = filterContext.ActionDescriptor != null ? filterContext.ActionDescriptor.ActionName.ToLower() : string.Empty;
-                string controllerName = filterContext.ActionDescriptor != null && filterContext.ActionDescriptor.ControllerDescriptor != null ?
-                                                    filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower() : string.Empty;
-                base.HandleUnauthorizedRequest(filterContext);
-            }
-            else
-            {
-                filterContext.Result = new RedirectToRouteResult(new
+            filterContext.Result = new RedirectToRouteResult(new
                   RouteValueDictionary(new { controller = "Account", action = "Login" }));
-            }
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
+            int userId = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
             string userTypeId = Convert.ToString(HttpContext.Current.Session["UserType"]);
-            if (UserTypes.Contains(userTypeId))
+            if (userId !=0)
             {
-                return true;
+                if ((UserTypes.Contains(userTypeId))|| UserTypes.Contains("0"))
+                {
+                    return true;
+                }
+                return false;
             }
             else
             {

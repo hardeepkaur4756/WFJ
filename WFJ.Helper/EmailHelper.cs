@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -13,14 +14,13 @@ namespace WFJ.Helper
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-            mail.From = new MailAddress("nt26797@gmail.com");
-            mail.To.Add("kapil.kumar.sharma475@gmail.com");
+            mail.From = new MailAddress(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]));
+            mail.To.Add(toEmail);
             mail.Subject = subject;
             mail.Body = body;
             mail.IsBodyHtml = true;
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("nt26797@gmail.com", "9219250730");
+            SmtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            SmtpServer.Credentials = new System.Net.NetworkCredential(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]), Convert.ToString(ConfigurationManager.AppSettings["EmailPassword"]));
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
         }
