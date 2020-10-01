@@ -14,7 +14,16 @@ namespace WFJ.Repository.EntityModel
     
     public partial class AccessLevel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AccessLevel()
+        {
+            this.Users = new HashSet<User>();
+        }
+    
         public int ID { get; set; }
         public string AccessLevel1 { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

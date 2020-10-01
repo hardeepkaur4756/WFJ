@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using WFJ.Models;
 using WFJ.Service;
@@ -97,6 +98,53 @@ namespace WFJ.Web.Controllers
             {
                 return View(profileViewModel);
             }
+        }
+
+        public ActionResult ManageUsers(int clientId = -1, int active = -1, string name = "")
+        {
+            IClientService clientService = new ClientService();
+
+            ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
+            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel
+            {
+                Clients = clientService.GetClients()
+            };
+
+            manageUserViewModel.ManagerUserFilterViewModel = managerUserFilterViewModel;
+
+            return View(manageUserViewModel);
+        }
+        public JsonResult GetUsers(int clientId = 5, int active = -1, string name = "")
+        {
+            ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
+            IUserService userService = new UserService();
+
+            //ManageUserDataViewModel manageUserDataViewModel = new ManageUserDataViewModel()
+            //{
+            //    Users = userService.GetUsers(clientId, active, name)
+            //};
+            // manageUserViewModel.ManageUserDataViewModel = manageUserDataViewModel;
+            return Json(manageUserViewModel);
+        }
+        [HttpGet]
+        public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId = 5, int active = -1, string name = "")
+        {
+            var userModels = new List<UserModel>();
+            int pageNo = 1;
+            int totalCount = 0;
+            IUserService userService = new UserService();
+            if (param.iDisplayStart >= param.iDisplayLength)
+                pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+
+            userModels = userService.GetUsers(clientId, active, name, param, pageNo);
+            totalCount = userModels.Count;
+            return Json(new
+            {
+                aaData = userModels,
+                sEcho = param.sEcho,
+                iTotalDisplayRecords = totalCount,
+                iTotalRecords = totalCount
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

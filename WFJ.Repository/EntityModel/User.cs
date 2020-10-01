@@ -49,5 +49,8 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> showHRSection { get; set; }
         public Nullable<byte> dashboardUser { get; set; }
         public bool IsPasswordHashed { get; set; }
+    
+        public virtual AccessLevel AccessLevel { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

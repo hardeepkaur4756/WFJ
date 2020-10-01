@@ -105,7 +105,9 @@
         <EntityTypeShape EntityType="WFJDBModel.sectionContent" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.section" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.sequence" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="25.375" PointY="26.75" />
+        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="WFJDBModel.FK_UserAccessID" />
+        <AssociationConnector Association="WFJDBModel.FK_UserClientID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

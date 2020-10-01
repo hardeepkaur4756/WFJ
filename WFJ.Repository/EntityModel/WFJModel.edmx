@@ -13,7 +13,7 @@
           <Property Name="AccessLevel" Type="nvarchar" MaxLength="30" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.Addresses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.Addresses' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Addresses">
           <Key>
             <PropertyRef Name="FormID" />
@@ -29,7 +29,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.Addresses' does not have a primary 
           <Property Name="FieldValue" Type="varchar" MaxLength="400" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.areas' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="areas">
           <Key>
             <PropertyRef Name="areaID" />
@@ -263,7 +263,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
           <Property Name="sequenceID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.distributionLists' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.distributionLists' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="distributionLists">
           <Key>
             <PropertyRef Name="distributionListID" />
@@ -334,7 +334,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.distributionLists' does not have a 
           <Property Name="version" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.elementCategorys' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.elementCategorys' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="elementCategorys">
           <Key>
             <PropertyRef Name="elementCategoryID" />
@@ -343,7 +343,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.elementCategorys' does not have a p
           <Property Name="elementCategoryName" Type="varchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.elements' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.elements' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="elements">
           <Key>
             <PropertyRef Name="elementID" />
@@ -412,7 +412,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.elements' does not have a primary k
           <Property Name="SeqNo" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.enews_clients' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.enews_clients' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="enews_clients">
           <Key>
             <PropertyRef Name="enews_clientID" />
@@ -1072,7 +1072,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.enews_clients' does not have a prim
           <Property Name="field30post" Type="varchar" MaxLength="200" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.mailformTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.mailformTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="mailformTypes">
           <Key>
             <PropertyRef Name="mailformTypeID" />
@@ -1126,7 +1126,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.mailformTypes' does not have a prim
           <Property Name="mailingAttachment" Type="varchar" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.messages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.messages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="messages">
           <Key>
             <PropertyRef Name="messageID" />
@@ -1177,7 +1177,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.messages' does not have a primary k
           <Property Name="DateReleasedFieldID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.pageContents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.pageContents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="pageContents">
           <Key>
             <PropertyRef Name="pageContentID" />
@@ -1189,7 +1189,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.pageContents' does not have a prima
           <Property Name="elementID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.pages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="pages">
           <Key>
             <PropertyRef Name="pageID" />
@@ -1493,7 +1493,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="RecordDate" Type="smalldatetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.sectionContents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.sectionContents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sectionContents">
           <Key>
             <PropertyRef Name="sectionContentID" />
@@ -1505,7 +1505,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sectionContents' does not have a pr
           <Property Name="elementID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.sections' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.sections' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sections">
           <Key>
             <PropertyRef Name="sectionID" />
@@ -1527,7 +1527,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sections' does not have a primary k
           <Property Name="dropdownMenuOffset" Type="varchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="sequences">
           <Key>
             <PropertyRef Name="sequenceID" />
@@ -1702,6 +1702,32 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="PageName" Type="nvarchar" MaxLength="50" />
           <Property Name="PageText" Type="ntext" />
         </EntityType>
+        <Association Name="FK_UserAccessID">
+          <End Role="AccessLevels" Type="Self.AccessLevels" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccessLevels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserAccess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClientID">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="dt_addtosourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="vchSourceSafeINI" Type="varchar" Mode="In" />
           <Parameter Name="vchProjectName" Type="varchar" Mode="In" />
@@ -2088,6 +2114,14 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
     [sequences].[sequence] AS [sequence]
     FROM [dbo].[sequences] AS [sequences]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_UserAccessID" Association="Self.FK_UserAccessID">
+            <End Role="AccessLevels" EntitySet="AccessLevels" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClientID" Association="Self.FK_UserClientID">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2099,6 +2133,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="AccessLevel1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserAccessID" FromRole="AccessLevel" ToRole="User" />
         </EntityType>
         <EntityType Name="AssociateCounsel">
           <Key>
@@ -2253,6 +2288,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="hasExportFiles" Type="Byte" />
           <Property Name="showWFJFees" Type="Byte" />
           <Property Name="Active" Type="Byte" />
+          <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserClientID" FromRole="Client" ToRole="User" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -3976,6 +4012,14 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <Parameter Name="vchPassword" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Users" EntityType="WFJDBModel.User" />
+          <AssociationSet Name="FK_UserAccessID" Association="WFJDBModel.FK_UserAccessID">
+            <End Role="AccessLevel" EntitySet="AccessLevels" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClientID" Association="WFJDBModel.FK_UserClientID">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4028,7 +4072,35 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="showHRSection" Type="Byte" />
           <Property Name="dashboardUser" Type="Byte" />
           <Property Name="IsPasswordHashed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AccessLevel" Relationship="WFJDBModel.FK_UserAccessID" FromRole="User" ToRole="AccessLevel" />
+          <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_UserClientID" FromRole="User" ToRole="Client" />
         </EntityType>
+        <Association Name="FK_UserAccessID">
+          <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccessLevel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserAccess" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClientID">
+          <End Type="WFJDBModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

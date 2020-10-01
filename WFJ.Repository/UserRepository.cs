@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WFJ.Models;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 
@@ -42,6 +43,36 @@ namespace WFJ.Repository
             {
                 return false;
             }
+        }
+
+        public List<User> GetUsers(int clientId, int active, string name, DataTablesParam param, int pageNo)
+        {
+
+            IEnumerable<User> users;
+
+            if (clientId != -1 || active != -1 || name != "")
+            {
+                users = context.Users;
+                if (clientId != -1)
+                {
+                    users = users.Where(x => x.ClientID == clientId);
+                }
+                if (active != -1)
+                {
+                    users = users.Where(x => x.Active == active);
+                }
+                if (name != "")
+                {
+                    users = users.Where(x => x.FirstName.ToLower().Contains(name.ToLower()) || x.LastName.ToLower().Contains(name.ToLower())
+                    || x.UserName.ToLower().Contains(name.ToLower()) || x.EMail.ToLower().Contains(name.ToLower())
+                    );
+                }
+            }
+            else
+            {
+                return null;
+            }
+            return users.ToList().Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList(); ;
         }
     }
 }
