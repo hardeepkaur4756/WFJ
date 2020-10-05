@@ -4,8 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1">
-        <EntityTypeShape EntityType="WFJDBModel.AccessLevel" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1" ZoomLevel="70">
         <EntityTypeShape EntityType="WFJDBModel.AssociateCounsel" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.author" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
@@ -105,9 +104,11 @@
         <EntityTypeShape EntityType="WFJDBModel.sectionContent" Width="1.5" PointX="0.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.section" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.sequence" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="WFJDBModel.AccessLevel" Width="1.5" PointX="25.375" PointY="26.875" />
+        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="31.625" PointY="14" />
         <AssociationConnector Association="WFJDBModel.FK_UserAccessID" />
         <AssociationConnector Association="WFJDBModel.FK_UserClientID" />
+        <AssociationConnector Association="WFJDBModel.FK__Users__levelID__1F198FD4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

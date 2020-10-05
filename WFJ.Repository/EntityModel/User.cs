@@ -52,5 +52,6 @@ namespace WFJ.Repository.EntityModel
     
         public virtual AccessLevel AccessLevel { get; set; }
         public virtual Client Client { get; set; }
+        public virtual Level Level { get; set; }
     }
 }
