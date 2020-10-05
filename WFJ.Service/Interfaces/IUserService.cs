@@ -18,7 +18,7 @@ namespace WFJ.Service.Interfaces
         ProfileViewModel GetById(int userId);
         ProfileViewModel UpdateProfile(ProfileViewModel profileViewModel);
         bool CheckDuplicateByEmailAndUser(string email, int userId);
-        List<UserModel> GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno);
+        ManageUserModel GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno, string sortDir, string sortCol);
 
     }
 }

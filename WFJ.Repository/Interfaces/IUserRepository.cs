@@ -15,6 +15,6 @@ namespace WFJ.Repository.Interfaces
         User GetByEmailOrUserName(string email);
         User GetByEmailAndPassword(string email, string password);
         bool CheckDuplicateByEmailAndUser(string email, int userId);
-        List<User> GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno);
+        List<User> GetUsers(int clientid, int active, string name);
     }
 }

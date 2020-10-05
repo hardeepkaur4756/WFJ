@@ -5,7 +5,6 @@ using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Web.CustomAttribute;
-
 namespace WFJ.Web.Controllers
 {
     public class HomeController : Controller
@@ -129,18 +128,42 @@ namespace WFJ.Web.Controllers
         [HttpGet]
         public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId = 5, int active = -1, string name = "")
         {
-            var userModels = new List<UserModel>();
+
+            ManageUserModel model = new ManageUserModel();
             int pageNo = 1;
-            int totalCount = 0;
+            int? totalCount = 0;
             IUserService userService = new UserService();
             if (param.iDisplayStart >= param.iDisplayLength)
                 pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+            switch (sortCol)
+            {
+                case "ClientName":
+                    sortCol = sortCol == "ClientName" ? "Client.ClientName" : sortCol;
+                    break;
 
-            userModels = userService.GetUsers(clientId, active, name, param, pageNo);
-            totalCount = userModels.Count;
+                case "Fullname":
+                    sortCol = sortCol == "Fullname" ? "UserModel.FirstName" : sortCol;
+                    break;
+                case "ManagerName":
+                    sortCol = sortCol == "ManagerName" ? "UserModel.FirstName" : sortCol;
+                    break;
+                case "LevelName":
+                    sortCol = sortCol == "LevelName" ? "Client.LevelName" : sortCol;
+
+                    break;
+                case "AccessLevelName":
+                    sortCol = sortCol == "AccessLevelName" ? "AccessLevel.AccessLevel1" : sortCol;
+                    break;
+                default:
+                    break;
+            }
+
+                model = userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
+      
+            totalCount = model.totalUsersCount;
             return Json(new
             {
-                aaData = userModels,
+                aaData = model.users,
                 sEcho = param.sEcho,
                 iTotalDisplayRecords = totalCount,
                 iTotalRecords = totalCount

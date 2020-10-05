@@ -9,7 +9,6 @@ $(document).ready(function () {
     var activeid = $('#ddlActive option:selected').val();
     var name = $('#txtname').val();
       if (clientid == -1 && activeid == -1 && name == "") {
-          alert('error');
           $('#errormessage').text('Please Select atleast one value for searching').css("color", "red");
 
       }
@@ -19,11 +18,13 @@ $(document).ready(function () {
      
 }
 
-           function GetDatafortable () {
-                if ($.fn.DataTable.isDataTable("#manageMyUsers")) {
-        oTable.draw();
-            }
-                else {
+  function GetDatafortable () {
+      if ($.fn.DataTable.isDataTable("#manageMyUsers"))
+      {
+                    oTable.draw();
+      }
+      else
+      {
         oTable =
         $('#manageMyUsers').DataTable({
             "bServerSide": true,
@@ -56,11 +57,11 @@ $(document).ready(function () {
                     }
                 },
                { "mData": "ClientName" },
-                { "mData": "UserName" },
+                { "mData": "Fullname" },
                 { "mData": "ManagerName" },
                 { "mData": "LevelName" },
-                { "mData": "AccessLevel" },
-                { "mData": "Active" }
+                { "mData": "AccessLevelName" },
+                { "mData": "activeStatus" }
 
 
 
@@ -70,7 +71,7 @@ $(document).ready(function () {
             ],
             "order": [[2, "desc"]],
             bProcessing: true,
-            pageLength: 5,
+            pageLength: 10,
             "bFilter": false,
             "paging": true,
             //bSearching: false,

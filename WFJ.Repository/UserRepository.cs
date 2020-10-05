@@ -45,7 +45,7 @@ namespace WFJ.Repository
             }
         }
 
-        public List<User> GetUsers(int clientId, int active, string name, DataTablesParam param, int pageNo)
+        public List<User> GetUsers(int clientId, int active, string name)
         {
 
             IEnumerable<User> users;
@@ -72,7 +72,8 @@ namespace WFJ.Repository
             {
                 return null;
             }
-            return users.ToList().Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList(); ;
+          
+            return users.ToList(); 
         }
     }
 }

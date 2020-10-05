@@ -14,7 +14,7 @@ namespace WFJ.Service
                 cfg.CreateMap<User, UserModel>()
                     .ForMember(dest => dest.ClientName, act => act.MapFrom(src => src.Client.ClientName))
                     .ForMember(dest => dest.LevelName, act => act.MapFrom(src => src.Client.LevelName))
-                    .ForMember(dest => dest, act => act.MapFrom(src => src.AccessLevel.AccessLevel1));
+                    .ForMember(dest => dest.AccessLevelName, act => act.MapFrom(src => src.AccessLevel.AccessLevel1));
             });
 
             Mapper = MapperConfiguration.CreateMapper();

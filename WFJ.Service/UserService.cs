@@ -10,7 +10,7 @@ using WFJ.Repository;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
-
+using System.Linq.Dynamic;
 namespace WFJ.Service
 {
     public class UserService : IUserService
@@ -244,13 +244,14 @@ namespace WFJ.Service
         {
             return _userRepo.CheckDuplicateByEmailAndUser(email, userId);
         }
-        public List<UserModel> GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno)
+        public ManageUserModel GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno, string sortDir, string sortCol)
         {
+            ManageUserModel model = new ManageUserModel();
             IUserRepository userRepository = new UserRepository();
-            var users = userRepository.GetUsers(clientid, active, name, param, pageno);
-            return MappingExtensions.MapList<User, UserModel>(users);
-
+            var users = userRepository.GetUsers(clientid, active, name).OrderBy(x => x.UserID).OrderBy(sortCol + " " + sortDir);
+            model.totalUsersCount = users?.Count();
+            model.users = MappingExtensions.MapList<User, UserModel>(users?.Skip((pageno - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
+            return model;
         }
-
     }
 }
