@@ -380,12 +380,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WFJModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="FormsRepository.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
+    <Compile Include="Interfaces\IFormsRepository.cs" />
+    <Compile Include="Interfaces\IRegionsRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
+    <Compile Include="Interfaces\IUserTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionsRepository.cs" />
     <Compile Include="UserRepository.cs" />
+    <Compile Include="UserTypeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WFJ.Models\WFJ.Models.csproj">

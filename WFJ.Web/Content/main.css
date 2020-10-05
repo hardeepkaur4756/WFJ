@@ -6408,3 +6408,8 @@ path.domain {
     margin-top: 20px;
   }
 }
+
+.custom-multiselect-scroll .multiselect-container {
+    height: 200px;
+    overflow: auto;
+}

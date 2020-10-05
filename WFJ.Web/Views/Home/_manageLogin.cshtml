@@ -62,13 +62,13 @@
                 <div class="modal-body">
                     <form>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">UserID</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
+                            @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inputDate">UserID</label>
+                                        <input type="text"
+                                               class="form-control" />
+                                    </div>
+                                </div>*@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="inputDate">Password</label>
@@ -93,15 +93,64 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">Telephone</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">Address1</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">Address2</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">City</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">State</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputDate">Postal Code</label>
+                                    <input type="text"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="inputState">Type</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option selected="">Select</option>
-                                        <option>System Administrator</option>
-                                        <option>Prepaid Legal</option>
-                                    </select>
+                                    @Html.DropDownListFor(m=>m.UserType, null,"Select",new { @class="form-control" })
+                                    @*<select id="inputState"
+                                                class="form-control">
+                                            <option selected="">Select</option>
+                                            <option>System Administrator</option>
+                                            <option>Prepaid Legal</option>
+                                        </select>*@
                                 </div>
                             </div>
 
@@ -137,33 +186,33 @@
                                 </div>
                             </div>
 
+                            @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="inputState">Show HR Section</label>
+                                        <select id="inputState"
+                                                class="form-control">
+                                            <option>No</option>
+                                            <option>Yes</option>
+                                        </select>
+                                    </div>
+                                </div>*@
+
+                            @*<div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputState">Client</label>
+                                        <select id="inputState"
+                                                class="form-control">
+                                            <option>Select</option>
+                                            <option>ABF Printing</option>
+                                            <option>
+                                                Action Advertising and Flags
+                                            </option>
+                                            <option>Ad Specialties by ken</option>
+                                        </select>
+                                    </div>
+                                </div>*@
+
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputState">Show HR Section</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option>No</option>
-                                        <option>Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="inputState">Client</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option>Select</option>
-                                        <option>ABF Printing</option>
-                                        <option>
-                                            Action Advertising and Flags
-                                        </option>
-                                        <option>Ad Specialties by ken</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="inputDate">EMail</label>
                                     <input type="text"
@@ -172,9 +221,10 @@
                             </div>
 
                             <div class="col-md-12">
-                                <div class="form-group">
+                                <div class="form-group custom-multiselect-scroll">
                                     <label for="inputState">Region</label>
-                                    <select id="boot-multiselect"
+                                    @Html.DropDownListFor(m => m.Regions, null, new {@id="boot-multiselect", @multiple ="multiple",@class="multiselect"})
+                                    @*<select id="boot-multiselect"
                                             multiple="multiple">
                                         <option value="jQuery">
                                             jQuery Tutorials
@@ -194,14 +244,15 @@
                                         <option value="Python">Python</option>
                                         <option value="MySQL">MySQL</option>
                                         <option value="Oracle">Oracle</option>
-                                    </select>
+                                    </select>*@
                                 </div>
                             </div>
 
                             <div class="col-md-12">
-                                <div class="form-group">
+                                <div class="form-group custom-multiselect-scroll">
                                     <label for="inputState">Form(s)</label>
-                                    <select multiple="multiple" class="multiselect">
+                                    @Html.DropDownListFor(m => m.Forms, null, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
+                                    @*<select id="boot-multiselect1" multiple="multiple" class="multiselect">
                                         <option value="jQuery">
                                             jQuery Tutorials
                                         </option>
@@ -220,7 +271,7 @@
                                         <option value="Python">Python</option>
                                         <option value="MySQL">MySQL</option>
                                         <option value="Oracle">Oracle</option>
-                                    </select>
+                                    </select>*@
                                 </div>
                             </div>
                         </div>
@@ -239,45 +290,45 @@
             </div>
         </div>
     </div>
-    
+
     @*<script>
 
-        function SearchBy() {
+            function SearchBy() {
 
-            var clientid = $('#ddlClient option:selected').val();
-            var activeid = $('#ddlActive option:selected').val();
-            var name = $('#txtname').val();
-            //if (clientid ==-1) {
-            //    alert('error');
-            //    $('#errormessage').text('Please Select atleast one value for searching');
+                var clientid = $('#ddlClient option:selected').val();
+                var activeid = $('#ddlActive option:selected').val();
+                var name = $('#txtname').val();
+                //if (clientid ==-1) {
+                //    alert('error');
+                //    $('#errormessage').text('Please Select atleast one value for searching');
 
-            //}
-            //else {
-            jQuery.ajax({
-                type: "POST",
-                url: "/Home/ManageUsers",
-                data: {
-                    clientId: clientid,
-                    active: activeid,
-                    name: name
-                },
-                beforeSend: function (xhr) {
-                    if (clientid == -1 && activeid == -1 && name == "") {
-                        alert('error');
-                        $('#errormessage').text('Please Select atleast one value for searching').css("color", "red");
-                        xhr.abort();
-                        return false;
+                //}
+                //else {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "/Home/ManageUsers",
+                    data: {
+                        clientId: clientid,
+                        active: activeid,
+                        name: name
+                    },
+                    beforeSend: function (xhr) {
+                        if (clientid == -1 && activeid == -1 && name == "") {
+                            alert('error');
+                            $('#errormessage').text('Please Select atleast one value for searching').css("color", "red");
+                            xhr.abort();
+                            return false;
+                        }
+                    },
+                    success: function () {
+                        $('#errormessage').text('');
+
                     }
-                },
-                success: function () {
-                    $('#errormessage').text('');
+                });
 
-                }
-            });
+                //}
 
-            //}
+            }
 
-        }
-
-    </script>*@
+        </script>*@
 </form>

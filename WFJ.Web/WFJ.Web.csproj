@@ -293,6 +293,7 @@
     <Content Include="Scripts\jvectormap.script.js" />
     <Content Include="Scripts\knob.script.js" />
     <Content Include="Scripts\mail.script.js" />
+    <Content Include="Scripts\managelogin.js" />
     <Content Include="Scripts\morris.script.js" />
     <Content Include="Scripts\notes.script.js" />
     <Content Include="Scripts\peity.script.js" />

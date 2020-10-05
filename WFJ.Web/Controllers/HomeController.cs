@@ -106,9 +106,13 @@ namespace WFJ.Web.Controllers
             ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
             ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel
             {
-                Clients = clientService.GetClients()
+                Clients = clientService.GetClients(),
+                UserType = _userService.GetAllUserTypes(),
+                Regions = _userService.GetAllRegions(),
+                Forms = _userService.GetAllForms()
             };
 
+           
             manageUserViewModel.ManagerUserFilterViewModel = managerUserFilterViewModel;
 
             return View(manageUserViewModel);

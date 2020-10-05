@@ -11,6 +11,7 @@ using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
 using System.Linq.Dynamic;
+using System.Web.Mvc;
 namespace WFJ.Service
 {
     public class UserService : IUserService
@@ -248,10 +249,37 @@ namespace WFJ.Service
         {
             ManageUserModel model = new ManageUserModel();
             IUserRepository userRepository = new UserRepository();
-            var users = userRepository.GetUsers(clientid, active, name).OrderBy(x => x.UserID).OrderBy(sortCol + " " + sortDir);
+            var users = userRepository.GetUsers(clientid, active, name);
             model.totalUsersCount = users?.Count();
             model.users = MappingExtensions.MapList<User, UserModel>(users?.Skip((pageno - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
             return model;
+        }
+
+        public List<SelectListItem> GetAllUserTypes()
+        {
+            IUserTypeRepository userTypeRepo = new UserTypeRepository();
+            List<SelectListItem> userTypeList = new List<SelectListItem>();
+            userTypeList = userTypeRepo.GetAll().Select(x => new SelectListItem() { Text = x.UserType, Value = x.ID.ToString() }
+                ).Take(5).ToList();
+            return userTypeList;
+        }
+
+        public List<SelectListItem> GetAllRegions()
+        {
+            IRegionsRepository regionsRepo = new RegionsRepository();
+            List<SelectListItem> regionList = new List<SelectListItem>();
+            regionList = regionsRepo.GetAll().Select(x => new SelectListItem() { Text = x.RegionName, Value = x.ID.ToString() }
+                ).ToList();
+            return regionList;
+        }
+
+        public List<SelectListItem> GetAllForms()
+        {
+            IFormsRepository formsRepo = new FormsRepository();
+            List<SelectListItem> fornList = new List<SelectListItem>();
+            fornList = formsRepo.GetAll().Select(x => new SelectListItem() { Text = x.FormName, Value = x.ID.ToString() }
+                ).ToList();
+            return fornList;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using WFJ.Models;
 using WFJ.Repository.EntityModel;
 
@@ -19,6 +20,8 @@ namespace WFJ.Service.Interfaces
         ProfileViewModel UpdateProfile(ProfileViewModel profileViewModel);
         bool CheckDuplicateByEmailAndUser(string email, int userId);
         ManageUserModel GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno, string sortDir, string sortCol);
-
+        List<SelectListItem> GetAllUserTypes();
+        List<SelectListItem> GetAllRegions();
+        List<SelectListItem> GetAllForms();
     }
 }
