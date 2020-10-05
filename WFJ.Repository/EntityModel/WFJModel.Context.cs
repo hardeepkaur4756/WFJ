@@ -27,7 +27,6 @@ namespace WFJ.Repository.EntityModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AccessLevel> AccessLevels { get; set; }
         public virtual DbSet<AssociateCounsel> AssociateCounsels { get; set; }
         public virtual DbSet<author> authors { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -127,6 +126,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<sectionContent> sectionContents { get; set; }
         public virtual DbSet<section> sections { get; set; }
         public virtual DbSet<sequence> sequences { get; set; }
+        public virtual DbSet<AccessLevel> AccessLevels { get; set; }
         public virtual DbSet<User> Users { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)

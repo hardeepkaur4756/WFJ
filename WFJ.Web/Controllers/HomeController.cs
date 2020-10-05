@@ -113,18 +113,7 @@ namespace WFJ.Web.Controllers
 
             return View(manageUserViewModel);
         }
-        public JsonResult GetUsers(int clientId = 5, int active = -1, string name = "")
-        {
-            ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
-            IUserService userService = new UserService();
-
-            //ManageUserDataViewModel manageUserDataViewModel = new ManageUserDataViewModel()
-            //{
-            //    Users = userService.GetUsers(clientId, active, name)
-            //};
-            // manageUserViewModel.ManageUserDataViewModel = manageUserDataViewModel;
-            return Json(manageUserViewModel);
-        }
+      
         [HttpGet]
         public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId = 5, int active = -1, string name = "")
         {
@@ -135,31 +124,9 @@ namespace WFJ.Web.Controllers
             IUserService userService = new UserService();
             if (param.iDisplayStart >= param.iDisplayLength)
                 pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
-            switch (sortCol)
-            {
-                case "ClientName":
-                    sortCol = sortCol == "ClientName" ? "Client.ClientName" : sortCol;
-                    break;
-
-                case "Fullname":
-                    sortCol = sortCol == "Fullname" ? "UserModel.FirstName" : sortCol;
-                    break;
-                case "ManagerName":
-                    sortCol = sortCol == "ManagerName" ? "UserModel.FirstName" : sortCol;
-                    break;
-                case "LevelName":
-                    sortCol = sortCol == "LevelName" ? "Client.LevelName" : sortCol;
-
-                    break;
-                case "AccessLevelName":
-                    sortCol = sortCol == "AccessLevelName" ? "AccessLevel.AccessLevel1" : sortCol;
-                    break;
-                default:
-                    break;
-            }
 
                 model = userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
-      
+
             totalCount = model.totalUsersCount;
             return Json(new
             {

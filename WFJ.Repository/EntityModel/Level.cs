@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Level
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Level()
+        {
+            this.Users = new HashSet<User>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string ContactName { get; set; }
@@ -29,5 +35,8 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> ParentID { get; set; }
         public Nullable<int> SeqNo { get; set; }
         public Nullable<int> ClientID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
     }
 }

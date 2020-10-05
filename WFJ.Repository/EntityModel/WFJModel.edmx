@@ -1702,6 +1702,18 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="PageName" Type="nvarchar" MaxLength="50" />
           <Property Name="PageText" Type="ntext" />
         </EntityType>
+        <Association Name="FK__Users__levelID__1F198FD4">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="levelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserAccessID">
           <End Role="AccessLevels" Type="Self.AccessLevels" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2114,6 +2126,10 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
     [sequences].[sequence] AS [sequence]
     FROM [dbo].[sequences] AS [sequences]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK__Users__levelID__1F198FD4" Association="Self.FK__Users__levelID__1F198FD4">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserAccessID" Association="Self.FK_UserAccessID">
             <End Role="AccessLevels" EntitySet="AccessLevels" />
             <End Role="Users" EntitySet="Users" />
@@ -2127,14 +2143,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WFJDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AccessLevel">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="AccessLevel1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserAccessID" FromRole="AccessLevel" ToRole="User" />
-        </EntityType>
         <EntityType Name="AssociateCounsel">
           <Key>
             <PropertyRef Name="FirmID" />
@@ -2753,6 +2761,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="ParentID" Type="Int32" />
           <Property Name="SeqNo" Type="Int32" />
           <Property Name="ClientID" Type="Int32" />
+          <NavigationProperty Name="Users" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="Level" ToRole="User" />
         </EntityType>
         <EntityType Name="ListField">
           <Key>
@@ -3761,7 +3770,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="sequence1" Type="Int32" />
         </EntityType>
         <EntityContainer Name="WFJEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AccessLevels" EntityType="Self.AccessLevel" />
           <EntitySet Name="AssociateCounsels" EntityType="Self.AssociateCounsel" />
           <EntitySet Name="authors" EntityType="Self.author" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
@@ -4011,6 +4019,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <Parameter Name="vchLoginName" Mode="In" Type="String" />
             <Parameter Name="vchPassword" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="AccessLevels" EntityType="WFJDBModel.AccessLevel" />
           <EntitySet Name="Users" EntityType="WFJDBModel.User" />
           <AssociationSet Name="FK_UserAccessID" Association="WFJDBModel.FK_UserAccessID">
             <End Role="AccessLevel" EntitySet="AccessLevels" />
@@ -4018,6 +4027,10 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           </AssociationSet>
           <AssociationSet Name="FK_UserClientID" Association="WFJDBModel.FK_UserClientID">
             <End Role="Client" EntitySet="Clients" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__levelID__1F198FD4" Association="WFJDBModel.FK__Users__levelID__1F198FD4">
+            <End Role="Level" EntitySet="Levels" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
@@ -4033,6 +4046,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Type="String" Name="uvalue" Nullable="true" MaxLength="255" />
           <Property Type="Binary" Name="lvalue" Nullable="true" MaxLength="Max" />
         </ComplexType>
+        <EntityType Name="AccessLevel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="AccessLevel1" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserAccessID" FromRole="AccessLevel" ToRole="User" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
@@ -4074,6 +4095,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="IsPasswordHashed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AccessLevel" Relationship="WFJDBModel.FK_UserAccessID" FromRole="User" ToRole="AccessLevel" />
           <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_UserClientID" FromRole="User" ToRole="Client" />
+          <NavigationProperty Name="Level" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="User" ToRole="Level" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -4101,20 +4123,24 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Users__levelID__1F198FD4">
+          <End Type="WFJDBModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="levelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WFJDBModelStoreContainer" CdmEntityContainer="WFJEntities">
-          <EntitySetMapping Name="AccessLevels">
-            <EntityTypeMapping TypeName="WFJDBModel.AccessLevel">
-              <MappingFragment StoreEntitySet="AccessLevels">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="AccessLevel1" ColumnName="AccessLevel" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AssociateCounsels">
             <EntityTypeMapping TypeName="WFJDBModel.AssociateCounsel">
               <MappingFragment StoreEntitySet="AssociateCounsel">
@@ -5876,6 +5902,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <FunctionImportMapping FunctionImportName="dt_verstamp007" FunctionName="WFJDBModel.Store.dt_verstamp007" />
           <FunctionImportMapping FunctionImportName="dt_whocheckedout" FunctionName="WFJDBModel.Store.dt_whocheckedout" />
           <FunctionImportMapping FunctionImportName="dt_whocheckedout_u" FunctionName="WFJDBModel.Store.dt_whocheckedout_u" />
+          <EntitySetMapping Name="AccessLevels">
+            <EntityTypeMapping TypeName="WFJDBModel.AccessLevel">
+              <MappingFragment StoreEntitySet="AccessLevels">
+                <ScalarProperty Name="AccessLevel1" ColumnName="AccessLevel" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="WFJDBModel.User">
               <MappingFragment StoreEntitySet="Users">

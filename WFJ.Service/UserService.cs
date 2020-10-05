@@ -11,6 +11,8 @@ using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
 using System.Linq.Dynamic;
+using System.Threading;
+
 namespace WFJ.Service
 {
     public class UserService : IUserService
@@ -248,9 +250,99 @@ namespace WFJ.Service
         {
             ManageUserModel model = new ManageUserModel();
             IUserRepository userRepository = new UserRepository();
-            var users = userRepository.GetUsers(clientid, active, name).OrderBy(x => x.UserID).OrderBy(sortCol + " " + sortDir);
+            var users = userRepository.GetUsers(clientid, active, name);
             model.totalUsersCount = users?.Count();
+            switch (sortCol)
+            {
+                case "ClientName":
+                    if (sortDir == "asc")
+                    {
+                        users=users.Where(x => x.Client != null)?.OrderBy(x => x.Client.ClientName).ToList();
+                    }
+                    if (sortDir == "desc")
+                    {
+                        users = users.Where(x => x.Client != null)?.OrderByDescending(x => x.Client.ClientName).ToList();
+                    }
+                    break;
+
+                case "Fullname":
+                    if (sortDir == "asc")
+                    {
+                        if (users != null) {
+                            users = users.OrderBy(x => x.FirstName).ToList();
+                        }                     
+                    }
+                    
+                    if (sortDir == "desc")
+                    {
+                        if (users!=null)
+                        {
+                            users = users.OrderByDescending(x => x.FirstName).ToList();
+                        }
+                        
+                    }
+                    break;
+                case "ManagerName":
+                    if (sortDir == "asc")
+                    {
+                        users = users.OrderBy(x => x.FirstName).ToList();
+                    }
+                    if (sortDir == "desc")
+                    {
+                        users = users.OrderByDescending(x => x.FirstName).ToList();
+                    }
+                    break;
+                case "LevelName":
+                    if (sortDir == "asc")
+                    {
+                        users = users.Where(x => x.Level != null)?.OrderBy(x => x.Level.Name).ToList();
+                    }
+                    if (sortDir == "desc")
+                    {
+                        users = users.Where(x => x.Level != null)?.OrderByDescending(x => x.Level.Name).ToList();
+                    }
+
+                    break;
+                case "AccessLevelName":
+                    if (sortDir == "asc") {
+                        users = users.Where(x => x.AccessLevel != null)?.OrderBy(x => x.AccessLevel.AccessLevel1).ToList();
+                    }
+                    if (sortDir == "desc")
+                    {
+                        users = users.Where(x => x.AccessLevel != null)?.OrderByDescending(x => x.AccessLevel.AccessLevel1).ToList();
+                    }
+                    break;
+                case "ActiveStatus":
+                    if (sortDir == "asc")
+                    {
+                        users = users.OrderBy(x => x.Active).ToList();
+                    }
+                    if (sortDir == "desc")
+                    {
+                        users = users.OrderByDescending(x => x.Active).ToList();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             model.users = MappingExtensions.MapList<User, UserModel>(users?.Skip((pageno - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
+            foreach (var item in model.users)
+            {
+                string FullName = "";
+              
+                if (item.FirstName != null)
+                {
+                    FullName = item.FirstName;
+                   
+                }
+                if (item.LastName != null) { FullName = FullName +" "+ item.LastName; }
+                item.Fullname = FullName;
+                item.ManagerName = FullName;
+                if (item.Active == 1 ){
+                    item.ActiveStatus = "Yes";
+                } else { item.ActiveStatus = "No"; };
+            }
             return model;
         }
     }

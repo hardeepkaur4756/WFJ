@@ -10,7 +10,7 @@ namespace WFJ.Models
 {
     public class UserModel
     {
-        //private string activeStatus { get; set; }
+        
         public int UserID { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
@@ -49,24 +49,9 @@ namespace WFJ.Models
         public string ClientName { get; set; }
         public string LevelName { get; set; }
         public string AccessLevelName { get; set; }
-        public string Fullname { get { return string.Format("{0} {1}", string.IsNullOrEmpty(FirstName)?string.Empty:FirstName, string.IsNullOrEmpty(LastName) ? string.Empty : LastName); } }
-        //public string ActiveStatus
-        //{
-        //    get
-        //    {
-        //        if (Convert.ToByte(Active)==1)
-        //        {
-        //            return activeStatus="Yes";
-        //        }
-        //        else
-        //        {
-                   
-        //            return activeStatus = "No";
-        //        }
-        //    }
-        //}
+        public string Fullname { get; set; }
+        public string ActiveStatus { get; set; }
 
-       
     }
 
 }

@@ -9,10 +9,11 @@ $(document).ready(function () {
     var activeid = $('#ddlActive option:selected').val();
     var name = $('#txtname').val();
       if (clientid == -1 && activeid == -1 && name == "") {
-          $('#errormessage').text('Please Select atleast one value for searching').css("color", "red");
+          $('#errormessage').text('Please select atleast one value for search').css("color", "red");
 
       }
       else {
+          $('#errormessage').text('');
           GetDatafortable();
       }
      
@@ -61,15 +62,15 @@ $(document).ready(function () {
                 { "mData": "ManagerName" },
                 { "mData": "LevelName" },
                 { "mData": "AccessLevelName" },
-                { "mData": "activeStatus" }
+                { "mData": "ActiveStatus" }
 
 
 
             ],
             "aoColumnDefs": [
-                { "bSortable": false, "aTargets": [4] }
+                { "bSortable": false, "aTargets": [1] }
             ],
-            "order": [[2, "desc"]],
+            "order": [[2, "asc"]],
             bProcessing: true,
             pageLength: 10,
             "bFilter": false,
