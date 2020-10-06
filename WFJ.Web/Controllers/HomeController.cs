@@ -107,7 +107,7 @@ namespace WFJ.Web.Controllers
             manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
             {
                 userViewModel = new UserViewModel(),
-                Clients = clientService.GetClients(),
+                Clients = _clientService.GetClients(),
                 UserType = _userService.GetAllUserTypes(),
                 Regions = _userService.GetAllRegions(),
                 Forms = _userService.GetAllForms(),
@@ -122,9 +122,6 @@ namespace WFJ.Web.Controllers
                     new SelectListItem(){ Text="No",Value="0" }
                 }
             };
-           
-            manageUserViewModel.ManagerUserFilterViewModel = managerUserFilterViewModel;
-
             return View(manageUserViewModel);
         }
       
