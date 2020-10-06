@@ -10,12 +10,6 @@
 {
     <div>
         <div class="row">
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputDate">UserID</label>
-                        <input type="text" class="form-control" />
-                    </div>
-                </div>*@
             @Html.HiddenFor(m => m.userViewModel.UserID)
 
             <div class="col-md-6">
@@ -44,21 +38,10 @@
                 </div>
             }
 
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Manager</label>
-                        <select id="inputState" class="form-control">
-                            <option selected="">Select</option>
-                        </select>
-                    </div>
-                </div>*@
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="telephone">Telephone</label>
                     @Html.TextBoxFor(m => m.userViewModel.Telephone, new { @class = "form-control serialnocls" })
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -66,8 +49,6 @@
                 <div class="form-group">
                     <label for="address1">Address1</label>
                     @Html.TextBoxFor(m => m.userViewModel.Address1, new { @class = "form-control serialnocls" })
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -75,8 +56,6 @@
                 <div class="form-group">
                     <label for="address2">Address2</label>
                     @Html.TextBoxFor(m => m.userViewModel.Address2, new { @class = "form-control serialnocls" })
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -84,8 +63,6 @@
                 <div class="form-group">
                     <label for="city">City</label>
                     @Html.TextBoxFor(m => m.userViewModel.City, new { @class = "form-control serialnocls" })
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -94,8 +71,6 @@
                     <label for="state">State</label>
                     @Html.TextBoxFor(m => m.userViewModel.State, new { @class = "form-control serialnocls" })
                     @Html.ValidationMessageFor(m => m.userViewModel.State)
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -103,8 +78,6 @@
                 <div class="form-group">
                     <label for="postalCode">Postal Code</label>
                     @Html.TextBoxFor(m => m.userViewModel.PostalCode, new { @class = "form-control" })
-                    @*<input type="text"
-                        class="form-control" />*@
                 </div>
             </div>
 
@@ -164,29 +137,6 @@
                         </select>
                     </div>
                 </div>*@
-
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Show HR Section</label>
-                        <select id="inputState" class="form-control">
-                            <option>No</option>
-                            <option>Yes</option>
-                        </select>
-                    </div>
-                </div>*@
-
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Client</label>
-                        <select id="inputState" class="form-control">
-                            <option>Select</option>
-                            <option>ABF Printing</option>
-                            <option>Action Advertising and Flags</option>
-                            <option>Ad Specialties by ken</option>
-                        </select>
-                    </div>
-                </div>*@
-
             <div class="col-md-12">
                 <div class="form-group custom-multiselect-scroll">
                     <label for="regions">Region</label>
@@ -213,28 +163,11 @@
                     @Html.DropDownListFor(m => m.userViewModel.FormId, Model.Forms, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
                 </div>
             </div>
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Update Privileges</label>
-                        <select id="inputState" class="form-control">
-                            <option>Add/Change Only</option>
-                            <option>Read-Only</option>
-                            <option>Add/Change/Delete</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Password Expires</label>
-                        <p class="for-bold">1/1/2015</p>
-                    </div>
-                </div>*@
         </div>
     </div>
     <div>
         <span id="AddEditErrorMsg" style="color:red;"></span>
-        <br/>
+        <br />
         <button type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal">
@@ -256,7 +189,7 @@
             $('#AddUerMsg').text(response.Message).css("color", "red");
         }
         else {
-$('#AddEditErrorMsg').text(response.Message).css("color", "red");
+            $('#AddEditErrorMsg').text(response.Message).css("color", "red");
         }
     }
 
