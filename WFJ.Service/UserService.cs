@@ -462,48 +462,5 @@ namespace WFJ.Service
             }
             return managerUserFilterViewModel;
         }
-
-        //public Billing InsertUpdate(BillingViewModel billingVM)
-        //{
-        //    try
-        //    {
-        //        if (billingVM != null)
-        //        {
-        //            // Get  exitting billing by Id
-        //            Billing billing = _billingRepository.GetbyId(billingVM.Id);
-
-        //            if (billingVM.Id > 0)
-        //            {
-        //                billingVM.CreatedOn = billing.CreatedOn;
-        //                billingVM.UserId = billing.UserId;
-        //                AutoMapper.Mapper.Map(billingVM, billing);
-
-        //                if (billingVM.ProjectTypeId == (int)ProjectTypeEnum.ProjectType.FixPrice)
-        //                    billing.Hours = default;
-        //                else
-        //                    billing.Amount = default;
-
-        //                _billingRepository.Update(billing);
-        //                return billing;
-        //            }
-        //            else
-        //            {  // insert billing 
-        //                billingVM.CreatedOn = DateTime.Now;
-        //                Billing billingEntity = new Billing();
-        //                AutoMapper.Mapper.Map(billingVM, billingEntity);
-        //                _billingRepository.Insert(billingEntity);
-        //                return billingEntity;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new Exception("billingVM is null.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
     }
 }

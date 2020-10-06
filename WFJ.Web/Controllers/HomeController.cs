@@ -169,14 +169,6 @@ namespace WFJ.Web.Controllers
         {
             _userService.AddOrUpdate(managerUserFilterViewModel);
             return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
-            //if (managerUserFilterViewModel.IsSuccess)
-            //{
-            //    return RedirectToAction("ManageUsers", "Home");
-            //}
-            //else
-            //{
-            //    return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
-            //}
         }
 
         [HttpGet]
@@ -199,27 +191,5 @@ namespace WFJ.Web.Controllers
             
             return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
         }
-
-        //[HttpGet]
-        //public ActionResult AddBidding(int id, string viewType)
-        //{
-        //    AddEditBiddingViewModel vm = id > 0 ? _biddingService.GetByIDVM(id) : new AddEditBiddingViewModel();
-
-        //    if (viewType == "Display")
-        //    {
-        //        vm.ViewType = "Display";
-        //    }
-        //    else
-        //    {
-        //        vm.AppliedOn = id > 0 ? vm.AppliedOn : DateTime.Now;
-        //        vm.AppliedUnders = _context.AppliedUnders.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //        vm.Developers = _context.Developers.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //        vm.Platforms = _context.Platforms.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //        vm.ProjectTypes = _context.ProjectTypes.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //        vm.Technologies = _context.Technologies.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //        //vm.TeadLeads = _context.TeamLeads.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).OrderBy(x => x.Text).ToList();
-        //    }
-        //    return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddEditBidding", vm) }, JsonRequestBehavior.AllowGet);
-        //}
     }
 }
