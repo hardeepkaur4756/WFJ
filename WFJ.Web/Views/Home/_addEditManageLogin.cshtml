@@ -247,16 +247,16 @@
 <script src="~/Scripts/managelogin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous"></script>
 <script>
     function onSuccess(response) {
         console.log(response.Message);
         if (response.Success) {
             $('#newdocument').modal('hide');
-            $('#AddUerMsg').text(response.Message).css("color", "red");
+            $('#AddUerMsg').text("");
+            $('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
         else {
-$('#AddEditErrorMsg').text(response.Message).css("color", "red");
+            $('#AddEditErrorMsg').text(response.Message).css("color", "red");
         }
     }
 
