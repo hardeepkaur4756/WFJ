@@ -18,9 +18,14 @@ namespace WFJ.Models
         public List<SelectListItem> UserType { get; set; }
         public List<SelectListItem> Regions { get; set; }
         public List<SelectListItem> Forms { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public List<SelectListItem> Active { get; set; }
+        public List<SelectListItem> DashboardUser { get; set; }
+        public UserViewModel userViewModel { get; set; }
+        public string Message { get; set; }
+        public bool IsSuccess { get; set; }
+        //public string Password { get; set; }
+        //public string FirstName { get; set; }
+        //public string LastName { get; set; }
 
     }
     public class ManageUserDataViewModel

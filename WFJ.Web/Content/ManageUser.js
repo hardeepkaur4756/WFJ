@@ -53,7 +53,10 @@ $(document).ready(function () {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
-                        var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#edituser' onclick='return AddOrEdit(this)'>Edit</a>";
+                        console.log(JSON.stringify(row));
+                        console.log(JSON.stringify(full));
+                        //var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#edituser' onclick='return AddOrEdit(this)'>Edit</a>";
+                        var buttons = "<a class='anchor-design' href='#' id='' data-id='" + full.UserID +"' data-toggle='modal' data-target='' onclick='return EditUser(this)'>Edit</a>";
                         return buttons;
                     }
                 },
@@ -87,6 +90,100 @@ $(document).ready(function () {
     }
 
 }
+
+function EditUser(event) {
+    var Id = parseInt(event.getAttribute("data-Id"));
+    if (Id == null || Id == undefined) {
+        notificationHelper.ShowError("Some thing went wrong!");
+    }
+    else {
+
+        $.ajax({
+            type: "Get",
+            url: "/Home/EditUser",
+            //data: { id: Id, "viewType": "Display" },
+            data: { id: Id},
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response.Success) {
+                    console.log(JSON.stringify(response));
+                    if (Id > 0) {
+                        $('#newdocument').find('#exampleModalLabel').html('Edit User');
+                    }
+                    else {
+                        $('#newdocument').find('#exampleModalLabel').html('Add User');
+                    }
+                    
+                    $('#newdocument').find('.modal-body').html(response.Html);
+                    //$('#newdocument').find('.btn-primary').addclass('savebid');
+                    $('#newdocument').modal('show');
+                    //removeloader();
+                }
+                else {
+                    //notificationhelper.showerror('sorry an error occured.')
+                    //removeloader();
+                }
+            },
+            error: function (result) {
+                //notificationHelper.ShowError(result.Message);
+                //removeLoader();
+            }
+        });
+        //jQuery.ajax({
+        //    type: "POST",
+        //    url: "/Account/ForgotPassword",
+        //    data: {
+        //        "email": jQuery('#txtEmailAddress').val().trim()
+        //    },
+        //    success: function (data) {
+        //        if (data.success) {
+        //            console.log()
+        //            jQuery('#errormsg').text(data.message).css("color", "green");
+        //        }
+        //        else {
+        //            jQuery('#errormsg').text(data.message).css("color", "red");
+        //        }
+
+        //    }
+        //});
+    }
+
+};
+
+function AddUser(event) {
+  
+        $.ajax({
+            type: "Get",
+            url: "/Home/AddUser",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response.Success) {
+                    $('#newdocument').find('#exampleModalLabel').html('Add User');
+                    $('#newdocument').find('.modal-body').html(response.Html);
+                    //$('#newdocument').find('.btn-primary').addclass('savebid');
+                    $('#newdocument').modal({ backdrop: "static", show: true });
+                    //removeloader();
+                }
+                else {
+                    //notificationhelper.showerror('sorry an error occured.')
+                    //removeloader();
+                }
+            },
+            error: function (result) {
+                //notificationHelper.ShowError(result.Message);
+                //removeLoader();
+            }
+        });
+       
+  
+
+};
+
+
+
+
 
 
  

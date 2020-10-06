@@ -77,7 +77,7 @@ namespace WFJ.Service
                 else
                 {
                     resultModel.IsSuccess = false;
-                    resultModel.Message = "Not a valid email format";
+                    resultModel.Message = "Not a valid email format.";
                 }
             }
             else
@@ -136,7 +136,7 @@ namespace WFJ.Service
                         user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
                         _userRepo.Update(user);
                         resultModel.IsSuccess = true;
-                        resultModel.Message = "Password changed successfully";
+                        resultModel.Message = "Password changed successfully.";
                     }
                     else
                     {
@@ -171,27 +171,28 @@ namespace WFJ.Service
                 {
                     if (ph.VerifyHashedPassword(user.Password, loginViewModel.Password).ToString() == "Success")
                     {
-                        if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])))))
+                        HttpContext.Current.Session["UserType"] = user.UserType;
+                        HttpContext.Current.Session["UserId"] = Convert.ToString(user.UserID);
+                        //if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])))))
+                        if (user.PasswordExpirationDate != null && (DateTime.Now > Convert.ToDateTime(user.PasswordExpirationDate.Value)))
                         {
                             resultModel.IsPasswordExpire = true;
                             resultModel.Message = "";
                             return resultModel;
                         }
-                        HttpContext.Current.Session["UserType"] = user.UserType;
-                        HttpContext.Current.Session["UserId"] = user.UserID.ToString();
                         resultModel.IsSuccess = true;
                         resultModel.Message = "";
                     }
                     else
                     {
                         resultModel.IsSuccess = false;
-                        resultModel.Message = "Your passeord is invalid. Please enter valid password.";
+                        resultModel.Message = "Please enter valid password.";
                     }
                 }
                 else
                 {
                     resultModel.IsSuccess = false;
-                    resultModel.Message = "Your  username/email address is invalid. Please enter vaild username/email address.";
+                    resultModel.Message = "Please enter vaild username/email address.";
                 }
             }
             else
@@ -373,5 +374,136 @@ namespace WFJ.Service
                 ).ToList();
             return fornList;
         }
+
+        public void AddOrUpdate(ManagerUserFilterViewModel managerUserFilterViewModel)
+        {
+            var ph = new Microsoft.AspNet.Identity.PasswordHasher();
+            try
+            {
+                if (managerUserFilterViewModel.userViewModel.UserID > 0)
+                {
+                    User user = _userRepo.GetById(managerUserFilterViewModel.userViewModel.UserID);
+                    user.UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName;
+                    user.FirstName = managerUserFilterViewModel.userViewModel.FirstName;
+                    user.LastName = managerUserFilterViewModel.userViewModel.LastName;
+                    user.Telephone = managerUserFilterViewModel.userViewModel.Telephone;
+                    user.Address1 = managerUserFilterViewModel.userViewModel.Address1;
+                    user.Address2 = managerUserFilterViewModel.userViewModel.Address2;
+                    user.City = managerUserFilterViewModel.userViewModel.City;
+                    user.State = managerUserFilterViewModel.userViewModel.State;
+                    user.PostalCode = managerUserFilterViewModel.userViewModel.PostalCode;
+                    user.EMail = managerUserFilterViewModel.userViewModel.Email;
+                    user.UserType = managerUserFilterViewModel.userViewModel.UserType;
+                    user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
+                    user.Active = managerUserFilterViewModel.userViewModel.IsActive;
+                    user.DateAdded = DateTime.Now;
+                    user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
+                    user.IsPasswordHashed = false;
+                    _userRepo.Update(user);
+                    managerUserFilterViewModel.IsSuccess = true;
+                    managerUserFilterViewModel.Message = "Record Updated Successfully.";
+                }
+                else
+                {
+                    User user = new User()
+                    {
+                        UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName,
+                        Password = ph.HashPassword(managerUserFilterViewModel.userViewModel.Password),
+                        FirstName = managerUserFilterViewModel.userViewModel.FirstName,
+                        LastName = managerUserFilterViewModel.userViewModel.LastName,
+                        Telephone = managerUserFilterViewModel.userViewModel.Telephone,
+                        Address1 = managerUserFilterViewModel.userViewModel.Address1,
+                        Address2 = managerUserFilterViewModel.userViewModel.Address2,
+                        City = managerUserFilterViewModel.userViewModel.City,
+                        State = managerUserFilterViewModel.userViewModel.State,
+                        PostalCode = managerUserFilterViewModel.userViewModel.PostalCode,
+                        EMail = managerUserFilterViewModel.userViewModel.Email,
+                        UserType = managerUserFilterViewModel.userViewModel.UserType,
+                        dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser,
+                        Active = managerUserFilterViewModel.userViewModel.IsActive,
+                        DateAdded = DateTime.Now,
+                        PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
+                        IsPasswordHashed = false,
+                    };
+                    _userRepo.Add(user);
+                    managerUserFilterViewModel.IsSuccess = true;
+                    managerUserFilterViewModel.Message = "Record Inserted Successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                managerUserFilterViewModel.IsSuccess = false;
+                managerUserFilterViewModel.Message = "Sorry, there was an error while processing your request. Please try again later.";
+                //throw;
+            }
+            
+        }
+
+        public ManagerUserFilterViewModel GetManageUserById(int userId)
+        {
+            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
+            managerUserFilterViewModel.userViewModel = new UserViewModel();
+            User user = _userRepo.GetById(userId);
+            if (user != null)
+            {
+                managerUserFilterViewModel.userViewModel.UserID = user.UserID;
+                managerUserFilterViewModel.userViewModel.FirstName = user.FirstName;
+                managerUserFilterViewModel.userViewModel.LastName = user.LastName;
+                managerUserFilterViewModel.userViewModel.Telephone = user.Telephone;
+                managerUserFilterViewModel.userViewModel.Address1 = user.Address1;
+                managerUserFilterViewModel.userViewModel.Address2 = user.Address2;
+                managerUserFilterViewModel.userViewModel.City = user.City;
+                managerUserFilterViewModel.userViewModel.State = user.State;
+                managerUserFilterViewModel.userViewModel.PostalCode = user.PostalCode;
+                managerUserFilterViewModel.userViewModel.Email = user.EMail;
+                managerUserFilterViewModel.userViewModel.UserType = user.UserType;
+                managerUserFilterViewModel.userViewModel.IsActive = user.Active;
+                managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
+            }
+            return managerUserFilterViewModel;
+        }
+
+        //public Billing InsertUpdate(BillingViewModel billingVM)
+        //{
+        //    try
+        //    {
+        //        if (billingVM != null)
+        //        {
+        //            // Get  exitting billing by Id
+        //            Billing billing = _billingRepository.GetbyId(billingVM.Id);
+
+        //            if (billingVM.Id > 0)
+        //            {
+        //                billingVM.CreatedOn = billing.CreatedOn;
+        //                billingVM.UserId = billing.UserId;
+        //                AutoMapper.Mapper.Map(billingVM, billing);
+
+        //                if (billingVM.ProjectTypeId == (int)ProjectTypeEnum.ProjectType.FixPrice)
+        //                    billing.Hours = default;
+        //                else
+        //                    billing.Amount = default;
+
+        //                _billingRepository.Update(billing);
+        //                return billing;
+        //            }
+        //            else
+        //            {  // insert billing 
+        //                billingVM.CreatedOn = DateTime.Now;
+        //                Billing billingEntity = new Billing();
+        //                AutoMapper.Mapper.Map(billingVM, billingEntity);
+        //                _billingRepository.Insert(billingEntity);
+        //                return billingEntity;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            throw new Exception("billingVM is null.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
     }
 }

@@ -23,5 +23,7 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetAllUserTypes();
         List<SelectListItem> GetAllRegions();
         List<SelectListItem> GetAllForms();
+        void AddOrUpdate(ManagerUserFilterViewModel managerUserFilterViewModel);
+        ManagerUserFilterViewModel GetManageUserById(int userId);
     }
 }

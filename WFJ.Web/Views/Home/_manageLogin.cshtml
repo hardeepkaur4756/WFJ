@@ -1,5 +1,10 @@
 ﻿@model WFJ.Models.ManagerUserFilterViewModel
-<form>
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<div>
     <span id="errormessage"></span>
     <div class="form-group">
         <label for="inputState">Client</label>
@@ -27,6 +32,8 @@
     </div>
 
     <div class="clearfix">
+        <span id="AddUerMsg"></span>
+        <br/>
         <button type="button" onclick="SearchBy();"
                 class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
             Search
@@ -34,264 +41,184 @@
         <button type="button"
                 class="btn btn-primary float-right document-search-btn"
                 data-toggle="modal"
-                data-target="#newdocument">
+                data-target="" onclick="AddUser();">
             Add a New User
         </button>
+        @*<button type="button"
+                class="btn btn-primary float-right document-search-btn"
+                data-toggle="modal"
+                data-target="#newdocument" onclick="AddUser();">
+            Add a New User
+        </button>*@
     </div>
-
+    <div>
+        @*@Html.Partial("~/Views/Home/_addEditManageLogin.cshtml", Model)*@
+    </div>
     <!-- Enter new document Modal -->
     <div class="modal fade"
-         id="newdocument"
-         tabindex="-1"
-         role="dialog"
-         aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                        Add User
-                    </h5>
-                    <button type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            @*<div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputDate">UserID</label>
-                                        <input type="text"
-                                               class="form-control" />
+             id="newdocument"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Add User
+                        </h5>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @Html.Partial("~/Views/Home/_addEditManageLogin.cshtml", Model)
+                    </div>
+                        @*@using (Html.BeginForm("AddUser", "Home", FormMethod.Post, new { @autocomplete = "off" }))
+                        {
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.Password, new { @class = "form-control", @type = "password" })
+                                        </div>
                                     </div>
-                                </div>*@
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Password</label>
-                                    <input type="password"
-                                           class="form-control" />
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">First Name</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Last Name</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Telephone</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Address1</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Address2</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">City</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">State</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">Postal Code</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputState">Type</label>
-                                    @Html.DropDownListFor(m=>m.UserType, null,"Select",new { @class="form-control" })
-                                    @*<select id="inputState"
-                                                class="form-control">
-                                            <option selected="">Select</option>
-                                            <option>System Administrator</option>
-                                            <option>Prepaid Legal</option>
-                                        </select>*@
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputState">Active</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option>Yes</option>
-                                        <option>No</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputState">Dashboard User</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option>Yes</option>
-                                        <option>No</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputState">Attorney</label>
-                                    <select id="inputState"
-                                            class="form-control">
-                                        <option>N/A</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            @*<div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="inputState">Show HR Section</label>
-                                        <select id="inputState"
-                                                class="form-control">
-                                            <option>No</option>
-                                            <option>Yes</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.FirstName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.userViewModel.FirstName)
+                                        </div>
                                     </div>
-                                </div>*@
 
-                            @*<div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="inputState">Client</label>
-                                        <select id="inputState"
-                                                class="form-control">
-                                            <option>Select</option>
-                                            <option>ABF Printing</option>
-                                            <option>
-                                                Action Advertising and Flags
-                                            </option>
-                                            <option>Ad Specialties by ken</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.LastName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.userViewModel.LastName)
+                                        </div>
                                     </div>
-                                </div>*@
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="inputDate">EMail</label>
-                                    <input type="text"
-                                           class="form-control" />
-                                </div>
-                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="telephone">Telephone</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.Telephone, new { @class = "form-control" })
+                                        </div>
+                                    </div>
 
-                            <div class="col-md-12">
-                                <div class="form-group custom-multiselect-scroll">
-                                    <label for="inputState">Region</label>
-                                    @Html.DropDownListFor(m => m.Regions, null, new {@id="boot-multiselect", @multiple ="multiple",@class="multiselect"})
-                                    @*<select id="boot-multiselect"
-                                            multiple="multiple">
-                                        <option value="jQuery">
-                                            jQuery Tutorials
-                                        </option>
-                                        <option value="Bootstrap">
-                                            Bootstrap Framework
-                                        </option>
-                                        <option value="HTML">HTML</option>
-                                        <option value="CSS">CSS</option>
-                                        <option value="Angular">
-                                            Angular
-                                        </option>
-                                        <option value="Angular">
-                                            javascript
-                                        </option>
-                                        <option value="Java">Java</option>
-                                        <option value="Python">Python</option>
-                                        <option value="MySQL">MySQL</option>
-                                        <option value="Oracle">Oracle</option>
-                                    </select>*@
-                                </div>
-                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address1">Address1</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.Address1, new { @class = "form-control" })
+                                        </div>
+                                    </div>
 
-                            <div class="col-md-12">
-                                <div class="form-group custom-multiselect-scroll">
-                                    <label for="inputState">Form(s)</label>
-                                    @Html.DropDownListFor(m => m.Forms, null, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
-                                    @*<select id="boot-multiselect1" multiple="multiple" class="multiselect">
-                                        <option value="jQuery">
-                                            jQuery Tutorials
-                                        </option>
-                                        <option value="Bootstrap">
-                                            Bootstrap Framework
-                                        </option>
-                                        <option value="HTML">HTML</option>
-                                        <option value="CSS">CSS</option>
-                                        <option value="Angular">
-                                            Angular
-                                        </option>
-                                        <option value="Angular">
-                                            javascript
-                                        </option>
-                                        <option value="Java">Java</option>
-                                        <option value="Python">Python</option>
-                                        <option value="MySQL">MySQL</option>
-                                        <option value="Oracle">Oracle</option>
-                                    </select>*@
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="address2">Address2</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.Address2, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.City, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.State, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.userViewModel.State)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="postalCode">Postal Code</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.PostalCode, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userType">Type</label>
+                                            @Html.DropDownListFor(m => m.userViewModel.UserType, Model.UserType, "Select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="active">Active</label>
+                                            @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active, "Select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dashboardUser">Dashboard User</label>
+                                            @Html.DropDownListFor(m => m.userViewModel.IsDashboardUser, Model.DashboardUser, "Select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="attorney">Attorney</label>
+                                            <select id="inputState"
+                                                    class="form-control">
+                                                <option>N/A</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="inputDate">EMail</label>
+                                            @Html.TextBoxFor(m => m.userViewModel.EMail, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.userViewModel.EMail)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group custom-multiselect-scroll">
+                                            <label for="regions">Region</label>
+                                            @Html.DropDownListFor(m => m.userViewModel.RegionId, Model.Regions, new { @id = "boot-multiselect", @multiple = "multiple", @class = "multiselect" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group custom-multiselect-scroll">
+                                            <label for="inputState">Form(s)</label>
+                                            @Html.DropDownListFor(m => m.userViewModel.FormId, Model.Forms, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        Save changes
-                    </button>
-                </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    Save changes
+                                </button>
+                            </div>
+                        }*@
+                    </div>
             </div>
         </div>
-    </div>
 
-    @*<script>
+    <script>
 
             function SearchBy() {
 
@@ -328,7 +255,16 @@
 
                 //}
 
-            }
+        }
 
-        </script>*@
-</form>
+        //function resetfields() {
+        //    $('#newdocument').find('#exampleModalLabel').html('Add User');
+        //    $("input.serialnocls").each(function () {
+
+        //        $("input.serialnocls").val("");
+        //    });
+        //}
+        
+
+        </script>
+</div>
