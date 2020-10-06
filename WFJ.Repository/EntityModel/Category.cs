@@ -17,5 +17,7 @@ namespace WFJ.Repository.EntityModel
         public int CategoryID { get; set; }
         public Nullable<int> PracticeAreaID { get; set; }
         public string CategoryName { get; set; }
+    
+        public virtual PracticeArea PracticeArea { get; set; }
     }
 }

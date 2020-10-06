@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryRepository.cs" />
     <Compile Include="ClientRepository.cs" />
     <Compile Include="EntityModel\AccessLevel.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
@@ -381,13 +382,18 @@
       <DependentUpon>WFJModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="FormsRepository.cs" />
+    <Compile Include="FormTypeRepository.cs" />
     <Compile Include="GenericRepository.cs" />
+    <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
     <Compile Include="Interfaces\IFormsRepository.cs" />
+    <Compile Include="Interfaces\IFormTypeRepository.cs" />
+    <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
     <Compile Include="Interfaces\IRegionsRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Interfaces\IUserTypeRepository.cs" />
+    <Compile Include="PracticeAreaRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionsRepository.cs" />
     <Compile Include="UserRepository.cs" />

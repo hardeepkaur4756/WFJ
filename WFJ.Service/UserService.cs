@@ -239,7 +239,7 @@ namespace WFJ.Service
             }
             else
             {
-                throw new Exception();
+                throw new Exception("msg");
             }
             return profileViewModel;
         }

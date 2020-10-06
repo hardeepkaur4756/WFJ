@@ -14,9 +14,18 @@ namespace WFJ.Repository.EntityModel
     
     public partial class PracticeArea
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PracticeArea()
+        {
+            this.Categories = new HashSet<Category>();
+        }
+    
         public int ID { get; set; }
         public string PracticeAreaName { get; set; }
         public string Description { get; set; }
         public Nullable<byte> Status { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

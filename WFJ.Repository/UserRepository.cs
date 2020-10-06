@@ -47,10 +47,7 @@ namespace WFJ.Repository
             {
                 return true;
             }
-            else
-            {
                 return false;
-            }
         }
 
         public List<User> GetUsers(int clientId, int active, string name)
@@ -71,8 +68,11 @@ namespace WFJ.Repository
                 }
                 if (name != "")
                 {
-                    users = users.Where(x => x.FirstName.ToLower().Contains(name.ToLower()) || x.LastName.ToLower().Contains(name.ToLower())
-                    || x.UserName.ToLower().Contains(name.ToLower()) || x.EMail.ToLower().Contains(name.ToLower())
+                    users = users.Where(x => !string.IsNullOrEmpty(x.FirstName)? x.FirstName.ToLower().Contains(name.ToLower()):false
+
+                    || !string.IsNullOrEmpty(x.LastName)? x.LastName.ToLower().Contains(name.ToLower()):false
+                    || !string.IsNullOrEmpty(x.EMail)? x.EMail.ToLower().Contains(name.ToLower()):false
+                    || !string.IsNullOrEmpty(x.UserName) ? x.UserName.ToLower().Contains(name.ToLower()) : false
                     );
                 }
             }

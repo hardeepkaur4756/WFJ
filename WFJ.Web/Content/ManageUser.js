@@ -19,13 +19,23 @@ $(document).ready(function () {
      
 }
 
-  function GetDatafortable () {
+function GetDatafortable() {
+    var zeroRecordsMessage = "";
+    if (isFirstTime) {
+        zeroRecordsMessage = "no search results (too much data)";
+        isFirstTime = false;
+    }
+    else {
+        zeroRecordsMessage = "no records found";
+    }
       if ($.fn.DataTable.isDataTable("#manageMyUsers"))
       {
                     oTable.draw();
       }
       else
       {
+          
+
         oTable =
         $('#manageMyUsers').DataTable({
             "bServerSide": true,
@@ -53,9 +63,6 @@ $(document).ready(function () {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
-                        console.log(JSON.stringify(row));
-                        console.log(JSON.stringify(full));
-                        //var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#edituser' onclick='return AddOrEdit(this)'>Edit</a>";
                         var buttons = "<a class='anchor-design' href='#' id='' data-id='" + full.UserID +"' data-toggle='modal' data-target='' onclick='return EditUser(this)'>Edit</a>";
                         return buttons;
                     }
@@ -81,9 +88,9 @@ $(document).ready(function () {
             //bSearching: false,
             bLengthChange: false,
             "language": {
-                "zeroRecords": "Not records found",
+                "zeroRecords": zeroRecordsMessage,
                 "info": "Page _PAGE_ of _PAGES_",
-                "infoEmpty": "No records",
+                //"infoEmpty": "No records",
                 "processing": "Processing... Please wait",
             }
         });
