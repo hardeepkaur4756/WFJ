@@ -1,201 +1,263 @@
-﻿
-<div class="modal fade"
-     id="edituser"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-                <button type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">UserID</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">Password</label>
-                                <input type="password" class="form-control" />
-                            </div>
-                        </div>
+﻿@model WFJ.Models.ManagerUserFilterViewModel
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+</style>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">First Name</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">Last Name</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Manager</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Select</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">Email</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Type</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Client Administrator</option>
-                                    <option>System Administrator</option>
-                                    <option>Prepaid Legal</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Active</label>
-                                <select id="inputState" class="form-control">
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Dashboard User</label>
-                                <select id="inputState" class="form-control">
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Attorney</label>
-                                <select multiple="multiple" class="multiselect">
-                                    <option value="jQuery">jQuery Tutorials</option>
-                                    <option value="Bootstrap">Bootstrap Framework</option>
-                                    <option value="HTML">HTML</option>
-                                    <option value="CSS">CSS</option>
-                                    <option value="Angular">Angular</option>
-                                    <option value="Angular">javascript</option>
-                                    <option value="Java">Java</option>
-                                    <option value="Python">Python</option>
-                                    <option value="MySQL">MySQL</option>
-                                    <option value="Oracle">Oracle</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Show HR Section</label>
-                                <select id="inputState" class="form-control">
-                                    <option>No</option>
-                                    <option>Yes</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Client</label>
-                                <select id="inputState" class="form-control">
-                                    <option>Select</option>
-                                    <option>ABF Printing</option>
-                                    <option>Action Advertising and Flags</option>
-                                    <option>Ad Specialties by ken</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="inputState">Region</label>
-                                <select multiple="multiple"  class="multiselect">
-                                    <option value="jQuery">jQuery Tutorials</option>
-                                    <option value="Bootstrap">Bootstrap Framework</option>
-                                    <option value="HTML">HTML</option>
-                                    <option value="CSS">CSS</option>
-                                    <option value="Angular">Angular</option>
-                                    <option value="Angular">javascript</option>
-                                    <option value="Java">Java</option>
-                                    <option value="Python">Python</option>
-                                    <option value="MySQL">MySQL</option>
-                                    <option value="Oracle">Oracle</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="inputState">Form(s)</label>
-                                <select multiple="multiple"  class="multiselect">
-                                    <option value="jQuery">jQuery Tutorials</option>
-                                    <option value="Bootstrap">Bootstrap Framework</option>
-                                    <option value="HTML">HTML</option>
-                                    <option value="CSS">CSS</option>
-                                    <option value="Angular">Angular</option>
-                                    <option value="Angular">javascript</option>
-                                    <option value="Java">Java</option>
-                                    <option value="Python">Python</option>
-                                    <option value="MySQL">MySQL</option>
-                                    <option value="Oracle">Oracle</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Update Privileges</label>
-                                <select id="inputState" class="form-control">
-                                    <option>Add/Change Only</option>
-                                    <option>Read-Only</option>
-                                    <option>Add/Change/Delete</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputState">Password Expires</label>
-                                <p class="for-bold">1/1/2015</p>
-                            </div>
-                        </div>
+@*@using (Html.BeginForm("AddUser", "Home", FormMethod.Post, new { @autocomplete = "off" }))*@
+@using (Ajax.BeginForm("AddUser", "Home", new AjaxOptions { OnSuccess = "onSuccess" }))
+{
+    <div>
+        <div class="row">
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputDate">UserID</label>
+                        <input type="text" class="form-control" />
                     </div>
-                </form>
+                </div>*@
+            @Html.HiddenFor(m => m.userViewModel.UserID)
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    @Html.TextBoxFor(m => m.userViewModel.FirstName, new { @class = "form-control serialnocls" })
+                    @Html.ValidationMessageFor(m => m.userViewModel.FirstName)
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    @Html.TextBoxFor(m => m.userViewModel.LastName, new { @class = "form-control serialnocls" })
+                    @Html.ValidationMessageFor(m => m.userViewModel.LastName)
+                </div>
             </div>
+
+            @if (!(Model.userViewModel.UserID > 0))
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        @Html.TextBoxFor(m => m.userViewModel.Password, new { @class = "form-control serialnocls", @type = "password" })
+                    </div>
+                </div>
+            }
+
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Manager</label>
+                        <select id="inputState" class="form-control">
+                            <option selected="">Select</option>
+                        </select>
+                    </div>
+                </div>*@
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="telephone">Telephone</label>
+                    @Html.TextBoxFor(m => m.userViewModel.Telephone, new { @class = "form-control serialnocls" })
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="address1">Address1</label>
+                    @Html.TextBoxFor(m => m.userViewModel.Address1, new { @class = "form-control serialnocls" })
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="address2">Address2</label>
+                    @Html.TextBoxFor(m => m.userViewModel.Address2, new { @class = "form-control serialnocls" })
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    @Html.TextBoxFor(m => m.userViewModel.City, new { @class = "form-control serialnocls" })
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="state">State</label>
+                    @Html.TextBoxFor(m => m.userViewModel.State, new { @class = "form-control serialnocls" })
+                    @Html.ValidationMessageFor(m => m.userViewModel.State)
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="postalCode">Postal Code</label>
+                    @Html.TextBoxFor(m => m.userViewModel.PostalCode, new { @class = "form-control" })
+                    @*<input type="text"
+                        class="form-control" />*@
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="email">EMail</label>
+                    @Html.TextBoxFor(m => m.userViewModel.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.userViewModel.Email)
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="userType">Type</label>
+                    @Html.DropDownListFor(m => m.userViewModel.UserType, Model.UserType, "Select", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="active">Active</label>
+                    @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active, "Select", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="dashboardUser">Dashboard User</label>
+                    @Html.DropDownListFor(m => m.userViewModel.IsDashboardUser, Model.DashboardUser, "Select", new { @class = "form-control" })
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="attorney">Attorney</label>
+                    <select id="inputState"
+                            class="form-control">
+                        <option>N/A</option>
+                    </select>
+                </div>
+            </div>
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Attorney</label>
+                        <select multiple="multiple" class="multiselect">
+                            <option value="jQuery">jQuery Tutorials</option>
+                            <option value="Bootstrap">Bootstrap Framework</option>
+                            <option value="HTML">HTML</option>
+                            <option value="CSS">CSS</option>
+                            <option value="Angular">Angular</option>
+                            <option value="Angular">javascript</option>
+                            <option value="Java">Java</option>
+                            <option value="Python">Python</option>
+                            <option value="MySQL">MySQL</option>
+                            <option value="Oracle">Oracle</option>
+                        </select>
+                    </div>
+                </div>*@
+
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Show HR Section</label>
+                        <select id="inputState" class="form-control">
+                            <option>No</option>
+                            <option>Yes</option>
+                        </select>
+                    </div>
+                </div>*@
+
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Client</label>
+                        <select id="inputState" class="form-control">
+                            <option>Select</option>
+                            <option>ABF Printing</option>
+                            <option>Action Advertising and Flags</option>
+                            <option>Ad Specialties by ken</option>
+                        </select>
+                    </div>
+                </div>*@
+
+            <div class="col-md-12">
+                <div class="form-group custom-multiselect-scroll">
+                    <label for="regions">Region</label>
+                    @Html.DropDownListFor(m => m.userViewModel.RegionId, Model.Regions, new { @id = "boot-multiselect", @multiple = "multiple", @class = "multiselect" })
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group custom-multiselect-scroll">
+                    @*<label for="inputState">Form(s)</label>
+                        <select multiple="multiple" class="multiselect">
+                            <option value="jQuery">jQuery Tutorials</option>
+                            <option value="Bootstrap">Bootstrap Framework</option>
+                            <option value="HTML">HTML</option>
+                            <option value="CSS">CSS</option>
+                            <option value="Angular">Angular</option>
+                            <option value="Angular">javascript</option>
+                            <option value="Java">Java</option>
+                            <option value="Python">Python</option>
+                            <option value="MySQL">MySQL</option>
+                            <option value="Oracle">Oracle</option>
+                        </select>*@
+                    <label for="inputState">Form(s)</label>
+                    @Html.DropDownListFor(m => m.userViewModel.FormId, Model.Forms, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
+                </div>
+            </div>
+            @*<div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Update Privileges</label>
+                        <select id="inputState" class="form-control">
+                            <option>Add/Change Only</option>
+                            <option>Read-Only</option>
+                            <option>Add/Change/Delete</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputState">Password Expires</label>
+                        <p class="for-bold">1/1/2015</p>
+                    </div>
+                </div>*@
         </div>
     </div>
-</div>
+    <div>
+        <span id="AddEditErrorMsg" style="color:red;"></span>
+        <br/>
+        <button type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+}
+
+<script src="~/Scripts/managelogin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous"></script>
+<script>
+    function onSuccess(response) {
+        console.log(response.Message);
+        if (response.Success) {
+            $('#newdocument').modal('hide');
+            $('#AddUerMsg').text(response.Message).css("color", "red");
+        }
+        else {
+$('#AddEditErrorMsg').text(response.Message).css("color", "red");
+        }
+    }
+
+</script>

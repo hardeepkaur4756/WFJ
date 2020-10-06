@@ -83,6 +83,7 @@
     <Compile Include="ResultModel.cs" />
     <Compile Include="ProfileViewModel.cs" />
     <Compile Include="UserModel.cs" />
+    <Compile Include="UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
