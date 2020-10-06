@@ -7,7 +7,6 @@
       <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1" ZoomLevel="70">
         <EntityTypeShape EntityType="WFJDBModel.AssociateCounsel" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.author" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.clickCount" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.clientCollector" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Client" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
@@ -109,6 +108,8 @@
         <AssociationConnector Association="WFJDBModel.FK_UserAccessID" />
         <AssociationConnector Association="WFJDBModel.FK_UserClientID" />
         <AssociationConnector Association="WFJDBModel.FK__Users__levelID__1F198FD4" />
+        <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="25" PointY="29.875" />
+        <AssociationConnector Association="WFJDBModel.FK_CategoryPracticeAreaID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

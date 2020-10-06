@@ -1714,6 +1714,20 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CategoryPracticeAreaID">
+          <End Role="PracticeAreas" Type="Self.PracticeAreas" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Categories" Type="Self.Categories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PracticeAreas">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Categories">
+              <PropertyRef Name="PracticeAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserAccessID">
           <End Role="AccessLevels" Type="Self.AccessLevels" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2130,6 +2144,10 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="Levels" EntitySet="Levels" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_CategoryPracticeAreaID" Association="Self.FK_CategoryPracticeAreaID">
+            <End Role="PracticeAreas" EntitySet="PracticeAreas" />
+            <End Role="Categories" EntitySet="Categories" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserAccessID" Association="Self.FK_UserAccessID">
             <End Role="AccessLevels" EntitySet="AccessLevels" />
             <End Role="Users" EntitySet="Users" />
@@ -2240,14 +2258,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="EWDisableInsertFlashFromWeb" Type="Byte" />
           <Property Name="SessionTimeout" Type="Int32" />
           <Property Name="active" Type="Byte" />
-        </EntityType>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="CategoryID" />
-          </Key>
-          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PracticeAreaID" Type="Int32" />
-          <Property Name="CategoryName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="clickCount">
           <Key>
@@ -3302,6 +3312,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="PracticeAreaName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" />
+          <NavigationProperty Name="Categories" Relationship="WFJDBModel.FK_CategoryPracticeAreaID" FromRole="PracticeArea" ToRole="Category" />
         </EntityType>
         <EntityType Name="PrepaidBenefit">
           <Key>
@@ -3772,7 +3783,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
         <EntityContainer Name="WFJEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AssociateCounsels" EntityType="Self.AssociateCounsel" />
           <EntitySet Name="authors" EntityType="Self.author" />
-          <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="clickCounts" EntityType="Self.clickCount" />
           <EntitySet Name="clientCollectors" EntityType="Self.clientCollector" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
@@ -4033,6 +4043,11 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="Level" EntitySet="Levels" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Categories" EntityType="WFJDBModel.Category" />
+          <AssociationSet Name="FK_CategoryPracticeAreaID" Association="WFJDBModel.FK_CategoryPracticeAreaID">
+            <End Role="PracticeArea" EntitySet="PracticeAreas" />
+            <End Role="Category" EntitySet="Categories" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4132,6 +4147,29 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="levelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PracticeAreaID" Type="Int32" />
+          <Property Name="CategoryName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PracticeArea" Relationship="WFJDBModel.FK_CategoryPracticeAreaID" FromRole="Category" ToRole="PracticeArea" />
+        </EntityType>
+        <Association Name="FK_CategoryPracticeAreaID">
+          <End Type="WFJDBModel.PracticeArea" Role="PracticeArea" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PracticeArea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="PracticeAreaID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4238,15 +4276,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
                 <ScalarProperty Name="EWDisableInsertFlashFromWeb" ColumnName="EWDisableInsertFlashFromWeb" />
                 <ScalarProperty Name="SessionTimeout" ColumnName="SessionTimeout" />
                 <ScalarProperty Name="active" ColumnName="active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="WFJDBModel.Category">
-              <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="PracticeAreaID" ColumnName="PracticeAreaID" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5948,6 +5977,15 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="WFJDBModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="PracticeAreaID" ColumnName="PracticeAreaID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

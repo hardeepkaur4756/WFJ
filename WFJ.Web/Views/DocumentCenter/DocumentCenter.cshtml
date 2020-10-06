@@ -1,0 +1,42 @@
+﻿@model WFJ.Models.ManageDocumentViewModel
+@{
+    ViewBag.Title = "DocumentCenter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div class="document-center">
+        <div class="container-fluid site-width">
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <h4 class="mb-1">Document Search</h4>
+                    <p>
+                        Specify your search criteria below and press <br />
+                        the Search button.
+                    </p>
+                    <div class="card mt-3 mb-5 mb-md-0">
+                        <div class="card-content">
+                            <div class="card-body">
+                                @Html.Partial("~/Views/DocumentCenter/_documentSearch.cshtml",Model.ManageDocumentFilterViewModel)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <h4 class="mb-1">Here are your search results.</h4>
+                    <p>
+                        Click on a Document Name from the list below to view the
+                        Document. The document will appear in a new window.<br />
+                        When you are finished viewing the document, simply close the
+                        window.
+                    </p>
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Partial("~/Views/DocumentCenter/_documentGrid.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@Html.Partial("~/Views/DocumentCenter/_addEditDocument.cshtml")   

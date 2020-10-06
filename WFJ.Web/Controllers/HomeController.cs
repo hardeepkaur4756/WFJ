@@ -10,6 +10,7 @@ namespace WFJ.Web.Controllers
     public class HomeController : Controller
     {
         private IUserService _userService = new UserService();
+        private IClientService _clientService = new ClientService();
 
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult Index()
@@ -60,7 +61,7 @@ namespace WFJ.Web.Controllers
             if (Session["UserId"] != null)
             {
                 ProfileViewModel profileViewModel = new ProfileViewModel();
-                profileViewModel.UserId = Convert.ToInt32(Session["UserId"].ToString());
+                profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
                 profileViewModel= _userService.GetById(profileViewModel.UserId);
                 return View(profileViewModel);
             }
@@ -78,7 +79,7 @@ namespace WFJ.Web.Controllers
             {
                 if (Session["UserId"] != null)
                 {
-                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"].ToString());
+                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
                     if (_userService.CheckDuplicateByEmailAndUser(profileViewModel.Email,profileViewModel.UserId))
                     {
                         ModelState.AddModelError("Email", "Email address already exist.");
@@ -99,45 +100,33 @@ namespace WFJ.Web.Controllers
             }
         }
 
-        public ActionResult ManageUsers(int clientId = -1, int active = -1, string name = "")
+        public ActionResult ManageUsers()
         {
-            IClientService clientService = new ClientService();
-
             ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
-            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel
+            manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
             {
-                Clients = clientService.GetClients(),
+                Clients = _clientService.GetClients(),
                 UserType = _userService.GetAllUserTypes(),
                 Regions = _userService.GetAllRegions(),
                 Forms = _userService.GetAllForms()
             };
-
-           
-            manageUserViewModel.ManagerUserFilterViewModel = managerUserFilterViewModel;
-
             return View(manageUserViewModel);
         }
       
         [HttpGet]
-        public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId = 5, int active = -1, string name = "")
+        public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId= -1, int active = -1, string name = "")
         {
-
             ManageUserModel model = new ManageUserModel();
             int pageNo = 1;
-            int? totalCount = 0;
-            IUserService userService = new UserService();
             if (param.iDisplayStart >= param.iDisplayLength)
                 pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
-
-                model = userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
-
-            totalCount = model.totalUsersCount;
+                model = _userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
             return Json(new
             {
                 aaData = model.users,
-                sEcho = param.sEcho,
-                iTotalDisplayRecords = totalCount,
-                iTotalRecords = totalCount
+                param.sEcho,
+                iTotalDisplayRecords = model.totalUsersCount,
+                iTotalRecords = model.totalUsersCount
             }, JsonRequestBehavior.AllowGet);
         }
     }

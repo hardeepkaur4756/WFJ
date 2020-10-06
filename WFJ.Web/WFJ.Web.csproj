@@ -137,6 +137,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DocumentCenterController.cs" />
     <Compile Include="Controllers\EncryptPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="CustomAttribute\AuthorizeActivity.cs" />
@@ -3500,6 +3501,10 @@
     <Content Include="Views\Account\ForgotEmail.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\DocumentCenter\DocumentCenter.cshtml" />
+    <Content Include="Views\DocumentCenter\_addEditDocument.cshtml" />
+    <Content Include="Views\DocumentCenter\_documentGrid.cshtml" />
+    <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

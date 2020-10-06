@@ -29,7 +29,6 @@ namespace WFJ.Repository.EntityModel
     
         public virtual DbSet<AssociateCounsel> AssociateCounsels { get; set; }
         public virtual DbSet<author> authors { get; set; }
-        public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<clickCount> clickCounts { get; set; }
         public virtual DbSet<clientCollector> clientCollectors { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
@@ -128,6 +127,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<sequence> sequences { get; set; }
         public virtual DbSet<AccessLevel> AccessLevels { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {
