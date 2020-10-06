@@ -52,6 +52,8 @@ function GetDatafortable() {
                 aoData.push({ "name": "clientId", "value": clientid });
                 aoData.push({ "name": "active", "value": activeid });
                 aoData.push({ "name": "name", "value": name });
+                console.log("fnCallback " + fnCallback);
+
                 $.ajax({
                     type: "Get",
                     data: aoData,

@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-   public class ManageUserModel
+   public class ManageDocumentModel
     {
         public int? totalUsersCount { get; set; }
-        public List<UserModel> users { get; set; }
+        public List<DocumentsModel> documents { get; set; }
     }
-
-   
 }

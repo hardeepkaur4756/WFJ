@@ -74,6 +74,7 @@
     <Compile Include="DocumentsModel.cs" />
     <Compile Include="FormTypeModel.cs" />
     <Compile Include="LoginViewModel.cs" />
+    <Compile Include="ManageDocumentModel.cs" />
     <Compile Include="ManageDocumentViewModel.cs" />
     <Compile Include="ManageUserModel.cs" />
     <Compile Include="ManageUserViewModel.cs" />

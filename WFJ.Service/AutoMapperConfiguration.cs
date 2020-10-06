@@ -20,7 +20,12 @@ namespace WFJ.Service
                     .ForMember(dest => dest.PracticeAreaName, act => act.MapFrom(src => src.PracticeArea.PracticeAreaName));
 
                 cfg.CreateMap<PracticeArea, PracticeAreaModel>();
+
                 cfg.CreateMap<FormType, FormTypeModel>();
+
+                cfg.CreateMap<Document, DocumentsModel>()
+                    .ForMember(dest => dest.ClientName, act => act.MapFrom(src => src.Client.ClientName))
+                    .ForMember(dest => dest.PracticeAreaName, act => act.MapFrom(src => src.PracticeArea.PracticeAreaName));
             });
 
             Mapper = MapperConfiguration.CreateMapper();

@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\main.css" />
+    <Content Include="Content\manageDocument.js" />
     <Content Include="Content\ManageUser.js" />
     <Content Include="Content\style.css" />
     <Content Include="EmailTemplate\ForgotEmail.html" />
@@ -3501,7 +3502,7 @@
     <Content Include="Views\Account\ForgotEmail.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\DocumentCenter\DocumentCenter.cshtml" />
+    <Content Include="Views\DocumentCenter\GetList.cshtml" />
     <Content Include="Views\DocumentCenter\_addEditDocument.cshtml" />
     <Content Include="Views\DocumentCenter\_documentGrid.cshtml" />
     <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />

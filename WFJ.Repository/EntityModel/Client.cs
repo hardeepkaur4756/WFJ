@@ -18,6 +18,7 @@ namespace WFJ.Repository.EntityModel
         public Client()
         {
             this.Users = new HashSet<User>();
+            this.Documents = new HashSet<Document>();
         }
     
         public int ID { get; set; }
@@ -49,5 +50,7 @@ namespace WFJ.Repository.EntityModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

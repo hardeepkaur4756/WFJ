@@ -1,4 +1,4 @@
-﻿@model WFJ.Models.ManageUserViewModel 
+﻿@model WFJ.Models.ManageUserViewModel
 
 @{
     ViewBag.Title = "ManageUsers";
@@ -14,7 +14,7 @@
                     <div class="card mb-5 mb-md-0">
                         <div class="card-content">
                             <div class="card-body">
-                                @Html.Partial("~/Views/Home/_manageLogin.cshtml",Model.ManagerUserFilterViewModel)
+                                @Html.Partial("~/Views/Home/_manageLogin.cshtml", Model.ManagerUserFilterViewModel)
                             </div>
                         </div>
                     </div>
@@ -34,3 +34,7 @@
 <a href="#" class="scrollup text-center">
     <i class="icon-arrow-up"></i>
 </a>
+@section scripts{
+
+    <script src="~/Content/ManageUser.js"></script>
+}

@@ -1728,6 +1728,34 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DocumentClientID">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PracticeAreasID">
+          <End Role="PracticeAreas" Type="Self.PracticeAreas" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PracticeAreas">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="PracticeAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserAccessID">
           <End Role="AccessLevels" Type="Self.AccessLevels" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2148,6 +2176,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="PracticeAreas" EntitySet="PracticeAreas" />
             <End Role="Categories" EntitySet="Categories" />
           </AssociationSet>
+          <AssociationSet Name="FK_DocumentClientID" Association="Self.FK_DocumentClientID">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PracticeAreasID" Association="Self.FK_PracticeAreasID">
+            <End Role="PracticeAreas" EntitySet="PracticeAreas" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserAccessID" Association="Self.FK_UserAccessID">
             <End Role="AccessLevels" EntitySet="AccessLevels" />
             <End Role="Users" EntitySet="Users" />
@@ -2307,6 +2343,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="showWFJFees" Type="Byte" />
           <Property Name="Active" Type="Byte" />
           <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserClientID" FromRole="Client" ToRole="User" />
+          <NavigationProperty Name="Documents" Relationship="WFJDBModel.FK_DocumentClientID" FromRole="Client" ToRole="Document" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -2384,30 +2421,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           </Key>
           <Property Name="documentID" Type="Int32" Nullable="false" />
           <Property Name="clientID" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Document">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DocumentName" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
-          <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="StateCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="DocumentType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ProjectType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="FormType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="PracticeAreaID" Type="Int32" />
-          <Property Name="WFJFileNbr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Days" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CategoryID" Type="Int32" />
-          <Property Name="EmployeeCategoryID" Type="Int32" />
-          <Property Name="StateCodeID" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="DocumentTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ProjectTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="FormTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="SeqNo" Type="Int32" />
         </EntityType>
         <EntityType Name="DocumentUsage">
           <Key>
@@ -3313,6 +3326,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Byte" />
           <NavigationProperty Name="Categories" Relationship="WFJDBModel.FK_CategoryPracticeAreaID" FromRole="PracticeArea" ToRole="Category" />
+          <NavigationProperty Name="Documents" Relationship="WFJDBModel.FK_PracticeAreasID" FromRole="PracticeArea" ToRole="Document" />
         </EntityType>
         <EntityType Name="PrepaidBenefit">
           <Key>
@@ -3792,7 +3806,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <EntitySet Name="contactTypes" EntityType="Self.contactType" />
           <EntitySet Name="currencies" EntityType="Self.currency" />
           <EntitySet Name="documentClients" EntityType="Self.documentClient" />
-          <EntitySet Name="Documents" EntityType="Self.Document" />
           <EntitySet Name="DocumentUsages" EntityType="Self.DocumentUsage" />
           <EntitySet Name="dtproperties" EntityType="Self.dtproperty" />
           <EntitySet Name="EMailCopies" EntityType="Self.EMailCopy" />
@@ -4048,6 +4061,15 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="PracticeArea" EntitySet="PracticeAreas" />
             <End Role="Category" EntitySet="Categories" />
           </AssociationSet>
+          <EntitySet Name="Documents" EntityType="WFJDBModel.Document" />
+          <AssociationSet Name="FK_DocumentClientID" Association="WFJDBModel.FK_DocumentClientID">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PracticeAreasID" Association="WFJDBModel.FK_PracticeAreasID">
+            <End Role="PracticeArea" EntitySet="PracticeAreas" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4169,6 +4191,60 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Category">
+              <PropertyRef Name="PracticeAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentName" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="StateCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="FormType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="PracticeAreaID" Type="Int32" />
+          <Property Name="WFJFileNbr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Days" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="EmployeeCategoryID" Type="Int32" />
+          <Property Name="StateCodeID" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="FormTypeID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SeqNo" Type="Int32" />
+          <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_DocumentClientID" FromRole="Document" ToRole="Client" />
+          <NavigationProperty Name="PracticeArea" Relationship="WFJDBModel.FK_PracticeAreasID" FromRole="Document" ToRole="PracticeArea" />
+        </EntityType>
+        <Association Name="FK_DocumentClientID">
+          <End Type="WFJDBModel.Client" Role="Client" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PracticeAreasID">
+          <End Type="WFJDBModel.PracticeArea" Role="PracticeArea" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PracticeArea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Document">
               <PropertyRef Name="PracticeAreaID" />
             </Dependent>
           </ReferentialConstraint>
@@ -4409,31 +4485,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
               <MappingFragment StoreEntitySet="documentClients">
                 <ScalarProperty Name="documentID" ColumnName="documentID" />
                 <ScalarProperty Name="clientID" ColumnName="clientID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Documents">
-            <EntityTypeMapping TypeName="WFJDBModel.Document">
-              <MappingFragment StoreEntitySet="Documents">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
-                <ScalarProperty Name="ProjectType" ColumnName="ProjectType" />
-                <ScalarProperty Name="FormType" ColumnName="FormType" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="PracticeAreaID" ColumnName="PracticeAreaID" />
-                <ScalarProperty Name="WFJFileNbr" ColumnName="WFJFileNbr" />
-                <ScalarProperty Name="Days" ColumnName="Days" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="EmployeeCategoryID" ColumnName="EmployeeCategoryID" />
-                <ScalarProperty Name="StateCodeID" ColumnName="StateCodeID" />
-                <ScalarProperty Name="DocumentTypeID" ColumnName="DocumentTypeID" />
-                <ScalarProperty Name="ProjectTypeID" ColumnName="ProjectTypeID" />
-                <ScalarProperty Name="FormTypeID" ColumnName="FormTypeID" />
-                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5986,6 +6037,31 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="PracticeAreaID" ColumnName="PracticeAreaID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="WFJDBModel.Document">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
+                <ScalarProperty Name="FormTypeID" ColumnName="FormTypeID" />
+                <ScalarProperty Name="ProjectTypeID" ColumnName="ProjectTypeID" />
+                <ScalarProperty Name="DocumentTypeID" ColumnName="DocumentTypeID" />
+                <ScalarProperty Name="StateCodeID" ColumnName="StateCodeID" />
+                <ScalarProperty Name="EmployeeCategoryID" ColumnName="EmployeeCategoryID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="WFJFileNbr" ColumnName="WFJFileNbr" />
+                <ScalarProperty Name="PracticeAreaID" ColumnName="PracticeAreaID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="FormType" ColumnName="FormType" />
+                <ScalarProperty Name="ProjectType" ColumnName="ProjectType" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="ClientRepository.cs" />
+    <Compile Include="DocumentSearchRepository.cs" />
     <Compile Include="EntityModel\AccessLevel.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
@@ -386,6 +387,7 @@
     <Compile Include="GenericRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
+    <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
     <Compile Include="Interfaces\IFormsRepository.cs" />
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />

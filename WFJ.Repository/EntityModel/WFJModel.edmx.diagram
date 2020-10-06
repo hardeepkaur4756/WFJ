@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="WFJDBModel.contactType" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.currency" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.documentClient" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.DocumentUsage" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.dtproperty" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.EMailCopy" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
@@ -110,6 +109,9 @@
         <AssociationConnector Association="WFJDBModel.FK__Users__levelID__1F198FD4" />
         <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="25" PointY="29.875" />
         <AssociationConnector Association="WFJDBModel.FK_CategoryPracticeAreaID" />
+        <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="31" PointY="7.75" />
+        <AssociationConnector Association="WFJDBModel.FK_DocumentClientID" />
+        <AssociationConnector Association="WFJDBModel.FK_PracticeAreasID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

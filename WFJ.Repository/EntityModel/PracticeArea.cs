@@ -18,6 +18,7 @@ namespace WFJ.Repository.EntityModel
         public PracticeArea()
         {
             this.Categories = new HashSet<Category>();
+            this.Documents = new HashSet<Document>();
         }
     
         public int ID { get; set; }
@@ -27,5 +28,7 @@ namespace WFJ.Repository.EntityModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Categories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
