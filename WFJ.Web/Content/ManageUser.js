@@ -139,23 +139,6 @@ function EditUser(event) {
                 //removeLoader();
             }
         });
-        //jQuery.ajax({
-        //    type: "POST",
-        //    url: "/Account/ForgotPassword",
-        //    data: {
-        //        "email": jQuery('#txtEmailAddress').val().trim()
-        //    },
-        //    success: function (data) {
-        //        if (data.success) {
-        //            console.log()
-        //            jQuery('#errormsg').text(data.message).css("color", "green");
-        //        }
-        //        else {
-        //            jQuery('#errormsg').text(data.message).css("color", "red");
-        //        }
-
-        //    }
-        //});
     }
 
 };

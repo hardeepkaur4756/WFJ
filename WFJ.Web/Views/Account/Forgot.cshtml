@@ -87,10 +87,12 @@
         var password = jQuery('#txtPasseord').val().trim();
         var confirmPassword = jQuery('#txtConformPassword').val().trim()
         if (password != confirmPassword) {
-            $('#txtErrorMsg').text("The password and confirmation password do not match.").css("color", "red");
+            $('#txtErrorMsg').text("");
+            $('#txtErrorMsg').text("The password and confirmation password do not match.").css("color", "red").show().delay(3000).fadeOut();
         }
         else if (!ValidatePassword(password)) {
-            $('#txtErrorMsg').text("Password is not in a valid format").css("color", "red");
+             $('#txtErrorMsg').text("");
+            $('#txtErrorMsg').text("Password is not in a valid format").css("color", "red").show().delay(3000).fadeOut();
         }
         else {
             jQuery.ajax({
@@ -103,10 +105,12 @@
                 },
                 success: function (data) {
                     if (data.success) {
-                        jQuery('#txtErrorMsg').text(data.message).css("color", "green");
+                         $('#txtErrorMsg').text("");
+                        jQuery('#txtErrorMsg').text(data.message).css("color", "green").show().delay(3000).fadeOut();
                     }
                     else {
-                        jQuery('#txtErrorMsg').text(data.message).css("color", "red");
+                         $('#txtErrorMsg').text("");
+                        jQuery('#txtErrorMsg').text(data.message).css("color", "red").show().delay(3000).fadeOut();
                     }
                 }
             });
