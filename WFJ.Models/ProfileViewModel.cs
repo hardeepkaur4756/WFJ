@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class ProfileViewModel
+    public class ProfileViewModel: ExceptionModel
     {
         public int UserId { get; set; }
         public string UserName { get; set; }

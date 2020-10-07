@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace WFJ.Models
 {
-   public class ManageUserViewModel
+   public class ManageUserViewModel:ExceptionModel
     {
         public ManagerUserFilterViewModel ManagerUserFilterViewModel { get; set; }
         public ManageUserDataViewModel ManageUserDataViewModel { get; set; }

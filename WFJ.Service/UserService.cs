@@ -452,8 +452,8 @@ namespace WFJ.Service
             catch (Exception ex)
             {
                 managerUserFilterViewModel.IsSuccess = false;
-                managerUserFilterViewModel.Message = "Sorry, there was an error while processing your request. Please try again later.";
-                //throw;
+                managerUserFilterViewModel.Message = "Sorry, An error occurred!";
+                
             }
             
         }

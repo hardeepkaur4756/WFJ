@@ -2,6 +2,7 @@
          Layout = "~/Views/Shared/_LoginPartial.cshtml";
     }
 <div id="main-container" class="default">
+    <span id="errorMessage"></span>
     <div class="login-background">
         <!-- START: Main Content-->
         <div class="container">
@@ -105,12 +106,12 @@
                 },
                 success: function (data) {
                     if (data.success) {
-                         $('#txtErrorMsg').text("");
+                        $('#txtErrorMsg').text("");
                         jQuery('#txtErrorMsg').text(data.message).css("color", "green").show().delay(3000).fadeOut();
                     }
                     else {
-                         $('#txtErrorMsg').text("");
-                        jQuery('#txtErrorMsg').text(data.message).css("color", "red").show().delay(3000).fadeOut();
+                        $('#errorMessage').text("");
+                        jQuery('#errorMessage').text(data.message).css("color", "red").show().delay(3000).fadeOut();
                     }
                 }
             });

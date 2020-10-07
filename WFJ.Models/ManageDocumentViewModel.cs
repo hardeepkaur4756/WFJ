@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-   public class ManageDocumentViewModel
+   public class ManageDocumentViewModel:ExceptionModel
     {
         public ManageDocumentFilterViewModel ManageDocumentFilterViewModel { get; set; }
     }

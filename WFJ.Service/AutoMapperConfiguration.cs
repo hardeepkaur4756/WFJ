@@ -26,6 +26,8 @@ namespace WFJ.Service
                 cfg.CreateMap<Document, DocumentsModel>()
                     .ForMember(dest => dest.ClientName, act => act.MapFrom(src => src.Client.ClientName))
                     .ForMember(dest => dest.PracticeAreaName, act => act.MapFrom(src => src.PracticeArea.PracticeAreaName));
+
+                cfg.CreateMap<ErrorLogModel, ErrorLog>();
             });
 
             Mapper = MapperConfiguration.CreateMapper();

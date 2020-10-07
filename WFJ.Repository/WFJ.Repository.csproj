@@ -142,6 +142,9 @@
     <Compile Include="EntityModel\enews_clients.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\ErrorLog.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\Event.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
@@ -382,12 +385,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WFJModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ErrorLogRepository.cs" />
     <Compile Include="FormsRepository.cs" />
     <Compile Include="FormTypeRepository.cs" />
     <Compile Include="GenericRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
     <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
+    <Compile Include="Interfaces\IErrorLogRepository.cs" />
     <Compile Include="Interfaces\IFormsRepository.cs" />
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
@@ -408,7 +413,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="EntityModel\WFJModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WFJModel.Designer.cs</LastGenOutput>
