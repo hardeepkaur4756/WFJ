@@ -29,7 +29,7 @@ namespace WFJ.Service
                 var hash = ph.HashPassword(user.Password);
                 var respnse = ph.VerifyHashedPassword(hash, user.Password);
                 user.Password = hash;
-                user.PasswordExpirationDate = DateTime.Now;
+                user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])); ;
                 user.IsPasswordHashed = true;
                 _userRepo.Update(user);
             }
@@ -353,7 +353,7 @@ namespace WFJ.Service
             IUserTypeRepository userTypeRepo = new UserTypeRepository();
             List<SelectListItem> userTypeList = new List<SelectListItem>();
             userTypeList = userTypeRepo.GetAll().Select(x => new SelectListItem() { Text = x.UserType, Value = x.ID.ToString() }
-                ).Take(5).ToList();
+                ).ToList();
             return userTypeList;
         }
 
@@ -378,56 +378,75 @@ namespace WFJ.Service
         public void AddOrUpdate(ManagerUserFilterViewModel managerUserFilterViewModel)
         {
             var ph = new Microsoft.AspNet.Identity.PasswordHasher();
+
             try
             {
+                
                 if (managerUserFilterViewModel.userViewModel.UserID > 0)
                 {
-                    User user = _userRepo.GetById(managerUserFilterViewModel.userViewModel.UserID);
-                    user.UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName;
-                    user.FirstName = managerUserFilterViewModel.userViewModel.FirstName;
-                    user.LastName = managerUserFilterViewModel.userViewModel.LastName;
-                    user.Telephone = managerUserFilterViewModel.userViewModel.Telephone;
-                    user.Address1 = managerUserFilterViewModel.userViewModel.Address1;
-                    user.Address2 = managerUserFilterViewModel.userViewModel.Address2;
-                    user.City = managerUserFilterViewModel.userViewModel.City;
-                    user.State = managerUserFilterViewModel.userViewModel.State;
-                    user.PostalCode = managerUserFilterViewModel.userViewModel.PostalCode;
-                    user.EMail = managerUserFilterViewModel.userViewModel.Email;
-                    user.UserType = managerUserFilterViewModel.userViewModel.UserType;
-                    user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
-                    user.Active = managerUserFilterViewModel.userViewModel.IsActive;
-                    user.DateAdded = DateTime.Now;
-                    user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
-                    user.IsPasswordHashed = false;
-                    _userRepo.Update(user);
-                    managerUserFilterViewModel.IsSuccess = true;
-                    managerUserFilterViewModel.Message = "Record Updated Successfully.";
+                    if (!CheckDuplicateByEmailAndUser(managerUserFilterViewModel.userViewModel.Email, managerUserFilterViewModel.userViewModel.UserID))
+                    {
+                        User user = _userRepo.GetById(managerUserFilterViewModel.userViewModel.UserID);
+                        user.UserName = managerUserFilterViewModel.userViewModel.FirstName + managerUserFilterViewModel.userViewModel.LastName;
+                        user.FirstName = managerUserFilterViewModel.userViewModel.FirstName;
+                        user.LastName = managerUserFilterViewModel.userViewModel.LastName;
+                        user.Telephone = managerUserFilterViewModel.userViewModel.Telephone;
+                        user.Address1 = managerUserFilterViewModel.userViewModel.Address1;
+                        user.Address2 = managerUserFilterViewModel.userViewModel.Address2;
+                        user.City = managerUserFilterViewModel.userViewModel.City;
+                        user.State = managerUserFilterViewModel.userViewModel.State;
+                        user.PostalCode = managerUserFilterViewModel.userViewModel.PostalCode;
+                        user.EMail = managerUserFilterViewModel.userViewModel.Email;
+                        user.UserType = managerUserFilterViewModel.userViewModel.UserType;
+                        user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
+                        user.Active = managerUserFilterViewModel.userViewModel.IsActive;
+                        user.DateAdded = DateTime.Now;
+                        user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
+                        user.IsPasswordHashed = false;
+                        _userRepo.Update(user);
+                        managerUserFilterViewModel.IsSuccess = true;
+                        managerUserFilterViewModel.Message = "Record Updated Successfully.";
+                    }
+                    else
+                    {
+                        managerUserFilterViewModel.IsSuccess = false;
+                        managerUserFilterViewModel.Message = "Email address already exist.";
+                    }
+                   
                 }
                 else
                 {
-                    User user = new User()
+                    if (!CheckDuplicateByEmail(managerUserFilterViewModel.userViewModel.Email))
                     {
-                        UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName,
-                        Password = ph.HashPassword(managerUserFilterViewModel.userViewModel.Password),
-                        FirstName = managerUserFilterViewModel.userViewModel.FirstName,
-                        LastName = managerUserFilterViewModel.userViewModel.LastName,
-                        Telephone = managerUserFilterViewModel.userViewModel.Telephone,
-                        Address1 = managerUserFilterViewModel.userViewModel.Address1,
-                        Address2 = managerUserFilterViewModel.userViewModel.Address2,
-                        City = managerUserFilterViewModel.userViewModel.City,
-                        State = managerUserFilterViewModel.userViewModel.State,
-                        PostalCode = managerUserFilterViewModel.userViewModel.PostalCode,
-                        EMail = managerUserFilterViewModel.userViewModel.Email,
-                        UserType = managerUserFilterViewModel.userViewModel.UserType,
-                        dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser,
-                        Active = managerUserFilterViewModel.userViewModel.IsActive,
-                        DateAdded = DateTime.Now,
-                        PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
-                        IsPasswordHashed = false,
-                    };
-                    _userRepo.Add(user);
-                    managerUserFilterViewModel.IsSuccess = true;
-                    managerUserFilterViewModel.Message = "Record Inserted Successfully.";
+                        User user = new User()
+                        {
+                            UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName,
+                            Password = ph.HashPassword(managerUserFilterViewModel.userViewModel.Password),
+                            FirstName = managerUserFilterViewModel.userViewModel.FirstName,
+                            LastName = managerUserFilterViewModel.userViewModel.LastName,
+                            Telephone = managerUserFilterViewModel.userViewModel.Telephone,
+                            Address1 = managerUserFilterViewModel.userViewModel.Address1,
+                            Address2 = managerUserFilterViewModel.userViewModel.Address2,
+                            City = managerUserFilterViewModel.userViewModel.City,
+                            State = managerUserFilterViewModel.userViewModel.State,
+                            PostalCode = managerUserFilterViewModel.userViewModel.PostalCode,
+                            EMail = managerUserFilterViewModel.userViewModel.Email,
+                            UserType = managerUserFilterViewModel.userViewModel.UserType,
+                            dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser,
+                            Active = managerUserFilterViewModel.userViewModel.IsActive,
+                            DateAdded = DateTime.Now,
+                            PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
+                            IsPasswordHashed = false,
+                        };
+                        _userRepo.Add(user);
+                        managerUserFilterViewModel.IsSuccess = true;
+                        managerUserFilterViewModel.Message = "Record Inserted Successfully.";
+                    }
+                    else
+                    {
+                        managerUserFilterViewModel.IsSuccess = false;
+                        managerUserFilterViewModel.Message = "Email address already exist.";
+                    }
                 }
             }
             catch (Exception ex)
@@ -461,6 +480,17 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
             }
             return managerUserFilterViewModel;
+        }
+
+       
+        public bool CheckDuplicateByEmail(string email)
+        {
+            User user = _userRepo.GetByEmail(email);
+            if (user != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

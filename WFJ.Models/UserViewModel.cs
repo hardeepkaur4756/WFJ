@@ -10,6 +10,7 @@ namespace WFJ.Models
     public class UserViewModel
     {
         public int UserID { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter password.")]
         public string Password { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter firstname.")]
         public string FirstName { get; set; }

@@ -34,6 +34,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         @Html.TextBoxFor(m => m.userViewModel.Password, new { @class = "form-control serialnocls", @type = "password" })
+                        @Html.ValidationMessageFor(m => m.userViewModel.Password)
                     </div>
                 </div>
             }
@@ -189,7 +190,7 @@
             $('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
         else {
-            $('#AddEditErrorMsg').text(response.Message).css("color", "red");
+            $('#AddEditErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
     }
 
