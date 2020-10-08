@@ -59,16 +59,24 @@ namespace WFJ.Web.Controllers
                 if (param.iDisplayStart >= param.iDisplayLength)
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
-            model = _documentSearchService.GetDocuments(clientId, documentTypeId,projectTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword, param,sortDir, sortCol,pageNo);
-            return Json(new
+                model = _documentSearchService.GetDocuments(clientId, documentTypeId, projectTypeId, practiceAreaId, categoryId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo);
+                return Json(new
+                {
+                    aaData = model.documents,
+                    param.sEcho,
+                    iTotalDisplayRecords = model.totalUsersCount,
+                    iTotalRecords = model.totalUsersCount,
+                    Success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
             {
-                aaData = model.documents,
-                param.sEcho,
-                iTotalDisplayRecords = model.totalUsersCount,
-                iTotalRecords = model.totalUsersCount
-            }, JsonRequestBehavior.AllowGet);
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/GetDocumentList", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+
+            }
         }
-    .................................................
+
 
         [HttpGet]
         public ActionResult AddDocument()
