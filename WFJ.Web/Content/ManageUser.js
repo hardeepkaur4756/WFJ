@@ -116,7 +116,6 @@ function EditUser(event) {
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 if (response.Success) {
-                    console.log(JSON.stringify(response));
                     if (Id > 0) {
                         $('#newdocument').find('#exampleModalLabel').html('Edit User');
                     }

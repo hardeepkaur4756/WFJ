@@ -122,7 +122,6 @@ function EditDocument(event) {
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 if (response.Success) {
-                    console.log(JSON.stringify(response));
                     if (Id > 0) {
                         $('#newdocument').find('#exampleModalLabel').html('Edit Document');
                     }
@@ -138,7 +137,6 @@ function EditDocument(event) {
                         enableFiltering: true,
                     });
                     $(".custom-file-input").on("change", function () {
-                        alert("gf");
                         var fileName = $(this).val().split("\\").pop();
                         $(this)
                             .siblings(".custom-file-label")
@@ -178,7 +176,6 @@ function AddDocument(event) {
                     enableFiltering: true,
                 });
                 $(".custom-file-input").on("change", function () {
-                    alert("gf");
                     var fileName = $(this).val().split("\\").pop();
                     $(this)
                         .siblings(".custom-file-label")
