@@ -1,0 +1,105 @@
+﻿@model WFJ.Models.ProfileViewModel
+@{
+    ViewBag.Title = "Edit Profile";
+}
+<style type="text/css">
+    .field-validation-error {
+        color: red;
+    }
+</style>
+@using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { @autocomplete = "off" }))
+{
+
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="">Password</label>
+                <a href="/Account/ChangePassword" class="anchor-design d-block">Change Password</a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                @Html.TextBoxFor(m=>m.FirstName,new { @class = "form-control"})
+                @Html.ValidationMessageFor(m=>m.FirstName)
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                @Html.TextBoxFor(m=>m.LastName,new { @class= "form-control"})
+                @Html.ValidationMessageFor(m=>m.LastName)
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="telephone">Telephone</label>
+                @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="address1">Address1</label>
+                @Html.TextAreaFor(m => m.Address1, new {@placeholder="Address", @id="exampleFormControlTextarea1",@class="form-control" ,@rows=1})
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="address2">Address2</label>
+                @Html.TextAreaFor(m => m.Address2, new { @placeholder = "Address", @id = "exampleFormControlTextarea2", @class = "form-control",@rows=1})
+                @*<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" placeholder="Address"></textarea>*@
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="city">City</label>
+                @Html.TextBoxFor(m=>m.City, new {@class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="state">State</label>
+                @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.State)
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                @Html.TextBoxFor(m => m.PostalCode, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="eMail">Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m=>m.Email)
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <span class="float-right ml-2 mb-2" style="color:green;">
+                @Html.DisplayFor(m => m.Message, new { @class = "success" })
+            </span>
+        </div>
+        <div class="col-md-12">
+           
+            <div class="clearfix">
+                <button type="submit" class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
+                    Update
+                </button>
+            </div>
+        </div>
+    </div>
+}
+

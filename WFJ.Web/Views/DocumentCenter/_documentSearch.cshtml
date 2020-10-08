@@ -1,4 +1,18 @@
 ﻿@model WFJ.Models.ManageDocumentFilterViewModel
+
+@{ 
+    string display = "";
+    int userType = Convert.ToInt32(Session["UserType"]);
+    if ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType)
+    {
+        display = "display:none;";
+    }
+    else
+    {
+        display = "";
+    }
+    }
+
     <div>
         @*<div class="form-group">
             <label>State</label>
@@ -17,9 +31,12 @@
                 @{
                     foreach (var item in Model.client)
                     {
+                        if (item.Text != null)
+                        {
                         <option value="@item.Value">@item.Text</option>
+                        }
                     }
-                }
+                    }
             </select>
         </div>
 
@@ -58,13 +75,16 @@
                 @{
                     foreach (var item in Model.practiceArea)
                     {
+                        if (item.Text != null)
+                        {
                         <option value="@item.Value">@item.Text</option>
+                         }
                     }
-                }
+                    }
             </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style=@display>
             <label>Category (WFJ Use)</label>
             <select id="ddlCategory" class="form-control">
                 <option selected="" value="-1">All</option>
@@ -93,13 +113,17 @@
                 @{
                     foreach (var item in Model.formTypeModels)
                     {
-                        <option value="@item.FormTypeID">@item.FormType1</option>
+                        if (item.FormType1 != null)
+                        {
+                            <option value="@item.FormTypeID">@item.FormType1</option>
+                        }
+
                     }
                 }
                 @*<option>BUSINESS ENTITIES - Business Plans</option>
-                <option>
-                    BUSINESS ENTITIES - Business Purchase
-                </option>*@
+        <option>
+            BUSINESS ENTITIES - Business Purchase
+        </option>*@
             </select>
         </div>
 
@@ -130,7 +154,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        @Html.Partial("~/Views/Home/_addEditDocument.cshtml", Model)
+                        @Html.Partial("~/Views/DocumentCenter/_addEditDocument.cshtml", Model)
                     </div>
                 </div>
             </div>

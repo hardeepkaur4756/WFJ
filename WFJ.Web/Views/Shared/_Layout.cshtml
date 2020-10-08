@@ -179,7 +179,7 @@
                             </ul>
                         </li>
                         <li class="align-self-center d-inline-block">
-                            <a href="/Home/EditProfile"
+                            <a href="/User/EditProfile"
                                class="nav-link">
                                 <i class="fa fa-cog" aria-hidden="true"></i>
                             </a>
@@ -229,7 +229,7 @@
                             <a href="/Home/RequestServices"><i class="icon-grid"></i> Request services</a>
                         </li>
                         <li>
-                            <a href="/Home/ManageUsers"><i class="icon-earphones"></i> Manage Users</a>
+                            <a href="/User/ManageUsers"><i class="icon-earphones"></i> Manage Users</a>
                         </li>
                         <li>
                             <a href="/Home/Payment"><i class="icon-support"></i> Payments</a>
@@ -322,21 +322,25 @@
     <script src="~/Scripts/home.script.js"></script>
     <script src="~/Scripts/Common.js"></script>
     <script src="~/vendors/multiselect/bootstrap-multiselect.js"></script>
-    <script src="~/Scripts/editProfile.js"></script>
+
     @*<script src="~/Content/ManageUser.js"></script>*@
 
-    <script src="~/Scripts/managelogin.js"></script>
+    
 
 
 </body>
 
 </html>
-@RenderSection("scripts", false)
-<script src="~/Content/manageDocument.js"></script>
-<script src="~/Scripts/documentSearch.js"></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous"></script>
+<script src="~/Content/manageDocument.js"></script>
+<script src="~/Scripts/documentSearch.js"></script>
+<script src="~/Scripts/editProfile.js"></script>
+<script src="~/Scripts/managelogin.js"></script>
+@RenderSection("scripts", false)
 <script type="text/javascript">
     $(function () {
         var url = window.location.pathname,

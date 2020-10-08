@@ -90,7 +90,7 @@
                 <div class="form-group">
                     <label for="inputDate">Document Name</label>
                     @Html.TextBoxFor(m => m.documentViewModel.DocumentName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.documentViewModel.DocumentName)
+                    @Html.ValidationMessageFor(m => m.documentViewModel.DocumentName, "", new { @class = "text-danger" })
                     @*<input type="text" class="form-control" />*@
                 </div>
             </div>
@@ -130,7 +130,7 @@
     </div>
     <br />
     <div>
-        <span id="AddEditDocErrorMsg" style="color:red;"></span>
+        <span id="AddEditDocErrorMsg" style="color:red;"></span><br>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
         </button>

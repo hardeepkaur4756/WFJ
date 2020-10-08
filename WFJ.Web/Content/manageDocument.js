@@ -80,10 +80,6 @@ function GetDataGrid() {
                 { "mData": "DocumentName" },
                 { "mData": "DocumentTypeID" },
                 { "mData": "PracticeAreaName" }
-
-
-
-
             ],
             "aoColumnDefs": [
                 { "bSortable": false, "aTargets": [1] }
@@ -95,10 +91,11 @@ function GetDataGrid() {
             "paging": true,
             //bSearching: false,
             bLengthChange: false,
+            "bInfo": false,
             "language": {
-                "zeroRecords": "no record found",
+                "zeroRecords": "no search results (too much data)",
                 "info": "Page _PAGE_ of _PAGES_",
-                //"infoEmpty": "No records",
+                "emptyTable": "no records found",
                 "processing": "Processing... Please wait",
             }
         });
