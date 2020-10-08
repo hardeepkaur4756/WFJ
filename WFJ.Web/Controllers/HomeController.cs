@@ -12,6 +12,7 @@ namespace WFJ.Web.Controllers
     {
         private IUserService _userService = new UserService();
         private IClientService _clientService = new ClientService();
+        private IErrorLogService _errorLogService = new ErrorLogService();
 
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult Index()
@@ -59,16 +60,26 @@ namespace WFJ.Web.Controllers
         [HttpGet]
         public ActionResult EditProfile()
         {
-            if (Session["UserId"] != null)
+            try
             {
-                ProfileViewModel profileViewModel = new ProfileViewModel();
-                profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
-                profileViewModel= _userService.GetById(profileViewModel.UserId);
-                return View(profileViewModel);
+                
+                if (Session["UserId"] != null)
+                {
+                    ProfileViewModel profileViewModel = new ProfileViewModel();
+                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
+                    profileViewModel = _userService.GetById(profileViewModel.UserId);
+                    return View(profileViewModel);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+              
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Account");
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/EditProfile", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new ProfileViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
         }
 
@@ -76,120 +87,176 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public ActionResult EditProfile(ProfileViewModel profileViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (Session["UserId"] != null)
+                if (ModelState.IsValid)
                 {
-                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
-                    if (_userService.CheckDuplicateByEmailAndUser(profileViewModel.Email,profileViewModel.UserId))
+                    if (Session["UserId"] != null)
                     {
-                        ModelState.AddModelError("Email", "Email address already exist.");
+                        profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
+                        if (_userService.CheckDuplicateByEmailAndUser(profileViewModel.Email,profileViewModel.UserId))
+                        {
+                            ModelState.AddModelError("Email", "Email address already exist.");
+                            return View(profileViewModel);
+                        }
+                        profileViewModel = _userService.UpdateProfile(profileViewModel);
+                        profileViewModel.Message = "Updated Successfully.";
                         return View(profileViewModel);
                     }
-                    profileViewModel = _userService.UpdateProfile(profileViewModel);
-                    profileViewModel.Message = "Updated Successfully.";
-                    return View(profileViewModel);
+                    else
+                    {
+                        return RedirectToAction("Login", "Account");
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Login", "Account");
+                    return View(profileViewModel);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return View(profileViewModel);
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/EditProfile", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new ProfileViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
+           
         }
 
         public ActionResult ManageUsers()
         {
-            ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
-            manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
+            try
             {
-                userViewModel = new UserViewModel(),
-                Clients = _clientService.GetClients(),
-                UserType = _userService.GetAllUserTypes(),
-                Regions = _userService.GetAllRegions(),
-                Forms = _userService.GetAllForms(),
-                Active = new List<SelectListItem>
+                
+                ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
+                manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
+                {
+                    userViewModel = new UserViewModel(),
+                    Clients = _clientService.GetClients(),
+                    UserType = _userService.GetAllUserTypes(),
+                    Regions = _userService.GetAllRegions(),
+                    Forms = _userService.GetAllForms(),
+                    Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 },
-                DashboardUser = new List<SelectListItem>
+                    DashboardUser = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 }
-            };
-            return View(manageUserViewModel);
+                };
+                return View(manageUserViewModel);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/ManageUsers", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new ManageUserViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+            }
+            
         }
       
         [HttpGet]
         public JsonResult GetUsersList(DataTablesParam param, string sortDir, string sortCol, int clientId= -1, int active = -1, string name = "")
         {
-            ManageUserModel model = new ManageUserModel();
-            int pageNo = 1;
-            if (param.iDisplayStart >= param.iDisplayLength)
-                pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
-                model = _userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
-            return Json(new
+            try
             {
-                aaData = model.users,
-                param.sEcho,
-                iTotalDisplayRecords = model.totalUsersCount,
-                iTotalRecords = model.totalUsersCount
-            }, JsonRequestBehavior.AllowGet);
+                ManageUserModel model = new ManageUserModel();
+                int pageNo = 1;
+                if (param.iDisplayStart >= param.iDisplayLength)
+                    pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+                model = _userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
+                return Json(new
+                {                  
+                    aaData = model.users,
+                    param.sEcho,
+                    iTotalDisplayRecords = model.totalUsersCount,
+                    iTotalRecords = model.totalUsersCount,
+                    Success=true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/GetUsersList", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
+           
         }
 
         [HttpGet]
         public ActionResult AddUser()
         {
-            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
-            managerUserFilterViewModel.userViewModel = new UserViewModel();
-            managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
-            managerUserFilterViewModel.Regions = _userService.GetAllRegions();
-            managerUserFilterViewModel.Forms = _userService.GetAllForms();
-            managerUserFilterViewModel.Active = new List<SelectListItem>
+            try
+            {
+                ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
+                managerUserFilterViewModel.userViewModel = new UserViewModel();
+                managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
+                managerUserFilterViewModel.Regions = _userService.GetAllRegions();
+                managerUserFilterViewModel.Forms = _userService.GetAllForms();
+                managerUserFilterViewModel.Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 };
-            managerUserFilterViewModel.DashboardUser = new List<SelectListItem>
+                managerUserFilterViewModel.DashboardUser = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 };
 
-            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/AddUser", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
+
         }
 
         [HttpPost]
         public ActionResult AddUser(ManagerUserFilterViewModel managerUserFilterViewModel)
         {
-            _userService.AddOrUpdate(managerUserFilterViewModel);
-            return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                _userService.AddOrUpdate(managerUserFilterViewModel);
+                return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/AddUser", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
         }
 
         [HttpGet]
         public ActionResult EditUser(int id)
         {
-            ManagerUserFilterViewModel managerUserFilterViewModel = id > 0 ? _userService.GetManageUserById(id) :  new ManagerUserFilterViewModel();
-            managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
-            managerUserFilterViewModel.Regions = _userService.GetAllRegions();
-            managerUserFilterViewModel.Forms = _userService.GetAllForms();
-            managerUserFilterViewModel.Active = new List<SelectListItem>
+            try
+            {
+                ManagerUserFilterViewModel managerUserFilterViewModel = id > 0 ? _userService.GetManageUserById(id) : new ManagerUserFilterViewModel();
+                managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
+                managerUserFilterViewModel.Regions = _userService.GetAllRegions();
+                managerUserFilterViewModel.Forms = _userService.GetAllForms();
+                managerUserFilterViewModel.Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 };
-            managerUserFilterViewModel.DashboardUser = new List<SelectListItem>
+                managerUserFilterViewModel.DashboardUser = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 };
-            
-            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "HomeController/EditUser", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
         }
     }
 }

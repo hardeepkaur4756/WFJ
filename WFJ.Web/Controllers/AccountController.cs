@@ -10,6 +10,7 @@ namespace WFJ.Web.Controllers
 {
     public class AccountController : Controller
     {
+        private IErrorLogService _errorLogService = new ErrorLogService();
         private IUserService _userService = new UserService();
         // GET: Account
         public ActionResult Index()
@@ -20,48 +21,84 @@ namespace WFJ.Web.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            LoginViewModel loginViewModel = new LoginViewModel();
-            loginViewModel.UserCookieCheck = true;
-            System.Web.HttpCookie loginUserCookie = HttpContext.Request.Cookies.Get("loginUserCookie");
-            if (loginUserCookie != null && loginUserCookie.HasKeys)
+            try
             {
-                string emailaddress = loginUserCookie["emailaddress"];
-                string password = loginUserCookie["password"];
-                if (!string.IsNullOrEmpty(emailaddress) && !string.IsNullOrEmpty(password))
+                LoginViewModel loginViewModel = new LoginViewModel();
+                loginViewModel.UserCookieCheck = true;
+                System.Web.HttpCookie loginUserCookie = HttpContext.Request.Cookies.Get("loginUserCookie");
+                if (loginUserCookie != null && loginUserCookie.HasKeys)
                 {
-                    loginViewModel.Email = emailaddress;
-                    loginViewModel.Password = password;
-                    loginViewModel.UserCookieCheck = true;
+                    string emailaddress = loginUserCookie["emailaddress"];
+                    string password = loginUserCookie["password"];
+                    if (!string.IsNullOrEmpty(emailaddress) && !string.IsNullOrEmpty(password))
+                    {
+                        loginViewModel.Email = emailaddress;
+                        loginViewModel.Password = password;
+                        loginViewModel.UserCookieCheck = true;
+                    }
                 }
+                return View(loginViewModel);
             }
-            return View(loginViewModel);
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/Login", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new LoginViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+            }
+            
         }
 
         public ActionResult ForgotPassword(string email)
         {
-            ResultModel resultModel = _userService.SendForgotPasswordMail(email);
-            return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                ResultModel resultModel = _userService.SendForgotPasswordMail(email);
+                return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/ForgotPassword", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { message = "Sorry, An error occurred!", success = false });            
+            }
         }
 
         public ActionResult ResetPassword()
         {
-            string queryString = "";
-            int userId = 0;
-            if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
+            try
             {
-                queryString = Util.Decode(Request.QueryString.ToString());
-                string[] temp = queryString.Split('=');
-                userId = Convert.ToInt32(temp[1]);
+                string queryString = "";
+                int userId = 0;
+                if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
+                {
+                    queryString = Util.Decode(Request.QueryString.ToString());
+                    string[] temp = queryString.Split('=');
+                    userId = Convert.ToInt32(temp[1]);
+                }
+                ViewBag.UserId = userId;
+                return View("~/Views/Account/Forgot.cshtml");
             }
-            ViewBag.UserId = userId;
-            return View("~/Views/Account/Forgot.cshtml");
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/ResetPassword", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
+           
         }
 
         [HttpPost]
         public ActionResult ResetPassword(string newPassword, string newConfirmPassword, int userId)
         {
-            ResultModel resultModel = _userService.UpdatePassword(newPassword, newConfirmPassword, userId);
-            return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                ResultModel resultModel = _userService.UpdatePassword(newPassword, newConfirmPassword, userId);
+                return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/ResetPassword", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { message = "Sorry, An error occurred!", success = false }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
@@ -75,47 +112,62 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public ActionResult ChangePassword(string currentPassword, string newPassword, string newConfirmPassword)
         {
-            if (Session["UserId"] != null)
+            try
             {
-                int userId = Convert.ToInt32(Session["UserId"].ToString());
-                ResultModel resultModel = _userService.ChangePassword(userId, currentPassword, newPassword, newConfirmPassword);
-                return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+                      
+                if (Session["UserId"] != null)
+                {
+                    int userId = Convert.ToInt32(Session["UserId"].ToString());
+                    ResultModel resultModel = _userService.ChangePassword(userId, currentPassword, newPassword, newConfirmPassword);
+                    return Json(new { success = resultModel.IsSuccess, message = resultModel.Message }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Account");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Account");
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/ChangePassword", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { message = "Sorry, An error occurred!", success = false }, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         [HttpPost]
         public ActionResult Login(LoginViewModel loginViewModel)
         {
-            ResultModel resultModel = _userService.Login(loginViewModel);
-            if (resultModel.IsPasswordExpire)
+            try
             {
-                TempData["IsPasswordExpire"] = true;
-                return RedirectToAction("ChangePassword", "Account");
-            }
-            if (resultModel.IsSuccess)
-            {
-                if (Convert.ToBoolean(loginViewModel.UserCookieCheck))
+                ResultModel resultModel = _userService.Login(loginViewModel);
+                if (resultModel.IsPasswordExpire)
                 {
-                    //Adding username and password in cookies
-                    AddUserCookie(loginViewModel.Email, loginViewModel.Password);
+                    TempData["IsPasswordExpire"] = true;
+                    return RedirectToAction("ChangePassword", "Account");
+                }
+                if (resultModel.IsSuccess)
+                {
+                    if (Convert.ToBoolean(loginViewModel.UserCookieCheck))
+                    {
+                        //Adding username and password in cookies
+                        AddUserCookie(loginViewModel.Email, loginViewModel.Password);
+                    }
+                    else
+                    {
+                        AddUserCookie("", "");
+                    }
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    AddUserCookie("", "");
+                    ModelState.AddModelError("Password", resultModel.Message);
+                    return View();
                 }
-                return RedirectToAction("Index", "Home");
             }
-            else
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Password", resultModel.Message);
-                return View();
+                _errorLogService.Add(new ErrorLogModel() { Page = "AccountController/Login", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new LoginViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
-
         }
 
         private void AddUserCookie(string username, string password)

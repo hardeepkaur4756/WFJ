@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-   public class LoginViewModel
+   public class LoginViewModel:ExceptionModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter username/email address.")]
         public string Email { get; set; }

@@ -73,6 +73,8 @@
     <Compile Include="ClientModel.cs" />
     <Compile Include="DataTableParam.cs" />
     <Compile Include="DocumentsModel.cs" />
+    <Compile Include="ErrorLogModel.cs" />
+    <Compile Include="ExceptionModel.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="FormTypeModel.cs" />
     <Compile Include="LoginViewModel.cs" />

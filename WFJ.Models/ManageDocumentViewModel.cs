@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace WFJ.Models
 {
-   public class ManageDocumentViewModel
+   public class ManageDocumentViewModel:ExceptionModel
     {
         public ManageDocumentFilterViewModel ManageDocumentFilterViewModel { get; set; }
     }

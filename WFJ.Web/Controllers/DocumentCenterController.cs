@@ -12,6 +12,7 @@ namespace WFJ.Web.Controllers
 {
     public class DocumentCenterController : Controller
     {
+        private IErrorLogService _errorLogService = new ErrorLogService();
         private IDocumentSearchService _documentSearchService = new DocumentSearchService();
         private IClientService _clientService = new ClientService();
         private ICategoryService _categoryService = new CategoryService();
@@ -22,7 +23,9 @@ namespace WFJ.Web.Controllers
         [HttpGet]
         public ActionResult GetList()
         {
-            ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
+            try
+            {
+                ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
             manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
             {
                 //clientModels = _clientService.GetClients(),
@@ -35,16 +38,26 @@ namespace WFJ.Web.Controllers
                 state=_codesService.GetAllStateByType("STATE")
             };
 
-            return View(manageDocumentViewModel);
+                return View(manageDocumentViewModel);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/GetList", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new ManageDocumentViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+                
+            }
+            
         }
 
         [HttpGet]
         public JsonResult GetDocumentList(DataTablesParam param, string sortDir, string sortCol, int clientId = -1, int documentTypeId = -1, int projectTypeId=-1, int practiceAreaId=-1,int categoryId=-1,int formTypeId=-1, string searchKeyword = "")
         {
-            ManageDocumentModel model = new ManageDocumentModel();
-            int pageNo = 1;
-            if (param.iDisplayStart >= param.iDisplayLength)
-                pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+            try
+            {
+                ManageDocumentModel model = new ManageDocumentModel();
+                int pageNo = 1;
+                if (param.iDisplayStart >= param.iDisplayLength)
+                    pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
             model = _documentSearchService.GetDocuments(clientId, documentTypeId,projectTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword, param,sortDir, sortCol,pageNo);
             return Json(new
@@ -55,6 +68,7 @@ namespace WFJ.Web.Controllers
                 iTotalRecords = model.totalUsersCount
             }, JsonRequestBehavior.AllowGet);
         }
+    .................................................
 
         [HttpGet]
         public ActionResult AddDocument()

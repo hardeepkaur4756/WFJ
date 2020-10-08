@@ -130,6 +130,7 @@ function EditUser(event) {
                     //removeloader();
                 }
                 else {
+                    $('#AddEditErrorMsg').text(response.Message);
                     //notificationhelper.showerror('sorry an error occured.')
                     //removeloader();
                 }
@@ -159,6 +160,7 @@ function AddUser(event) {
                     //removeloader();
                 }
                 else {
+                    $('#requestError').text(response.Message);
                     //notificationhelper.showerror('sorry an error occured.')
                     //removeloader();
                 }

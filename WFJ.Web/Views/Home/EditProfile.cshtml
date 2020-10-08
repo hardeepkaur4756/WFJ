@@ -2,7 +2,11 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-    <main>
+<main>
+    <div style="float:right;color:red;margin-right: 15px;">
+        <span id="errorMessage"> </span>
+        @Html.DisplayFor(m => m.ErrorMessage)
+    </div>
         <div class="document-center">
             <div class="container-fluid site-width">
                 <h4 class="mb-4"></h4>
@@ -19,5 +23,5 @@
                 </div>
             </div>
         </div>
-    </main>
+</main>
 

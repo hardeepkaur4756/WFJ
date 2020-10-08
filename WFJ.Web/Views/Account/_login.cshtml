@@ -8,6 +8,9 @@
     }
 </style>
 <div>
+    <div style="float:right;color:red;">
+        @Html.DisplayFor(m => m.ErrorMessage)
+    </div>
     @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @autocomplete = "off" }))
     {
         <div class="form-group mb-3">
