@@ -70,7 +70,8 @@ function GetDataGrid() {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
-                        var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#editdocument' onclick='return AddOrEdit()'>Edit</a>";
+                        //var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#editdocument' onclick='return EditDocument()'>Edit</a>";
+                        var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.ID + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
                         return buttons;
                     }
                 },
@@ -105,5 +106,97 @@ function GetDataGrid() {
 
 }
 
+function EditDocument(event) {
+    var Id = parseInt(event.getAttribute("data-Id"));
+    if (Id == null || Id == undefined) {
+        notificationHelper.ShowError("Some thing went wrong!");
+    }
+    else {
+
+        $.ajax({
+            type: "Get",
+            url: "/DocumentCenter/EditDocument",
+            //data: { id: Id, "viewType": "Display" },
+            data: { id: Id },
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                if (response.Success) {
+                    console.log(JSON.stringify(response));
+                    if (Id > 0) {
+                        $('#newdocument').find('#exampleModalLabel').html('Edit Document');
+                    }
+                    else {
+                        $('#newdocument').find('#exampleModalLabel').html('Add User');
+                    }
+
+                    $('#newdocument').find('.modal-body').html(response.Html);
+                    //$('#newdocument').find('.btn-primary').addclass('savebid');
+                    $('#newdocument').modal('show');
+                    $(".boot-multiselect222").multiselect({
+                        includeSelectAllOption: true,
+                        enableFiltering: true,
+                    });
+                    $(".custom-file-input").on("change", function () {
+                        alert("gf");
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this)
+                            .siblings(".custom-file-label")
+                            .addClass("selected")
+                            .html(fileName);
+                    });
+                    //removeloader();
+                }
+                else {
+                    //notificationhelper.showerror('sorry an error occured.')
+                    //removeloader();
+                }
+            },
+            error: function (result) {
+                //notificationHelper.ShowError(result.Message);
+                //removeLoader();
+            }
+        });
+    }
+
+};
+
+function AddDocument(event) {
+    $.ajax({
+        type: "Get",
+        url: "/DocumentCenter/AddDocument",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            if (response.Success) {
+                $('#newdocument').find('#exampleModalLabel').html('Add Document');
+                $('#newdocument').find('.modal-body').html(response.Html);
+                //$('#newdocument').find('.btn-primary').addclass('savebid');
+                $('#newdocument').modal({ backdrop: "static", show: true });
+                $(".boot-multiselect222").multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: true,
+                });
+                $(".custom-file-input").on("change", function () {
+                    alert("gf");
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this)
+                        .siblings(".custom-file-label")
+                        .addClass("selected")
+                        .html(fileName);
+                });
+                //removeloader();
+            }
+            else {
+                //notificationhelper.showerror('sorry an error occured.')
+                //removeloader();
+            }
+        },
+        error: function (result) {
+            //notificationHelper.ShowError(result.Message);
+            //removeLoader();
+        }
+    });
+}
 
 

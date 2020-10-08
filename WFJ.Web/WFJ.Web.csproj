@@ -281,6 +281,7 @@
     <Content Include="Scripts\cryptocurrency.script.js" />
     <Content Include="Scripts\datatable.script.js" />
     <Content Include="Scripts\datatableedit.script.js" />
+    <Content Include="Scripts\documentSearch.js" />
     <Content Include="Scripts\echart.script.js" />
     <Content Include="Scripts\editProfile.js" />
     <Content Include="Scripts\flot.script.js" />

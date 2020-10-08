@@ -3,7 +3,7 @@
     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 });
 
-$(".multiselect").multiselect({
-    includeSelectAllOption: true,
-    enableFiltering: true,
-});
+//$(".multiselect").multiselect({
+//    includeSelectAllOption: true,
+//    enableFiltering: true,
+//});

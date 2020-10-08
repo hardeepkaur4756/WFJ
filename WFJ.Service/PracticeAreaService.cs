@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -21,5 +22,14 @@ namespace WFJ.Service
             return MappingExtensions.MapList<PracticeArea, PracticeAreaModel>(practiceAreaModels);
 
         }
+        public List<SelectListItem> GetAllPracticeArea()
+        {
+            IPracticeAreaRepository practiceAreaRepo = new PracticeAreaRepository();
+            List<SelectListItem> practiceAreaList = new List<SelectListItem>();
+            practiceAreaList = practiceAreaRepo.GetAll().Where(x=> !string.IsNullOrEmpty(x.PracticeAreaName)).Select(x => new SelectListItem() { Text = x.PracticeAreaName, Value = x.ID.ToString() }
+                ).ToList();
+            return practiceAreaList;
+        }
+
     }
 }

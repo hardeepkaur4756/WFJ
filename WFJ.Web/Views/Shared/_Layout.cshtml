@@ -323,21 +323,20 @@
     <script src="~/Scripts/Common.js"></script>
     <script src="~/vendors/multiselect/bootstrap-multiselect.js"></script>
     <script src="~/Scripts/editProfile.js"></script>
-    @*<script src="~/Content/manageDocument.js"></script>*@
     @*<script src="~/Content/ManageUser.js"></script>*@
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous"></script>
     <script src="~/Scripts/managelogin.js"></script>
 
 
 </body>
 
 </html>
-
-
-@RenderSection("scripts", false);
+@RenderSection("scripts", false)
+<script src="~/Content/manageDocument.js"></script>
+<script src="~/Scripts/documentSearch.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(function () {
         var url = window.location.pathname,
@@ -353,3 +352,5 @@
         });
     });
 </script>
+
+

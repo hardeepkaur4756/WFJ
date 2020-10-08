@@ -361,7 +361,7 @@ namespace WFJ.Service
         {
             IRegionsRepository regionsRepo = new RegionsRepository();
             List<SelectListItem> regionList = new List<SelectListItem>();
-            regionList = regionsRepo.GetAll().Select(x => new SelectListItem() { Text = x.RegionName, Value = x.ID.ToString() }
+            regionList = regionsRepo.GetAll().Where(x=>!string.IsNullOrEmpty(x.RegionName)).Select(x => new SelectListItem() { Text = x.RegionName, Value = x.ID.ToString() }
                 ).ToList();
             return regionList;
         }
@@ -370,7 +370,7 @@ namespace WFJ.Service
         {
             IFormsRepository formsRepo = new FormsRepository();
             List<SelectListItem> fornList = new List<SelectListItem>();
-            fornList = formsRepo.GetAll().Select(x => new SelectListItem() { Text = x.FormName, Value = x.ID.ToString() }
+            fornList = formsRepo.GetAll().Where(x => !string.IsNullOrEmpty(x.FormName)).Select(x => new SelectListItem() { Text = x.FormName, Value = x.ID.ToString() }
                 ).ToList();
             return fornList;
         }

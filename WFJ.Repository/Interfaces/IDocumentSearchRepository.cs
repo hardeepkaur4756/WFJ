@@ -10,5 +10,6 @@ namespace WFJ.Repository.Interfaces
    public interface IDocumentSearchRepository:IRepository<Document>
     {
         List<Document> GetDocumentList(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword);
+       
     }
 }

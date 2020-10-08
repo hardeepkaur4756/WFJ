@@ -10,6 +10,8 @@ using WFJ.Repository;
 using WFJ.Models;
 using AutoMapper;
 using WFJ.Service;
+using System.Web.Mvc;
+
 namespace WFJ.Service
 {
     public class ClientService:IClientService
@@ -18,8 +20,16 @@ namespace WFJ.Service
         {
             IClientRepository clientRepository = new ClientRepository();
             var clients=clientRepository.GetAll().ToList();
-          return  MappingExtensions.MapList<Client,ClientModel>(clients);
+            return  MappingExtensions.MapList<Client,ClientModel>(clients);
          
+        }
+        public List<SelectListItem> GetAllClients()
+        {
+            IClientRepository clientRepo = new ClientRepository();
+            List<SelectListItem> clientList = new List<SelectListItem>();
+            clientList = clientRepo.GetAll().Select(x => new SelectListItem() { Text = x.ClientName, Value = x.ID.ToString() }
+                ).ToList();
+            return clientList;
         }
     }
 }

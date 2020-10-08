@@ -99,10 +99,12 @@
     <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="CategoryService.cs" />
     <Compile Include="ClientService.cs" />
+    <Compile Include="CodesService.cs" />
     <Compile Include="DocumentSearchService.cs" />
     <Compile Include="FormTypeService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\IClientService.cs" />
+    <Compile Include="Interfaces\ICodesService.cs" />
     <Compile Include="Interfaces\IDocumentSearchService.cs" />
     <Compile Include="Interfaces\IFormTypeService.cs" />
     <Compile Include="Interfaces\IPracticeAreaService.cs" />

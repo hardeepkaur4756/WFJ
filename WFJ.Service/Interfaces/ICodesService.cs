@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using WFJ.Models;
-using WFJ.Repository.EntityModel;
+
 namespace WFJ.Service.Interfaces
 {
-   public interface IClientService
+    public interface ICodesService
     {
-        List<ClientModel> GetClients();
-        List<SelectListItem> GetAllClients();
+        List<SelectListItem> GetAllByType(string type);
+        List<SelectListItem> GetAllStateByType(string type);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace WFJ.Service
     public class DocumentSearchService: IDocumentSearchService
     {
         private IDocumentSearchRepository _documentSearchRepository = new DocumentSearchRepository();
+        private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
         public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
         {
             ManageDocumentModel model = new ManageDocumentModel();
@@ -100,6 +102,123 @@ namespace WFJ.Service
             model.documents = MappingExtensions.MapList<Document, DocumentsModel>(documents?.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
            
             return model;
+        }
+
+        public ManageDocumentFilterViewModel GetDocumentById(int id)
+        {
+            ManageDocumentFilterViewModel manageDocumentFilterViewModel = new ManageDocumentFilterViewModel();
+            manageDocumentFilterViewModel.documentViewModel = new DocumentViewModel();
+            ICodesService codesService = new CodesService();
+            IClientService _clientService = new ClientService();
+
+            manageDocumentFilterViewModel.client = _clientService.GetAllClients();
+            Document document = _documentSearchRepository.GetById(id);
+            if (document != null)
+            {
+                //manageDocumentFilterViewModel.state.Select(x => x.Value == document.StateCode );
+                manageDocumentFilterViewModel.documentViewModel.Id = document.ID;
+                manageDocumentFilterViewModel.documentViewModel.StateCode = document.StateCode;
+                manageDocumentFilterViewModel.documentViewModel.DocumentTypeId = document.DocumentTypeID;
+                manageDocumentFilterViewModel.documentViewModel.ClientId = _documentClientsRepo.GetByDocumentID(document.ID).Select(x => x.clientID).ToList() ;
+                manageDocumentFilterViewModel.documentViewModel.PracticeAreaId = document.PracticeAreaID;
+                manageDocumentFilterViewModel.documentViewModel.DocumentName = document.DocumentName;
+                manageDocumentFilterViewModel.documentViewModel.Description = document.Description;
+                manageDocumentFilterViewModel.documentViewModel.FileName = document.FileName;
+            }
+            return manageDocumentFilterViewModel;
+        }
+
+        public void AddOrUpdate(ManageDocumentFilterViewModel manageDocumentFilterViewModel)
+        {
+            try
+            {
+                if (manageDocumentFilterViewModel.documentFile != null)
+                {
+                    //var postedFile = Request.Files[0];
+                    var postedFile = manageDocumentFilterViewModel.documentFile;
+                    if (postedFile != null && postedFile.ContentLength > 0)
+                    {
+                        string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Content/Document"); // Or file save folder, etc.
+                        if (!File.Exists(filePath))
+                        {
+                            Directory.CreateDirectory(filePath);
+                        }
+                        
+                        //string extension = Path.GetExtension(postedFile.FileName);
+                        //string newFileName = $"NewFile{extension}";
+                        string saveToPath = Path.Combine(filePath, postedFile.FileName);
+                        postedFile.SaveAs(saveToPath);
+                    }
+                }
+                //else
+                //{
+                //    ModelState.AddModelError(string.Empty, "File not selected.");
+                //}
+                if (manageDocumentFilterViewModel.documentViewModel.Id > 0)
+                {
+                    Document document = _documentSearchRepository.GetById(manageDocumentFilterViewModel.documentViewModel.Id);
+                    document.StateCode = manageDocumentFilterViewModel.documentViewModel.StateCode;
+                    document.DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId;
+                    document.PracticeAreaID = manageDocumentFilterViewModel.documentViewModel.PracticeAreaId;
+                    document.DocumentName = manageDocumentFilterViewModel.documentViewModel.DocumentName;
+                    document.Description = manageDocumentFilterViewModel.documentViewModel.Description;
+                    document.FileName = manageDocumentFilterViewModel.documentFile !=null ?manageDocumentFilterViewModel.documentViewModel.FileName:null;
+                    _documentSearchRepository.Update(document);
+                    if (manageDocumentFilterViewModel.documentViewModel.ClientId.Any())
+                    {
+                        _documentClientsRepo.DeleteByDocumentId(manageDocumentFilterViewModel.documentViewModel.Id);  
+                        foreach (var itemId in manageDocumentFilterViewModel.documentViewModel.ClientId)
+                        {
+                            documentClient dClient = new documentClient()
+                            {
+                                documentID = manageDocumentFilterViewModel.documentViewModel.Id,
+                                clientID = itemId
+                            };
+                            _documentClientsRepo.Add(dClient);
+                        }
+                    }
+                    
+                    manageDocumentFilterViewModel.IsSuccess = true;
+                    manageDocumentFilterViewModel.Message = "Record Updated Successfully.";
+                }
+                else
+                {
+                    Document newDocument = new Document()
+                    {
+                        StateCode = manageDocumentFilterViewModel.documentViewModel.StateCode,
+                        DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId,
+                        //DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId,
+                        PracticeAreaID = manageDocumentFilterViewModel.documentViewModel.PracticeAreaId,
+                        DocumentName = manageDocumentFilterViewModel.documentViewModel.DocumentName,
+                        Description = manageDocumentFilterViewModel.documentViewModel.Description,
+                        FileName = manageDocumentFilterViewModel.documentFile != null ? manageDocumentFilterViewModel.documentFile.FileName : null,
+                    };
+                    _documentSearchRepository.Add(newDocument);
+                    if (newDocument.ID > 0 && (manageDocumentFilterViewModel.documentViewModel.ClientId.Any()))
+                    {
+                        foreach (var itemId in manageDocumentFilterViewModel.documentViewModel.ClientId)
+                        {
+                            documentClient dClient = new documentClient()
+                            {
+                                documentID = newDocument.ID,
+                                clientID = itemId
+                            };
+                            _documentClientsRepo.Add(dClient);
+                        }
+
+                    }
+                    manageDocumentFilterViewModel.IsSuccess = true;
+                    manageDocumentFilterViewModel.Message = "Record Inserted Successfully.";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                manageDocumentFilterViewModel.IsSuccess = false;
+                manageDocumentFilterViewModel.Message = "Sorry, there was an error while processing your request. Please try again later.";
+                //throw;
+            }
+
         }
     }
 }

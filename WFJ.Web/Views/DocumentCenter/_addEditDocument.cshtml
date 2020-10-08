@@ -1,132 +1,159 @@
-﻿<div class="modal fade" id="editdocument" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Document</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+﻿@model WFJ.Models.ManageDocumentFilterViewModel
+@using (Ajax.BeginForm("AddDocument", "DocumentCenter", new AjaxOptions { OnSuccess = "onSuccess" },new { encType="multipart/form-data"}))
+{
+    <div>
+        <div class="row">
+            @Html.HiddenFor(m => m.documentViewModel.Id)
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>State</label>
+                    @Html.DropDownListFor(m => m.documentViewModel.StateCode, Model.state, "Select", new { @class = "form-control" })
+                    @*<select id="inputState" class="form-control">
+                    <option selected="">Alabama</option>
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>All States</option>
+                </select>*@
+                </div>
             </div>
-            <div class="modal-body">
-                <form action="">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>State</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Alabama</option>
-                                    <option>Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>All States</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Document Type</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Form</option>
-                                    <option>Form</option>
-                                    <option>Letter</option>
-                                    <option>Pleading</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Project Type</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Private</option>
-                                    <option>Private</option>
-                                    <option>Public</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Client</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">ABF Printing</option>
-                                    <option>ABF Printing</option>
-                                    <option>Action Advertising and Flags</option>
-                                    <option>Ad Specialties by ken</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Practice Area</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">Adoption</option>
-                                    <option>Adoption</option>
-                                    <option>Auto Accident</option>
-                                    <option>Banking</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Category (for WFJ Use)</label>
-                                <select id="inputState" class="form-control">
-                                    <option selected="">
-                                        Commercial Litigation ---&gt; Category Name 1
-                                    </option>
-                                    <option>
-                                        Commercial Litigation ---&gt; Category Name 1
-                                    </option>
-                                    <option>
-                                        Commercial Litigation ---&gt; Category Name 2
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">Document Name</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="inputDate">WFJ File #</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="inputDate">Notify Days</label>
-                                <input type="text" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="inputDate">Description</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" />
-                                <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Document Type</label>
+                    @Html.DropDownListFor(m => m.documentViewModel.DocumentTypeId, Model.documentType, "Select", new { @class = "form-control" })
+                    @*<select id="inputState" class="form-control">
+                    <option selected="">Form</option>
+                    <option>Form</option>
+                    <option>Letter</option>
+                    <option>Pleading</option>
+                </select>*@
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Close
-                </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+
+            @*<div class="col-md-6">
+            <div class="form-group">
+                <label>Project Type</label>
+                <select id="inputState" class="form-control">
+                    <option selected="">Private</option>
+                    <option>Private</option>
+                    <option>Public</option>
+                </select>
+            </div>
+        </div>*@
+
+            <div class="col-md-12">
+                <div class="form-group custom-multiselect-scroll">
+                    <label>Client</label>
+                    @Html.DropDownListFor(m => m.documentViewModel.ClientId, Model.client, new { @multiple = "multiple", @class = "multiselect boot-multiselect222" })
+
+
+                    @*@Html.DropDownListFor(m => m.documentViewModel.ClientID, new SelectList(Model.clientModels,"ID","ClientName" ,"Select"), new {@id = "boot-document-multiselect", @multiple = "multiple", @class = "multiselect" })*@
+                    @*<select id="inputState" class="form-control">
+                    <option selected="">ABF Printing</option>
+                    <option>ABF Printing</option>
+                    <option>Action Advertising and Flags</option>
+                    <option>Ad Specialties by ken</option>
+                </select>*@
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Practice Area</label>
+                    @Html.DropDownListFor(m => m.documentViewModel.PracticeAreaId, Model.practiceArea, "Select", new { @class = "form-control" })
+                    @*<select id="inputState" class="form-control">
+                    <option selected="">Adoption</option>
+                    <option>Adoption</option>
+                    <option>Auto Accident</option>
+                    <option>Banking</option>
+                </select>*@
+                </div>
+            </div>
+
+            @*<div class="col-md-12">
+            <div class="form-group">
+                <label>Category (for WFJ Use)</label>
+                <select id="inputState" class="form-control">
+                    <option selected="">
+                        Commercial Litigation ---&gt; Category Name 1
+                    </option>
+                    <option>
+                        Commercial Litigation ---&gt; Category Name 1
+                    </option>
+                    <option>
+                        Commercial Litigation ---&gt; Category Name 2
+                    </option>
+                </select>
+            </div>
+        </div>*@
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="inputDate">Document Name</label>
+                    @Html.TextBoxFor(m => m.documentViewModel.DocumentName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.documentViewModel.DocumentName)
+                    @*<input type="text" class="form-control" />*@
+                </div>
+            </div>
+
+            @*<div class="col-md-6">
+            <div class="form-group">
+                <label for="inputDate">WFJ File #</label>
+                <input type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="inputDate">Notify Days</label>
+                <input type="text" class="form-control" />
+            </div>
+        </div>*@
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="inputDate">Description</label>
+                    @Html.TextAreaFor(m => m.documentViewModel.Description, new { @class = "form-control" })
+                    @*<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>*@
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="custom-file">
+                    @*@Html.TextBoxFor(m => m.documentViewModel.FileName, new { @id = "customFile", @type = "file", @class = "custom-file-input" })*@
+                    @Html.TextBoxFor(m => m.documentFile, new { @id = "customFile", @type = "file", @class = "custom-file-input" ,@name="documentFile" })
+                    <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>
+                    @*<label class="" for="">Choose file</label>*@
+                    @*<input type="file" class="custom-file-input" id="customFile" />*@
+
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <br />
+    <div>
+        <span id="AddEditDocErrorMsg" style="color:red;"></span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+        </button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+}
+<script src="~/Scripts/documentSearch.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
+<script>
+    
+    function onSuccess(response) {
+        alert("gg");
+        console.log(response.Message);
+        if (response.Success) {
+            $('#newdocument').modal('hide');
+            $('#AddDocMsg').text("");
+            $('#AddDocMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+        }
+        else {
+            $('#AddEditDocErrorMsg').text("");
+            $('#AddEditDocErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+        }
+    }
+</script>
+

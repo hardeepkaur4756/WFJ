@@ -168,9 +168,6 @@ function AddUser(event) {
                 //removeLoader();
             }
         });
-       
-  
-
 };
 
 

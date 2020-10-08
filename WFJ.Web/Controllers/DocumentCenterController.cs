@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Models;
+using WFJ.Helper;
+
 namespace WFJ.Web.Controllers
 {
     public class DocumentCenterController : Controller
@@ -15,6 +17,7 @@ namespace WFJ.Web.Controllers
         private ICategoryService _categoryService = new CategoryService();
         private IPracticeAreaService _practiceAreaService = new PracticeAreaService();
         private IFormTypeService _formTypeService = new FormTypeService();
+        private ICodesService _codesService = new CodesService();
         // GET: DocumentCenter
         [HttpGet]
         public ActionResult GetList()
@@ -22,10 +25,14 @@ namespace WFJ.Web.Controllers
             ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
             manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
             {
-                clientModels = _clientService.GetClients(),
-                practiceAreaModels= _practiceAreaService.GetAll(),
-                categoryModels= _categoryService.GetAll(),
-                formTypeModels= _formTypeService.GetAll()
+                //clientModels = _clientService.GetClients(),
+                client = _clientService.GetAllClients(),
+                //practiceAreaModels = _practiceAreaService.GetAll(),
+                practiceArea = _practiceAreaService.GetAllPracticeArea(),
+                categoryModels = _categoryService.GetAll(),
+                formTypeModels = _formTypeService.GetAll(),
+                documentType = _codesService.GetAllByType("DOCTYPE"),
+                state=_codesService.GetAllStateByType("STATE")
             };
 
             return View(manageDocumentViewModel);
@@ -48,5 +55,41 @@ namespace WFJ.Web.Controllers
                 iTotalRecords = model.totalUsersCount
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult AddDocument()
+        {
+            ManageDocumentFilterViewModel manageDocumentFilterViewModel = new ManageDocumentFilterViewModel();
+            manageDocumentFilterViewModel.documentViewModel = new DocumentViewModel();
+            manageDocumentFilterViewModel.client = _clientService.GetAllClients();
+            /*manageDocumentFilterViewModel.practiceAreaModels = _practiceAreaService.GetAll();*/
+            manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
+            manageDocumentFilterViewModel.categoryModels = _categoryService.GetAll();
+            manageDocumentFilterViewModel.formTypeModels = _formTypeService.GetAll();
+            manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
+            manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
+            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+
+        public ActionResult AddDocument(ManageDocumentFilterViewModel manageDocumentFilterViewModel)
+        {
+            _documentSearchService.AddOrUpdate(manageDocumentFilterViewModel);
+            return Json(new { Success = manageDocumentFilterViewModel.IsSuccess, Message = manageDocumentFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+            //return View();
+        }
+
+        [HttpGet]
+        public ActionResult EditDocument(int id)
+        {
+            ManageDocumentFilterViewModel manageDocumentFilterViewModel = id > 0 ? _documentSearchService.GetDocumentById(id) : new ManageDocumentFilterViewModel();
+            manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
+            manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
+           
+            manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
+            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);
+        }
+        
     }
 }
