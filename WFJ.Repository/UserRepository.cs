@@ -68,11 +68,11 @@ namespace WFJ.Repository
                 }
                 if (name != "")
                 {
-                    users = users.Where(x => !string.IsNullOrEmpty(x.FirstName)? x.FirstName.ToLower().Contains(name.ToLower()):false
+                    users = users.Where(x => (!string.IsNullOrEmpty(x.FirstName)? x.FirstName.ToLower().Contains(name.ToLower()):false)
 
-                    || !string.IsNullOrEmpty(x.LastName)? x.LastName.ToLower().Contains(name.ToLower()):false
-                    || !string.IsNullOrEmpty(x.EMail)? x.EMail.ToLower().Contains(name.ToLower()):false
-                    || !string.IsNullOrEmpty(x.UserName) ? x.UserName.ToLower().Contains(name.ToLower()) : false
+                    || (!string.IsNullOrEmpty(x.LastName)? x.LastName.ToLower().Contains(name.ToLower()):false)
+                    || (!string.IsNullOrEmpty(x.EMail)? x.EMail.ToLower().Contains(name.ToLower()):false)
+                    || (!string.IsNullOrEmpty(x.UserName) ? x.UserName.ToLower().Contains(name.ToLower()) : false)
                     );
                 }
             }
