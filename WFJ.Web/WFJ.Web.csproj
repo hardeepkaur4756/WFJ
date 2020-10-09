@@ -140,6 +140,7 @@
     <Compile Include="Controllers\DocumentCenterController.cs" />
     <Compile Include="Controllers\EncryptPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAttribute\AuthorizeActivity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3471,16 +3472,16 @@
     <Content Include="Views\Home\_documentGrid.cshtml" />
     <Content Include="Views\Home\_addEditDocument.cshtml" />
     <Content Include="Views\Home\RequestServices.cshtml" />
-    <Content Include="Views\Home\ManageUsers.cshtml" />
+    <Content Include="Views\User\ManageUsers.cshtml" />
     <Content Include="Views\Home\Payment.cshtml" />
     <Content Include="Views\Home\_requestServices.cshtml" />
     <Content Include="Views\Home\_requestGrid.cshtml" />
     <Content Include="Views\Home\ViewRequest.cshtml" />
     <Content Include="Views\Home\_viewRequest.cshtml" />
     <Content Include="Views\Home\_customerGrid.cshtml" />
-    <Content Include="Views\Home\_manageLogin.cshtml" />
-    <Content Include="Views\Home\_manageLoginGrid.cshtml" />
-    <Content Include="Views\Home\_addEditManageLogin.cshtml" />
+    <Content Include="Views\User\_manageLogin.cshtml" />
+    <Content Include="Views\User\_manageLoginGrid.cshtml" />
+    <Content Include="Views\User\_addEditManageLogin.cshtml" />
     <Content Include="Views\Home\_paymentSearch.cshtml" />
     <Content Include="Views\Home\_paymentReport.cshtml" />
     <Content Include="Views\Home\_addEditPaymentDocument.cshtml" />
@@ -3497,8 +3498,8 @@
     <Content Include="Views\Home\RequestPayment\_manageInvoices.cshtml" />
     <Content Include="Views\Home\RequestPayment\_addInvoices.cshtml" />
     <Content Include="Views\Home\RequestPayment\_editInvoices.cshtml" />
-    <Content Include="Views\Home\_editProfile.cshtml" />
-    <Content Include="Views\Home\EditProfile.cshtml" />
+    <Content Include="Views\User\_editProfile.cshtml" />
+    <Content Include="Views\User\EditProfile.cshtml" />
     <Content Include="Views\EncryptPassword\Index.cshtml" />
     <Content Include="Views\Account\ForgotEmail.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />

@@ -25,6 +25,7 @@ namespace WFJ.Models
         public string PostalCode { get; set; }
         public Nullable<int> UserType { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter email")]
+        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Please enter a valid e-mail adress")]
         public string Email { get; set; }
         public Nullable<int> ClientId { get; set; }
         public Nullable<int> AttorneyId { get; set; }

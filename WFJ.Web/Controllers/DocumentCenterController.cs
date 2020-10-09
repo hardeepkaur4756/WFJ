@@ -81,24 +81,34 @@ namespace WFJ.Web.Controllers
         [HttpGet]
         public ActionResult AddDocument()
         {
-            ManageDocumentFilterViewModel manageDocumentFilterViewModel = new ManageDocumentFilterViewModel();
-            manageDocumentFilterViewModel.documentViewModel = new DocumentViewModel();
-            manageDocumentFilterViewModel.client = _clientService.GetAllClients();
-            /*manageDocumentFilterViewModel.practiceAreaModels = _practiceAreaService.GetAll();*/
-            manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
-            manageDocumentFilterViewModel.categoryModels = _categoryService.GetAll();
-            manageDocumentFilterViewModel.formTypeModels = _formTypeService.GetAll();
-            manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
-            manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
-            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                ManageDocumentFilterViewModel manageDocumentFilterViewModel = new ManageDocumentFilterViewModel();
+                manageDocumentFilterViewModel.documentViewModel = new DocumentViewModel();
+                manageDocumentFilterViewModel.client = _clientService.GetAllClients();
+                /*manageDocumentFilterViewModel.practiceAreaModels = _practiceAreaService.GetAll();*/
+                manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
+                manageDocumentFilterViewModel.categoryModels = _categoryService.GetAll();
+                manageDocumentFilterViewModel.formTypeModels = _formTypeService.GetAll();
+                manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
+                manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
+                return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/AddDocument", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
         }
 
         [HttpPost]
 
         public ActionResult AddDocument(ManageDocumentFilterViewModel manageDocumentFilterViewModel)
         {
-            
-            if (ModelState.IsValid)
+            try
+            {
+                if (ModelState.IsValid)
             {
                 _documentSearchService.AddOrUpdate(manageDocumentFilterViewModel);
                 return Json(new { Success = manageDocumentFilterViewModel.IsSuccess, Message = manageDocumentFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
@@ -115,19 +125,34 @@ namespace WFJ.Web.Controllers
                 }
                 return Json(new { Success = false,ErrorMessages=ErrorMessages }, JsonRequestBehavior.AllowGet);
             }
-            
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/AddDocument", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+
+            }
+
             //return View();
         }
 
         [HttpGet]
         public ActionResult EditDocument(int id)
         {
-            ManageDocumentFilterViewModel manageDocumentFilterViewModel = id > 0 ? _documentSearchService.GetDocumentById(id) : new ManageDocumentFilterViewModel();
+            try
+            {
+                ManageDocumentFilterViewModel manageDocumentFilterViewModel = id > 0 ? _documentSearchService.GetDocumentById(id) : new ManageDocumentFilterViewModel();
             manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
             manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
             
             manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
             return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel), ClientId = manageDocumentFilterViewModel.documentViewModel.ClientId }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/EditDocument", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
         }
         
     }

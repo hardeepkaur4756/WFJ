@@ -212,7 +212,7 @@ namespace WFJ.Service
             catch (Exception ex)
             {
                 manageDocumentFilterViewModel.IsSuccess = false;
-                manageDocumentFilterViewModel.Message = "Sorry, there was an error while processing your request. Please try again later.";
+                manageDocumentFilterViewModel.Message = "Sorry, An error occurred!.";
                 //throw;
             }
 

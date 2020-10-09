@@ -1,45 +1,34 @@
 ﻿var oTable;
-var isFirstTime = true;
+
 $(document).ready(function () {
     GetDatafortable();
+ 
 });
   function SearchBy() {
-
     var clientid = $('#ddlClient option:selected').val();
     var activeid = $('#ddlActive option:selected').val();
     var name = $('#txtname').val();
       if (clientid == -1 && activeid == -1 && name == "") {
           $('#errormessage').text('Please select atleast one value for search').css("color", "red");
-
       }
       else {
-          $('#errormessage').text('');
-          GetDatafortable();
+          $('#errormessage').text('');        
+          GetDatafortable();       
       }
      
 }
 
 function GetDatafortable() {
-    var zeroRecordsMessage = "";
-    if (isFirstTime) {
-        zeroRecordsMessage = "no search results (too much data)";
-        isFirstTime = false;
-    }
-    else {
-        zeroRecordsMessage = "no records found";
-    }
       if ($.fn.DataTable.isDataTable("#manageMyUsers"))
       {
                     oTable.draw();
       }
       else
-      {
-          
-
-        oTable =
+      {         
+       oTable =
         $('#manageMyUsers').DataTable({
             "bServerSide": true,
-            "sAjaxSource": "/Home/GetUsersList",
+            "sAjaxSource": "/User/GetUsersList",
             "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                 var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
                 var sDir = oSettings.aaSorting[0][1];
@@ -89,10 +78,12 @@ function GetDatafortable() {
             "paging": true,
             //bSearching: false,
             bLengthChange: false,
+            "bInfo": false,
             "language": {
-                "zeroRecords": zeroRecordsMessage,
+                
+                "zeroRecords":"no search results (too much data)",
                 "info": "Page _PAGE_ of _PAGES_",
-                //"infoEmpty": "No records",
+                "emptyTable": "no records found",
                 "processing": "Processing... Please wait",
             }
         });
@@ -109,7 +100,7 @@ function EditUser(event) {
 
         $.ajax({
             type: "Get",
-            url: "/Home/EditUser",
+            url: "/User/EditUser",
             //data: { id: Id, "viewType": "Display" },
             data: { id: Id},
             dataType: "json",
@@ -147,7 +138,7 @@ function AddUser(event) {
   
         $.ajax({
             type: "Get",
-            url: "/Home/AddUser",
+            url: "/User/AddUser",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {

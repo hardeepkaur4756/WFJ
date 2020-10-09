@@ -1,6 +1,20 @@
 ﻿@model WFJ.Models.ManageDocumentFilterViewModel
-<div>
-    @*<div class="form-group">
+
+@{ 
+    string display = "";
+    int userType = Convert.ToInt32(Session["UserType"]);
+    if ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType)
+    {
+        display = "display:none;";
+    }
+    else
+    {
+        display = "";
+    }
+    }
+
+    <div>
+        @*<div class="form-group">
             <label>State</label>
             <select id="inputState" class="form-control">
                 <option selected="">All</option>
@@ -9,19 +23,22 @@
                 <option>All States</option>
             </select>
         </div>*@
-    <span id="errormessage"></span>
-    <div class="form-group">
-        <label>Client</label>
-        <select id="ddlDocumentClient" name="ddlDocumentClient" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.client)
-                {
-                    <option value="@item.Value">@item.Text</option>
-                }
-            }
-        </select>
-    </div>
+        <span id="errormessage"></span>
+        <div class="form-group">
+            <label>Client</label>
+            <select id="ddlDocumentClient" name="ddlDocumentClient" class="form-control">
+                <option selected="" value="-1">All</option>
+                @{
+                    foreach (var item in Model.client)
+                    {
+                        if (item.Text != null)
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                    }
+            </select>
+        </div>
 
     <div class="form-group">
         <label>Document Type</label>
@@ -51,33 +68,36 @@
         <input type="text" id="txtSearchKeyword" class="form-control" />
     </div>
 
-    <div class="form-group">
-        <label>Practice Area</label>
-        <select id="ddlPracticeArea" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.practiceArea)
-                {
-                    <option value="@item.Value">@item.Text</option>
-                }
-            }
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Category (WFJ Use)</label>
-        <select id="ddlCategory" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.categoryModels)
-                {
-                    if (item.CategoryName != null)
+        <div class="form-group">
+            <label>Practice Area</label>
+            <select id="ddlPracticeArea" class="form-control">
+                <option selected="" value="-1">All</option>
+                @{
+                    foreach (var item in Model.practiceArea)
                     {
-                        <option value="@item.CategoryID">@item.PracticeAreaName ---> @item.CategoryName</option>
+                        if (item.Text != null)
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                         }
+                    }
+                    }
+            </select>
+        </div>
+
+        <div class="form-group" style=@display>
+            <label>Category (WFJ Use)</label>
+            <select id="ddlCategory" class="form-control">
+                <option selected="" value="-1">All</option>
+                @{
+                    foreach (var item in Model.categoryModels)
+                    {
+                        if (item.CategoryName != null)
+                        {
+                            <option value="@item.CategoryID">@item.PracticeAreaName ---> @item.CategoryName</option>
+                        }
                     }
                 }
-            }
-            @*<option>
+                @*<option>
                     Commercial Litigation ---> Category Name 1
                 </option>
                 <option>
@@ -86,22 +106,26 @@
         </select>
     </div>
 
-    <div class="form-group">
-        <label>Form Type</label>
-        <select id="ddlFormType" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.formTypeModels)
-                {
-                    <option value="@item.FormTypeID">@item.FormType1</option>
+        <div class="form-group">
+            <label>Form Type</label>
+            <select id="ddlFormType" class="form-control">
+                <option selected="" value="-1">All</option>
+                @{
+                    foreach (var item in Model.formTypeModels)
+                    {
+                        if (item.FormType1 != null)
+                        {
+                            <option value="@item.FormTypeID">@item.FormType1</option>
+                        }
+
+                    }
                 }
-            }
-            @*<option>BUSINESS ENTITIES - Business Plans</option>
-                <option>
-                    BUSINESS ENTITIES - Business Purchase
-                </option>*@
-        </select>
-    </div>
+                @*<option>BUSINESS ENTITIES - Business Plans</option>
+        <option>
+            BUSINESS ENTITIES - Business Purchase
+        </option>*@
+            </select>
+        </div>
 
     <div class="clearfix">
         <span id="AddDocMsg"></span>

@@ -1,0 +1,27 @@
+﻿@model WFJ.Models.ProfileViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main>
+    <div style="float:right;color:red;margin-right: 15px;">
+        <span id="errorMessage"> </span>
+        @Html.DisplayFor(m => m.ErrorMessage)
+    </div>
+        <div class="document-center">
+            <div class="container-fluid site-width">
+                <h4 class="mb-4"></h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card mb-5 mb-md-0">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    @Html.Partial("~/Views/User/_editProfile.cshtml",Model)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</main>
+
