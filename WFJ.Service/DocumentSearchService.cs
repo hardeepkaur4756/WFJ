@@ -110,20 +110,25 @@ namespace WFJ.Service
             manageDocumentFilterViewModel.documentViewModel = new DocumentViewModel();
             ICodesService codesService = new CodesService();
             IClientService _clientService = new ClientService();
-
             manageDocumentFilterViewModel.client = _clientService.GetAllClients();
             Document document = _documentSearchRepository.GetById(id);
             if (document != null)
             {
-                //manageDocumentFilterViewModel.state.Select(x => x.Value == document.StateCode );
                 manageDocumentFilterViewModel.documentViewModel.Id = document.ID;
                 manageDocumentFilterViewModel.documentViewModel.StateCode = document.StateCode;
                 manageDocumentFilterViewModel.documentViewModel.DocumentTypeId = document.DocumentTypeID;
-                manageDocumentFilterViewModel.documentViewModel.ClientId = _documentClientsRepo.GetByDocumentID(document.ID).Select(x => x.clientID).ToList() ;
+                manageDocumentFilterViewModel.documentViewModel.ClientId = _documentClientsRepo.GetByDocumentID(document.ID).Select(x => x.clientID).ToArray();
                 manageDocumentFilterViewModel.documentViewModel.PracticeAreaId = document.PracticeAreaID;
                 manageDocumentFilterViewModel.documentViewModel.DocumentName = document.DocumentName;
                 manageDocumentFilterViewModel.documentViewModel.Description = document.Description;
                 manageDocumentFilterViewModel.documentViewModel.FileName = document.FileName;
+            }
+            foreach (var item in manageDocumentFilterViewModel.client)
+            {
+                if (manageDocumentFilterViewModel.documentViewModel.ClientId.Any( x => x.ToString() == item.Value))
+                {
+                    item.Selected = true;
+                }
             }
             return manageDocumentFilterViewModel;
         }
@@ -134,26 +139,18 @@ namespace WFJ.Service
             {
                 if (manageDocumentFilterViewModel.documentFile != null)
                 {
-                    //var postedFile = Request.Files[0];
                     var postedFile = manageDocumentFilterViewModel.documentFile;
                     if (postedFile != null && postedFile.ContentLength > 0)
                     {
-                        string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Content/Document"); // Or file save folder, etc.
+                        string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Content/Document"); 
                         if (!File.Exists(filePath))
                         {
                             Directory.CreateDirectory(filePath);
                         }
-                        
-                        //string extension = Path.GetExtension(postedFile.FileName);
-                        //string newFileName = $"NewFile{extension}";
                         string saveToPath = Path.Combine(filePath, postedFile.FileName);
                         postedFile.SaveAs(saveToPath);
                     }
                 }
-                //else
-                //{
-                //    ModelState.AddModelError(string.Empty, "File not selected.");
-                //}
                 if (manageDocumentFilterViewModel.documentViewModel.Id > 0)
                 {
                     Document document = _documentSearchRepository.GetById(manageDocumentFilterViewModel.documentViewModel.Id);
@@ -162,9 +159,9 @@ namespace WFJ.Service
                     document.PracticeAreaID = manageDocumentFilterViewModel.documentViewModel.PracticeAreaId;
                     document.DocumentName = manageDocumentFilterViewModel.documentViewModel.DocumentName;
                     document.Description = manageDocumentFilterViewModel.documentViewModel.Description;
-                    document.FileName = manageDocumentFilterViewModel.documentFile !=null ?manageDocumentFilterViewModel.documentViewModel.FileName:null;
+                    document.FileName = manageDocumentFilterViewModel.documentFile !=null ?manageDocumentFilterViewModel.documentFile.FileName : document.FileName;
                     _documentSearchRepository.Update(document);
-                    if (manageDocumentFilterViewModel.documentViewModel.ClientId.Any())
+                    if (manageDocumentFilterViewModel.documentViewModel.ClientId != null)
                     {
                         _documentClientsRepo.DeleteByDocumentId(manageDocumentFilterViewModel.documentViewModel.Id);  
                         foreach (var itemId in manageDocumentFilterViewModel.documentViewModel.ClientId)
@@ -172,7 +169,7 @@ namespace WFJ.Service
                             documentClient dClient = new documentClient()
                             {
                                 documentID = manageDocumentFilterViewModel.documentViewModel.Id,
-                                clientID = itemId
+                                clientID = Convert.ToInt32(itemId)
                             };
                             _documentClientsRepo.Add(dClient);
                         }
@@ -194,14 +191,14 @@ namespace WFJ.Service
                         FileName = manageDocumentFilterViewModel.documentFile != null ? manageDocumentFilterViewModel.documentFile.FileName : null,
                     };
                     _documentSearchRepository.Add(newDocument);
-                    if (newDocument.ID > 0 && (manageDocumentFilterViewModel.documentViewModel.ClientId.Any()))
+                    if (newDocument.ID > 0 && (manageDocumentFilterViewModel.documentViewModel.ClientId != null))
                     {
                         foreach (var itemId in manageDocumentFilterViewModel.documentViewModel.ClientId)
                         {
                             documentClient dClient = new documentClient()
                             {
                                 documentID = newDocument.ID,
-                                clientID = itemId
+                                clientID = Convert.ToInt32(itemId)
                             };
                             _documentClientsRepo.Add(dClient);
                         }

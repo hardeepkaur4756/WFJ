@@ -9,6 +9,7 @@
 @using (Ajax.BeginForm("AddUser", "Home", new AjaxOptions { OnSuccess = "onSuccess" }))
 {
     <div>
+        <div id="UserErrorMessages" style="color:red;"></div>
         <div class="row">
             @Html.HiddenFor(m => m.userViewModel.UserID)
 
@@ -178,9 +179,9 @@
     </div>
 }
 
-<script src="~/Scripts/managelogin.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
+@*<script src="~/Scripts/managelogin.js"></script>*@
+@*<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>*@
 <script>
     function onSuccess(response) {
         if (response.Success) {
@@ -189,6 +190,19 @@
             $('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
         else {
+            $("#UserErrorMessages").html("");
+            if (response.ErrorMessages) {
+                if (response.ErrorMessages.length > 0) {
+                    var str = "<ul>"
+                    var i;
+                    for (i = 0; i < response.ErrorMessages.length; i++) {
+                        str = str + "<li>" + response.ErrorMessages[i] + "</li>"
+                    }
+                    str = str + "</ul>"
+                    $("#UserErrorMessages").html(str).show().delay(3000).fadeOut();
+                }
+            }
+            $('#AddEditErrorMsg').text("");
             $('#AddEditErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
     }

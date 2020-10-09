@@ -97,8 +97,25 @@ namespace WFJ.Web.Controllers
 
         public ActionResult AddDocument(ManageDocumentFilterViewModel manageDocumentFilterViewModel)
         {
-            _documentSearchService.AddOrUpdate(manageDocumentFilterViewModel);
-            return Json(new { Success = manageDocumentFilterViewModel.IsSuccess, Message = manageDocumentFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+            
+            if (ModelState.IsValid)
+            {
+                _documentSearchService.AddOrUpdate(manageDocumentFilterViewModel);
+                return Json(new { Success = manageDocumentFilterViewModel.IsSuccess, Message = manageDocumentFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                List<string> ErrorMessages = new List<string>();
+                var errors = ModelState.Select(x => x.Value.Errors)
+                           .Where(y => y.Count > 0)
+                           .ToList();
+                if (errors != null)
+                {
+                     ErrorMessages  = errors.SelectMany(x=>x.Select(y=>y.ErrorMessage)).ToList();
+                }
+                return Json(new { Success = false,ErrorMessages=ErrorMessages }, JsonRequestBehavior.AllowGet);
+            }
+            
             //return View();
         }
 
@@ -108,9 +125,9 @@ namespace WFJ.Web.Controllers
             ManageDocumentFilterViewModel manageDocumentFilterViewModel = id > 0 ? _documentSearchService.GetDocumentById(id) : new ManageDocumentFilterViewModel();
             manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
             manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
-           
+            
             manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
-            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);
+            return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel), ClientId = manageDocumentFilterViewModel.documentViewModel.ClientId }, JsonRequestBehavior.AllowGet);
         }
         
     }

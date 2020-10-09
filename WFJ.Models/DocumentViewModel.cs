@@ -15,7 +15,8 @@ namespace WFJ.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter Document Name.")]
         public string DocumentName { get; set; }
         public string Description { get; set; }
-        public List<int> ClientId { get; set; }
+        //public List<string> ClientId { get; set; }
+        public int[] ClientId { get; set; }
         public Nullable<int> PracticeAreaId { get; set; }
         public string FileName { get; set; }
        

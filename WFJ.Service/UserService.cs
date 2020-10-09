@@ -131,12 +131,21 @@ namespace WFJ.Service
                     var ph = new Microsoft.AspNet.Identity.PasswordHasher();
                     if (ph.VerifyHashedPassword(user.Password, currentPassword).ToString() == "Success")
                     {
-                        var hash = ph.HashPassword(newPassword);
-                        user.Password = hash;
-                        user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
-                        _userRepo.Update(user);
-                        resultModel.IsSuccess = true;
-                        resultModel.Message = "Password changed successfully.";
+                        if (user.Active ==1)
+                        {
+                            var hash = ph.HashPassword(newPassword);
+                            user.Password = hash;
+                            user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
+                            _userRepo.Update(user);
+                            resultModel.IsSuccess = true;
+                            resultModel.Message = "Password changed successfully.";
+                        }
+                        else
+                        {
+                            resultModel.IsSuccess = false;
+                            resultModel.Message = "Your account is inactive, please contact your WFJ Administrator";
+                        }
+                       
                     }
                     else
                     {
@@ -171,17 +180,26 @@ namespace WFJ.Service
                 {
                     if (ph.VerifyHashedPassword(user.Password, loginViewModel.Password).ToString() == "Success")
                     {
-                        HttpContext.Current.Session["UserType"] = user.UserType;
-                        HttpContext.Current.Session["UserId"] = Convert.ToString(user.UserID);
-                        //if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])))))
-                        if (user.PasswordExpirationDate != null && (DateTime.Now > Convert.ToDateTime(user.PasswordExpirationDate.Value)))
+                        if (user.Active ==1)
                         {
-                            resultModel.IsPasswordExpire = true;
+                            HttpContext.Current.Session["UserType"] = user.UserType;
+                            HttpContext.Current.Session["UserId"] = Convert.ToString(user.UserID);
+                            //if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])))))
+                            if (user.PasswordExpirationDate != null && (DateTime.Now > Convert.ToDateTime(user.PasswordExpirationDate.Value)))
+                            {
+                                resultModel.IsPasswordExpire = true;
+                                resultModel.Message = "";
+                                return resultModel;
+                            }
+                            resultModel.IsSuccess = true;
                             resultModel.Message = "";
-                            return resultModel;
                         }
-                        resultModel.IsSuccess = true;
-                        resultModel.Message = "";
+                        else
+                        {
+                            resultModel.IsSuccess = false;
+                            resultModel.Message = "Your account is inactive, please contact your WFJ Administrator";
+                        }
+                        
                     }
                     else
                     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
@@ -216,11 +217,26 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public ActionResult AddUser(ManagerUserFilterViewModel managerUserFilterViewModel)
         {
+            
             try
             {
-                _userService.AddOrUpdate(managerUserFilterViewModel);
-                return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
-
+                if (ModelState.IsValid)
+                {
+                    _userService.AddOrUpdate(managerUserFilterViewModel);
+                    return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    List<string> ErrorMessages = null;
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    if (errors != null)
+                    {
+                        ErrorMessages = errors.SelectMany(x => x.Select(y => y.ErrorMessage)).ToList();
+                    }
+                    return Json(new { Success = false, ErrorMessages = ErrorMessages }, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {

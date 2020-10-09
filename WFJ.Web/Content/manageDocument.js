@@ -130,12 +130,23 @@ function EditDocument(event) {
                     }
 
                     $('#newdocument').find('.modal-body').html(response.Html);
-                    //$('#newdocument').find('.btn-primary').addclass('savebid');
                     $('#newdocument').modal('show');
-                    $(".boot-multiselect222").multiselect({
+                    var dataarray = response.ClientId;
+                    // Set the value
+                    $("#boot-document-multiselect").val(dataarray);
+                    $("#boot-document-multiselect").multiselect("refresh");
+                    $("#boot-document-multiselect").multiselect({
                         includeSelectAllOption: true,
                         enableFiltering: true,
                     });
+                    //$('#newdocument').find('.btn-primary').addclass('savebid');
+                    //$("#documentViewModel_ClientId").multiselect('select', ['1', '2']);
+                  
+                    //$(".boot-multiselect222").multiselect({
+                    //    includeSelectAllOption: true,
+                    //    enableFiltering: true,
+                    //});
+                   
                     $(".custom-file-input").on("change", function () {
                         var fileName = $(this).val().split("\\").pop();
                         $(this)
@@ -169,9 +180,8 @@ function AddDocument(event) {
             if (response.Success) {
                 $('#newdocument').find('#exampleModalLabel').html('Add Document');
                 $('#newdocument').find('.modal-body').html(response.Html);
-                //$('#newdocument').find('.btn-primary').addclass('savebid');
                 $('#newdocument').modal({ backdrop: "static", show: true });
-                $(".boot-multiselect222").multiselect({
+                $("#boot-document-multiselect").multiselect({
                     includeSelectAllOption: true,
                     enableFiltering: true,
                 });

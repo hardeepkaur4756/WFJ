@@ -180,5 +180,19 @@ namespace WFJ.Web.Controllers
             // Add cookie to response
             Response.Cookies.Add(loginUserCookie);
         }
+
+        public ActionResult Logout()
+        {
+            try
+            {
+                Session.RemoveAll(); Session.Clear(); Session.Abandon();
+                return RedirectToAction("Login", "Account");
+            }
+            catch (Exception ex)
+            {
+                string extraInformation = "Method Name = LogOut, Controller = Account";
+                return RedirectToAction("Login", "Account", new { message = "An error occurred, please try again." });
+            }
+        }
     }
 }
