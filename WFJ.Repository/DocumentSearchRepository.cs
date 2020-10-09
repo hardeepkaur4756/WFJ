@@ -25,6 +25,7 @@ namespace WFJ.Repository
 
         public List<Document> GetDocumentList(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword)
         {
+            IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository(); 
             var sSearch = searchKeyword.ToLower();
             IEnumerable<Document> documents;
 
@@ -33,7 +34,8 @@ namespace WFJ.Repository
                 documents = _context.Documents.Include(s => s.PracticeArea).Include(s => s.Client).ToList();
                 if (clientId != -1)
                 {
-                    documents = documents.Where(x =>x.ClientID == clientId);
+                    //documents = documents.Where(x =>x.ClientID == clientId);
+                    documents = documents.Where(x => _documentClientsRepo.GetByClientID(clientId).Select(y => y.documentID).Contains(x.ID));
                 }
                 if (documentTypeId != -1)
                 {

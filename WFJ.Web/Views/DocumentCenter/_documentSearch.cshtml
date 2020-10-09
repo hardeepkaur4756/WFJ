@@ -168,6 +168,7 @@
             $('#newdocument').modal('hide');
             $('#AddDocMsg').text("");
             $('#AddDocMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            GetDataGrid();
         }
         else {
              $("#ErrorMessages").html("");

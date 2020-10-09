@@ -48,7 +48,7 @@ namespace WFJ.Service
                         User user = _userRepo.GetByEmail(email);
                         if (user != null)
                         {
-                            string baseUrl = HttpContext.Current.Request.UrlReferrer.ToString();
+                            string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace("/Account/ForgotPassword", "");
                             string queryString = baseUrl + "/Account/ResetPassword/" + "?" + Util.Encode("userId=" + user.UserID);
                             string subject = "Forgot Password";
                             string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
@@ -418,9 +418,6 @@ namespace WFJ.Service
                         user.UserType = managerUserFilterViewModel.userViewModel.UserType;
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
-                        user.DateAdded = DateTime.Now;
-                        user.PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"]));
-                        user.IsPasswordHashed = false;
                         _userRepo.Update(user);
                         managerUserFilterViewModel.IsSuccess = true;
                         managerUserFilterViewModel.Message = "Record Updated Successfully.";
@@ -438,7 +435,7 @@ namespace WFJ.Service
                     {
                         User user = new User()
                         {
-                            UserName = managerUserFilterViewModel.userViewModel.FirstName + " " + managerUserFilterViewModel.userViewModel.LastName,
+                            UserName = managerUserFilterViewModel.userViewModel.FirstName  + managerUserFilterViewModel.userViewModel.LastName,
                             Password = ph.HashPassword(managerUserFilterViewModel.userViewModel.Password),
                             FirstName = managerUserFilterViewModel.userViewModel.FirstName,
                             LastName = managerUserFilterViewModel.userViewModel.LastName,
@@ -496,6 +493,7 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.UserType = user.UserType;
                 managerUserFilterViewModel.userViewModel.IsActive = user.Active;
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
+                managerUserFilterViewModel.userViewModel.Password = user.Password;
             }
             return managerUserFilterViewModel;
         }

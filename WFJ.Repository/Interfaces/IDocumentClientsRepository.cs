@@ -11,5 +11,6 @@ namespace WFJ.Repository.Interfaces
     {
         List<documentClient> GetByDocumentID(int documentId);
         void DeleteByDocumentId(int documentId);
+        List<documentClient> GetByClientID(int clientID);
     }
 }

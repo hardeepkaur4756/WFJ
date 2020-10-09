@@ -177,8 +177,24 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                _userService.AddOrUpdate(managerUserFilterViewModel);
-                return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+                if (ModelState.IsValid)
+                {
+                    _userService.AddOrUpdate(managerUserFilterViewModel);
+                    return Json(new { Success = managerUserFilterViewModel.IsSuccess, Message = managerUserFilterViewModel.Message }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    List<string> ErrorMessages = null;
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    if (errors != null)
+                    {
+                        ErrorMessages = errors.SelectMany(x => x.Select(y => y.ErrorMessage)).ToList();
+                    }
+                    return Json(new { Success = false, ErrorMessages = ErrorMessages }, JsonRequestBehavior.AllowGet);
+                }
+
 
             }
             catch (Exception ex)
@@ -187,6 +203,7 @@ namespace WFJ.Web.Controllers
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
             }
         }
+
 
         [HttpGet]
         public ActionResult EditUser(int id)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -16,6 +17,7 @@ namespace WFJ.Service
     {
         private IDocumentSearchRepository _documentSearchRepository = new DocumentSearchRepository();
         private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
+        private ICodesRepository _codesRepo = new CodesRepository();
         public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
         {
             ManageDocumentModel model = new ManageDocumentModel();
@@ -98,9 +100,21 @@ namespace WFJ.Service
                     default:
                     break;
             }
-
+            
+            
+            
             model.documents = MappingExtensions.MapList<Document, DocumentsModel>(documents?.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
-           
+            if (documents != null)
+            {
+                foreach (var document in model.documents)
+                {
+                    document.CurrentUserType = HttpContext.Current.Session["UserType"] != null ? Convert.ToInt32(HttpContext.Current.Session["UserType"]) : 0; 
+                    if (!string.IsNullOrEmpty(document.DocumentTypeID))
+                    {
+                        document.DocumentType = _codesRepo.GetById(Convert.ToInt32(document.DocumentTypeID)).Value;
+                    }
+                }
+            }
             return model;
         }
 
@@ -161,9 +175,9 @@ namespace WFJ.Service
                     document.Description = manageDocumentFilterViewModel.documentViewModel.Description;
                     document.FileName = manageDocumentFilterViewModel.documentFile !=null ?manageDocumentFilterViewModel.documentFile.FileName : document.FileName;
                     _documentSearchRepository.Update(document);
+                    _documentClientsRepo.DeleteByDocumentId(manageDocumentFilterViewModel.documentViewModel.Id);
                     if (manageDocumentFilterViewModel.documentViewModel.ClientId != null)
                     {
-                        _documentClientsRepo.DeleteByDocumentId(manageDocumentFilterViewModel.documentViewModel.Id);  
                         foreach (var itemId in manageDocumentFilterViewModel.documentViewModel.ClientId)
                         {
                             documentClient dClient = new documentClient()

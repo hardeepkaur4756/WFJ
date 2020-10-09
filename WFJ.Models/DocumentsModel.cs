@@ -29,5 +29,6 @@ namespace WFJ.Models
         public Nullable<int> SeqNo { get; set; }
         public string ClientName { get; set; }
         public string PracticeAreaName { get; set; }
+        public int? CurrentUserType { get; set; }
     }
 }

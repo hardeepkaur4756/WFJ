@@ -8,164 +8,178 @@
 @*@using (Html.BeginForm("AddUser", "Home", FormMethod.Post, new { @autocomplete = "off" }))*@
 @using (Ajax.BeginForm("AddUser", "User", new AjaxOptions { OnSuccess = "onSuccess" }))
 {
-    <div>
-        <div class="row">
-            @Html.HiddenFor(m => m.userViewModel.UserID)
+<div>
+    <div id="UserErrorMessages" style="color:red;"></div>
+    <div class="row">
+        @Html.HiddenFor(m => m.userViewModel.UserID)
 
+        @if (!(Model.userViewModel.UserID > 0))
+        {
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    @Html.TextBoxFor(m => m.userViewModel.FirstName, new { @class = "form-control serialnocls" })
-                    @Html.ValidationMessageFor(m => m.userViewModel.FirstName)
+                    <label for="password">Password</label>
+                    @Html.TextBoxFor(m => m.userViewModel.Password, new { @class = "form-control serialnocls", @type = "password" })
+                    @*@Html.ValidationMessageFor(m => m.userViewModel.Password)*@
                 </div>
             </div>
-
+        }
+        else
+        {
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    @Html.TextBoxFor(m => m.userViewModel.LastName, new { @class = "form-control serialnocls" })
-                    @Html.ValidationMessageFor(m => m.userViewModel.LastName)
+                    <label for="clear">Password</label>
+                    @Html.HiddenFor(m => m.userViewModel.Password)
+                    @*<a href="/Account/ForgotPassword?email=@Model.userViewModel.Email" onclick="SendPasswrdResetLink(@Model.userViewModel.Email)" class="anchor-design d-block">Send Password Reset Link</a>*@
+                    <a onclick="SendPasswordResetLink('@Model.userViewModel.Email');" class="anchor-design d-block">Send Password Reset Link</a>
                 </div>
             </div>
+        }
 
-            @if (!(Model.userViewModel.UserID > 0))
-            {
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        @Html.TextBoxFor(m => m.userViewModel.Password, new { @class = "form-control serialnocls", @type = "password" })
-                        @Html.ValidationMessageFor(m => m.userViewModel.Password)
-                    </div>
-                </div>
-            }
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="telephone">Telephone</label>
-                    @Html.TextBoxFor(m => m.userViewModel.Telephone, new { @class = "form-control serialnocls" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                @Html.TextBoxFor(m => m.userViewModel.FirstName, new { @class = "form-control serialnocls" })
+                @Html.ValidationMessageFor(m => m.userViewModel.FirstName)
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="address1">Address1</label>
-                    @Html.TextBoxFor(m => m.userViewModel.Address1, new { @class = "form-control serialnocls" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                @Html.TextBoxFor(m => m.userViewModel.LastName, new { @class = "form-control serialnocls" })
+                @Html.ValidationMessageFor(m => m.userViewModel.LastName)
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="address2">Address2</label>
-                    @Html.TextBoxFor(m => m.userViewModel.Address2, new { @class = "form-control serialnocls" })
-                </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="telephone">Telephone</label>
+                @Html.TextBoxFor(m => m.userViewModel.Telephone, new { @class = "form-control serialnocls" })
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    @Html.TextBoxFor(m => m.userViewModel.City, new { @class = "form-control serialnocls" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="address1">Address1</label>
+                @Html.TextBoxFor(m => m.userViewModel.Address1, new { @class = "form-control serialnocls" })
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="state">State</label>
-                    @Html.TextBoxFor(m => m.userViewModel.State, new { @class = "form-control serialnocls" })
-                    @Html.ValidationMessageFor(m => m.userViewModel.State)
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="address2">Address2</label>
+                @Html.TextBoxFor(m => m.userViewModel.Address2, new { @class = "form-control serialnocls" })
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="postalCode">Postal Code</label>
-                    @Html.TextBoxFor(m => m.userViewModel.PostalCode, new { @class = "form-control" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="city">City</label>
+                @Html.TextBoxFor(m => m.userViewModel.City, new { @class = "form-control serialnocls" })
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="email">EMail</label>
-                    @Html.TextBoxFor(m => m.userViewModel.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.userViewModel.Email)
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="state">State</label>
+                @Html.TextBoxFor(m => m.userViewModel.State, new { @class = "form-control serialnocls" })
+                @Html.ValidationMessageFor(m => m.userViewModel.State)
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="userType">Type</label>
-                    @Html.DropDownListFor(m => m.userViewModel.UserType, Model.UserType, "Select", new { @class = "form-control" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                @Html.TextBoxFor(m => m.userViewModel.PostalCode, new { @class = "form-control" })
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="active">Active</label>
-                    @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active, "Select", new { @class = "form-control" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="email">EMail</label>
+                @Html.TextBoxFor(m => m.userViewModel.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.userViewModel.Email)
             </div>
+        </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="dashboardUser">Dashboard User</label>
-                    @Html.DropDownListFor(m => m.userViewModel.IsDashboardUser, Model.DashboardUser, "Select", new { @class = "form-control" })
-                </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="userType">Type</label>
+                @Html.DropDownListFor(m => m.userViewModel.UserType, Model.UserType, "Select", new { @class = "form-control" })
             </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="active">Active</label>
+                @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active, "Select", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="dashboardUser">Dashboard User</label>
+                @Html.DropDownListFor(m => m.userViewModel.IsDashboardUser, Model.DashboardUser, "Select", new { @class = "form-control" })
+            </div>
+        </div>
 
 
-            <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="attorney">Attorney</label>
+                <select id="inputState"
+                        class="form-control">
+                    <option>N/A</option>
+                </select>
+            </div>
+        </div>
+        @*<div class="col-md-6">
                 <div class="form-group">
-                    <label for="attorney">Attorney</label>
-                    <select id="inputState"
-                            class="form-control">
-                        <option>N/A</option>
+                    <label for="inputState">Attorney</label>
+                    <select multiple="multiple" class="multiselect">
+                        <option value="jQuery">jQuery Tutorials</option>
+                        <option value="Bootstrap">Bootstrap Framework</option>
+                        <option value="HTML">HTML</option>
+                        <option value="CSS">CSS</option>
+                        <option value="Angular">Angular</option>
+                        <option value="Angular">javascript</option>
+                        <option value="Java">Java</option>
+                        <option value="Python">Python</option>
+                        <option value="MySQL">MySQL</option>
+                        <option value="Oracle">Oracle</option>
                     </select>
                 </div>
+            </div>*@
+        <div class="col-md-12">
+            <div class="form-group custom-multiselect-scroll">
+                <label for="regions">Region</label>
+                @Html.DropDownListFor(m => m.userViewModel.RegionId, Model.Regions, new { @id = "boot-multiselect", @multiple = "multiple", @class = "multiselect" })
             </div>
-            @*<div class="col-md-6">
-                    <div class="form-group">
-                        <label for="inputState">Attorney</label>
-                        <select multiple="multiple" class="multiselect">
-                            <option value="jQuery">jQuery Tutorials</option>
-                            <option value="Bootstrap">Bootstrap Framework</option>
-                            <option value="HTML">HTML</option>
-                            <option value="CSS">CSS</option>
-                            <option value="Angular">Angular</option>
-                            <option value="Angular">javascript</option>
-                            <option value="Java">Java</option>
-                            <option value="Python">Python</option>
-                            <option value="MySQL">MySQL</option>
-                            <option value="Oracle">Oracle</option>
-                        </select>
-                    </div>
-                </div>*@
-            <div class="col-md-12">
-                <div class="form-group custom-multiselect-scroll">
-                    <label for="regions">Region</label>
-                    @Html.DropDownListFor(m => m.userViewModel.RegionId, Model.Regions, new { @id = "boot-multiselect", @multiple = "multiple", @class = "multiselect" })
-                </div>
-            </div>
+        </div>
 
-            <div class="col-md-12">
-                <div class="form-group custom-multiselect-scroll">
-                    @*<label for="inputState">Form(s)</label>
-                        <select multiple="multiple" class="multiselect">
-                            <option value="jQuery">jQuery Tutorials</option>
-                            <option value="Bootstrap">Bootstrap Framework</option>
-                            <option value="HTML">HTML</option>
-                            <option value="CSS">CSS</option>
-                            <option value="Angular">Angular</option>
-                            <option value="Angular">javascript</option>
-                            <option value="Java">Java</option>
-                            <option value="Python">Python</option>
-                            <option value="MySQL">MySQL</option>
-                            <option value="Oracle">Oracle</option>
-                        </select>*@
-                    <label for="inputState">Form(s)</label>
-                    @Html.DropDownListFor(m => m.userViewModel.FormId, Model.Forms, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
-                </div>
+        <div class="col-md-12">
+            <div class="form-group custom-multiselect-scroll">
+                @*<label for="inputState">Form(s)</label>
+                    <select multiple="multiple" class="multiselect">
+                        <option value="jQuery">jQuery Tutorials</option>
+                        <option value="Bootstrap">Bootstrap Framework</option>
+                        <option value="HTML">HTML</option>
+                        <option value="CSS">CSS</option>
+                        <option value="Angular">Angular</option>
+                        <option value="Angular">javascript</option>
+                        <option value="Java">Java</option>
+                        <option value="Python">Python</option>
+                        <option value="MySQL">MySQL</option>
+                        <option value="Oracle">Oracle</option>
+                    </select>*@
+                <label for="inputState">Form(s)</label>
+                @Html.DropDownListFor(m => m.userViewModel.FormId, Model.Forms, new { @id = "boot-multiselect1", @multiple = "multiple", @class = "multiselect" })
             </div>
         </div>
     </div>
+</div>
     <div>
         <span id="AddEditErrorMsg" style="color:red;"></span>
         <br />
@@ -179,16 +193,58 @@
 }
 
 <script src="~/Scripts/managelogin.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js"></script>*@
 <script>
+    function SendPasswordResetLink(email) {
+        if (email=="" || email == null) {
+            jQuery('#AddEditErrorMsg').text("Please enter email address").css("color", "red").delay(3000).fadeOut();
+        }
+        else {
+            jQuery.ajax({
+            type: "POST",
+            url: "/Account/ForgotPassword",
+            data: {
+                "email": email.trim()
+            },
+            success: function (data) { 
+                if (data.success) {
+                    jQuery('#AddEditErrorMsg').text();
+                    jQuery('#AddEditErrorMsg').text(data.message).css("color", "green").show().delay(3000).fadeOut();
+                }
+                else {
+                    jQuery('#AddEditErrorMsg').text();
+                    jQuery('#AddEditErrorMsg').text(data.message).css("color", "red").show().delay(3000).fadeOut();
+                }
+               
+            }
+        });
+        }
+    }
+  
+        
+
     function onSuccess(response) {
         if (response.Success) {
             $('#newdocument').modal('hide');
             $('#AddUerMsg').text("");
             $('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+             GetDatafortable();
         }
         else {
+            $("#UserErrorMessages").html("");
+            if (response.ErrorMessages) {
+                if (response.ErrorMessages.length > 0) {
+                    var str = "<ul>"
+                    var i;
+                    for (i = 0; i < response.ErrorMessages.length; i++) {
+                        str = str + "<li>" + response.ErrorMessages[i] + "</li>"
+                    }
+                    str = str + "</ul>"
+                    $("#UserErrorMessages").html(str).show().delay(3000).fadeOut();
+                }
+            }
+            $('#AddEditErrorMsg').text("");
             $('#AddEditErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
         }
     }

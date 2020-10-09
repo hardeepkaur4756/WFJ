@@ -26,6 +26,11 @@ namespace WFJ.Repository
             _context.documentClients.RemoveRange(_context.documentClients.Where(x => x.documentID == documentId));
             _context.SaveChanges();
         }
+
+        public List<documentClient> GetByClientID(int clientID)
+        {
+            return _context.documentClients.Where(x => x.clientID == clientID).ToList();
+        }
     }
     
 }

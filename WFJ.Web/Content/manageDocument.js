@@ -70,15 +70,23 @@ function GetDataGrid() {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
+                        if (full.CurrentUserType == 1 || full.CurrentUserType == 6 || full.CurrentUserType == 8) {
+                            var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.ID + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
+                            return buttons;
+                        }
+                        else {
+                            return "";
+                        }
                         //var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#editdocument' onclick='return EditDocument()'>Edit</a>";
-                        var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.ID + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
-                        return buttons;
+                       
                     }
                 },
                 { "mData": "ClientName" },
-                { "mData": "StateCodeID" },
+                //{ "mData": "StateCodeID" },
+                { "mData": "StateCode" },
                 { "mData": "DocumentName" },
-                { "mData": "DocumentTypeID" },
+                //{ "mData": "DocumentTypeID" },
+                { "mData": "DocumentType" },
                 { "mData": "PracticeAreaName" }
             ],
             "aoColumnDefs": [
