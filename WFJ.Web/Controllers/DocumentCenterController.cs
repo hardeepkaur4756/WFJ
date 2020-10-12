@@ -28,9 +28,7 @@ namespace WFJ.Web.Controllers
                 ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
             manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
             {
-                //clientModels = _clientService.GetClients(),
                 client = _clientService.GetAllClients(),
-                //practiceAreaModels = _practiceAreaService.GetAll(),
                 practiceArea = _practiceAreaService.GetAllPracticeArea(),
                 categoryModels = _categoryService.GetAll(),
                 formTypeModels = _formTypeService.GetAll(),

@@ -41,10 +41,6 @@ namespace WFJ.Repository
                 {
                     documents = documents.Where(x => x.DocumentTypeID == Convert.ToString(documentTypeId));
                 }
-                //if (projectTypeId != -1)
-                //{
-                //    documents = documents.Where(x => x.ProjectTypeID == Convert.ToString(projectTypeId));
-                //}
                 if (practiceAreaId != -1)
                 {
                     documents = documents.Where(x => x.PracticeAreaID == practiceAreaId);

@@ -45,7 +45,6 @@ function GetDataGrid() {
                 var categoryId = $('#ddlCategory option:selected').val();
                 var formTypeId = $('#ddlFormType option:selected').val();
                 var searchKeyword = $('#txtSearchKeyword').val();
-
                 aoData.push({ "name": "sortCol", "value": colName });
                 aoData.push({ "name": "sortDir", "value": sDir });
                 aoData.push({ "name": "clientId", "value": clientId });
@@ -118,7 +117,6 @@ function EditDocument(event) {
         $.ajax({
             type: "Get",
             url: "/DocumentCenter/EditDocument",
-            //data: { id: Id, "viewType": "Display" },
             data: { id: Id },
             dataType: "json",
             contentType: "application/json; charset=utf-8",
@@ -141,13 +139,7 @@ function EditDocument(event) {
                         includeSelectAllOption: true,
                         enableFiltering: true,
                     });
-                    //$('#newdocument').find('.btn-primary').addclass('savebid');
-                    //$("#documentViewModel_ClientId").multiselect('select', ['1', '2']);
-                  
-                    //$(".boot-multiselect222").multiselect({
-                    //    includeSelectAllOption: true,
-                    //    enableFiltering: true,
-                    //});
+                   
                    
                     $(".custom-file-input").on("change", function () {
                         var fileName = $(this).val().split("\\").pop();
@@ -156,16 +148,13 @@ function EditDocument(event) {
                             .addClass("selected")
                             .html(fileName);
                     });
-                    //removeloader();
                 }
                 else {
                     //notificationhelper.showerror('sorry an error occured.')
-                    //removeloader();
                 }
             },
             error: function (result) {
                 //notificationHelper.ShowError(result.Message);
-                //removeLoader();
             }
         });
     }
@@ -194,16 +183,13 @@ function AddDocument(event) {
                         .addClass("selected")
                         .html(fileName);
                 });
-                //removeloader();
             }
             else {
                 //notificationhelper.showerror('sorry an error occured.')
-                //removeloader();
             }
         },
         error: function (result) {
             //notificationHelper.ShowError(result.Message);
-            //removeLoader();
         }
     });
 }

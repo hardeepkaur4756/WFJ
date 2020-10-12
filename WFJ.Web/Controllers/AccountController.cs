@@ -187,11 +187,6 @@ namespace WFJ.Web.Controllers
             try
             {
                 Session.RemoveAll(); Session.Clear(); Session.Abandon();
-                string[] myCookies = Request.Cookies.AllKeys;
-                foreach (string cookie in myCookies)
-                {
-                    Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
-                }
                 return RedirectToAction("Login", "Account");
             }
             catch (Exception ex)
