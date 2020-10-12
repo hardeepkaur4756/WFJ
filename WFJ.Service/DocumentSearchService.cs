@@ -18,10 +18,10 @@ namespace WFJ.Service
         private IDocumentSearchRepository _documentSearchRepository = new DocumentSearchRepository();
         private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
         private ICodesRepository _codesRepo = new CodesRepository();
-        public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
+        public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
         {
             ManageDocumentModel model = new ManageDocumentModel();
-            var documents = _documentSearchRepository.GetDocumentList(clientId,documentTypeId, projectTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword);
+            var documents = _documentSearchRepository.GetDocumentList(clientId,documentTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword);
             model.totalUsersCount = documents?.Count();
             switch (sortCol)
             {

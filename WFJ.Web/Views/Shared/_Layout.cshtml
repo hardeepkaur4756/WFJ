@@ -178,33 +178,28 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="align-self-center d-inline-block">
-                            <a href="/User/EditProfile"
-                               class="nav-link">
+                        <li class="dropdown user-profile align-self-center d-inline-block">
+                            <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false">
+                                @*<div class="media">
+                                    <img src="~/Images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29" />
+                                </div>*@
                                 <i class="fa fa-cog" aria-hidden="true"></i>
                             </a>
-                        </li>
-                        @*<li class="dropdown user-profile align-self-center d-inline-block">
-                                <a href="#" class="nav-link py-0" data-toggle="dropdown" aria-expanded="false">
-                                    <div class="media">
-                                        <img src="~/Images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29" />
-                                    </div>
-                                </a>
 
-                                <div class="dropdown-menu border dropdown-menu-right p-0">
-                                    <a href="" class="dropdown-item px-2 align-self-center d-flex">
-                                        <span class="icon-pencil mr-2 h6 mb-0"></span> Edit
-                                        Profile
-                                    </a>
-                                    <a href="" class="dropdown-item px-2 align-self-center d-flex">
-                                        <span class="icon-user mr-2 h6 mb-0"></span> View Profile
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="" class="dropdown-item px-2 text-danger align-self-center d-flex">
-                                        <span class="icon-logout mr-2 h6 mb-0"></span> Log Out
-                                    </a>
-                                </div>
-                            </li>*@
+                            <div class="dropdown-menu border dropdown-menu-right p-0">
+                                <a href="/User/EditProfile" class="dropdown-item px-2 align-self-center d-flex">
+                                    <span class="icon-pencil mr-2 h6 mb-0"></span> Edit
+                                    Profile
+                                </a>
+                                @*<a href="" class="dropdown-item px-2 align-self-center d-flex">
+                                    <span class="icon-user mr-2 h6 mb-0"></span> View Profile
+                                </a>*@
+                                <div class="dropdown-divider"></div>
+                                <a href="/Account/Logout" class="dropdown-item px-2 text-danger align-self-center d-flex">
+                                    <span class="icon-logout mr-2 h6 mb-0"></span> Log Out
+                                </a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -228,9 +223,12 @@
                         <li>
                             <a href="/Home/RequestServices"><i class="icon-grid"></i> Request services</a>
                         </li>
-                        <li>
+                        @if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator == Convert.ToInt32(Session["UserType"]))
+                        {
+                            <li>
                             <a href="/User/ManageUsers"><i class="icon-earphones"></i> Manage Users</a>
                         </li>
+                        }
                         <li>
                             <a href="/Home/Payment"><i class="icon-support"></i> Payments</a>
                         </li>

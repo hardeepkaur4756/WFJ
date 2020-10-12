@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
@@ -186,6 +187,11 @@ namespace WFJ.Web.Controllers
             try
             {
                 Session.RemoveAll(); Session.Clear(); Session.Abandon();
+                string[] myCookies = Request.Cookies.AllKeys;
+                foreach (string cookie in myCookies)
+                {
+                    Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
+                }
                 return RedirectToAction("Login", "Account");
             }
             catch (Exception ex)

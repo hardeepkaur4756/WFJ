@@ -50,7 +50,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetDocumentList(DataTablesParam param, string sortDir, string sortCol, int clientId = -1, int documentTypeId = -1, int projectTypeId=-1, int practiceAreaId=-1,int categoryId=-1,int formTypeId=-1, string searchKeyword = "")
+        public JsonResult GetDocumentList(DataTablesParam param, string sortDir, string sortCol, int clientId = -1, int documentTypeId = -1, int practiceAreaId=-1,int categoryId=-1,int formTypeId=-1, string searchKeyword = "")
         {
             try
             {
@@ -59,7 +59,7 @@ namespace WFJ.Web.Controllers
                 if (param.iDisplayStart >= param.iDisplayLength)
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
-                model = _documentSearchService.GetDocuments(clientId, documentTypeId, projectTypeId, practiceAreaId, categoryId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo);
+                model = _documentSearchService.GetDocuments(clientId, documentTypeId, practiceAreaId, categoryId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo);
                 return Json(new
                 {
                     aaData = model.documents,

@@ -23,13 +23,13 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public List<Document> GetDocumentList(int clientId, int documentTypeId, int projectTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword)
+        public List<Document> GetDocumentList(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword)
         {
             IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository(); 
             var sSearch = searchKeyword.ToLower();
             IEnumerable<Document> documents;
 
-            if (clientId != -1 || projectTypeId != -1 || practiceAreaId !=-1 || documentTypeId!=-1|| categoryId!=-1 || formTypeId!=-1|| searchKeyword != "")
+            if (clientId != -1 || practiceAreaId !=-1 || documentTypeId!=-1|| categoryId!=-1 || formTypeId!=-1|| searchKeyword != "")
             {
                 documents = _context.Documents.Include(s => s.PracticeArea).Include(s => s.Client).ToList();
                 if (clientId != -1)
@@ -41,10 +41,10 @@ namespace WFJ.Repository
                 {
                     documents = documents.Where(x => x.DocumentTypeID == Convert.ToString(documentTypeId));
                 }
-                if (projectTypeId != -1)
-                {
-                    documents = documents.Where(x => x.ProjectTypeID == Convert.ToString(projectTypeId));
-                }
+                //if (projectTypeId != -1)
+                //{
+                //    documents = documents.Where(x => x.ProjectTypeID == Convert.ToString(projectTypeId));
+                //}
                 if (practiceAreaId != -1)
                 {
                     documents = documents.Where(x => x.PracticeAreaID == practiceAreaId);

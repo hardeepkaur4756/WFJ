@@ -8,12 +8,11 @@ function SearchByDocumentFilters()
 {
             var clientId = $('#ddlDocumentClient option:selected').val();
             var documentTypeId = $('#ddlDocumentType option:selected').val();
-            var projectTypeId = $('#ddlProjectType option:selected').val();
              var practiceAreaId = $('#ddlPracticeArea option:selected').val();
              var categoryId = $('#ddlCategory option:selected').val();
             var formTypeId = $('#ddlFormType option:selected').val();
             var searchKeyword = $('#txtSearchKeyword').val();
-            if (clientId == -1 && documentTypeId == -1 && projectTypeId == -1 && practiceAreaId == -1 && categoryId == -1 && formTypeId == -1 && searchKeyword == "") {
+            if (clientId == -1 && documentTypeId == -1 && practiceAreaId == -1 && categoryId == -1 && formTypeId == -1 && searchKeyword == "") {
             $('#errormessage').text('Please select atleast one value for search').css("color", "red");
             }
             else
@@ -42,7 +41,6 @@ function GetDataGrid() {
                 var sDir = oSettings.aaSorting[0][1];
                 var clientId = $('#ddlDocumentClient option:selected').val();
                 var documentTypeId = $('#ddlDocumentType option:selected').val();
-                var projectTypeId = $('#ddlProjectType option:selected').val();
                 var practiceAreaId = $('#ddlPracticeArea option:selected').val();
                 var categoryId = $('#ddlCategory option:selected').val();
                 var formTypeId = $('#ddlFormType option:selected').val();
@@ -52,7 +50,6 @@ function GetDataGrid() {
                 aoData.push({ "name": "sortDir", "value": sDir });
                 aoData.push({ "name": "clientId", "value": clientId });
                 aoData.push({ "name": "documentTypeId", "value": documentTypeId });
-                aoData.push({ "name": "projectTypeId", "value": projectTypeId });
                 aoData.push({ "name": "practiceAreaId", "value": practiceAreaId });
                 aoData.push({ "name": "categoryId", "value": categoryId });
                 aoData.push({ "name": "formTypeId", "value": formTypeId });
