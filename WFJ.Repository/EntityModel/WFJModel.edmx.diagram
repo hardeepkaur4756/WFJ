@@ -84,7 +84,6 @@
         <EntityTypeShape EntityType="WFJDBModel.User_Function" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.User_Type" Width="1.5" PointX="26.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserAttorney" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.UserLevel" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserLoginsTable" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserRegion" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserStatusCodePermission" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
@@ -116,6 +115,9 @@
         <EntityTypeShape EntityType="WFJDBModel.UserClient" Width="1.5" PointX="33.875" PointY="14.125" />
         <AssociationConnector Association="WFJDBModel.FK_UserClients_ClientID" />
         <AssociationConnector Association="WFJDBModel.FK_UserClients_UserID" />
+        <EntityTypeShape EntityType="WFJDBModel.UserLevel" Width="1.5" PointX="33.875" PointY="18" />
+        <AssociationConnector Association="WFJDBModel.FK_UserLevels_LevelID" />
+        <AssociationConnector Association="WFJDBModel.FK_UserLevels_UserID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

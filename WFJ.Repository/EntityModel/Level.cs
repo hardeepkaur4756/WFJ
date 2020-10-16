@@ -18,6 +18,7 @@ namespace WFJ.Repository.EntityModel
         public Level()
         {
             this.Users = new HashSet<User>();
+            this.UserLevels = new HashSet<UserLevel>();
         }
     
         public int ID { get; set; }
@@ -38,5 +39,7 @@ namespace WFJ.Repository.EntityModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLevel> UserLevels { get; set; }
     }
 }

@@ -1828,6 +1828,34 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserLevels_LevelID">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLevels" Type="Self.UserLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserLevels">
+              <PropertyRef Name="LevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevels_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLevels" Type="Self.UserLevels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserLevels">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="dt_addtosourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="vchSourceSafeINI" Type="varchar" Mode="In" />
           <Parameter Name="vchProjectName" Type="varchar" Mode="In" />
@@ -2247,6 +2275,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <AssociationSet Name="FK_UserClients_UserID" Association="Self.FK_UserClients_UserID">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserClients" EntitySet="UserClients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevels_LevelID" Association="Self.FK_UserLevels_LevelID">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="UserLevels" EntitySet="UserLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevels_UserID" Association="Self.FK_UserLevels_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserLevels" EntitySet="UserLevels" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -2842,6 +2878,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="SeqNo" Type="Int32" />
           <Property Name="ClientID" Type="Int32" />
           <NavigationProperty Name="Users" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="Level" ToRole="User" />
+          <NavigationProperty Name="UserLevels" Relationship="WFJDBModel.FK_UserLevels_LevelID" FromRole="Level" ToRole="UserLevel" />
         </EntityType>
         <EntityType Name="ListField">
           <Key>
@@ -3644,15 +3681,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="PersonnelID" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserLevel">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="LevelID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="LevelID" Type="Int32" Nullable="false" />
-          <Property Name="active" Type="Byte" />
-        </EntityType>
         <EntityType Name="UserLoginsTable">
           <Key>
             <PropertyRef Name="ID" />
@@ -3931,7 +3959,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <EntitySet Name="User_Functions" EntityType="Self.User_Function" />
           <EntitySet Name="User_Types" EntityType="Self.User_Type" />
           <EntitySet Name="UserAttorneys" EntityType="Self.UserAttorney" />
-          <EntitySet Name="UserLevels" EntityType="Self.UserLevel" />
           <EntitySet Name="UserLoginsTables" EntityType="Self.UserLoginsTable" />
           <EntitySet Name="UserRegions" EntityType="Self.UserRegion" />
           <EntitySet Name="UserStatusCodePermissions" EntityType="Self.UserStatusCodePermission" />
@@ -4137,6 +4164,15 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="User" EntitySet="Users" />
             <End Role="UserClient" EntitySet="UserClients" />
           </AssociationSet>
+          <EntitySet Name="UserLevels" EntityType="WFJDBModel.UserLevel" />
+          <AssociationSet Name="FK_UserLevels_LevelID" Association="WFJDBModel.FK_UserLevels_LevelID">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="UserLevel" EntitySet="UserLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevels_UserID" Association="WFJDBModel.FK_UserLevels_UserID">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserLevel" EntitySet="UserLevels" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4201,6 +4237,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_UserClientID" FromRole="User" ToRole="Client" />
           <NavigationProperty Name="Level" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="User" ToRole="Level" />
           <NavigationProperty Name="UserClients" Relationship="WFJDBModel.FK_UserClients_UserID" FromRole="User" ToRole="UserClient" />
+          <NavigationProperty Name="UserLevels" Relationship="WFJDBModel.FK_UserLevels_UserID" FromRole="User" ToRole="UserLevel" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -4361,6 +4398,45 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="UserClient">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserLevel">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="LevelID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LevelID" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Byte" />
+          <NavigationProperty Name="Level" Relationship="WFJDBModel.FK_UserLevels_LevelID" FromRole="UserLevel" ToRole="Level" />
+          <NavigationProperty Name="User" Relationship="WFJDBModel.FK_UserLevels_UserID" FromRole="UserLevel" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_UserLevels_LevelID">
+          <End Type="WFJDBModel.Level" Role="Level" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.UserLevel" Role="UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserLevel">
+              <PropertyRef Name="LevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevels_UserID">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.UserLevel" Role="UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserLevel">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -5830,15 +5906,6 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserLevels">
-            <EntityTypeMapping TypeName="WFJDBModel.UserLevel">
-              <MappingFragment StoreEntitySet="UserLevels">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
-                <ScalarProperty Name="active" ColumnName="active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserLoginsTables">
             <EntityTypeMapping TypeName="WFJDBModel.UserLoginsTable">
               <MappingFragment StoreEntitySet="UserLoginsTable">
@@ -6198,6 +6265,15 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLevels">
+            <EntityTypeMapping TypeName="WFJDBModel.UserLevel">
+              <MappingFragment StoreEntitySet="UserLevels">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="LevelID" ColumnName="LevelID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

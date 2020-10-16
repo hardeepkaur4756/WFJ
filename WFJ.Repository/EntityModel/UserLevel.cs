@@ -17,5 +17,8 @@ namespace WFJ.Repository.EntityModel
         public int UserID { get; set; }
         public int LevelID { get; set; }
         public Nullable<byte> active { get; set; }
+    
+        public virtual Level Level { get; set; }
+        public virtual User User { get; set; }
     }
 }
