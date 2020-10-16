@@ -9,10 +9,10 @@ using WFJ.Repository.Interfaces;
 
 namespace WFJ.Repository
 {
-    public class FormsRepository : GenericRepository<Form>, IFormsRepository
+    public class LevelRepository : GenericRepository<Level>, ILevelRepository
     {
         private WFJEntities context;
-        public FormsRepository()
+        public LevelRepository()
         {
             context = new WFJEntities();
         }

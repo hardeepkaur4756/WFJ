@@ -14,7 +14,8 @@ namespace WFJ.Models
     }
     public class ManagerUserFilterViewModel
     {
-        public List<ClientModel> Clients { get; set; }
+        //public List<ClientModel> Clients { get; set; }
+        public List<SelectListItem> Clients { get; set; }
         public List<SelectListItem> UserType { get; set; }
         public List<SelectListItem> Regions { get; set; }
         public List<SelectListItem> Forms { get; set; }

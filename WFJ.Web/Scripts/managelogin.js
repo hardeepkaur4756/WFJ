@@ -10,4 +10,9 @@
 
         enableFiltering: true,
     });
+    $("#boot-multiselect2").multiselect({
+        includeSelectAllOption: true,
+
+        enableFiltering: true,
+    });
 });

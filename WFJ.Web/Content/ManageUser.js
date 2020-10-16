@@ -118,6 +118,26 @@ function EditUser(event) {
                     //$('#newdocument').find('.btn-primary').addclass('savebid');
                     $('#newdocument').modal('show');
                     //removeloader();
+                    var dataarray = response.ClientId;
+                    // Set the value
+                    $("#boot-multiselect2").val(dataarray);
+                    $("#boot-multiselect2").multiselect("refresh");
+                    $("#boot-multiselect2").multiselect({
+                        includeSelectAllOption: true,
+                        enableFiltering: true,
+                    });
+                    $("#boot-multiselect").val(response.RegionId);
+                    $("#boot-multiselect").multiselect("refresh");
+                    $("#boot-multiselect").multiselect({
+                        includeSelectAllOption: true,
+                        enableFiltering: true,
+                    });
+                    $("#boot-multiselect1").val(response.FormId);
+                    $("#boot-multiselect1").multiselect("refresh");
+                    $("#boot-multiselect1").multiselect({
+                        includeSelectAllOption: true,
+                        enableFiltering: true,
+                    });
                 }
                 else {
                     $('#AddEditErrorMsg').text(response.Message);
@@ -161,6 +181,8 @@ function AddUser(event) {
             }
         });
 };
+
+
 
 
 

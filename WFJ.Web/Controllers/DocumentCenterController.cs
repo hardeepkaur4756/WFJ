@@ -19,22 +19,31 @@ namespace WFJ.Web.Controllers
         private IPracticeAreaService _practiceAreaService = new PracticeAreaService();
         private IFormTypeService _formTypeService = new FormTypeService();
         private ICodesService _codesService = new CodesService();
+        private IUserClientService _userClientService = new UserClientService();
         // GET: DocumentCenter
         [HttpGet]
         public ActionResult GetList()
         {
             try
             {
+                int userType = 0;
+                int UserId = 0;
+                if (Session["UserId"] != null)
+                {
+                    UserId = Convert.ToInt32(Session["UserId"].ToString());
+                    userType = Convert.ToInt32(Session["UserType"].ToString());
+                }
+               
                 ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
-            manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
-            {
-                client = _clientService.GetAllClients(),
-                practiceArea = _practiceAreaService.GetAllPracticeArea(),
-                categoryModels = _categoryService.GetAll(),
-                formTypeModels = _formTypeService.GetAll(),
-                documentType = _codesService.GetAllByType("DOCTYPE"),
-                state=_codesService.GetAllStateByType("STATE")
-            };
+                manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
+                {
+                    client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId) : _clientService.GetAllClients(),
+                    practiceArea = _practiceAreaService.GetAllPracticeArea(),
+                    categoryModels = _categoryService.GetAll(),
+                    formTypeModels = _formTypeService.GetAll(),
+                    documentType = _codesService.GetAllByType("DOCTYPE"),
+                    state = _codesService.GetAllStateByType("STATE")
+                };
 
                 return View(manageDocumentViewModel);
             }
@@ -42,9 +51,9 @@ namespace WFJ.Web.Controllers
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/GetList", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return View(new ManageDocumentViewModel() { ErrorMessage = "Sorry, An error occurred!" });
-                
+
             }
-            
+
         }
 
         [HttpGet]

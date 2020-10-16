@@ -26,5 +26,7 @@ namespace WFJ.Service.Interfaces
         void AddOrUpdate(ManagerUserFilterViewModel managerUserFilterViewModel);
         ManagerUserFilterViewModel GetManageUserById(int userId);
         bool CheckDuplicateByEmail(string email);
+        List<SelectListItem> GetRegionsByClient(List<int?> ClientIds);
+        List<SelectListItem> GetFormsByClient(List<int?> ClientIds);
     }
 }

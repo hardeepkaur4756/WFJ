@@ -19,6 +19,13 @@ namespace WFJ.Service
     public class UserService : IUserService
     {
         private IUserRepository _userRepo = new UserRepository();
+        private IUserClientRepository _userClientRepo = new UserClientRepository();
+        private IUserLevelsRepository _userLevelsRepo = new UserLevelsRepository();
+        private IFormUsersRepository _formUsersRepo = new FormUsersRepository();
+        private ILevelService _levelService = new LevelService();
+        private IFormService _formService = new FormService();
+        private ILevelRepository _levelRepo = new LevelRepository();
+        private IFormsRepository _formRepo = new FormsRepository();
 
         public void EncryptionPassword()
         {
@@ -350,7 +357,8 @@ namespace WFJ.Service
             foreach (var item in model.users)
             {
                 string FullName = "";
-              
+                item.ClientName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserClients.Select(y => y.Client?.ClientName));
+                item.LevelName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserLevels.Select(y => y.Level?.Name));
                 if (item.FirstName != null)
                 {
                     FullName = item.FirstName;
@@ -419,6 +427,45 @@ namespace WFJ.Service
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
                         _userRepo.Update(user);
+                        _userClientRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
+                        if (managerUserFilterViewModel.userViewModel.ClientId != null)
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.ClientId)
+                            {
+                                UserClient uClient = new UserClient()
+                                {
+                                    UserID = managerUserFilterViewModel.userViewModel.UserID,
+                                    ClientID = Convert.ToInt32(itemId)
+                                };
+                                _userClientRepo.Add(uClient);
+                            }
+                        }
+                        _userLevelsRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
+                        if (managerUserFilterViewModel.userViewModel.RegionId != null)
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.RegionId)
+                            {
+                                UserLevel userLevel = new UserLevel()
+                                {
+                                    UserID = managerUserFilterViewModel.userViewModel.UserID,
+                                    LevelID = Convert.ToInt32(itemId)
+                                };
+                                _userLevelsRepo.Add(userLevel);
+                            }
+                        }
+                        _formUsersRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
+                        if (managerUserFilterViewModel.userViewModel.FormId != null)
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.FormId)
+                            {
+                                FormUser uClient = new FormUser()
+                                {
+                                    UserID = managerUserFilterViewModel.userViewModel.UserID,
+                                    FormID = Convert.ToInt32(itemId)
+                                };
+                                _formUsersRepo.Add(uClient);
+                            }
+                        }
                         managerUserFilterViewModel.IsSuccess = true;
                         managerUserFilterViewModel.Message = "Record Updated Successfully.";
                     }
@@ -454,6 +501,46 @@ namespace WFJ.Service
                             IsPasswordHashed = false,
                         };
                         _userRepo.Add(user);
+                        if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.ClientId != null))
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.ClientId)
+                            {
+                                UserClient dClient = new UserClient()
+                                {
+                                    UserID = user.UserID,
+                                    ClientID = Convert.ToInt32(itemId)
+                                };
+                                _userClientRepo.Add(dClient);
+                            }
+
+                        }
+                        if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.RegionId != null))
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.RegionId)
+                            {
+                                UserLevel userLevel = new UserLevel()
+                                {
+                                    UserID = user.UserID,
+                                    LevelID = Convert.ToInt32(itemId)
+                                };
+                                _userLevelsRepo.Add(userLevel);
+                            }
+
+                        }
+                        if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.FormId != null))
+                        {
+                            foreach (var itemId in managerUserFilterViewModel.userViewModel.FormId)
+                            {
+                                FormUser formUser = new FormUser()
+                                {
+                                    UserID = user.UserID,
+                                    FormID = Convert.ToInt32(itemId)
+                                };
+                                _formUsersRepo.Add(formUser);
+                            }
+
+                        }
+
                         managerUserFilterViewModel.IsSuccess = true;
                         managerUserFilterViewModel.Message = "Record Inserted Successfully.";
                     }
@@ -477,6 +564,9 @@ namespace WFJ.Service
         {
             ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
             managerUserFilterViewModel.userViewModel = new UserViewModel();
+            IClientService _clientService = new ClientService();
+            managerUserFilterViewModel.Clients = _clientService.GetAllClients();
+            
             User user = _userRepo.GetById(userId);
             if (user != null)
             {
@@ -494,6 +584,33 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.IsActive = user.Active;
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
                 managerUserFilterViewModel.userViewModel.Password = user.Password;
+                managerUserFilterViewModel.userViewModel.ClientId = _userClientRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.ClientID)).ToArray();
+                managerUserFilterViewModel.Regions = GetRegionsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x=>(int?)x).ToList());
+                managerUserFilterViewModel.Forms = GetFormsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList());
+                managerUserFilterViewModel.userViewModel.RegionId = _userLevelsRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.LevelID)).ToArray();
+                managerUserFilterViewModel.userViewModel.FormId = _formUsersRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.FormID)).ToArray();
+            }
+
+            foreach (var item in managerUserFilterViewModel.Clients)
+            {
+                if (managerUserFilterViewModel.userViewModel.ClientId.Any(x => x.ToString() == item.Value))
+                {
+                    item.Selected = true;
+                }
+            }
+            foreach (var item in managerUserFilterViewModel.Regions)
+            {
+                if (managerUserFilterViewModel.userViewModel.RegionId.Any(x => x.ToString() == item.Value))
+                {
+                    item.Selected = true;
+                }
+            }
+            foreach (var item in managerUserFilterViewModel.Forms)
+            {
+                if (managerUserFilterViewModel.userViewModel.FormId.Any(x => x.ToString() == item.Value))
+                {
+                    item.Selected = true;
+                }
             }
             return managerUserFilterViewModel;
         }
@@ -508,5 +625,24 @@ namespace WFJ.Service
             }
             return false;
         }
+        public List<SelectListItem> GetRegionsByClient(List<int?> ClientIds)
+        {
+            ILevelRepository levelRepo = new LevelRepository();
+            List<SelectListItem> regionList = new List<SelectListItem>();
+            regionList = levelRepo.GetAll().Where(x => ClientIds.Contains(x.ClientID) && !string.IsNullOrEmpty(x.Name)).Select(x => new SelectListItem() { Text = x.Name, Value = x.ID.ToString() }
+                ).ToList();
+            return regionList;
+        }
+        public List<SelectListItem> GetFormsByClient(List<int?> ClientIds)
+        {
+            IFormsRepository formsRepo = new FormsRepository();
+            List<SelectListItem> fornList = new List<SelectListItem>();
+            fornList = formsRepo.GetAll().Where(x => ClientIds.Contains(x.ClientID) && !string.IsNullOrEmpty(x.FormName)).Select(x => new SelectListItem() { Text = x.FormName, Value = x.ID.ToString() }
+                ).ToList();
+            return fornList;
+        }
+
+        
+
     }
 }

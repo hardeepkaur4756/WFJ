@@ -54,13 +54,15 @@ namespace WFJ.Repository
         {
 
             IEnumerable<User> users;
+            IUserClientRepository _userClientRepo = new UserClientRepository();
 
             if (clientId != -1 || active != -1 || name != "")
             {
-                users = _context.Users.Include(s => s.AccessLevel).Include(s => s.Client).ToList();
+                users = _context.Users.Include(s => s.AccessLevel).Include(s=>s.UserClients).Include(s => s.UserClients.Select(y=>y.Client)).Include(s => s.Client).Include(s => s.UserLevels).Include(s => s.UserLevels.Select(y => y.Level)).ToList();
                 if (clientId != -1)
                 {
-                    users = users.Where(x => x.ClientID == clientId);
+                    //users = users.Where(x => x.ClientID == clientId);
+                    users = users.Where(x => _userClientRepo.GetByClientID(clientId).Select(y => y.UserID).Contains(x.UserID));
                 }
                 if (active != -1)
                 {
