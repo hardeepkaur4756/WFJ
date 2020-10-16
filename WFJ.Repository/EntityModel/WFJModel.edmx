@@ -1627,6 +1627,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="PersonnelID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserClients">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" />
+          <Property Name="UserID" Type="int" />
+        </EntityType>
         <EntityType Name="UserLevels">
           <Key>
             <PropertyRef Name="UserID" />
@@ -2026,6 +2034,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <EntitySet Name="User Functions" EntityType="Self.User Functions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User Types" EntityType="Self.User Types" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAttorneys" EntityType="Self.UserAttorneys" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserClients" EntityType="Self.UserClients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLevels" EntityType="Self.UserLevels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLoginsTable" EntityType="Self.UserLoginsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRegions" EntityType="Self.UserRegions" Schema="dbo" store:Type="Tables" />
@@ -4082,6 +4091,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="Document" EntitySet="Documents" />
           </AssociationSet>
           <EntitySet Name="ErrorLogs" EntityType="WFJDBModel.ErrorLog" />
+          <EntitySet Name="UserClients" EntityType="WFJDBModel.UserClient" />
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4270,6 +4280,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="Page" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserClient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6094,6 +6112,15 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserClients">
+            <EntityTypeMapping TypeName="WFJDBModel.UserClient">
+              <MappingFragment StoreEntitySet="UserClients">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

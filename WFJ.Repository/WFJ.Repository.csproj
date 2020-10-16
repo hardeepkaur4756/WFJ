@@ -351,6 +351,9 @@
     <Compile Include="EntityModel\UserAttorney.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\UserClient.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\UserLevel.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
