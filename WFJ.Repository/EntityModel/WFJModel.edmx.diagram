@@ -113,7 +113,9 @@
         <AssociationConnector Association="WFJDBModel.FK_DocumentClientID" />
         <AssociationConnector Association="WFJDBModel.FK_PracticeAreasID" />
         <EntityTypeShape EntityType="WFJDBModel.ErrorLog" Width="1.5" PointX="9.375" PointY="30.75" />
-        <EntityTypeShape EntityType="WFJDBModel.UserClient" Width="1.5" PointX="19.375" PointY="30.75" />
+        <EntityTypeShape EntityType="WFJDBModel.UserClient" Width="1.5" PointX="33.875" PointY="14.125" />
+        <AssociationConnector Association="WFJDBModel.FK_UserClients_ClientID" />
+        <AssociationConnector Association="WFJDBModel.FK_UserClients_UserID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

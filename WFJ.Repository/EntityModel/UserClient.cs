@@ -17,5 +17,8 @@ namespace WFJ.Repository.EntityModel
         public int ID { get; set; }
         public Nullable<int> ClientID { get; set; }
         public Nullable<int> UserID { get; set; }
+    
+        public virtual Client Client { get; set; }
+        public virtual User User { get; set; }
     }
 }

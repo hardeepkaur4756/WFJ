@@ -1800,6 +1800,34 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserClients_ClientID">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserClients" Type="Self.UserClients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserClients">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClients_UserID">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserClients" Type="Self.UserClients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserClients">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="dt_addtosourcecontrol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="vchSourceSafeINI" Type="varchar" Mode="In" />
           <Parameter Name="vchProjectName" Type="varchar" Mode="In" />
@@ -2212,6 +2240,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
             <End Role="Clients" EntitySet="Clients" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserClients_ClientID" Association="Self.FK_UserClients_ClientID">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="UserClients" EntitySet="UserClients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClients_UserID" Association="Self.FK_UserClients_UserID">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserClients" EntitySet="UserClients" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2364,6 +2400,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="Active" Type="Byte" />
           <NavigationProperty Name="Users" Relationship="WFJDBModel.FK_UserClientID" FromRole="Client" ToRole="User" />
           <NavigationProperty Name="Documents" Relationship="WFJDBModel.FK_DocumentClientID" FromRole="Client" ToRole="Document" />
+          <NavigationProperty Name="UserClients" Relationship="WFJDBModel.FK_UserClients_ClientID" FromRole="Client" ToRole="UserClient" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -4092,6 +4129,14 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           </AssociationSet>
           <EntitySet Name="ErrorLogs" EntityType="WFJDBModel.ErrorLog" />
           <EntitySet Name="UserClients" EntityType="WFJDBModel.UserClient" />
+          <AssociationSet Name="FK_UserClients_ClientID" Association="WFJDBModel.FK_UserClients_ClientID">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserClient" EntitySet="UserClients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserClients_UserID" Association="WFJDBModel.FK_UserClients_UserID">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserClient" EntitySet="UserClients" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4155,6 +4200,7 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <NavigationProperty Name="AccessLevel" Relationship="WFJDBModel.FK_UserAccessID" FromRole="User" ToRole="AccessLevel" />
           <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_UserClientID" FromRole="User" ToRole="Client" />
           <NavigationProperty Name="Level" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="User" ToRole="Level" />
+          <NavigationProperty Name="UserClients" Relationship="WFJDBModel.FK_UserClients_UserID" FromRole="User" ToRole="UserClient" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -4288,7 +4334,37 @@ warning 6002: The table/view 'WFJ.dbo.sequences' does not have a primary key def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClientID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
+          <NavigationProperty Name="Client" Relationship="WFJDBModel.FK_UserClients_ClientID" FromRole="UserClient" ToRole="Client" />
+          <NavigationProperty Name="User" Relationship="WFJDBModel.FK_UserClients_UserID" FromRole="UserClient" ToRole="User" />
         </EntityType>
+        <Association Name="FK_UserClients_ClientID">
+          <End Type="WFJDBModel.Client" Role="Client" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.UserClient" Role="UserClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserClient">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserClients_UserID">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="WFJDBModel.UserClient" Role="UserClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserClient">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
