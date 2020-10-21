@@ -14,7 +14,11 @@ namespace WFJ.Repository.EntityModel
     
     public partial class documentClient
     {
+        public int ID { get; set; }
         public int documentID { get; set; }
         public int clientID { get; set; }
+    
+        public virtual Client Client { get; set; }
+        public virtual Document Document { get; set; }
     }
 }

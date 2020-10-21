@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Document
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Document()
+        {
+            this.documentClients = new HashSet<documentClient>();
+        }
+    
         public int ID { get; set; }
         public string DocumentName { get; set; }
         public string FileName { get; set; }
@@ -36,5 +42,7 @@ namespace WFJ.Repository.EntityModel
     
         public virtual Client Client { get; set; }
         public virtual PracticeArea PracticeArea { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<documentClient> documentClients { get; set; }
     }
 }

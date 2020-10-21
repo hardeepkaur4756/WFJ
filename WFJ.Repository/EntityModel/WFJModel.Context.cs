@@ -37,7 +37,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<columnInfo> columnInfos { get; set; }
         public virtual DbSet<contactType> contactTypes { get; set; }
         public virtual DbSet<currency> currencies { get; set; }
-        public virtual DbSet<documentClient> documentClients { get; set; }
         public virtual DbSet<DocumentUsage> DocumentUsages { get; set; }
         public virtual DbSet<dtproperty> dtproperties { get; set; }
         public virtual DbSet<EMailCopy> EMailCopies { get; set; }
@@ -130,6 +129,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<UserClient> UserClients { get; set; }
         public virtual DbSet<UserLevel> UserLevels { get; set; }
+        public virtual DbSet<documentClient> documentClients { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {
