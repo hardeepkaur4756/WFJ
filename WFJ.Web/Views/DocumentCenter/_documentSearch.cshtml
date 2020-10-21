@@ -143,8 +143,9 @@
     function addDocumentSucess(response) {
         if (response.Success) {
             $('#newdocument').modal('hide');
-            $('#AddDocMsg').text("");
-            $('#AddDocMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            //$('#AddDocMsg').text("");
+            //$('#AddDocMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            $.notify(response.Message, "success");
             GetDataGrid();
         }
         else {
@@ -160,8 +161,9 @@
                     $("#ErrorMessages").html(str).show().delay(3000).fadeOut();;
                 }
             }
-            $('#AddEditDocErrorMsg').text("");
-            $('#AddEditDocErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            //$('#AddEditDocErrorMsg').text("");
+            //$('#AddEditDocErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+             $.notify(response.Message, "error");
         }
     }
 </script>

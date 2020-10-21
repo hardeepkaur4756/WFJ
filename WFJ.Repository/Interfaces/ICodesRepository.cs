@@ -10,5 +10,6 @@ namespace WFJ.Repository.Interfaces
     public interface ICodesRepository : IRepository<Code>
     {
         List<Code> GetAllByType(string type);
+        string GetStateByCode(string code);
     }
 }

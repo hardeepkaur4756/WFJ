@@ -204,8 +204,9 @@
     function onSuccess(response) {
         if (response.Success) {
             $('#newdocument').modal('hide');
-            $('#AddUerMsg').text("");
-            $('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            //$('#AddUerMsg').text("");
+            //$('#AddUerMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            $.notify(response.Message, "success");
             GetDatafortable();
         }
         else {
@@ -221,8 +222,9 @@
                     $("#UserErrorMessages").html(str).show().delay(3000).fadeOut();
                 }
             }
-            $('#AddEditErrorMsg').text("");
-            $('#AddEditErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+            //$('#AddEditErrorMsg').text("");
+            //$('#AddEditErrorMsg').text(response.Message).css("color", "red").show().delay(3000).fadeOut();
+             $.notify(response.Message, "error");
         }
     }
 

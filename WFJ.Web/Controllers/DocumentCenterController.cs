@@ -37,6 +37,7 @@ namespace WFJ.Web.Controllers
                 ManageDocumentViewModel manageDocumentViewModel = new ManageDocumentViewModel();
                 manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
                 {
+                    documentViewModel = new DocumentViewModel(),
                     client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId) : _clientService.GetAllClients(),
                     practiceArea = _practiceAreaService.GetAllPracticeArea(),
                     categoryModels = _categoryService.GetAll(),

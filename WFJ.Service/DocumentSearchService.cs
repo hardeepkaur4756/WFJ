@@ -114,6 +114,10 @@ namespace WFJ.Service
                     {
                         document.DocumentType = _codesRepo.GetById(Convert.ToInt32(document.DocumentTypeID)).Value;
                     }
+                    if (!string.IsNullOrEmpty(document.StateCode))
+                    {
+                        document.State = _codesRepo.GetStateByCode(document.StateCode);
+                    }
                 }
             }
             return model;

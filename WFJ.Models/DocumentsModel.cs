@@ -30,5 +30,6 @@ namespace WFJ.Models
         public string ClientName { get; set; }
         public string PracticeAreaName { get; set; }
         public int? CurrentUserType { get; set; }
+        public string State { get; set; }
     }
 }

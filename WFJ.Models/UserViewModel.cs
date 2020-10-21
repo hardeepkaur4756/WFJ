@@ -11,6 +11,7 @@ namespace WFJ.Models
     {
         public int UserID { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter password.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",ErrorMessage = "The field State must be a string with minimum one capital letter, one small letter, one number and one special characters is required")]
         public string Password { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter firstname.")]
         public string FirstName { get; set; }

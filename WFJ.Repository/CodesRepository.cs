@@ -20,6 +20,10 @@ namespace WFJ.Repository
             return context.Codes.Where(x => x.Type.ToLower() == type.ToLower()).ToList();
         }
 
+        public string GetStateByCode(string code)
+        {
+            return context.Codes.FirstOrDefault(x => x.Code1 == code && x.Type == "STATE").Value;
+        }
 
     }
 }
