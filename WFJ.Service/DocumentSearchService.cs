@@ -108,6 +108,7 @@ namespace WFJ.Service
             {
                 foreach (var document in model.documents)
                 {
+                    document.ClientName = string.Join(", ", documents.FirstOrDefault(x => x.ID == document.ID).documentClients.Select(y => y.Client?.ClientName));
                     document.CurrentUserType = HttpContext.Current.Session["UserType"] != null ? Convert.ToInt32(HttpContext.Current.Session["UserType"]) : 0; 
                     if (!string.IsNullOrEmpty(document.DocumentTypeID))
                     {
