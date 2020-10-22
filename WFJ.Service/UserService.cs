@@ -26,6 +26,7 @@ namespace WFJ.Service
         private IFormService _formService = new FormService();
         private ILevelRepository _levelRepo = new LevelRepository();
         private IFormsRepository _formRepo = new FormsRepository();
+        private IErrorLogService _errorLogService = new ErrorLogService();
 
         public void EncryptionPassword()
         {
@@ -77,6 +78,7 @@ namespace WFJ.Service
                     catch (Exception ex)
                     {
                         resultModel.IsSuccess = false;
+                        _errorLogService.Add(new ErrorLogModel() { Page = "UserService/SendForgotPasswordMail", CreatedBy = Convert.ToInt32(HttpContext.Current.Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                         resultModel.Message = "Sorry, there was an error while processing your request. Please try again later.";
                     }
 
@@ -357,8 +359,12 @@ namespace WFJ.Service
             foreach (var item in model.users)
             {
                 string FullName = "";
-                item.ClientName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserClients.Select(y => y.Client?.ClientName));
-                item.LevelName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserLevels.Select(y => y.Level?.Name));
+                string ClientName = "";
+                string LevelName = "";
+                ClientName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserClients.Select(y => y.Client?.ClientName));
+                item.ClientName = !string.IsNullOrEmpty(ClientName) ? ClientName.Substring(0, 50) + "...": ClientName;
+                LevelName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserLevels.Select(y => y.Level?.Name));
+                item.LevelName = !string.IsNullOrEmpty(LevelName) ? LevelName.Substring(0, 50) + "..." : LevelName;
                 if (item.FirstName != null)
                 {
                     FullName = item.FirstName;
