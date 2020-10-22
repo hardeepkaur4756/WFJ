@@ -26,5 +26,12 @@ namespace WFJ.Helper
             bool isVaidEmail = Regex.IsMatch(email, strRegex, RegexOptions.IgnoreCase);
             if (isVaidEmail) { return (true); } else { return (false); }
         }
+
+        public static bool ValidatePassword(string password)
+        {
+            string strRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
+            bool isVaidPassword = Regex.IsMatch(password, strRegex, RegexOptions.IgnoreCase);
+            if (isVaidPassword) { return (true); } else { return (false); }
+        }
     }
 }

@@ -182,6 +182,14 @@ namespace WFJ.Web.Controllers
         {
             try
             {
+                if ((managerUserFilterViewModel.userViewModel.UserID < 1) && !string.IsNullOrEmpty(managerUserFilterViewModel.userViewModel.Password)) 
+                {
+                    bool isValidPassword = Util.ValidatePassword(managerUserFilterViewModel.userViewModel.Password);
+                    if (!isValidPassword)
+                    {
+                        ModelState.AddModelError("Password", "The field Password must be a string with minimum one capital letter, one small letter, one number and one special characters is required");
+                    }
+                }
                 if (ModelState.IsValid)
                 {
                     _userService.AddOrUpdate(managerUserFilterViewModel);
