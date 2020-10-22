@@ -85,17 +85,18 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-
+                int userId = 0;
                 ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
                 manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
                 {
                     userViewModel = new UserViewModel(),
                     //Clients = _clientService.GetClients(),
                     Clients = _clientService.GetAllClients(),
-
+                    Users = _userService.GetAllUsers(userId),
                     UserType = _userService.GetAllUserTypes(),
                     Regions = new List<SelectListItem>(),
-                    Forms= new List<SelectListItem>(),
+                    Forms = new List<SelectListItem>(),
+                   
                     //Regions = _userService.GetAllRegions(),
                     //Forms = _userService.GetAllForms(),
                     Active = new List<SelectListItem>
@@ -150,10 +151,12 @@ namespace WFJ.Web.Controllers
         {
             try
             {
+                int userId = 0;
                 ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
                 managerUserFilterViewModel.userViewModel = new UserViewModel();
                 managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
                 managerUserFilterViewModel.Clients = _clientService.GetAllClients();
+                managerUserFilterViewModel.Users = _userService.GetAllUsers(userId);
                 managerUserFilterViewModel.Regions = new List<SelectListItem>();
                 managerUserFilterViewModel.Forms = new List<SelectListItem>();
                 managerUserFilterViewModel.Active = new List<SelectListItem>
@@ -223,10 +226,11 @@ namespace WFJ.Web.Controllers
         {
             try
             {
+                
                 ManagerUserFilterViewModel managerUserFilterViewModel = id > 0 ? _userService.GetManageUserById(id) : new ManagerUserFilterViewModel();
                 managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
+                managerUserFilterViewModel.Users = _userService.GetAllUsers(id);
 
-                
                 managerUserFilterViewModel.Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},

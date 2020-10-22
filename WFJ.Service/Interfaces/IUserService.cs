@@ -28,5 +28,6 @@ namespace WFJ.Service.Interfaces
         bool CheckDuplicateByEmail(string email);
         List<SelectListItem> GetRegionsByClient(List<int?> ClientIds);
         List<SelectListItem> GetFormsByClient(List<int?> ClientIds);
+        List<SelectListItem> GetAllUsers(int userId);
     }
 }

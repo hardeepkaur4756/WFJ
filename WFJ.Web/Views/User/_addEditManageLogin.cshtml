@@ -106,6 +106,13 @@
 
             <div class="col-md-6">
                 <div class="form-group">
+                    <label for="email">Users</label>
+                   @Html.DropDownListFor(m => m.userViewModel.ManagerUserId, Model.Users, "Select", new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
                     <label for="userType">Type</label>
                     @Html.DropDownListFor(m => m.userViewModel.UserType, Model.UserType, "Select", new { @class = "form-control" })
                 </div>
@@ -114,7 +121,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="active">Active</label>
-                    @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active,  new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.userViewModel.IsActive, Model.Active, new { @class = "form-control" })
                 </div>
             </div>
 
@@ -135,11 +142,11 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <div class="form-group custom-multiselect-scroll">
                     <label>Client</label>
-                    @Html.DropDownListFor(m => m.userViewModel.ClientId, Model.Clients, new { @id = "boot-multiselect2", @multiple = "multiple", @class = "multiselect",@onchange="GetRegionsAndFormsByClient();" })
+                    @Html.DropDownListFor(m => m.userViewModel.ClientId, Model.Clients, new { @id = "boot-multiselect2", @multiple = "multiple", @class = "multiselect", @onchange = "GetRegionsAndFormsByClient();" })
                 </div>
             </div>
             <div class="col-md-12">

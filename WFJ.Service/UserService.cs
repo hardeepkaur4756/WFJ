@@ -432,6 +432,7 @@ namespace WFJ.Service
                         user.UserType = managerUserFilterViewModel.userViewModel.UserType;
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
+                        user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId;
                         _userRepo.Update(user);
                         _userClientRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
                         if (managerUserFilterViewModel.userViewModel.ClientId != null)
@@ -505,6 +506,7 @@ namespace WFJ.Service
                             DateAdded = DateTime.Now,
                             PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
                             IsPasswordHashed = false,
+                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId
                         };
                         _userRepo.Add(user);
                         if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.ClientId != null))
@@ -568,11 +570,13 @@ namespace WFJ.Service
 
         public ManagerUserFilterViewModel GetManageUserById(int userId)
         {
+           
             ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
             managerUserFilterViewModel.userViewModel = new UserViewModel();
             IClientService _clientService = new ClientService();
             managerUserFilterViewModel.Clients = _clientService.GetAllClients();
-            
+          
+
             User user = _userRepo.GetById(userId);
             if (user != null)
             {
@@ -590,6 +594,7 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.IsActive = user.Active;
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
                 managerUserFilterViewModel.userViewModel.Password = user.Password;
+                managerUserFilterViewModel.userViewModel.ManagerUserId = user.ManagerUserID;
                 managerUserFilterViewModel.userViewModel.ClientId = _userClientRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.ClientID)).ToArray();
                 managerUserFilterViewModel.Regions = GetRegionsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x=>(int?)x).ToList());
                 managerUserFilterViewModel.Forms = GetFormsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList());
@@ -648,7 +653,22 @@ namespace WFJ.Service
             return fornList;
         }
 
-        
+        public List<SelectListItem> GetAllUsers(int userId)
+        {
+            IUserRepository userRepository = new UserRepository();
+            List<SelectListItem> userList = new List<SelectListItem>();
+            if (userId == 0)
+            {
+                userList = userRepository.GetAll().Where(x => !string.IsNullOrWhiteSpace(x.FirstName)).OrderBy(x=>x.FirstName).Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }
+                 ).ToList();
 
+            }
+            else if (userId != 0)
+            {
+                userList = userRepository.GetAll().Where(x => x.UserID !=userId && !string.IsNullOrWhiteSpace(x.FirstName)).OrderBy(x=>x.FirstName).Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }
+                    ).ToList();
+            }
+            return userList;
+        }
     }
 }

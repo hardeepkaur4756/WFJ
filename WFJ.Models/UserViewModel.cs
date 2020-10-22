@@ -33,6 +33,7 @@ namespace WFJ.Models
         public List<int> levelID { get; set; }
         public Nullable<byte> IsActive { get; set; }
         public Nullable<byte> IsDashboardUser { get; set; }
+        public Nullable<int> ManagerUserId { get; set; }
         //public List<int> RegionId { get; set; }
         //public List<int> FormId { get; set; }
         public int[] RegionId { get; set; }
