@@ -22,7 +22,7 @@ namespace WFJ.Web.Controllers
         private IUserClientService _userClientService = new UserClientService();
         // GET: DocumentCenter
         [HttpGet]
-        public ActionResult GetList()
+        public ActionResult Index()
         {
             try
             {
@@ -50,7 +50,7 @@ namespace WFJ.Web.Controllers
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/GetList", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentCenter/Index", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return View(new ManageDocumentViewModel() { ErrorMessage = "Sorry, An error occurred!" });
 
             }

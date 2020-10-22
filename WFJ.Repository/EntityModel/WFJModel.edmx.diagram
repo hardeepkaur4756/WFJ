@@ -102,10 +102,6 @@
         <EntityTypeShape EntityType="WFJDBModel.section" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.sequence" Width="1.5" PointX="22.75" PointY="29.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.AccessLevel" Width="1.5" PointX="25.375" PointY="26.875" />
-        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="31.625" PointY="14" />
-        <AssociationConnector Association="WFJDBModel.FK_UserAccessID" />
-        <AssociationConnector Association="WFJDBModel.FK_UserClientID" />
-        <AssociationConnector Association="WFJDBModel.FK__Users__levelID__1F198FD4" />
         <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="25" PointY="29.875" />
         <AssociationConnector Association="WFJDBModel.FK_CategoryPracticeAreaID" />
         <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="31" PointY="7.75" />
@@ -114,10 +110,15 @@
         <EntityTypeShape EntityType="WFJDBModel.ErrorLog" Width="1.5" PointX="9.375" PointY="30.75" />
         <EntityTypeShape EntityType="WFJDBModel.UserClient" Width="1.5" PointX="33.875" PointY="14.125" />
         <AssociationConnector Association="WFJDBModel.FK_UserClients_ClientID" />
-        <AssociationConnector Association="WFJDBModel.FK_UserClients_UserID" />
         <EntityTypeShape EntityType="WFJDBModel.UserLevel" Width="1.5" PointX="33.875" PointY="18" />
         <AssociationConnector Association="WFJDBModel.FK_UserLevels_LevelID" />
+        <EntityTypeShape EntityType="WFJDBModel.User" Width="1.5" PointX="31.625" PointY="14.625" />
+        <AssociationConnector Association="WFJDBModel.FK_UserAccessID" />
+        <AssociationConnector Association="WFJDBModel.FK_UserClientID" />
+        <AssociationConnector Association="WFJDBModel.FK__Users__levelID__1F198FD4" />
+        <AssociationConnector Association="WFJDBModel.FK_UserClients_UserID" />
         <AssociationConnector Association="WFJDBModel.FK_UserLevels_UserID" />
+        <AssociationConnector Association="WFJDBModel.FK_User_UserManagerUserID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

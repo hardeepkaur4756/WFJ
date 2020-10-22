@@ -110,7 +110,7 @@ namespace WFJ.Service
                 {
                     string ClientName = "";
                     ClientName = string.Join(", ", documents.FirstOrDefault(x => x.ID == document.ID).documentClients.Select(y => y.Client?.ClientName));
-                    document.ClientName = !string.IsNullOrEmpty(ClientName) ? ClientName.Substring(0, 50) + "..." : ClientName;
+                    document.ClientName = !string.IsNullOrEmpty(ClientName) && ClientName.Length > 50 ? ClientName.Substring(0, 50) + "..." : ClientName;
                     document.CurrentUserType = HttpContext.Current.Session["UserType"] != null ? Convert.ToInt32(HttpContext.Current.Session["UserType"]) : 0; 
                     if (!string.IsNullOrEmpty(document.DocumentTypeID))
                     {

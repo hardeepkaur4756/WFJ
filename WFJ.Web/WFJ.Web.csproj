@@ -3504,7 +3504,7 @@
     <Content Include="Views\Account\ForgotEmail.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\DocumentCenter\GetList.cshtml" />
+    <Content Include="Views\DocumentCenter\Index.cshtml" />
     <Content Include="Views\DocumentCenter\_addEditDocument.cshtml" />
     <Content Include="Views\DocumentCenter\_documentGrid.cshtml" />
     <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />

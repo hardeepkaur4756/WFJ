@@ -362,9 +362,9 @@ namespace WFJ.Service
                 string ClientName = "";
                 string LevelName = "";
                 ClientName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserClients.Select(y => y.Client?.ClientName));
-                item.ClientName = !string.IsNullOrEmpty(ClientName) ? ClientName.Substring(0, 50) + "...": ClientName;
+                item.ClientName = !string.IsNullOrEmpty(ClientName) && ClientName.Length>50 ? ClientName.Substring(0, 50) + "...": ClientName;
                 LevelName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserLevels.Select(y => y.Level?.Name));
-                item.LevelName = !string.IsNullOrEmpty(LevelName) ? LevelName.Substring(0, 50) + "..." : LevelName;
+                item.LevelName = !string.IsNullOrEmpty(LevelName) && LevelName.Length > 50 ? LevelName.Substring(0, 50) + "..." : LevelName;
                 if (item.FirstName != null)
                 {
                     FullName = item.FirstName;
@@ -372,7 +372,7 @@ namespace WFJ.Service
                 }
                 if (item.LastName != null) { FullName = FullName +" "+ item.LastName; }
                 item.Fullname = FullName;
-                item.ManagerName = FullName;
+                item.ManagerName = users.FirstOrDefault(x => x.UserID == item.UserID).User1?.FirstName +" "+ users.FirstOrDefault(x => x.UserID == item.UserID).User1?.LastName;
                 if (item.Active == 1 ){
                     item.ActiveStatus = "Yes";
                 } else { item.ActiveStatus = "No"; };
