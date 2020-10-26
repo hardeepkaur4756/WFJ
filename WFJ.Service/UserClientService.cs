@@ -25,5 +25,21 @@ namespace WFJ.Service
                 ).ToList();
             return clientList;
         }
+
+        public List<SelectListItem> GetManageUsersByClient(List<int?> ClientIds, int userId)
+        {
+            List<SelectListItem> manageUserList = new List<SelectListItem>();
+            if (userId == 0)
+            {
+                manageUserList = _UserClientRepo.GetAll().Where(x => ClientIds.Contains(x.ClientID) && !string.IsNullOrWhiteSpace(x.User.FirstName)).OrderBy(x => x.User.FirstName).Select(x => x.User).Distinct().Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }).ToList();
+            }
+            else if (userId != 0)
+            {
+                manageUserList = _UserClientRepo.GetAll().Where(x => ClientIds.Contains(x.ClientID) && x.UserID != userId && !string.IsNullOrWhiteSpace(x.User.FirstName)).OrderBy(x => x.User.FirstName).Select(x=>x.User).Distinct().Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }
+                    ).ToList();
+            }
+
+            return manageUserList;
+        }
     }
 }

@@ -31,5 +31,6 @@ namespace WFJ.Models
         public string PracticeAreaName { get; set; }
         public int? CurrentUserType { get; set; }
         public string State { get; set; }
+        public string DocumentFullPath { get; set; }
     }
 }

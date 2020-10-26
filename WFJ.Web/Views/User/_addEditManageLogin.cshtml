@@ -104,12 +104,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="email">Users</label>
-                   @Html.DropDownListFor(m => m.userViewModel.ManagerUserId, Model.Users, "Select", new { @class = "form-control" })
-                </div>
-            </div>
+
 
             <div class="col-md-6">
                 <div class="form-group">
@@ -132,7 +127,6 @@
                 </div>
             </div>
 
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="attorney">Attorney</label>
@@ -146,9 +140,24 @@
             <div class="col-md-12">
                 <div class="form-group custom-multiselect-scroll">
                     <label>Client</label>
-                    @Html.DropDownListFor(m => m.userViewModel.ClientId, Model.Clients, new { @id = "boot-multiselect2", @multiple = "multiple", @class = "multiselect", @onchange = "GetRegionsAndFormsByClient();" })
+                    @Html.DropDownListFor(m => m.userViewModel.ClientId, Model.Clients, new { @id = "boot-multiselect2", @multiple = "multiple", @class = "multiselect", @onchange = "BindUserDropdownsByClient();" })
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="email">Manage Users</label>
+                    @Html.DropDownListFor(m => m.userViewModel.ManagerUserId, Model.ManageUsers, "Select", new { @id = "manageUsers", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="dashboardUser">User Access</label>
+                    @Html.DropDownListFor(m => m.userViewModel.AccessLevelId, Model.AccessLevels, "Select", new { @class = "form-control" })
+                </div>
+            </div>
+
             <div class="col-md-12">
                 <div class="form-group custom-multiselect-scroll">
                     <label for="regions">Region</label>
@@ -235,17 +244,18 @@
         }
     }
 
-    function GetRegionsAndFormsByClient() {
+    function BindUserDropdownsByClient() {
         var clientIds = $('#boot-multiselect2').val();
         $.ajax({
             type: "Get",
-            url: "/User/GetRegionsAndFormsByClient?clientIds=" + clientIds,
+            url: "/User/BindUserDropdownsByClient?clientIds=" + clientIds,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 if (response.Success) {
                     $('#boot-multiselect').empty();
                     $('#boot-multiselect1').empty();
+                    $('#manageUsers').empty();
                     $.each(response.regions, function (i, reg) {
                         $('#boot-multiselect').append('<option value="' + reg.Value + '">' + reg.Text + '</option>');
                     });
@@ -261,6 +271,9 @@
                     $("#boot-multiselect1").multiselect({
                         includeSelectAllOption: true,
                         enableFiltering: true,
+                    });
+                    $.each(response.manageUsers, function (i, manageuser) {
+                        $('#manageUsers').append('<option value="' + manageuser.Value + '">' + manageuser.Text + '</option>');
                     });
                 }
                 else {

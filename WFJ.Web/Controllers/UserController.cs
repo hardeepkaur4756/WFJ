@@ -15,7 +15,8 @@ namespace WFJ.Web.Controllers
         private IUserService _userService = new UserService();
         private IClientService _clientService = new ClientService();
         private IErrorLogService _errorLogService = new ErrorLogService();
-      
+        private IUserClientService _userClientService = new UserClientService();
+
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         [HttpGet]
         public ActionResult EditProfile()
@@ -92,13 +93,12 @@ namespace WFJ.Web.Controllers
                     userViewModel = new UserViewModel(),
                     //Clients = _clientService.GetClients(),
                     Clients = _clientService.GetAllClients(),
-                    Users = _userService.GetAllUsers(userId),
+                    ManageUsers=new List<SelectListItem>(),
                     UserType = _userService.GetAllUserTypes(),
                     Regions = new List<SelectListItem>(),
                     Forms = new List<SelectListItem>(),
+                    AccessLevels=_userService.GetAllAccessLevels(),
                    
-                    //Regions = _userService.GetAllRegions(),
-                    //Forms = _userService.GetAllForms(),
                     Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
@@ -156,9 +156,10 @@ namespace WFJ.Web.Controllers
                 managerUserFilterViewModel.userViewModel = new UserViewModel();
                 managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
                 managerUserFilterViewModel.Clients = _clientService.GetAllClients();
-                managerUserFilterViewModel.Users = _userService.GetAllUsers(userId);
+                managerUserFilterViewModel.AccessLevels = _userService.GetAllAccessLevels();
                 managerUserFilterViewModel.Regions = new List<SelectListItem>();
                 managerUserFilterViewModel.Forms = new List<SelectListItem>();
+                managerUserFilterViewModel.ManageUsers = new List<SelectListItem>();
                 managerUserFilterViewModel.Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
@@ -229,7 +230,6 @@ namespace WFJ.Web.Controllers
                 
                 ManagerUserFilterViewModel managerUserFilterViewModel = id > 0 ? _userService.GetManageUserById(id) : new ManagerUserFilterViewModel();
                 managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
-                managerUserFilterViewModel.Users = _userService.GetAllUsers(id);
 
                 managerUserFilterViewModel.Active = new List<SelectListItem>
                 {
@@ -256,23 +256,26 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetRegionsAndFormsByClient(string clientIds)
+        public ActionResult BindUserDropdownsByClient(string clientIds)
         {
             try
             {
+                int userId = 0;
                 List<SelectListItem> regions = new List<SelectListItem>();
                 List<SelectListItem> forms = new List<SelectListItem>();
+                List<SelectListItem> manageUsers = new List<SelectListItem>();
                 if (!string.IsNullOrEmpty(clientIds))
                 {
                     List<int?> values = clientIds.Split(',').Select(x => (int?)Convert.ToInt32(x)).ToList();
                     regions = _userService.GetRegionsByClient(values);
                     forms = _userService.GetFormsByClient(values);
+                    manageUsers = _userClientService.GetManageUsersByClient(values, userId);
                 }
-                return Json(new { Success = true, regions = regions, forms = forms }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, regions = regions, forms = forms, manageUsers= manageUsers }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "UserController/GetRegionsAndFormsByClient", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "UserController/BindUserDropdownsByClient", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return Json(new { Success = false });
             }
         }

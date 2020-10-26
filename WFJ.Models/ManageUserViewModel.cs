@@ -22,9 +22,10 @@ namespace WFJ.Models
         public List<SelectListItem> Active { get; set; }
         public List<SelectListItem> DashboardUser { get; set; }
         public UserViewModel userViewModel { get; set; }
-        public List<SelectListItem> Users { get; set; }
+        public List<SelectListItem> ManageUsers { get; set; }
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
+        public List<SelectListItem> AccessLevels { get; set; }
         //public string Password { get; set; }
         //public string FirstName { get; set; }
         //public string LastName { get; set; }

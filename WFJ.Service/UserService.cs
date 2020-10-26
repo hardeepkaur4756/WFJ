@@ -27,6 +27,7 @@ namespace WFJ.Service
         private ILevelRepository _levelRepo = new LevelRepository();
         private IFormsRepository _formRepo = new FormsRepository();
         private IErrorLogService _errorLogService = new ErrorLogService();
+        private IUserClientService _userClientService = new UserClientService();
 
         public void EncryptionPassword()
         {
@@ -433,6 +434,7 @@ namespace WFJ.Service
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
                         user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId;
+                        user.UserAccess = managerUserFilterViewModel.userViewModel.AccessLevelId;
                         _userRepo.Update(user);
                         _userClientRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
                         if (managerUserFilterViewModel.userViewModel.ClientId != null)
@@ -506,7 +508,8 @@ namespace WFJ.Service
                             DateAdded = DateTime.Now,
                             PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
                             IsPasswordHashed = false,
-                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId
+                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId,
+                            UserAccess=managerUserFilterViewModel.userViewModel.AccessLevelId
                         };
                         _userRepo.Add(user);
                         if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.ClientId != null))
@@ -575,6 +578,7 @@ namespace WFJ.Service
             managerUserFilterViewModel.userViewModel = new UserViewModel();
             IClientService _clientService = new ClientService();
             managerUserFilterViewModel.Clients = _clientService.GetAllClients();
+            managerUserFilterViewModel.AccessLevels = GetAllAccessLevels();
           
 
             User user = _userRepo.GetById(userId);
@@ -594,12 +598,14 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.IsActive = user.Active;
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
                 managerUserFilterViewModel.userViewModel.Password = user.Password;
-                managerUserFilterViewModel.userViewModel.ManagerUserId = user.ManagerUserID;
                 managerUserFilterViewModel.userViewModel.ClientId = _userClientRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.ClientID)).ToArray();
                 managerUserFilterViewModel.Regions = GetRegionsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x=>(int?)x).ToList());
                 managerUserFilterViewModel.Forms = GetFormsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList());
                 managerUserFilterViewModel.userViewModel.RegionId = _userLevelsRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.LevelID)).ToArray();
                 managerUserFilterViewModel.userViewModel.FormId = _formUsersRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.FormID)).ToArray();
+                managerUserFilterViewModel.userViewModel.AccessLevelId = user.UserAccess;
+                managerUserFilterViewModel.ManageUsers =  _userClientService.GetManageUsersByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList(), userId);
+                managerUserFilterViewModel.userViewModel.ManagerUserId = user.ManagerUserID;
             }
 
             foreach (var item in managerUserFilterViewModel.Clients)
@@ -653,22 +659,13 @@ namespace WFJ.Service
             return fornList;
         }
 
-        public List<SelectListItem> GetAllUsers(int userId)
+        public List<SelectListItem> GetAllAccessLevels()
         {
-            IUserRepository userRepository = new UserRepository();
-            List<SelectListItem> userList = new List<SelectListItem>();
-            if (userId == 0)
-            {
-                userList = userRepository.GetAll().Where(x => !string.IsNullOrWhiteSpace(x.FirstName)).OrderBy(x=>x.FirstName).Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }
-                 ).ToList();
-
-            }
-            else if (userId != 0)
-            {
-                userList = userRepository.GetAll().Where(x => x.UserID !=userId && !string.IsNullOrWhiteSpace(x.FirstName)).OrderBy(x=>x.FirstName).Select(x => new SelectListItem() { Text = x.FirstName + " " + x.LastName, Value = x.UserID.ToString() }
-                    ).ToList();
-            }
-            return userList;
+            IAccessLevelsRepository accessLevelRepo = new AccessLevelsRepository();
+            List<SelectListItem> accessLevelList = new List<SelectListItem>();
+            accessLevelList = accessLevelRepo.GetAll().Select(x => new SelectListItem() { Text = x.AccessLevel1, Value = x.ID.ToString() }
+                ).ToList();
+            return accessLevelList;
         }
     }
 }

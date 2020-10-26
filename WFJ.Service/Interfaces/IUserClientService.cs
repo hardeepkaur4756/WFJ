@@ -12,5 +12,6 @@ namespace WFJ.Service.Interfaces
     {
         List<UserClient> GetByUserId(int userId);
         List<SelectListItem> GetUserClients(int userId);
+        List<SelectListItem> GetManageUsersByClient(List<int?> ClientIds, int userId);
     }
 }

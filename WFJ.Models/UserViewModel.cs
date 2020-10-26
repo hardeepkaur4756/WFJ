@@ -38,5 +38,6 @@ namespace WFJ.Models
         //public List<int> FormId { get; set; }
         public int[] RegionId { get; set; }
         public int[] FormId { get; set; }
+        public Nullable<int> AccessLevelId { get; set; }
     }
 }

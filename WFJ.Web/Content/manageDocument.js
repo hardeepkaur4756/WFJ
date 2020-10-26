@@ -1,4 +1,5 @@
-﻿ var oTable;
+﻿
+var oTable;
 var isFirstTime = true;
 $(document).ready(function () {
     GetDataGrid();
@@ -70,6 +71,7 @@ function GetDataGrid() {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
+                        console.log(JSON.stringify(full));
                         if (full.CurrentUserType == 1 || full.CurrentUserType == 6 || full.CurrentUserType == 8) {
                             var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.ID + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
                             return buttons;
@@ -78,14 +80,27 @@ function GetDataGrid() {
                             return "";
                         }
                         //var buttons = "<a class='anchor-design' href='#' id=''  data-toggle='modal' data-target='#editdocument' onclick='return EditDocument()'>Edit</a>";
-                       
                     }
                 },
                 { "mData": "ClientName" },
                 //{ "mData": "StateCodeID" },
                 //{ "mData": "StateCode" },
                 { "mData": "State" },
-                { "mData": "DocumentName" },
+                //{ "mData": "DocumentName" },
+                {
+                    "mData": null,
+                    "render": function (row, type, full) {
+                        console.log(JSON.stringify(full));
+                        if (full.DocumentFullPath !="") {
+                            var downloadlink = "<a class='anchor-design' href='" + full.DocumentFullPath + "' id='documentlink' Download>" + full.DocumentName + "</a>";
+                            //var downloadlink = "<a class='anchor-design' href='DocumentCenter/DownloadFile?filename=" + full.FileName + "' id='documentlink'>" + full.DocumentName + "</a>";
+                            return downloadlink;
+                        }
+                        else {
+                            return full.DocumentName;
+                        }
+                    }
+                },
                 //{ "mData": "DocumentTypeID" },
                 { "mData": "DocumentType" },
                 { "mData": "PracticeAreaName" }

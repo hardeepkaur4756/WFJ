@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -18,6 +19,7 @@ namespace WFJ.Service
         private IDocumentSearchRepository _documentSearchRepository = new DocumentSearchRepository();
         private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
         private ICodesRepository _codesRepo = new CodesRepository();
+        private IErrorLogService _errorLogService = new ErrorLogService();
         public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
         {
             ManageDocumentModel model = new ManageDocumentModel();
@@ -120,6 +122,10 @@ namespace WFJ.Service
                     {
                         document.State = _codesRepo.GetStateByCode(document.StateCode);
                     }
+                    string filePath = "";
+                    string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, "");
+                    filePath = baseUrl + "/Documents/";
+                    document.DocumentFullPath = !string.IsNullOrEmpty(document.FileName) ? filePath + document.FileName : "";
                 }
             }
             return model;
@@ -163,7 +169,7 @@ namespace WFJ.Service
                     var postedFile = manageDocumentFilterViewModel.documentFile;
                     if (postedFile != null && postedFile.ContentLength > 0)
                     {
-                        string filePath = System.Web.HttpContext.Current.Server.MapPath("~/Content/Document"); 
+                        string filePath = System.Web.HttpContext.Current.Server.MapPath("../Documents"); 
                         if (!File.Exists(filePath))
                         {
                             Directory.CreateDirectory(filePath);
@@ -234,7 +240,7 @@ namespace WFJ.Service
             {
                 manageDocumentFilterViewModel.IsSuccess = false;
                 manageDocumentFilterViewModel.Message = "Sorry, An error occurred!.";
-                //throw;
+                _errorLogService.Add(new ErrorLogModel() { Page = "DocumentSearchService/AddOrUpdate", CreatedBy = Convert.ToInt32(HttpContext.Current.Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
 
         }
