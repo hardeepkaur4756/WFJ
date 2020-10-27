@@ -86,7 +86,6 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                int userId = 0;
                 ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
                 manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
                 {
@@ -191,7 +190,7 @@ namespace WFJ.Web.Controllers
                     bool isValidPassword = Util.ValidatePassword(managerUserFilterViewModel.userViewModel.Password);
                     if (!isValidPassword)
                     {
-                        ModelState.AddModelError("Password", "The field Password must be a string with minimum one capital letter, one small letter, one number and one special characters is required");
+                        ModelState.AddModelError("Password", "The field Password must be a string with minimum of one capital letter, one small letter, one number and one special character is required");
                     }
                 }
                 if (ModelState.IsValid)
@@ -256,11 +255,10 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult BindUserDropdownsByClient(string clientIds)
+        public ActionResult BindUserDropdownsByClient(string clientIds,int userId)
         {
             try
             {
-                int userId = 0;
                 List<SelectListItem> regions = new List<SelectListItem>();
                 List<SelectListItem> forms = new List<SelectListItem>();
                 List<SelectListItem> manageUsers = new List<SelectListItem>();
@@ -270,6 +268,7 @@ namespace WFJ.Web.Controllers
                     regions = _userService.GetRegionsByClient(values);
                     forms = _userService.GetFormsByClient(values);
                     manageUsers = _userClientService.GetManageUsersByClient(values, userId);
+                    manageUsers.Insert(0, new SelectListItem { Text = "Select", Value = "0" });
                 }
                 return Json(new { Success = true, regions = regions, forms = forms, manageUsers= manageUsers }, JsonRequestBehavior.AllowGet);
             }

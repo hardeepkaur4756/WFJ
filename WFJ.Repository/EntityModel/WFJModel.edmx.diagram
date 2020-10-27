@@ -104,9 +104,6 @@
         <EntityTypeShape EntityType="WFJDBModel.AccessLevel" Width="1.5" PointX="25.375" PointY="26.875" />
         <EntityTypeShape EntityType="WFJDBModel.Category" Width="1.5" PointX="25" PointY="29.875" />
         <AssociationConnector Association="WFJDBModel.FK_CategoryPracticeAreaID" />
-        <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="31" PointY="7.75" />
-        <AssociationConnector Association="WFJDBModel.FK_DocumentClientID" />
-        <AssociationConnector Association="WFJDBModel.FK_PracticeAreasID" />
         <EntityTypeShape EntityType="WFJDBModel.ErrorLog" Width="1.5" PointX="9.375" PointY="30.75" />
         <EntityTypeShape EntityType="WFJDBModel.UserClient" Width="1.5" PointX="33.875" PointY="14.125" />
         <AssociationConnector Association="WFJDBModel.FK_UserClients_ClientID" />
@@ -119,7 +116,13 @@
         <AssociationConnector Association="WFJDBModel.FK_UserClients_UserID" />
         <AssociationConnector Association="WFJDBModel.FK_UserLevels_UserID" />
         <AssociationConnector Association="WFJDBModel.FK_User_UserManagerUserID" />
-      </Diagram>
+        <EntityTypeShape EntityType="WFJDBModel.Document" Width="1.5" PointX="31" PointY="7.625" />
+        <AssociationConnector Association="WFJDBModel.FK_DocumentClientID" />
+        <AssociationConnector Association="WFJDBModel.FK_Documents_Codes" />
+        <AssociationConnector Association="WFJDBModel.FK_Documents_Codes1" />
+        <AssociationConnector Association="WFJDBModel.FK_documentClients_Documents_Id" />
+        <AssociationConnector Association="WFJDBModel.FK_PracticeAreasID" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

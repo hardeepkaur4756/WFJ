@@ -11,7 +11,8 @@ namespace WFJ.Models
     {
         public int Id { get; set; }
         public string StateCode { get; set; }
-        public string DocumentTypeId { get; set; }
+        public Nullable<int> StateCodeId { get; set; }
+        public Nullable<int> DocumentTypeId { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter Document Name.")]
         public string DocumentName { get; set; }
         public string Description { get; set; }

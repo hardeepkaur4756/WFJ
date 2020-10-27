@@ -25,110 +25,106 @@ namespace WFJ.Service
             ManageDocumentModel model = new ManageDocumentModel();
             var documents = _documentSearchRepository.GetDocumentList(clientId,documentTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword);
             model.totalUsersCount = documents?.Count();
-            switch (sortCol)
-            {
-                case "ClientName":
-                    if (sortDir == "asc")
-                    {
-                        documents = documents.Where(x => x.Client != null)?.OrderBy(x => x.Client.ClientName).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        documents = documents.Where(x => x.Client != null)?.OrderByDescending(x => x.Client.ClientName).ToList();
-                    }
-                    break;
-
-                case "StateCodeID":
-                    if (sortDir == "asc")
-                    {
-                        if (documents != null)
-                        {
-                            documents = documents.OrderBy(x => x.StateCodeID).ToList();
-                        }
-                    }
-
-                    if (sortDir == "desc")
-                    {
-                        if (documents != null)
-                        {
-                            documents = documents.OrderByDescending(x => x.StateCodeID).ToList();
-                        }
-
-                    }
-                    break;
-                case "DocumentName":
-                    if (sortDir == "asc")
-                    {
-                        if (documents != null) { 
-                            documents = documents.OrderBy(x => x.DocumentName).ToList();
-                        }
-                    }
-                    if (sortDir == "desc")
-                    {
-                        if (documents != null)
-                        {
-                            documents = documents.OrderByDescending(x => x.DocumentName).ToList();
-                        }
-                    }
-                    break;
-                case "DocumentTypeID":
-                    if (sortDir == "asc")
-                    {
-                        if (documents != null)
-                        {
-                            documents = documents.OrderBy(x => x.DocumentTypeID).ToList();
-                        }
-                    }
-                    if (sortDir == "desc")
-                    {
-                        if (documents != null)
-                        {
-                            documents = documents.OrderByDescending(x => x.DocumentTypeID).ToList();
-                        }
-                    }
-                    break;
-
-                case "PracticeAreaName":
-                    if (sortDir == "asc")
-                    {
-                        documents = documents.Where(x => x.PracticeArea != null)?.OrderBy(x => x.PracticeArea.PracticeAreaName).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        documents = documents.Where(x => x.PracticeArea != null)?.OrderByDescending(x => x.PracticeArea.PracticeAreaName).ToList();
-                    }
-
-                    break;
-                    default:
-                    break;
-            }
-            
-            
-            
-            model.documents = MappingExtensions.MapList<Document, DocumentsModel>(documents?.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
             if (documents != null)
             {
-                foreach (var document in model.documents)
+                switch (sortCol)
                 {
-                    string ClientName = "";
-                    ClientName = string.Join(", ", documents.FirstOrDefault(x => x.ID == document.ID).documentClients.Select(y => y.Client?.ClientName));
-                    document.ClientName = !string.IsNullOrEmpty(ClientName) && ClientName.Length > 50 ? ClientName.Substring(0, 50) + "..." : ClientName;
-                    document.CurrentUserType = HttpContext.Current.Session["UserType"] != null ? Convert.ToInt32(HttpContext.Current.Session["UserType"]) : 0; 
-                    if (!string.IsNullOrEmpty(document.DocumentTypeID))
-                    {
-                        document.DocumentType = _codesRepo.GetById(Convert.ToInt32(document.DocumentTypeID)).Value;
-                    }
-                    if (!string.IsNullOrEmpty(document.StateCode))
-                    {
-                        document.State = _codesRepo.GetStateByCode(document.StateCode);
-                    }
-                    string filePath = "";
-                    string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, "");
-                    filePath = baseUrl + "/Documents/";
-                    document.DocumentFullPath = !string.IsNullOrEmpty(document.FileName) ? filePath + document.FileName : "";
+                    case "ClientName":
+                        if (sortDir == "asc")
+                        {
+                            documents = documents.OrderBy(x => x.documentClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            documents = documents.OrderByDescending(x => x.documentClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                        }
+                        break;
+
+                    case "State":
+                        if (sortDir == "asc")
+                        {
+                             documents = documents.OrderBy(x => x.Code?.Value).ToList();
+                        }
+
+                        if (sortDir == "desc")
+                        {
+                             documents = documents.OrderByDescending(x => x.Code?.Value).ToList();
+                        }
+                        break;
+                    case "DocumentName":
+                        if (sortDir == "asc")
+                        {
+                            documents = documents.OrderBy(x => x.DocumentName).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                             documents = documents.OrderByDescending(x => x.DocumentName).ToList();
+                        }
+                        break;
+                    case "DocumentType":
+                        if (sortDir == "asc")
+                        {
+                            documents = documents.OrderBy(x => x.Code1.Value).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            documents = documents.OrderByDescending(x => x.Code1.Value).ToList();
+                        }
+                        break;
+
+                    case "PracticeAreaName":
+                        if (sortDir == "asc")
+                        {
+                            documents = documents.OrderBy(x => x.PracticeArea.PracticeAreaName).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            documents = documents.OrderByDescending(x => x.PracticeArea.PracticeAreaName).ToList();
+                        }
+
+                        break;
+                    default:
+                        break;
                 }
             }
+            string filePath = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.PathAndQuery, "") + "/Documents/";
+
+            model.documents = documents == null ? new List<DocumentsModel>() : documents?.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength)?.Select(x => new DocumentsModel
+            {
+                Id = x.ID,
+                DocumentName = x.DocumentName,
+                FileName = x.FileName,
+                StateCodeId = x.StateCodeID,
+                ProjectType = x.ProjectType,
+                FormType = x.FormType,
+                ClientId = x.ClientID,
+                PracticeAreaId = x.PracticeAreaID,
+                WFJFileNbr = x.WFJFileNbr,
+                Days = x.Days,
+                Description = x.Description,
+                CategoryId = x.CategoryID,
+                EmployeeCategoryId = x.EmployeeCategoryID,
+                DocumentTypeId = x.DocumentTypeID,
+                ProjectTypeId = x.ProjectTypeID,
+                FormTypeId = x.FormTypeID,
+                SeqNo = x.SeqNo,
+                State = x.Code?.Value,
+                DocumentType = x.Code1?.Value,
+                ClientName = GetClientName(string.Join(", ", x.documentClients?.Where(y => !string.IsNullOrEmpty(y.Client?.ClientName)).Select(y => y.Client.ClientName))),
+                CurrentUserType = Convert.ToInt32(HttpContext.Current.Session["UserType"]),
+                DocumentFullPath = !string.IsNullOrEmpty(x.FileName) ? filePath + x.FileName : "",
+                PracticeAreaName=x.PracticeArea?.PracticeAreaName
+            }).ToList();
             return model;
+        }
+
+        private string GetClientName(string stringName)
+        {
+            if (!string.IsNullOrEmpty(stringName) && stringName.Length > 50)
+            {
+                stringName = stringName.Substring(0, 50) + "...";
+            }
+            return stringName;
         }
 
         public ManageDocumentFilterViewModel GetDocumentById(int id)
@@ -142,7 +138,7 @@ namespace WFJ.Service
             if (document != null)
             {
                 manageDocumentFilterViewModel.documentViewModel.Id = document.ID;
-                manageDocumentFilterViewModel.documentViewModel.StateCode = document.StateCode;
+                manageDocumentFilterViewModel.documentViewModel.StateCodeId = document.StateCodeID;
                 manageDocumentFilterViewModel.documentViewModel.DocumentTypeId = document.DocumentTypeID;
                 manageDocumentFilterViewModel.documentViewModel.ClientId = _documentClientsRepo.GetByDocumentID(document.ID).Select(x => x.clientID).ToArray();
                 manageDocumentFilterViewModel.documentViewModel.PracticeAreaId = document.PracticeAreaID;
@@ -181,7 +177,7 @@ namespace WFJ.Service
                 if (manageDocumentFilterViewModel.documentViewModel.Id > 0)
                 {
                     Document document = _documentSearchRepository.GetById(manageDocumentFilterViewModel.documentViewModel.Id);
-                    document.StateCode = manageDocumentFilterViewModel.documentViewModel.StateCode;
+                    document.StateCodeID = manageDocumentFilterViewModel.documentViewModel.StateCodeId;
                     document.DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId;
                     document.PracticeAreaID = manageDocumentFilterViewModel.documentViewModel.PracticeAreaId;
                     document.DocumentName = manageDocumentFilterViewModel.documentViewModel.DocumentName;
@@ -209,9 +205,8 @@ namespace WFJ.Service
                 {
                     Document newDocument = new Document()
                     {
-                        StateCode = manageDocumentFilterViewModel.documentViewModel.StateCode,
+                        StateCodeID = manageDocumentFilterViewModel.documentViewModel.StateCodeId,
                         DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId,
-                        //DocumentTypeID = manageDocumentFilterViewModel.documentViewModel.DocumentTypeId,
                         PracticeAreaID = manageDocumentFilterViewModel.documentViewModel.PracticeAreaId,
                         DocumentName = manageDocumentFilterViewModel.documentViewModel.DocumentName,
                         Description = manageDocumentFilterViewModel.documentViewModel.Description,

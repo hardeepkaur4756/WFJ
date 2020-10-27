@@ -124,12 +124,12 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<sequence> sequences { get; set; }
         public virtual DbSet<AccessLevel> AccessLevels { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<ErrorLog> ErrorLogs { get; set; }
         public virtual DbSet<UserClient> UserClients { get; set; }
         public virtual DbSet<UserLevel> UserLevels { get; set; }
         public virtual DbSet<documentClient> documentClients { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Document> Documents { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

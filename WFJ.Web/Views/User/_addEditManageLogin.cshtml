@@ -244,10 +244,11 @@
         }
     }
     function BindUserDropdownsByClient() {
+        var userId = $("#userViewModel_UserID").val();
         var clientIds = $('#boot-multiselect2').val();
         $.ajax({
             type: "Get",
-            url: "/User/BindUserDropdownsByClient?clientIds=" + clientIds,
+            url: "/User/BindUserDropdownsByClient?clientIds=" + clientIds + "&userId=" + userId,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {

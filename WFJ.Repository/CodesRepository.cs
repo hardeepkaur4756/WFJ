@@ -22,7 +22,7 @@ namespace WFJ.Repository
 
         public string GetStateByCode(string code)
         {
-            return context.Codes.FirstOrDefault(x => x.Code1 == code && x.Type == "STATE").Value;
+            return context.Codes?.FirstOrDefault(x => x.Code1 == code && x.Type == "STATE")?.Value;
         }
 
     }

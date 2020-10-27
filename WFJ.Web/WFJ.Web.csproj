@@ -3508,6 +3508,8 @@
     <Content Include="Views\DocumentCenter\_addEditDocument.cshtml" />
     <Content Include="Views\DocumentCenter\_documentGrid.cshtml" />
     <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />
+    <Content Include="Views\DocumentCenter\DocumentCenter.cshtml" />
+    <Content Include="Views\DocumentCenter\GetList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -24,7 +24,7 @@ namespace WFJ.Service
         {
             ICodesRepository codesRepo = new CodesRepository();
             List<SelectListItem> itemList = new List<SelectListItem>();
-            itemList = codesRepo.GetAllByType(type).Select(x => new SelectListItem() { Text = x.Value, Value = x.Code1.ToString() }).ToList();
+            itemList = codesRepo.GetAllByType(type).Select(x => new SelectListItem() { Text = x.Value, Value = x.ID.ToString() }).ToList();
             return itemList;
         }
     }

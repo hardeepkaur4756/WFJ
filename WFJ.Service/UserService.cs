@@ -282,102 +282,121 @@ namespace WFJ.Service
             IUserRepository userRepository = new UserRepository();
             var users = userRepository.GetUsers(clientid, active, name);
             model.totalUsersCount = users?.Count();
-            switch (sortCol)
+            if (users != null)
             {
-                case "ClientName":
-                    if (sortDir == "asc")
-                    {
-                        users=users.Where(x => x.Client != null)?.OrderBy(x => x.Client.ClientName).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        users = users.Where(x => x.Client != null)?.OrderByDescending(x => x.Client.ClientName).ToList();
-                    }
-                    break;
+                switch (sortCol)
+                {
+                    case "ClientName":
+                        if (sortDir == "asc")
+                        {
+                            users = users.OrderBy(x => x.UserClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            users = users.OrderByDescending(x => x.UserClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                        }
+                        break;
 
-                case "Fullname":
-                    if (sortDir == "asc")
-                    {
-                        if (users != null) {
+                    case "Fullname":
+                        if (sortDir == "asc")
+                        {
                             users = users.OrderBy(x => x.FirstName).ToList();
-                        }                     
-                    }
-                    
-                    if (sortDir == "desc")
-                    {
-                        if (users!=null)
+                        }
+
+                        if (sortDir == "desc")
                         {
                             users = users.OrderByDescending(x => x.FirstName).ToList();
                         }
-                        
-                    }
-                    break;
-                case "ManagerName":
-                    if (sortDir == "asc")
-                    {
-                        users = users.OrderBy(x => x.FirstName).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        users = users.OrderByDescending(x => x.FirstName).ToList();
-                    }
-                    break;
-                case "LevelName":
-                    if (sortDir == "asc")
-                    {
-                        users = users.Where(x => x.Level != null)?.OrderBy(x => x.Level.Name).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        users = users.Where(x => x.Level != null)?.OrderByDescending(x => x.Level.Name).ToList();
-                    }
+                        break;
+                    case "ManagerName":
+                        if (sortDir == "asc")
+                        {
+                            users = users.OrderBy(x => x.User1?.FirstName).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            users = users.OrderByDescending(x => x.User1?.FirstName).ToList();
+                        }
+                        break;
+                    case "LevelName":
+                        if (sortDir == "asc")
+                        {
+                            users = users.OrderBy(x => x.UserLevels?.FirstOrDefault()?.Level.Name).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            users = users.OrderByDescending(x => x.UserLevels?.FirstOrDefault()?.Level.Name).ToList();
+                        }
 
-                    break;
-                case "AccessLevelName":
-                    if (sortDir == "asc") {
-                        users = users.Where(x => x.AccessLevel != null)?.OrderBy(x => x.AccessLevel.AccessLevel1).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        users = users.Where(x => x.AccessLevel != null)?.OrderByDescending(x => x.AccessLevel.AccessLevel1).ToList();
-                    }
-                    break;
-                case "ActiveStatus":
-                    if (sortDir == "asc")
-                    {
-                        users = users.OrderBy(x => x.Active).ToList();
-                    }
-                    if (sortDir == "desc")
-                    {
-                        users = users.OrderByDescending(x => x.Active).ToList();
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            model.users = MappingExtensions.MapList<User, UserModel>(users?.Skip((pageno - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList());
-            foreach (var item in model.users)
-            {
-                string FullName = "";
-                string ClientName = "";
-                string LevelName = "";
-                ClientName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserClients.Select(y => y.Client?.ClientName));
-                item.ClientName = !string.IsNullOrEmpty(ClientName) && ClientName.Length>50 ? ClientName.Substring(0, 50) + "...": ClientName;
-                LevelName = string.Join(", ", users.FirstOrDefault(x => x.UserID == item.UserID).UserLevels.Select(y => y.Level?.Name));
-                item.LevelName = !string.IsNullOrEmpty(LevelName) && LevelName.Length > 50 ? LevelName.Substring(0, 50) + "..." : LevelName;
-                if (item.FirstName != null)
-                {
-                    FullName = item.FirstName;
-                   
+                        break;
+                    case "AccessLevelName":
+                        if (sortDir == "asc")
+                        {
+                            users = users.OrderBy(x => x.AccessLevel?.AccessLevel1).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            users = users.OrderByDescending(x => x.AccessLevel?.AccessLevel1).ToList();
+                        }
+                        break;
+                    case "ActiveStatus":
+                        if (sortDir == "asc")
+                        {
+                            users = users.OrderBy(x => x.Active).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            users = users.OrderByDescending(x => x.Active).ToList();
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                if (item.LastName != null) { FullName = FullName +" "+ item.LastName; }
-                item.Fullname = FullName;
-                item.ManagerName = users.FirstOrDefault(x => x.UserID == item.UserID).User1?.FirstName +" "+ users.FirstOrDefault(x => x.UserID == item.UserID).User1?.LastName;
-                if (item.Active == 1 ){
-                    item.ActiveStatus = "Yes";
-                } else { item.ActiveStatus = "No"; };
             }
+
+
+            model.users = users == null ? new List<UserModel>() : users?.Skip((pageno - 1) * param.iDisplayLength).Take(param.iDisplayLength)?.Select(x => new UserModel
+            {
+                UserID = x.UserID,
+                UserName = x.UserName,
+                Password = x.Password,
+                Title = x.Title,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Telephone = x.Telephone,
+                Fax = x.Fax,
+                Address1 = x.Address1,
+                Address2 = x.Address2,
+                City = x.City,
+                State = x.State,
+                PostalCode = x.PostalCode,
+                Image = x.Image,
+                DateAdded = x.DateAdded,
+                UserType = x.UserType,
+                UserAccess = x.UserAccess,
+                LogonCount = x.LogonCount,
+                EMail = x.EMail,
+                ManagerUserID = x.ManagerUserID,
+                ClientID = x.ClientID,
+                AttorneyID = x.AttorneyID,
+                levelID = x.levelID,
+                PasswordExpirationDate = x.PasswordExpirationDate,
+                Active = x.Active,
+                IsCollector = x.IsCollector,
+                IsAdminStaff = x.IsAdminStaff,
+                HireDate = x.HireDate,
+                Birthdate = x.Birthdate,
+                AccessClientExtranet = x.AccessClientExtranet,
+                ProfileText = x.ProfileText,
+                showHRSection = x.showHRSection,
+                dashboardUser = x.dashboardUser,
+                ClientName = GetName(string.Join(", ", x.UserClients?.Where(y => !string.IsNullOrEmpty(y.Client?.ClientName)).Select(y => y.Client.ClientName))),
+                LevelName = GetName(string.Join(", ", x.UserLevels?.Where(y => !string.IsNullOrEmpty(y.Level?.Name)).Select(y => y.Level.Name))),
+                AccessLevelName = x.AccessLevel?.AccessLevel1,
+                Fullname = !string.IsNullOrEmpty(x.FirstName) ? (x.FirstName + " " + x.LastName) : x.LastName,
+                ManagerName = !string.IsNullOrEmpty(x.User1?.FirstName) ? (x.User1.FirstName + " " + x.User1?.LastName) : x.User1?.LastName,
+                ActiveStatus = x.Active == 1 ? "Yes" : "No"
+            }).ToList();
             return model;
         }
 
@@ -433,7 +452,7 @@ namespace WFJ.Service
                         user.UserType = managerUserFilterViewModel.userViewModel.UserType;
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
-                        user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId;
+                        user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId>0 ? managerUserFilterViewModel.userViewModel.ManagerUserId : null;
                         user.UserAccess = managerUserFilterViewModel.userViewModel.AccessLevelId;
                         _userRepo.Update(user);
                         _userClientRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
@@ -508,7 +527,7 @@ namespace WFJ.Service
                             DateAdded = DateTime.Now,
                             PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
                             IsPasswordHashed = false,
-                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId,
+                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId>0? managerUserFilterViewModel.userViewModel.ManagerUserId:null,
                             UserAccess=managerUserFilterViewModel.userViewModel.AccessLevelId
                         };
                         _userRepo.Add(user);
@@ -666,6 +685,15 @@ namespace WFJ.Service
             accessLevelList = accessLevelRepo.GetAll().Select(x => new SelectListItem() { Text = x.AccessLevel1, Value = x.ID.ToString() }
                 ).ToList();
             return accessLevelList;
+        }
+
+        private string GetName(string stringName)
+        {
+            if (!string.IsNullOrEmpty(stringName) && stringName.Length > 50)
+            {
+                stringName = stringName.Substring(0, 50) + "...";
+            }
+            return stringName;
         }
     }
 }

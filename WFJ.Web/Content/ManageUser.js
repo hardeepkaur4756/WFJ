@@ -68,25 +68,23 @@ function GetDatafortable() {
                 { "mData": "LevelName" },
                 { "mData": "AccessLevelName" },
                 { "mData": "ActiveStatus" }
-
-
-
             ],
-            "aoColumnDefs": [
-                { "bSortable": false, "aTargets": [1] }
-            ],
+            //"aoColumnDefs": [
+            //    { "bSortable": false, "aTargets": [1] }
+            //],
             "order": [[2, "asc"]],
             bProcessing: true,
             pageLength: 10,
             "bFilter": false,
             "paging": true,
             //bSearching: false,
-            bLengthChange: false,
-            "bInfo": false,
+            bLengthChange: true,
+            lengthMenu: [10, 25, 50],
+            "bInfo": true,
             "language": {
                 
                 "zeroRecords":"no search results (too much data)",
-                "info": "Page _PAGE_ of _PAGES_",
+                //"info": "Page _PAGE_ of _PAGES_",
                 "emptyTable": "no records found",
                 "processing": "Processing... Please wait",
             }

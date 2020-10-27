@@ -23,7 +23,6 @@ namespace WFJ.Repository.EntityModel
         public int ID { get; set; }
         public string DocumentName { get; set; }
         public string FileName { get; set; }
-        public string StateCode { get; set; }
         public string DocumentType { get; set; }
         public string ProjectType { get; set; }
         public string FormType { get; set; }
@@ -34,15 +33,17 @@ namespace WFJ.Repository.EntityModel
         public string Description { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public Nullable<int> EmployeeCategoryID { get; set; }
-        public string StateCodeID { get; set; }
-        public string DocumentTypeID { get; set; }
+        public Nullable<int> StateCodeID { get; set; }
+        public Nullable<int> DocumentTypeID { get; set; }
         public string ProjectTypeID { get; set; }
         public string FormTypeID { get; set; }
         public Nullable<int> SeqNo { get; set; }
     
         public virtual Client Client { get; set; }
-        public virtual PracticeArea PracticeArea { get; set; }
+        public virtual Code Code { get; set; }
+        public virtual Code Code1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<documentClient> documentClients { get; set; }
+        public virtual PracticeArea PracticeArea { get; set; }
     }
 }

@@ -34,12 +34,11 @@ namespace WFJ.Repository
                 documents = _context.Documents.Include(s => s.PracticeArea).Include(s => s.Client).ToList();
                 if (clientId != -1)
                 {
-                    //documents = documents.Where(x =>x.ClientID == clientId);
                     documents = documents.Where(x => _documentClientsRepo.GetByClientID(clientId).Select(y => y.documentID).Contains(x.ID));
                 }
                 if (documentTypeId != -1)
                 {
-                    documents = documents.Where(x => x.DocumentTypeID == Convert.ToString(documentTypeId));
+                    documents = documents.Where(x => x.DocumentTypeID == documentTypeId);
                 }
                 if (practiceAreaId != -1)
                 {

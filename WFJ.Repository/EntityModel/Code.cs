@@ -14,9 +14,21 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Code
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Code()
+        {
+            this.Documents = new HashSet<Document>();
+            this.Documents1 = new HashSet<Document>();
+        }
+    
         public int ID { get; set; }
         public string Type { get; set; }
         public string Code1 { get; set; }
         public string Value { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Document> Documents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Document> Documents1 { get; set; }
     }
 }

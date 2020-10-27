@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Admin\source\repos\hardeepkaur4756\WFJ\WFJ.Repository\EntityModel\WFJModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Digisoft\source\repos\hardeepkaur4756\WFJ\WFJ.Repository\EntityModel\WFJModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

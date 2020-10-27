@@ -8,24 +8,24 @@ namespace WFJ.Models
 {
     public class DocumentsModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string DocumentName { get; set; }
         public string FileName { get; set; }
         public string StateCode { get; set; }
         public string DocumentType { get; set; }
         public string ProjectType { get; set; }
         public string FormType { get; set; }
-        public Nullable<int> ClientID { get; set; }
-        public Nullable<int> PracticeAreaID { get; set; }
+        public Nullable<int> ClientId { get; set; }
+        public Nullable<int> PracticeAreaId { get; set; }
         public string WFJFileNbr { get; set; }
         public Nullable<int> Days { get; set; }
         public string Description { get; set; }
-        public Nullable<int> CategoryID { get; set; }
-        public Nullable<int> EmployeeCategoryID { get; set; }
-        public string StateCodeID { get; set; }
-        public string DocumentTypeID { get; set; }
-        public string ProjectTypeID { get; set; }
-        public string FormTypeID { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> EmployeeCategoryId { get; set; }
+        public Nullable<int> StateCodeId { get; set; }
+        public Nullable<int> DocumentTypeId { get; set; }
+        public string ProjectTypeId { get; set; }
+        public string FormTypeId { get; set; }
         public Nullable<int> SeqNo { get; set; }
         public string ClientName { get; set; }
         public string PracticeAreaName { get; set; }
