@@ -289,33 +289,33 @@ namespace WFJ.Service
                     case "ClientName":
                         if (sortDir == "asc")
                         {
-                            users = users.OrderBy(x => x.UserClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                            users = users.OrderBy(x => x.UserClients.FirstOrDefault()?.Client.ClientName).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            users = users.OrderByDescending(x => x.UserClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                            users = users.OrderByDescending(x => x.UserClients.FirstOrDefault()?.Client.ClientName).ToList();
                         }
                         break;
 
                     case "Fullname":
                         if (sortDir == "asc")
                         {
-                            users = users.OrderBy(x => x.FirstName).ToList();
+                            users = users.OrderBy(x => x.FirstName).ThenBy(x => x.LastName).ToList();
                         }
 
                         if (sortDir == "desc")
                         {
-                            users = users.OrderByDescending(x => x.FirstName).ToList();
+                            users = users.OrderByDescending(x => x.FirstName).ThenByDescending(x => x.LastName).ToList();
                         }
                         break;
                     case "ManagerName":
                         if (sortDir == "asc")
                         {
-                            users = users.OrderBy(x => x.User1?.FirstName).ToList();
+                            users = users.OrderBy(x => x.User1?.FirstName).ThenBy(x => x.User1?.LastName).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            users = users.OrderByDescending(x => x.User1?.FirstName).ToList();
+                            users = users.OrderByDescending(x => x.User1?.FirstName).ThenByDescending(x => x.User1?.LastName).ToList();           
                         }
                         break;
                     case "LevelName":
@@ -390,11 +390,11 @@ namespace WFJ.Service
                 ProfileText = x.ProfileText,
                 showHRSection = x.showHRSection,
                 dashboardUser = x.dashboardUser,
-                ClientName = GetName(string.Join(", ", x.UserClients?.Where(y => !string.IsNullOrEmpty(y.Client?.ClientName)).Select(y => y.Client.ClientName))),
-                LevelName = GetName(string.Join(", ", x.UserLevels?.Where(y => !string.IsNullOrEmpty(y.Level?.Name)).Select(y => y.Level.Name))),
+                ClientName = GetName(string.Join(", ", x.UserClients.Where(y => !string.IsNullOrEmpty(y.Client.ClientName)).Select(y => y.Client.ClientName))),
+                LevelName = GetName(string.Join(", ", x.UserLevels.Where(y => !string.IsNullOrEmpty(y.Level.Name)).Select(y => y.Level.Name))),
                 AccessLevelName = x.AccessLevel?.AccessLevel1,
                 Fullname = !string.IsNullOrEmpty(x.FirstName) ? (x.FirstName + " " + x.LastName) : x.LastName,
-                ManagerName = !string.IsNullOrEmpty(x.User1?.FirstName) ? (x.User1.FirstName + " " + x.User1?.LastName) : x.User1?.LastName,
+                ManagerName = !string.IsNullOrEmpty(x.User1?.FirstName) ? (x.User1?.FirstName + " " + x.User1?.LastName) : x.User1?.LastName,
                 ActiveStatus = x.Active == 1 ? "Yes" : "No"
             }).ToList();
             return model;

@@ -32,11 +32,11 @@ namespace WFJ.Service
                     case "ClientName":
                         if (sortDir == "asc")
                         {
-                            documents = documents.OrderBy(x => x.documentClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                            documents = documents.OrderBy(x => x.documentClients.FirstOrDefault()?.Client.ClientName).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            documents = documents.OrderByDescending(x => x.documentClients?.FirstOrDefault()?.Client.ClientName).ToList();
+                            documents = documents.OrderByDescending(x => x.documentClients.FirstOrDefault()?.Client.ClientName).ToList();
                         }
                         break;
 
@@ -64,22 +64,22 @@ namespace WFJ.Service
                     case "DocumentType":
                         if (sortDir == "asc")
                         {
-                            documents = documents.OrderBy(x => x.Code1.Value).ToList();
+                            documents = documents.OrderBy(x => x.Code1?.Value).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            documents = documents.OrderByDescending(x => x.Code1.Value).ToList();
+                            documents = documents.OrderByDescending(x => x.Code1?.Value).ToList();
                         }
                         break;
 
                     case "PracticeAreaName":
                         if (sortDir == "asc")
                         {
-                            documents = documents.OrderBy(x => x.PracticeArea.PracticeAreaName).ToList();
+                            documents = documents.OrderBy(x => x.PracticeArea?.PracticeAreaName).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            documents = documents.OrderByDescending(x => x.PracticeArea.PracticeAreaName).ToList();
+                            documents = documents.OrderByDescending(x => x.PracticeArea?.PracticeAreaName).ToList();
                         }
 
                         break;
@@ -110,7 +110,7 @@ namespace WFJ.Service
                 SeqNo = x.SeqNo,
                 State = x.Code?.Value,
                 DocumentType = x.Code1?.Value,
-                ClientName = GetClientName(string.Join(", ", x.documentClients?.Where(y => !string.IsNullOrEmpty(y.Client?.ClientName)).Select(y => y.Client.ClientName))),
+                ClientName = GetClientName(string.Join(", ", x.documentClients.Where(y => !string.IsNullOrEmpty(y.Client.ClientName)).Select(y => y.Client.ClientName))),
                 CurrentUserType = Convert.ToInt32(HttpContext.Current.Session["UserType"]),
                 DocumentFullPath = !string.IsNullOrEmpty(x.FileName) ? filePath + x.FileName : "",
                 PracticeAreaName=x.PracticeArea?.PracticeAreaName
