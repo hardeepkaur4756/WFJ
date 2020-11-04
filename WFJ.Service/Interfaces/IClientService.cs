@@ -12,5 +12,6 @@ namespace WFJ.Service.Interfaces
     {
         List<ClientModel> GetClients();
         List<SelectListItem> GetAllClients();
+        List<SelectListItem> GetActiveInactiveOrderedList();
     }
 }

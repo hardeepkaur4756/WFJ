@@ -31,5 +31,19 @@ namespace WFJ.Service
                 ).ToList();
             return clientList;
         }
+        public List<SelectListItem> GetActiveInactiveOrderedList()
+        {
+            IClientRepository clientRepo = new ClientRepository();
+
+            var allClients = clientRepo.GetAll();
+            List<SelectListItem> activeClientList = allClients.Where(x => x.Active == 1).Select(x => new SelectListItem() { Text = x.ClientName, Value = x.ID.ToString() }
+                ).OrderBy(x => x.Text).ToList();
+            List<SelectListItem> inactiveClientList = allClients.Where(x => x.Active == 0).Select(x => new SelectListItem() { Text = x.ClientName, Value = x.ID.ToString() }
+                ).OrderBy(x => x.Text).ToList();
+            activeClientList.AddRange(inactiveClientList);
+
+            return activeClientList;
+        }
+
     }
 }

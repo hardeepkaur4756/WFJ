@@ -140,6 +140,7 @@
     <Compile Include="Controllers\DocumentCenterController.cs" />
     <Compile Include="Controllers\EncryptPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PlacementsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAttribute\AuthorizeActivity.cs" />
     <Compile Include="Global.asax.cs">
@@ -149,6 +150,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\button-icon.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="Content\manageDocument.js" />
     <Content Include="Content\ManageUser.js" />
@@ -301,6 +303,10 @@
     <Content Include="Scripts\morris.script.js" />
     <Content Include="Scripts\notes.script.js" />
     <Content Include="Scripts\peity.script.js" />
+    <Content Include="Scripts\plugins\daterangepicker\daterangepicker.css" />
+    <Content Include="Scripts\plugins\daterangepicker\daterangepicker.js" />
+    <Content Include="Scripts\plugins\daterangepicker\moment.min.js" />
+    <Content Include="Scripts\plugins\daterangepicker\package.js" />
     <Content Include="Scripts\select2.script.js" />
     <Content Include="Scripts\sparkline.script.js" />
     <Content Include="Scripts\summernote.script.js" />
@@ -3474,11 +3480,11 @@
     <Content Include="Views\Home\RequestServices.cshtml" />
     <Content Include="Views\User\ManageUsers.cshtml" />
     <Content Include="Views\Home\Payment.cshtml" />
-    <Content Include="Views\Home\_requestServices.cshtml" />
-    <Content Include="Views\Home\_requestGrid.cshtml" />
-    <Content Include="Views\Home\ViewRequest.cshtml" />
-    <Content Include="Views\Home\_viewRequest.cshtml" />
-    <Content Include="Views\Home\_customerGrid.cshtml" />
+    <Content Include="Views\Placements\_placementSearch.cshtml" />
+    <Content Include="Views\Placements\_placementGrid.cshtml" />
+    <Content Include="Views\Placements\ViewRequest.cshtml" />
+    <Content Include="Views\Placements\_viewPlacementsSearch.cshtml" />
+    <Content Include="Views\Placements\_customerGrid.cshtml" />
     <Content Include="Views\User\_manageLogin.cshtml" />
     <Content Include="Views\User\_manageLoginGrid.cshtml" />
     <Content Include="Views\User\_addEditManageLogin.cshtml" />
@@ -3510,6 +3516,8 @@
     <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />
     <Content Include="Views\DocumentCenter\DocumentCenter.cshtml" />
     <Content Include="Views\DocumentCenter\GetList.cshtml" />
+    <Content Include="Views\Placements\Index.cshtml" />
+    <Content Include="Views\Placements\ViewPlacements.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

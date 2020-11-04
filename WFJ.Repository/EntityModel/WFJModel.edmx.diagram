@@ -122,6 +122,10 @@
         <AssociationConnector Association="WFJDBModel.FK_Documents_Codes1" />
         <AssociationConnector Association="WFJDBModel.FK_documentClients_Documents_Id" />
         <AssociationConnector Association="WFJDBModel.FK_PracticeAreasID" />
+        <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__63C3BFDC" />
+        <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__64B7E415" />
+        <AssociationConnector Association="WFJDBModel.FK__Forms__FormTypeI__65AC084E" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__FormID__66A02C87" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -48,5 +48,7 @@ namespace WFJ.Repository.EntityModel
         public string Value8 { get; set; }
         public string Value9 { get; set; }
         public string Value10 { get; set; }
+    
+        public virtual Form Form { get; set; }
     }
 }

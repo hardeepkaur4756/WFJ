@@ -20,10 +20,10 @@ namespace WFJ.Service
         private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
         private ICodesRepository _codesRepo = new CodesRepository();
         private IErrorLogService _errorLogService = new ErrorLogService();
-        public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo)
+        public ManageDocumentModel GetDocuments(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol,int pageNo, int? userId)
         {
             ManageDocumentModel model = new ManageDocumentModel();
-            var documents = _documentSearchRepository.GetDocumentList(clientId,documentTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword);
+            var documents = _documentSearchRepository.GetDocumentList(clientId,documentTypeId,practiceAreaId,categoryId,formTypeId,searchKeyword, userId);
             model.totalUsersCount = documents?.Count();
             if (documents != null)
             {

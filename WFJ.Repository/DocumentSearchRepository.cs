@@ -23,7 +23,7 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public List<Document> GetDocumentList(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword)
+        public List<Document> GetDocumentList(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, int? userId)
         {
             IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository(); 
             var sSearch = searchKeyword.ToLower();
@@ -32,6 +32,13 @@ namespace WFJ.Repository
             if (clientId != -1 || practiceAreaId !=-1 || documentTypeId!=-1|| categoryId!=-1 || formTypeId!=-1|| searchKeyword != "")
             {
                 documents = _context.Documents.Include(s => s.PracticeArea).Include(s => s.Client).ToList();
+
+                if (userId != null)
+                {
+                    IUserClientRepository _UserClientRepo = new UserClientRepository();
+                    var clientList = _UserClientRepo.GetByUserId(userId.Value).Select(x => x.Client.ID);
+                    documents = documents.Where(x => x.Client != null && clientList.Contains(x.Client.ID));
+                }
                 if (clientId != -1)
                 {
                     documents = documents.Where(x => _documentClientsRepo.GetByClientID(clientId).Select(y => y.documentID).Contains(x.ID));

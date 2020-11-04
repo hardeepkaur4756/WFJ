@@ -14,9 +14,18 @@ namespace WFJ.Repository.EntityModel
     
     public partial class FormType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FormType()
+        {
+            this.Forms = new HashSet<Form>();
+        }
+    
         public int FormTypeID { get; set; }
         public string FormType1 { get; set; }
         public Nullable<byte> displayInSearch { get; set; }
         public Nullable<int> sequenceID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Form> Forms { get; set; }
     }
 }

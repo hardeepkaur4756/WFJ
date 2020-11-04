@@ -18,10 +18,15 @@ namespace WFJ.Service
         {
             return _UserClientRepo.GetByUserId(userId);
         }
-        public List<SelectListItem> GetUserClients(int userId)
+        public List<SelectListItem> GetUserClients(int userId, byte? activeInactive = null)
         {
             List<SelectListItem> clientList = new List<SelectListItem>();
-            clientList = _UserClientRepo.GetByUserId(userId).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }
+            var clients = _UserClientRepo.GetByUserId(userId);
+            if(activeInactive == null)
+                clientList = clients.Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }
+                ).ToList();
+            else
+                clientList = clients.Where(x => x.Client.Active == activeInactive).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }
                 ).ToList();
             return clientList;
         }

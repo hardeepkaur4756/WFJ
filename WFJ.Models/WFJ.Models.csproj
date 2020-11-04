@@ -82,6 +82,9 @@
     <Compile Include="ManageDocumentViewModel.cs" />
     <Compile Include="ManageUserModel.cs" />
     <Compile Include="ManageUserViewModel.cs" />
+    <Compile Include="ManagePlacementsModel.cs" />
+    <Compile Include="PlacementsModel.cs" />
+    <Compile Include="PlacementsViewModel.cs" />
     <Compile Include="PracticeAreaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultModel.cs" />

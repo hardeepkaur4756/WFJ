@@ -21,6 +21,8 @@ namespace WFJ.Repository.EntityModel
             this.documentClients = new HashSet<documentClient>();
             this.Users = new HashSet<User>();
             this.Documents = new HashSet<Document>();
+            this.Forms = new HashSet<Form>();
+            this.Forms1 = new HashSet<Form>();
         }
     
         public int ID { get; set; }
@@ -58,5 +60,9 @@ namespace WFJ.Repository.EntityModel
         public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Document> Documents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Form> Forms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Form> Forms1 { get; set; }
     }
 }

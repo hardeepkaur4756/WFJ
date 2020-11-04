@@ -11,7 +11,7 @@ namespace WFJ.Service.Interfaces
     public interface IUserClientService
     {
         List<UserClient> GetByUserId(int userId);
-        List<SelectListItem> GetUserClients(int userId);
+        List<SelectListItem> GetUserClients(int userId, byte? activeInactiveCients = null);
         List<SelectListItem> GetManageUsersByClient(List<int?> ClientIds, int userId);
     }
 }

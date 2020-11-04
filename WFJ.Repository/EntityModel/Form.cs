@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Form
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Form()
+        {
+            this.Requests = new HashSet<Request>();
+        }
+    
         public int ID { get; set; }
         public string FormName { get; set; }
         public Nullable<int> FormTypeID { get; set; }
@@ -29,5 +35,11 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> hasAdmin { get; set; }
         public Nullable<byte> active { get; set; }
         public Nullable<int> ClientNumber { get; set; }
+    
+        public virtual Client Client { get; set; }
+        public virtual Client Client1 { get; set; }
+        public virtual FormType FormType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

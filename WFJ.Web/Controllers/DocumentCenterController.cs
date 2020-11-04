@@ -67,7 +67,17 @@ namespace WFJ.Web.Controllers
                 if (param.iDisplayStart >= param.iDisplayLength)
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
-                model = _documentSearchService.GetDocuments(clientId, documentTypeId, practiceAreaId, categoryId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo);
+                int userType = 0;
+                int UserId = 0;
+                if (Session["UserId"] != null)
+                {
+                    UserId = Convert.ToInt32(Session["UserId"].ToString());
+                    userType = Convert.ToInt32(Session["UserType"].ToString());
+                }
+
+                int? userSpecific = userType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
+
+                model = _documentSearchService.GetDocuments(clientId, documentTypeId, practiceAreaId, categoryId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo, userSpecific);
                 return Json(new
                 {
                     aaData = model.documents,

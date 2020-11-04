@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "ViewRequest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section style{
+    <link href="~/Scripts/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+}
+
+<main>
+    <div class="document-center view-requst">
+        <div class="container-fluid site-width">
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <h4 class="mb-4">View Request</h4>
+                    <div class="card mb-5 mb-md-0">
+                        <div class="card-content">
+                            <div class="card-body">
+                                @Html.Partial("_viewPlacementsSearch")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <h4 class="mb-4">Company</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Partial("_customerGrid")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+@section scripts{
+    <script src="~/Scripts/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script>
+        $('.jdate-picker').daterangepicker({
+            autoUpdateInput: true,
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            minYear: 2000,
+            maxYear: parseInt(moment().format('YYYY'), 10)
+        });
+
+        $('.jdate-picker').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY'));
+        });
+
+    </script>
+}

@@ -9,7 +9,7 @@ namespace WFJ.Repository.Interfaces
 {
    public interface IDocumentSearchRepository:IRepository<Document>
     {
-        List<Document> GetDocumentList(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword);
+        List<Document> GetDocumentList(int clientId, int documentTypeId, int practiceAreaId, int categoryId, int formTypeId, string searchKeyword, int? userId);
        
     }
 }
