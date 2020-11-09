@@ -23,23 +23,20 @@ namespace WFJ.Web.Controllers
 
         private IUserClientService _userClientService = new UserClientService();
 
+        private int UserType = 0;
+        private int UserId = 0;
+
         [HttpGet]
         public ActionResult Index()
         {
             try
             {
-                int userType = 0;
-                int UserId = 0;
-                if (Session["UserId"] != null)
-                {
-                    UserId = Convert.ToInt32(Session["UserId"].ToString());
-                    userType = Convert.ToInt32(Session["UserType"].ToString());
-                }
+                GetSessionUser(out UserId, out UserType);
 
                 PlacementsViewModel model = new PlacementsViewModel();
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
                 {
-                    client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId,1) : _clientService.GetActiveInactiveOrderedList(),
+                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId,1) : _clientService.GetActiveInactiveOrderedList(),
                     placementTypeModels = _formTypeService.GetAll(),
                 };
 
@@ -47,7 +44,7 @@ namespace WFJ.Web.Controllers
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/Index", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/Index", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return View(new PlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
 
@@ -58,22 +55,17 @@ namespace WFJ.Web.Controllers
         {
             try
             {
+                GetSessionUser(out UserId, out UserType);
+
                 ManagePlacementsModel model = new ManagePlacementsModel();
                 int pageNo = 1;
                 if (param.iDisplayStart >= param.iDisplayLength)
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
-                int userType = 0;
-                int UserId = 0;
-                if (Session["UserId"] != null)
-                {
-                    UserId = Convert.ToInt32(Session["UserId"].ToString());
-                    userType = Convert.ToInt32(Session["UserType"].ToString());
-                }
 
-                int? userSpecific = userType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
+                int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
 
-                if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != userType || isFirstTime == false)
+                if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
                     model = _formService.GetPlacements(clientId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo, userSpecific);
                 else
                     model.placements = new List<PlacementsModel>();
@@ -89,16 +81,89 @@ namespace WFJ.Web.Controllers
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/Inex", CreatedBy = Convert.ToInt32(Session["UserId"]), CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetPlacementList", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
 
             }
         }
 
-        public ActionResult ViewPlacements()
+        public ActionResult ViewPlacements(int id) // client name in header is pending
         {
-            return View();
+            try
+            {
+                GetSessionUser(out UserId, out UserType);
+
+                IUserService _userService = new UserService();
+                IStatusCodesService _statusCodesService = new StatusCodesService();
+                PlacementReuestsViewModel model = new PlacementReuestsViewModel();
+                model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
+                {
+                    Requestors = _formService.GetRequestorsDropdown(id),
+                    RegionList = _clientService.GetRegionsDropdown(),
+                    Collectors = _formService.GetCollectorsDropdown(),
+                    StatusList = _statusCodesService.GetByFormID(id),
+                    AssignedToList = _formService.GetPersonnelsDropdown(id)
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/ViewPlacements", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new PlacementReuestsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+            }
         }
 
+
+        public ActionResult AddPlacement(int formId)
+        {
+            try
+            {
+                GetSessionUser(out UserId, out UserType);
+
+                AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
+                {
+                    FormSections = _formService.GetFormSections(),
+                    FormFieldsList = _formService.GetFormFieldsByForm(formId)
+                };
+                //IUserService _userService = new UserService();
+                //IStatusCodesService _statusCodesService = new StatusCodesService();
+                //IPersonnelService _personnelService = new PersonnelService();
+                //var usersDropdown = _userService.GetUsersDropdown(1);
+                //PlacementReuestsViewModel model = new PlacementReuestsViewModel();
+                //model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
+                //{
+                //    Requestors = usersDropdown,
+                //    RegionList = _clientService.GetRegionsDropdown(),
+                //    Collectors = usersDropdown,
+                //    StatusList = _statusCodesService.GetByFormID(id),
+                //    AssignedToList = _personnelService.GetPersonnelsDropdown()
+                //};
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddPlacement", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new AddEditPlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+            }
+        }
+
+
+
+        public void GetSessionUser(out int userId, out int userType)
+        {
+            if (Session["UserId"] != null)
+            {
+                userId = Convert.ToInt32(Session["UserId"].ToString());
+                userType = Convert.ToInt32(Session["UserType"].ToString());
+            }
+            else
+            {
+                userId = 0;
+                userType = 0;
+            }
+        }
+ 
     }
 }

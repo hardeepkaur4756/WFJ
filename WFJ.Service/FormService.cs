@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.Interfaces;
+using WFJ.Repository.EntityModel;
 using WFJ.Service.Interfaces;
 
 namespace WFJ.Service
@@ -23,9 +24,6 @@ namespace WFJ.Service
         }
 
         private IFormsRepository _formSearchRepository = new FormsRepository();
-        //private IDocumentClientsRepository _documentClientsRepo = new DocumentClientsRepository();
-        //private ICodesRepository _codesRepo = new CodesRepository();
-        private IErrorLogService _errorLogService = new ErrorLogService();
         public ManagePlacementsModel GetPlacements(int clientId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol, int pageNo, int? userId)
         {
             ManagePlacementsModel model = new ManagePlacementsModel();
@@ -119,6 +117,112 @@ namespace WFJ.Service
             //}).ToList();
             return model;
         }
+
+
+        public List<FormFieldViewModel> GetFormFieldsByForm(int FormID)
+        {
+            IFormFieldsRepository _formFieldRepository = new FormFieldsRepository();
+            var formFieldList = _formFieldRepository.GetFormFieldsByFormID(FormID).Select(x => new FormFieldViewModel
+            {
+                AccessLevel = x.AccessLevel,
+                AccountSummarySeqNo = x.AccountSummarySeqNo,
+                EMailField = x.EMailField,
+                EPDBFieldName = x.EPDBFieldName,
+                FieldName = x.FieldName,
+                FieldTypeID = x.FieldTypeID,
+                FormID = x.FormID,
+                formSectionID = x.formSectionID,
+                ID = x.ID,
+                Length = x.Length,
+                ListSeqNo = x.ListSeqNo,
+                Required = x.Required,
+                SelectionColumn = x.SelectionColumn,
+                SeqNo = x.SeqNo,
+                showOnCalendar = x.showOnCalendar,
+                SQLStatement = x.SQLStatement,
+                rowNumber = x.rowNumber,
+                FieldSize = x.fieldSize == null ? null : new FieldSizeViewModel
+                {
+                    fieldSize1 = x.fieldSize.fieldSize1,
+                    fieldSizeID = x.fieldSize.fieldSizeID,
+                    htmlCode = x.fieldSize.htmlCode,
+                    seqNo = x.fieldSize.seqNo
+                },
+                FormSelectionLists = x.FormSelectionLists == null ? new List<FormSelectionListViewModel>() : x.FormSelectionLists.Select(s => new FormSelectionListViewModel { 
+                Code = s.Code,
+                FormFieldID =s.FormFieldID,
+                ID = s.ID,
+                SeqNo =s.SeqNo,
+                TextValue = s.TextValue,
+                }).AsEnumerable()
+            }).ToList();
+            return formFieldList;
+        }
+
+        public List<FormSectionViewModel> GetFormSections()
+        {
+            IFormSectionsRepository _formSectionRepoitory = new FormSectionsRepository();
+            var sectionList = _formSectionRepoitory.GetAll().OrderBy(x => x.sequenceID).Select(x => new FormSectionViewModel
+            {
+                formSectionID = x.formSectionID,
+                sectionName = x.sectionName,
+                sequenceID = x.sequenceID
+            }).ToList();
+
+            return sectionList;
+        }
+
+        public List<UserClient> GetUsersByFormID(int FormID)
+        {
+            IUserClientRepository _userClientRepo = new UserClientRepository();
+            var form = _formSearchRepository.GetById(FormID);
+
+            List<UserClient> ClientUsers = new List<UserClient>();
+            if(form.ClientID != null)
+            ClientUsers = _userClientRepo.GetByClientID(form.ClientID.Value);
+
+            return ClientUsers;
+        }
+
+        public List<SelectListItem> GetRequestorsDropdown(int FormID)
+        {
+            return GetUsersByFormID(FormID).Where(x => x.User.Active == 1 && x.User.FirstName != null && x.User.FirstName.Trim() != "").Select(x => new SelectListItem
+            {
+                Text = x.User.FirstName + " " + x.User.LastName,
+                Value = x.UserID.ToString()
+            }).OrderBy(x => x.Text).ToList();
+        }
+
+        public List<SelectListItem> GetCollectorsDropdown()
+        {
+            IUserRepository _userRepo = new UserRepository();
+            var collectors = _userRepo.GetAll().Where(x => x.IsCollector == 1 && x.Active == 1 && x.FirstName != null && x.FirstName.Trim() != "").Select(x => new SelectListItem
+                                {
+                                    Text = x.FirstName + " " + x.LastName,
+                                    Value = x.UserID.ToString()
+                                }).OrderBy(x => x.Text).ToList();
+            return collectors;
+        }
+
+        public List<SelectListItem> GetPersonnelsDropdown(int FormID)
+        {
+            IPersonnelClientsRepository _personnelClientRepo = new PersonnelClientsRepository();
+
+            IUserClientRepository _userClientRepo = new UserClientRepository();
+            var form = _formSearchRepository.GetById(FormID);
+
+            List<SelectListItem> personnels = new List<SelectListItem>();
+            if (form.ClientID != null)
+                personnels = _personnelClientRepo.GetPersonnelsByClientID(form.ClientID.Value).Select(x => new SelectListItem
+                {
+                    Text = x.FirstName + " " + x.LastName,
+                    Value = x.ID.ToString()
+                }).OrderBy(x => x.Text).ToList();
+
+            return personnels;
+        }
+
+
 
     }
 }

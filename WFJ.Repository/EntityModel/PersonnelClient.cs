@@ -18,5 +18,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> PersonnelID { get; set; }
         public Nullable<int> ClientID { get; set; }
         public Nullable<byte> NewRequestsFlag { get; set; }
+    
+        public virtual Personnel Personnel { get; set; }
     }
 }

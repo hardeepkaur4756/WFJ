@@ -1,13 +1,14 @@
-﻿@{
-    ViewBag.Title = "ViewRequest";
+﻿@model WFJ.Models.PlacementReuestsViewModel
+
+@{
+    ViewBag.Title = "View Placements";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section style{
-    <link href="~/Scripts/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
-}
 
 <main>
+    @Html.DisplayFor(m => m.ErrorMessage)
+
     <div class="document-center view-requst">
         <div class="container-fluid site-width">
             <div class="row">
@@ -16,7 +17,7 @@
                     <div class="card mb-5 mb-md-0">
                         <div class="card-content">
                             <div class="card-body">
-                                @Html.Partial("_viewPlacementsSearch")
+                                @Html.Partial("_ViewPlacementsSearch", Model.placementReuestsFilterViewModel)
                             </div>
                         </div>
                     </div>
@@ -25,7 +26,7 @@
                     <h4 class="mb-4">Company</h4>
                     <div class="card">
                         <div class="card-body">
-                            @Html.Partial("_customerGrid")
+                            @Html.Partial("_CustomerGrid")
                         </div>
                     </div>
                 </div>
@@ -36,7 +37,6 @@
 
 
 @section scripts{
-    <script src="~/Scripts/plugins/daterangepicker/daterangepicker.js"></script>
 
     <script>
         $('.jdate-picker').daterangepicker({

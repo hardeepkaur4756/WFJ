@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Personnel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Personnel()
+        {
+            this.PersonnelClients = new HashSet<PersonnelClient>();
+        }
+    
         public int ID { get; set; }
         public string Type { get; set; }
         public string FirstName { get; set; }
@@ -37,5 +43,8 @@ namespace WFJ.Repository.EntityModel
         public string SuccessStories { get; set; }
         public string CommunityActivities { get; set; }
         public Nullable<byte> isShareholder { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonnelClient> PersonnelClients { get; set; }
     }
 }

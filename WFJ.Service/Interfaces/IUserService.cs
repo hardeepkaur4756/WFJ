@@ -29,5 +29,6 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetRegionsByClient(List<int?> ClientIds);
         List<SelectListItem> GetFormsByClient(List<int?> ClientIds);
         List<SelectListItem> GetAllAccessLevels();
+        List<SelectListItem> GetUsersDropdown(byte? active = null);
     }
 }

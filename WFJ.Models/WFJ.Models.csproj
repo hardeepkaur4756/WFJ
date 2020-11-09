@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddEditPlacementsViewModel.cs" />
     <Compile Include="CategoryModel.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="DataTableParam.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="ManageUserModel.cs" />
     <Compile Include="ManageUserViewModel.cs" />
     <Compile Include="ManagePlacementsModel.cs" />
+    <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />
     <Compile Include="PracticeAreaModel.cs" />

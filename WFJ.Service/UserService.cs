@@ -695,5 +695,17 @@ namespace WFJ.Service
             }
             return stringName;
         }
+
+        public List<SelectListItem> GetUsersDropdown(byte? active = null)
+        {
+            var users = active == null ? _userRepo.GetAll() : _userRepo.GetAll().Where(x => x.Active == active.Value);
+
+            return users.Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.LastName,
+                Value = x.UserID.ToString()
+            }).Where(x =>x .Text.Trim() != "").OrderBy(x => x.Text).ToList();            
+        }
+
     }
 }

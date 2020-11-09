@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="~/vendors/datatable/buttons/css/buttons.bootstrap4.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <link href="~/vendors/multiselect/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/Scripts/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
     <link href="~/Content/main.css" rel="stylesheet" />
 
     @RenderSection("style", false)
@@ -183,8 +184,8 @@
                         <li class="dropdown user-profile align-self-center d-inline-block">
                             <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false">
                                 @*<div class="media">
-                                    <img src="~/Images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29" />
-                                </div>*@
+                                        <img src="~/Images/author.jpg" alt="" class="d-flex img-fluid rounded-circle" width="29" />
+                                    </div>*@
                                 <i class="fa fa-cog" aria-hidden="true"></i>
                             </a>
 
@@ -194,8 +195,8 @@
                                     Profile
                                 </a>
                                 @*<a href="" class="dropdown-item px-2 align-self-center d-flex">
-                                    <span class="icon-user mr-2 h6 mb-0"></span> View Profile
-                                </a>*@
+                                        <span class="icon-user mr-2 h6 mb-0"></span> View Profile
+                                    </a>*@
                                 <div class="dropdown-divider"></div>
                                 <a href="/Account/Logout" class="dropdown-item px-2 text-danger align-self-center d-flex">
                                     <span class="icon-logout mr-2 h6 mb-0"></span> Log Out
@@ -228,8 +229,8 @@
                         @if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator == Convert.ToInt32(Session["UserType"]))
                         {
                             <li>
-                            <a href="/User/ManageUsers"><i class="icon-earphones"></i> Manage Users</a>
-                        </li>
+                                <a href="/User/ManageUsers"><i class="icon-earphones"></i> Manage Users</a>
+                            </li>
                         }
                         <li>
                             <a href="/Home/Payment"><i class="icon-support"></i> Payments</a>
@@ -322,6 +323,7 @@
     <script src="~/Scripts/home.script.js"></script>
     <script src="~/Scripts/Common.js"></script>
     <script src="~/vendors/multiselect/bootstrap-multiselect.js"></script>
+    <script src="~/Scripts/plugins/daterangepicker/daterangepicker.js"></script>
 
     @*<script src="~/Content/ManageUser.js"></script>*@
     <script src="~/Scripts/managelogin.js"></script>

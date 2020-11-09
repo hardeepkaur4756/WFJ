@@ -134,6 +134,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\CommonFunctions.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -3483,8 +3484,8 @@
     <Content Include="Views\Placements\_placementSearch.cshtml" />
     <Content Include="Views\Placements\_placementGrid.cshtml" />
     <Content Include="Views\Placements\ViewRequest.cshtml" />
-    <Content Include="Views\Placements\_viewPlacementsSearch.cshtml" />
-    <Content Include="Views\Placements\_customerGrid.cshtml" />
+    <Content Include="Views\Placements\_ViewPlacementsSearch.cshtml" />
+    <Content Include="Views\Placements\_CustomerGrid.cshtml" />
     <Content Include="Views\User\_manageLogin.cshtml" />
     <Content Include="Views\User\_manageLoginGrid.cshtml" />
     <Content Include="Views\User\_addEditManageLogin.cshtml" />
@@ -3518,6 +3519,7 @@
     <Content Include="Views\DocumentCenter\GetList.cshtml" />
     <Content Include="Views\Placements\Index.cshtml" />
     <Content Include="Views\Placements\ViewPlacements.cshtml" />
+    <Content Include="Views\Placements\AddPlacement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

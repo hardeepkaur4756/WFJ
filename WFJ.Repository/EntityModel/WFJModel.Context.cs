@@ -130,6 +130,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<documentClient> documentClients { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
+        public virtual DbSet<fieldSize> fieldSizes { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

@@ -126,12 +126,12 @@
                             {
                                 "mData": "RequestsCount",
                                 "render": function (row, type, full) {
-                                    return '<a href="/Placements/ViewPlacements" class="btn btn-sm btn-primary btn-grad" title="View Placements">' + full.RequestsCount+'</a>';
+                                    return '<a href="/Placements/ViewPlacements/' + full.ID + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
                                 }
                             },
                             {
                                 "render": function (row, type, full) {
-                                    return '<a href="" target="_blank" class="btn btn-sm btn-success" title="Add Placement"><i class="fa fa-plus"></i></a>';
+                                    return '<a href="/Placements/AddPlacement?formId='+full.ID+'" target="_blank" class="btn btn-sm btn-success" title="Add Placement"><i class="fa fa-plus"></i></a>';
                                 },
                                 orderable: false
                             },

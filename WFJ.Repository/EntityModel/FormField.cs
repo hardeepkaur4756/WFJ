@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class FormField
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FormField()
+        {
+            this.FormSelectionLists = new HashSet<FormSelectionList>();
+        }
+    
         public int ID { get; set; }
         public Nullable<int> FormID { get; set; }
         public Nullable<int> FieldTypeID { get; set; }
@@ -30,5 +36,11 @@ namespace WFJ.Repository.EntityModel
         public string SQLStatement { get; set; }
         public Nullable<int> AccountSummarySeqNo { get; set; }
         public Nullable<byte> showOnCalendar { get; set; }
+        public Nullable<int> rowNumber { get; set; }
+        public Nullable<int> fieldSizeID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FormSelectionList> FormSelectionLists { get; set; }
+        public virtual fieldSize fieldSize { get; set; }
     }
 }

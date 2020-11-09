@@ -19,5 +19,7 @@ namespace WFJ.Repository.EntityModel
         public string Code { get; set; }
         public string TextValue { get; set; }
         public Nullable<int> SeqNo { get; set; }
+    
+        public virtual FormField FormField { get; set; }
     }
 }

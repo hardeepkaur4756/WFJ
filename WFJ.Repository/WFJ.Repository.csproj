@@ -181,6 +181,9 @@
     <Compile Include="EntityModel\FAQ.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\fieldSize.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\FieldType.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
@@ -413,6 +416,8 @@
       <DependentUpon>WFJModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="ErrorLogRepository.cs" />
+    <Compile Include="FormFieldsRepository.cs" />
+    <Compile Include="FormSectionsRepository.cs" />
     <Compile Include="FormsRepository.cs" />
     <Compile Include="FormTypeRepository.cs" />
     <Compile Include="FormUsersRepository.cs" />
@@ -424,21 +429,32 @@
     <Compile Include="Interfaces\IDocumentClientsRepository.cs" />
     <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
     <Compile Include="Interfaces\IErrorLogRepository.cs" />
+    <Compile Include="Interfaces\IFieldTypesRepository.cs" />
+    <Compile Include="Interfaces\IFormAddressData.cs" />
+    <Compile Include="Interfaces\IFormDataRepository.cs" />
+    <Compile Include="Interfaces\IFormFieldsRepository.cs" />
+    <Compile Include="Interfaces\IFormSectionsRepository.cs" />
     <Compile Include="Interfaces\IFormsRepository.cs" />
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IFormUsersRepository.cs" />
     <Compile Include="Interfaces\ILevelRepository.cs" />
+    <Compile Include="Interfaces\IPersonnelClientsRepository.cs" />
+    <Compile Include="Interfaces\IPersonnelsRepository.cs" />
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
     <Compile Include="Interfaces\IRegionsRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IStatusCodesRepository.cs" />
     <Compile Include="Interfaces\IUserClientRepository.cs" />
     <Compile Include="Interfaces\IUserLevelsRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Interfaces\IUserTypeRepository.cs" />
     <Compile Include="LevelRepository.cs" />
+    <Compile Include="PersonnelClientsRepository.cs" />
+    <Compile Include="PersonnelsRepository.cs" />
     <Compile Include="PracticeAreaRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionsRepository.cs" />
+    <Compile Include="StatusCodesRepository.cs" />
     <Compile Include="UserClientRepository.cs" />
     <Compile Include="UserLevelsRepository.cs" />
     <Compile Include="UserRepository.cs" />
