@@ -24,5 +24,7 @@ namespace WFJ.Repository.EntityModel
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
+    
+        public virtual FormField FormField { get; set; }
     }
 }

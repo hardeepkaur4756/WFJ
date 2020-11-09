@@ -115,30 +115,32 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddPlacement(int formId)
+        public ActionResult AddPlacement(int formId, int? requestId)
         {
             try
             {
                 GetSessionUser(out UserId, out UserType);
 
+                IStatusCodesService _statusCodesService = new StatusCodesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
                     FormSections = _formService.GetFormSections(),
-                    FormFieldsList = _formService.GetFormFieldsByForm(formId)
+                    FormFieldsList = _formService.GetFormFieldsByForm(formId),
+                    Collectors= _formService.GetCollectorsDropdown(),
+                    Requestors= _formService.GetRequestorsDropdown(formId),
+                    StatusList= _statusCodesService.GetByFormID(formId)
                 };
-                //IUserService _userService = new UserService();
-                //IStatusCodesService _statusCodesService = new StatusCodesService();
-                //IPersonnelService _personnelService = new PersonnelService();
-                //var usersDropdown = _userService.GetUsersDropdown(1);
-                //PlacementReuestsViewModel model = new PlacementReuestsViewModel();
-                //model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
-                //{
-                //    Requestors = usersDropdown,
-                //    RegionList = _clientService.GetRegionsDropdown(),
-                //    Collectors = usersDropdown,
-                //    StatusList = _statusCodesService.GetByFormID(id),
-                //    AssignedToList = _personnelService.GetPersonnelsDropdown()
-                //};
+
+                if(requestId == null)
+                {
+                    model.Request = new RequestViewModel();
+                }
+                else
+                {
+                    IRequestsService _requestService = new RequestsService();
+                    model.Request = _requestService.GetByRequestId(requestId.Value);
+                }
+                   
 
                 return View(model);
             }

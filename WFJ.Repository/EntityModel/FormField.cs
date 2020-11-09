@@ -18,6 +18,9 @@ namespace WFJ.Repository.EntityModel
         public FormField()
         {
             this.FormSelectionLists = new HashSet<FormSelectionList>();
+            this.FormAddressDatas = new HashSet<FormAddressData>();
+            this.FormDatas = new HashSet<FormData>();
+            this.FormDatas1 = new HashSet<FormData>();
         }
     
         public int ID { get; set; }
@@ -42,5 +45,11 @@ namespace WFJ.Repository.EntityModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormSelectionList> FormSelectionLists { get; set; }
         public virtual fieldSize fieldSize { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FormAddressData> FormAddressDatas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FormData> FormDatas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FormData> FormDatas1 { get; set; }
     }
 }

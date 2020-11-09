@@ -89,6 +89,7 @@
     <Compile Include="PlacementsViewModel.cs" />
     <Compile Include="PracticeAreaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestViewModel.cs" />
     <Compile Include="ResultModel.cs" />
     <Compile Include="ProfileViewModel.cs" />
     <Compile Include="UserModel.cs" />

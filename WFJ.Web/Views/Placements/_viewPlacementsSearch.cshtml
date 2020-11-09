@@ -16,7 +16,7 @@
                 <label for="inputState">Requestor</label>
                 <select id="inputState" class="form-control">
                     <option selected="" value="-1">All</option>
-                    @foreach (var item in Model.RegionList)
+                    @foreach (var item in Model.Requestors)
                     {
                         <option value="@item.Value">@item.Text</option>
                     }

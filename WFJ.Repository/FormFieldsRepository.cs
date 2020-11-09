@@ -13,7 +13,10 @@ namespace WFJ.Repository
     {
         public List<FormField> GetFormFieldsByFormID(int FormID)
         {
-            return _context.FormFields.Include(x => x.FormSelectionLists).Include(x => x.fieldSize).Where(x => x.FormID == FormID).ToList();
+            return _context.FormFields.Include(x => x.FormSelectionLists).Include(x => x.fieldSize)
+                                                                        .Include(x => x.FormDatas)
+                                                                        .Include(x => x.FormAddressDatas)
+                                                                        .Where(x => x.FormID == FormID).ToList();
         }
 
     }

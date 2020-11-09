@@ -130,6 +130,9 @@
         <AssociationConnector Association="WFJDBModel.FK__FormSelec__FormF__6A70BD6B" />
         <EntityTypeShape EntityType="WFJDBModel.fieldSize" Width="1.5" PointX="14.5" PointY="31.25" />
         <AssociationConnector Association="WFJDBModel.FK__FormField__field__78BEDCC2" />
+        <AssociationConnector Association="WFJDBModel.FK__FormAddre__FormF__7C8F6DA6" />
+        <AssociationConnector Association="WFJDBModel.FK__FormData__FormFi__7AA72534" />
+        <AssociationConnector Association="WFJDBModel.FK__FormData__FormFi__7B9B496D" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -19,5 +19,8 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> FormFieldID { get; set; }
         public string FieldValue { get; set; }
         public Nullable<int> currencyID { get; set; }
+    
+        public virtual FormField FormField { get; set; }
+        public virtual FormField FormField1 { get; set; }
     }
 }

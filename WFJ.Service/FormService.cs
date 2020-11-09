@@ -141,6 +141,29 @@ namespace WFJ.Service
                 showOnCalendar = x.showOnCalendar,
                 SQLStatement = x.SQLStatement,
                 rowNumber = x.rowNumber,
+
+                FormData = x.FormDatas == null ? new FormDataViewModel() : x.FormDatas.Select(d => new FormDataViewModel
+                {
+                    currencyID = d.currencyID,
+                    FieldValue = d.FieldValue,
+                    FormFieldID = d.FormFieldID,
+                    ID = d.ID,
+                    RequestID = d.RequestID
+                }).FirstOrDefault(),
+                FormAddressData = x.FormAddressDatas == null ? new FormAddressDataViewModel() : x.FormAddressDatas.Select(a => new FormAddressDataViewModel
+                {
+                    AddressLine1 = a.AddressLine1,
+                    AddressLine2 = a.AddressLine2,
+                    AddressLine3 = a.AddressLine3,
+                    City = a.City,
+                    Country = a.Country,
+                    FormFieldID = a.FormFieldID,
+                    ID = a.ID,
+                    RequestID = a.RequestID,
+                    State = a.State,
+                    ZipCode = a.ZipCode
+                }).FirstOrDefault(),
+
                 FieldSize = x.fieldSize == null ? null : new FieldSizeViewModel
                 {
                     fieldSize1 = x.fieldSize.fieldSize1,
@@ -148,12 +171,13 @@ namespace WFJ.Service
                     htmlCode = x.fieldSize.htmlCode,
                     seqNo = x.fieldSize.seqNo
                 },
-                FormSelectionLists = x.FormSelectionLists == null ? new List<FormSelectionListViewModel>() : x.FormSelectionLists.Select(s => new FormSelectionListViewModel { 
-                Code = s.Code,
-                FormFieldID =s.FormFieldID,
-                ID = s.ID,
-                SeqNo =s.SeqNo,
-                TextValue = s.TextValue,
+                FormSelectionLists = x.FormSelectionLists == null ? new List<FormSelectionListViewModel>() : x.FormSelectionLists.Select(s => new FormSelectionListViewModel
+                {
+                    Code = s.Code,
+                    FormFieldID = s.FormFieldID,
+                    ID = s.ID,
+                    SeqNo = s.SeqNo,
+                    TextValue = s.TextValue
                 }).AsEnumerable()
             }).ToList();
             return formFieldList;
@@ -186,21 +210,21 @@ namespace WFJ.Service
 
         public List<SelectListItem> GetRequestorsDropdown(int FormID)
         {
-            return GetUsersByFormID(FormID).Where(x => x.User.Active == 1 && x.User.FirstName != null && x.User.FirstName.Trim() != "").Select(x => new SelectListItem
+            return GetUsersByFormID(FormID).Where(x => x.User.Active == 1).Select(x => new SelectListItem
             {
                 Text = x.User.FirstName + " " + x.User.LastName,
                 Value = x.UserID.ToString()
-            }).OrderBy(x => x.Text).ToList();
+            }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
         }
 
         public List<SelectListItem> GetCollectorsDropdown()
         {
             IUserRepository _userRepo = new UserRepository();
-            var collectors = _userRepo.GetAll().Where(x => x.IsCollector == 1 && x.Active == 1 && x.FirstName != null && x.FirstName.Trim() != "").Select(x => new SelectListItem
+            var collectors = _userRepo.GetAll().Where(x => x.IsCollector == 1 && x.Active == 1).Select(x => new SelectListItem
                                 {
                                     Text = x.FirstName + " " + x.LastName,
                                     Value = x.UserID.ToString()
-                                }).OrderBy(x => x.Text).ToList();
+                                }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
             return collectors;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace WFJ.Models
 {
@@ -10,7 +11,17 @@ namespace WFJ.Models
     {
         public IEnumerable<FormSectionViewModel> FormSections { get; set; }
         public List<FormFieldViewModel> FormFieldsList { get; set; }
+
+
+        public List<SelectListItem> Requestors { get; set; }
+        public List<SelectListItem> AssignedAtorneys { get; set; }
+        public List<SelectListItem> Collectors { get; set; }
+        public List<SelectListItem> StatusList { get; set; }
+
+        public RequestViewModel Request { get; set; }
     }
+
+
 
     public class FormSectionViewModel
     {
@@ -39,6 +50,9 @@ namespace WFJ.Models
         public Nullable<byte> showOnCalendar { get; set; }
         public Nullable<int> rowNumber { get; set; }
         public FieldSizeViewModel FieldSize { get; set; }
+
+        public FormDataViewModel FormData { get; set; }
+        public FormAddressDataViewModel FormAddressData { get; set; }
         public IEnumerable<FormSelectionListViewModel> FormSelectionLists { get; set; }
     }
 
@@ -57,6 +71,30 @@ namespace WFJ.Models
         public string Code { get; set; }
         public string TextValue { get; set; }
         public int? SeqNo { get; set; }
+    }
+
+    public class FormDataViewModel
+    {
+        public int ID { get; set; }
+        public Nullable<int> RequestID { get; set; }
+        public Nullable<int> FormFieldID { get; set; }
+        public string FieldValue { get; set; }
+        public Nullable<int> currencyID { get; set; }
+    }
+
+
+    public class FormAddressDataViewModel
+    {
+        public int ID { get; set; }
+        public Nullable<int> RequestID { get; set; }
+        public Nullable<int> FormFieldID { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressLine3 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+        public string Country { get; set; }
     }
 
 }
