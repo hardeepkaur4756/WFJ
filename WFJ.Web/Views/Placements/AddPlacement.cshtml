@@ -1,4 +1,5 @@
-﻿@model WFJ.Models.AddEditPlacementsViewModel
+﻿@using WFJ.Models;
+@model AddEditPlacementsViewModel
 
 @{
     ViewBag.Title = "AddPlacement";
@@ -21,10 +22,20 @@
 <main>
     <div class="document-center">
         <div class="container-fluid site-width">
-            <h4 class="mb-4">View Request Customer name</h4>
             <!-- START: Breadcrumbs-->
+
+            <div class="row">
+                <div class="col-md-5">
+                    <h4 class="mb-4">Add Placement</h4>
+                </div>
+                <div class="col-md-7">
+                    <h4 class="mb-4">@Html.Raw(Model.ClientName ?? "&nbsp;")</h4>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-5 col-xl-5">
+
                     <div class="form-group">
                         <button type="button" class="btn btn-secondary">PDF</button>
                     </div>
@@ -42,7 +53,7 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Assigned Atorney</label>
-                                            <select class="form-control"></select>
+                                            @Html.DropDownListFor(x => x.Request.AssignedAttorney, new SelectList(Model.AssignedAtorneys, "Value", "Text"), new { @Class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
@@ -53,133 +64,143 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                        <div class="col-lg-6 col-xl-4">
-                                            <div class="form-group">
-                                                <label>Status</label>
-                                                @Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "Value", "Text"), new { @Class = "form-control" })
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-xl-4">
-                                            <div class="form-group">
-                                                <label>Request Date</label>
-                                                @Html.TextBoxFor(x => x.Request.RequestDate, new { @Class = "form-control jdate-picker" })
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-xl-4">
-                                            <div class="form-group">
-                                                <label>WFJ File Close Date</label>
-                                                @Html.TextBoxFor(x => x.Request.RequestDate, new { @Class = "form-control jdate-picker" })
-                                            </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            @Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "Value", "Text"), new { @Class = "form-control" })
                                         </div>
                                     </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Request Date</label>
+                                            @Html.TextBoxFor(x => x.Request.RequestDate, new { @Class = "form-control jdate-picker" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="form-group">
+                                            <label>WFJ File Close Date</label>
+                                            @Html.TextBoxFor(x => x.Request.CompletionDate, new { @Class = "form-control jdate-picker" })
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
                     </div>
 
-                    @foreach (var section in Model.FormSections)
-                    {
-                        var ItemsSectionWise = FieldsGrouped.FirstOrDefault(x => x.sectionId == section.formSectionID);
-                        if (ItemsSectionWise != null)
+                    <form method="post">
+                        @Html.HiddenFor(x => x.Request.FormID)
+                        @Html.HiddenFor(x => x.Request.ID)
+
+                        @foreach (var section in Model.FormSections)
                         {
-                            var SectionWise = ItemsSectionWise.sectionData;
-                            foreach (var sectionData in SectionWise)
+                            var ItemsSectionWise = FieldsGrouped.FirstOrDefault(x => x.sectionId == section.formSectionID);
+                            if (ItemsSectionWise != null)
                             {
-                                <div class="card mb-4">
-                                    <div class="card-content">
-                                        <div class="card-body">
+                                var SectionWise = ItemsSectionWise.sectionData;
+                                foreach (var sectionData in SectionWise)
+                                {
+                                    <div class="card mb-4">
+                                        <div class="card-content">
+                                            <div class="card-body">
 
-                                            @foreach (var row in sectionData.rowData)
-                                            {
-                                                <div class="row">
+                                                @foreach (var row in sectionData.rowData)
+                                                {
+                                                    <div class="row">
 
-                                                    @foreach (var item in row)
-                                                    {
-                                                        if (item.FieldTypeID != 0)
+                                                        @foreach (var item in row)
                                                         {
-                                                            string colClass = item.FieldSize == null ? "col-12" : item.FieldSize.htmlCode;
-                                                            string Required = item.Required == 1 ? "required" : "";
-                                                            string maxLength = item.Length != null ? "maxlength=" + item.Length : "";
+                                                            if (item.FieldTypeID != 0)
+                                                            {
+                                                                string colClass = item.FieldSize == null ? "col-12" : item.FieldSize.htmlCode;
+                                                                string Required = item.Required == 1 ? "required" : "";
+                                                                string maxLength = item.Length != null ? "maxlength=" + item.Length : "";
+                                                                string inputName = "FormFieldsList[" + Cnt + "].FormData.FieldValue";
+                                                                string inputValue = item.FormData == null ? "" : item.FormData.FieldValue;
+                                                                var addressData = item.FormAddressData == null ? new FormAddressDataViewModel() : item.FormAddressData;
 
-                                                            <div class="@colClass">
-                                                                <div class="form-group">
-                                                                    <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" />
+                                                                <div class="@colClass">
+                                                                    <div class="form-group">
+                                                                        <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" />
 
-                                                                    <label>@item.FieldName</label>
-                                                                    @if (item.FieldTypeID == 1)
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ type="number" class="form-control" @Required />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 2)
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ class="form-control jdate-picker" @Required />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 3)
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ type="text" class="form-control" @maxLength @Required />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 4)
-                                                                    {
-                                                                        <div>
-                                                                            <label class="radio-inline">
-                                                                                <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*@(item.FormData.FieldValue == "Yes" ? "checked" : "")*@ class="mr-1" type="radio" value="1" @Required>Yes</label>
-                                                                            <label class="radio-inline">
-                                                                                <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*@(item.FormData.FieldValue == "No" ? "checked" : "")*@ class="mr-1" type="radio" value="0" @Required>No</label>
-                                                                        </div>
-                                                                    }
-                                                                    else if (item.FieldTypeID == 6) // text only
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ type="text" pattern="[A-Za-z]" class="form-control" @maxLength @Required />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 9 || item.FieldTypeID == 5) // name, telephone
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ type="text" pattern="[A-Za-z0-9]" class="form-control" @maxLength @Required />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 7)
-                                                                    {
-                                                                        <select name="FormFieldsList[@Cnt].FormData.FieldValue" class="form-control" @Required>
-                                                                            <option></option>
-                                                                            @foreach (var option in item.FormSelectionLists.OrderBy(x => x.SeqNo))
-                                                                            {
-                                                                                var optionSelected = option.TextValue == item.FormData.FieldValue ? "selected" : "";
-                                                                                <option value="@option.Code" @optionSelected>@option.TextValue</option>
-                                                                            }
-                                                                        </select>
-                                                                    }
-                                                                    else if (item.FieldTypeID == 8)
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.AddressLine1" @*value="@item.FormAddressData.AddressLine1"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="300" placeholder="Addredd line 1" @Required />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.AddressLine2" @*value="@item.FormAddressData.AddressLine2"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="80" placeholder="Addredd line 2" />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.AddressLine3" @*value="@item.FormAddressData.AddressLine3"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="80" placeholder="Addredd line 3" />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.City" @*value="@item.FormAddressData.City"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="50" placeholder="City" />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.State" @*value="@item.FormAddressData.State"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="3" placeholder="State" />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.ZipCode" @*value="@item.FormAddressData.ZipCode"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="10" placeholder="Zip code" />
-                                                                        <input name="FormFieldsList[@Cnt].FormAddressData.Country" @*value="@item.FormAddressData.Country"*@ type="text" class="form-control" maxlength="20" placeholder="Country" />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 13)
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" type="checkbox" />
-                                                                    }
-                                                                    else if (item.FieldTypeID == 19) // currency
-                                                                    {
-                                                                        <input name="FormFieldsList[@Cnt].FormData.FieldValue" @*value="@item.FormData.FieldValue"*@ type="number" min="0.01" step="0.01" class="form-control" @Required />
-                                                                    }
+                                                                        <label>@item.FieldName</label>
+                                                                        @if (item.FieldTypeID == 1)
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" type="number" class="form-control" @Required />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 2)
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" class="form-control jdate-picker" @Required />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 3)
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" type="text" class="form-control" @maxLength @Required />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 4)
+                                                                        {
+                                                                            <div>
+                                                                                <label class="radio-inline">
+                                                                                    <input name="@inputName" @*@(item.FormData.FieldValue == "Yes" ? "checked" : "")*@ class="mr-1" type="radio" value="1" @Required>Yes
+                                                                                </label>
+                                                                                <label class="radio-inline">
+                                                                                    <input name="@inputName" @*@(item.FormData.FieldValue == "No" ? "checked" : "")*@ class="mr-1" type="radio" value="0" @Required>No
+                                                                                </label>
+                                                                            </div>
+                                                                        }
+                                                                        else if (item.FieldTypeID == 6) // text only
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z]" class="form-control" @maxLength @Required />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 9 || item.FieldTypeID == 5) // name, telephone
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control" @maxLength @Required />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 7)
+                                                                        {
+                                                                            <select name="@inputName" class="form-control" @Required>
+                                                                                <option></option>
+                                                                                @foreach (var option in item.FormSelectionLists.OrderBy(x => x.SeqNo))
+                                                                                {
+                                                                                    var optionSelected = "";//option.TextValue == item.FormData.FieldValue ? "selected" : "";
+                                                                                    <option value="@option.Code" @optionSelected>@option.TextValue</option>
+                                                                                }
+                                                                            </select>
+                                                                        }
+                                                                        else if (item.FieldTypeID == 8)
+                                                                        {
+                                                                            <input name="@addressData.AddressLine1" @*value="@item.FormAddressData.AddressLine1"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="300" placeholder="Addredd line 1" @Required />
+                                                                            <input name="@addressData.AddressLine2" @*value="@item.FormAddressData.AddressLine2"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="80" placeholder="Addredd line 2" />
+                                                                            <input name="@addressData.AddressLine3" @*value="@item.FormAddressData.AddressLine3"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="80" placeholder="Addredd line 3" />
+                                                                            <input name="@addressData.City" @*value="@item.FormAddressData.City"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="50" placeholder="City" />
+                                                                            <input name="@addressData.State" @*value="@item.FormAddressData.State"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="3" placeholder="State" />
+                                                                            <input name="@addressData.ZipCode" @*value="@item.FormAddressData.ZipCode"*@ type="text" style="margin-bottom:1rem;" class="form-control" maxlength="10" placeholder="Zip code" />
+                                                                            <input name="@addressData.Country" @*value="@item.FormAddressData.Country"*@ type="text" class="form-control" maxlength="20" placeholder="Country" />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 13)
+                                                                        {
+                                                                            <input name="@inputName" type="checkbox" />
+                                                                        }
+                                                                        else if (item.FieldTypeID == 19) // currency
+                                                                        {
+                                                                            <input name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control" @Required />
+                                                                        }
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            }
                                                         }
-                                                    }
 
-                                                </div>
-                                            }
+                                                    </div>
+                                                }
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
+
                             }
 
                         }
-
-                    }
+                    </form>
                 </div>
 
 

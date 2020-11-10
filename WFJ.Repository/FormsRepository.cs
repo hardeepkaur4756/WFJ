@@ -23,7 +23,7 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public IEnumerable<Form> GetFormList(int clientId, int formTypeId, int? userId)//, string searchKeyword)
+        public IEnumerable<Form> GetFormList(int clientId, int formTypeId, int? ClientUserId)//, string searchKeyword)
         {
             //var sSearch = searchKeyword.ToLower();
             IEnumerable<Form> documents;
@@ -31,11 +31,11 @@ namespace WFJ.Repository
             //if (clientId != -1 ||  formTypeId != -1)// || searchKeyword != "")
             //{
             documents = _context.Forms.Include(x => x.Client).Include(x => x.FormType).Include(x => x.Requests);
-            if (userId != null)
+            if (ClientUserId != null)
             {
                 IUserClientRepository _UserClientRepo = new UserClientRepository();
-                var clientList = _UserClientRepo.GetByUserId(userId.Value).Select(x => x.Client.ID);
-                documents = documents.Where(x => x.Client != null && clientList.Contains(x.Client.ID));
+                var clientList = _UserClientRepo.GetByUserId(ClientUserId.Value).Select(x => x.Client.ID);
+                documents = documents.Where(x => x.Client != null && x.Client.Active == 1 && clientList.Contains(x.Client.ID));
             }
 
             if (clientId != -1)

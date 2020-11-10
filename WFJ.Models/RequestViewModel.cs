@@ -27,7 +27,7 @@ namespace WFJ.Models
         //public Nullable<int> reservePercent { get; set; }
         //public Nullable<byte> agingReport { get; set; }
         public Nullable<int> StatusCode { get; set; }
-        //public Nullable<System.DateTime> CompletionDate { get; set; }
+        public Nullable<System.DateTime> CompletionDate { get; set; }
         //public Nullable<byte> active { get; set; }
         //public Nullable<System.DateTime> LastViewed { get; set; }
         //public Nullable<System.DateTime> LastNoteDate { get; set; }

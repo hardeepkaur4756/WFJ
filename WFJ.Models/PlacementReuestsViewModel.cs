@@ -9,6 +9,7 @@ namespace WFJ.Models
 {
     public class PlacementReuestsViewModel : ExceptionModel
     {
+        public string ClientName { get; set; }
         public PlacementReuestsFilterViewModel placementReuestsFilterViewModel { get; set; }
     }
 

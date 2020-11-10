@@ -10,7 +10,7 @@ using WFJ.Service.Interfaces;
 
 namespace WFJ.Web.Controllers
 {
-    //[Authorize]
+    [CustomAttribute.AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
     public class PlacementsController : Controller
     {
         private IErrorLogService _errorLogService = new ErrorLogService();
@@ -37,7 +37,7 @@ namespace WFJ.Web.Controllers
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
                 {
                     client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId,1) : _clientService.GetActiveInactiveOrderedList(),
-                    placementTypeModels = _formTypeService.GetAll(),
+                    placementTypeModels = _formTypeService.GetAll().Where(x => x.FormType1 != null).ToList(),
                 };
 
                 return View(model);
@@ -87,7 +87,7 @@ namespace WFJ.Web.Controllers
             }
         }
 
-        public ActionResult ViewPlacements(int id) // client name in header is pending
+        public ActionResult ViewPlacements(int id)
         {
             try
             {
@@ -96,6 +96,10 @@ namespace WFJ.Web.Controllers
                 IUserService _userService = new UserService();
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 PlacementReuestsViewModel model = new PlacementReuestsViewModel();
+
+                var form = _formService.GetFormById(id);
+                model.ClientName = form.Client != null ? form.Client.ClientName : null;
+
                 model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
                 {
                     Requestors = _formService.GetRequestorsDropdown(id),
@@ -120,20 +124,23 @@ namespace WFJ.Web.Controllers
             try
             {
                 GetSessionUser(out UserId, out UserType);
+                var form = _formService.GetFormById(formId);
 
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
+                    ClientName = form.Client != null ? form.Client.ClientName : null,
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(formId),
                     Collectors= _formService.GetCollectorsDropdown(),
                     Requestors= _formService.GetRequestorsDropdown(formId),
-                    StatusList= _statusCodesService.GetByFormID(formId)
+                    StatusList= _statusCodesService.GetByFormID(formId),
+                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId)
                 };
 
                 if(requestId == null)
                 {
-                    model.Request = new RequestViewModel();
+                    model.Request = new RequestViewModel { FormID = formId };
                 }
                 else
                 {
@@ -146,7 +153,7 @@ namespace WFJ.Web.Controllers
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddPlacement", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddPlacement?formId="+ formId+"&requestId="+requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return View(new AddEditPlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
         }

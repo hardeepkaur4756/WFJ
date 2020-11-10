@@ -18,24 +18,27 @@
 
     <form>
         <span id="errormessage"></span>
-        <div class="form-group">
-            <label for="ddlClient">Client</label>
-            <select id="ddlClient" class="form-control">
-                @if ((int)WFJ.Web.Models.Enums.UserType.ClientUser != userType || ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType && Model.client.Count > 1))
-                {
-                    <option selected="" value="-1">All</option>
-                }
-                @{
-                    foreach (var item in Model.client)
+        @if (Model.client != null && Model.client.Count > 1)
+        {
+            <div class="form-group">
+                <label for="ddlClient">Client</label>
+                <select id="ddlClient" class="form-control">
+                    @if ((int)WFJ.Web.Models.Enums.UserType.ClientUser != userType || ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType && Model.client.Count > 1))
                     {
-                        if (item.Text != null)
+                        <option selected="" value="-1">All</option>
+                    }
+                    @{
+                        foreach (var item in Model.client)
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            if (item.Text != null)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
                         }
                     }
-                }
-            </select>
-        </div>
+                </select>
+            </div>
+        }
         <div class="form-group">
             <label for="ddlFormType">Placement Type</label>
             <select id="ddlFormType" class="form-control">

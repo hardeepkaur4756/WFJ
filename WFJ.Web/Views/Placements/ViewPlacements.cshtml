@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 col-xl-9">
-                    <h4 class="mb-4">Company</h4>
+                    <h4 class="mb-4">@Html.Raw(Model.ClientName?? "&nbsp;")</h4>
                     <div class="card">
                         <div class="card-body">
                             @Html.Partial("_CustomerGrid")

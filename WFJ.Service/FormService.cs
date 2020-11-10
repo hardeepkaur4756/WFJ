@@ -24,10 +24,10 @@ namespace WFJ.Service
         }
 
         private IFormsRepository _formSearchRepository = new FormsRepository();
-        public ManagePlacementsModel GetPlacements(int clientId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol, int pageNo, int? userId)
+        public ManagePlacementsModel GetPlacements(int clientId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol, int pageNo, int? ClientUserId)
         {
             ManagePlacementsModel model = new ManagePlacementsModel();
-            var documents = _formSearchRepository.GetFormList(clientId, formTypeId, userId);
+            var documents = _formSearchRepository.GetFormList(clientId, formTypeId, ClientUserId);
 
 
             model.totalPlacementsCount = documents?.Count();
@@ -89,32 +89,6 @@ namespace WFJ.Service
             }
 
 
-            //model.documents = documents == null ? new List<DocumentsModel>() : documents?.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength)?.Select(x => new DocumentsModel
-            //{
-            //    Id = x.ID,
-            //    DocumentName = x.DocumentName,
-            //    FileName = x.FileName,
-            //    StateCodeId = x.StateCodeID,
-            //    ProjectType = x.ProjectType,
-            //    FormType = x.FormType,
-            //    ClientId = x.ClientID,
-            //    PracticeAreaId = x.PracticeAreaID,
-            //    WFJFileNbr = x.WFJFileNbr,
-            //    Days = x.Days,
-            //    Description = x.Description,
-            //    CategoryId = x.CategoryID,
-            //    EmployeeCategoryId = x.EmployeeCategoryID,
-            //    DocumentTypeId = x.DocumentTypeID,
-            //    ProjectTypeId = x.ProjectTypeID,
-            //    FormTypeId = x.FormTypeID,
-            //    SeqNo = x.SeqNo,
-            //    State = x.Code?.Value,
-            //    DocumentType = x.Code1?.Value,
-            //    ClientName = GetClientName(string.Join(", ", x.documentClients.Where(y => !string.IsNullOrEmpty(y.Client.ClientName)).Select(y => y.Client.ClientName))),
-            //    CurrentUserType = Convert.ToInt32(HttpContext.Current.Session["UserType"]),
-            //    DocumentFullPath = !string.IsNullOrEmpty(x.FileName) ? filePath + x.FileName : "",
-            //    PracticeAreaName = x.PracticeArea?.PracticeAreaName
-            //}).ToList();
             return model;
         }
 
@@ -142,7 +116,7 @@ namespace WFJ.Service
                 SQLStatement = x.SQLStatement,
                 rowNumber = x.rowNumber,
 
-                FormData = x.FormDatas == null ? new FormDataViewModel() : x.FormDatas.Select(d => new FormDataViewModel
+                FormData = x.FormDatas.Select(d => new FormDataViewModel
                 {
                     currencyID = d.currencyID,
                     FieldValue = d.FieldValue,
@@ -150,7 +124,7 @@ namespace WFJ.Service
                     ID = d.ID,
                     RequestID = d.RequestID
                 }).FirstOrDefault(),
-                FormAddressData = x.FormAddressDatas == null ? new FormAddressDataViewModel() : x.FormAddressDatas.Select(a => new FormAddressDataViewModel
+                FormAddressData = x.FormAddressDatas.Select(a => new FormAddressDataViewModel
                 {
                     AddressLine1 = a.AddressLine1,
                     AddressLine2 = a.AddressLine2,
@@ -206,6 +180,36 @@ namespace WFJ.Service
             ClientUsers = _userClientRepo.GetByClientID(form.ClientID.Value);
 
             return ClientUsers;
+        }
+
+        public FormModel GetFormById(int FormID)
+        {
+            var form = _formSearchRepository.GetById(FormID);
+            FormModel formObj = new FormModel
+            {
+                active = form.active,
+                AccountBalanceFieldID = form.AccountBalanceFieldID,
+                CustomerAccountFieldID = form.CustomerAccountFieldID,
+                hasAdmin = form.hasAdmin,
+                ClientID = form.ClientID,
+                ClientNumber = form.ClientNumber,
+                CustomerNameFieldID = form.CustomerNameFieldID,
+                DefaultRequestorID = form.DefaultRequestorID,
+                FormName = form.FormName,
+                FormTypeID = form.FormTypeID,
+                hasCollector = form.hasCollector,
+                ID = form.ID,
+                JobNumberFieldID = form.JobNumberFieldID,
+                TotalPaymentsFieldID = form.TotalPaymentsFieldID,
+                WFJFileNbrFieldID = form.WFJFileNbrFieldID,
+                Client = form.Client == null ? null : new ClientModel
+                {
+                    //autoShowFiles = form.Client.autoShowFiles == null ? (byte)0 : form.Client.autoShowFiles.Value,
+                    ClientName = form.Client.ClientName
+                }
+            };
+
+            return formObj;
         }
 
         public List<SelectListItem> GetRequestorsDropdown(int FormID)

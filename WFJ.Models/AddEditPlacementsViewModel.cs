@@ -9,6 +9,7 @@ namespace WFJ.Models
 {
     public class AddEditPlacementsViewModel: ExceptionModel
     {
+        public string ClientName { get; set; }
         public IEnumerable<FormSectionViewModel> FormSections { get; set; }
         public List<FormFieldViewModel> FormFieldsList { get; set; }
 
