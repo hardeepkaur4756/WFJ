@@ -127,9 +127,11 @@ namespace WFJ.Web.Controllers
                 var form = _formService.GetFormById(formId);
 
                 IStatusCodesService _statusCodesService = new StatusCodesService();
+                ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
                     ClientName = form.Client != null ? form.Client.ClientName : null,
+                    CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(formId),
                     Collectors= _formService.GetCollectorsDropdown(),
@@ -158,6 +160,11 @@ namespace WFJ.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult AddPlacement(AddEditPlacementsViewModel model)
+        {
+            return View();
+        }
 
 
         public void GetSessionUser(out int userId, out int userType)

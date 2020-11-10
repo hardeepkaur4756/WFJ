@@ -80,6 +80,7 @@
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="ClientRepository.cs" />
     <Compile Include="CodesRepository.cs" />
+    <Compile Include="CurrenciesRepository.cs" />
     <Compile Include="DocumentClientsRepository.cs" />
     <Compile Include="DocumentSearchRepository.cs" />
     <Compile Include="EntityModel\AccessLevel.cs">
@@ -426,6 +427,7 @@
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
     <Compile Include="Interfaces\ICodesRepository.cs" />
+    <Compile Include="Interfaces\ICurrenciesRepository.cs" />
     <Compile Include="Interfaces\IDocumentClientsRepository.cs" />
     <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
     <Compile Include="Interfaces\IErrorLogRepository.cs" />

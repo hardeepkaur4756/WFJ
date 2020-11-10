@@ -100,6 +100,7 @@
     <Compile Include="CategoryService.cs" />
     <Compile Include="ClientService.cs" />
     <Compile Include="CodesService.cs" />
+    <Compile Include="CurrenciesService.cs" />
     <Compile Include="DocumentSearchService.cs" />
     <Compile Include="ErrorLogService.cs" />
     <Compile Include="FormService.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\IClientService.cs" />
     <Compile Include="Interfaces\ICodesService.cs" />
+    <Compile Include="Interfaces\ICurrenciesService.cs" />
     <Compile Include="Interfaces\IDocumentSearchService.cs" />
     <Compile Include="Interfaces\IErrorLogService.cs" />
     <Compile Include="Interfaces\IFormService.cs" />

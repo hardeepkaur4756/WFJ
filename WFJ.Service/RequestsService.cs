@@ -25,7 +25,8 @@ namespace WFJ.Service
                 RequestDate = request.RequestDate,
                 Requestor = request.Requestor,
                 StatusCode = request.StatusCode,
-
+                RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("dd/MM/yyyy") : null,
+                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("dd/MM/yyyy"): null
             };
 
             return model;

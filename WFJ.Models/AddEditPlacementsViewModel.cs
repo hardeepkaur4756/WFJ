@@ -11,7 +11,11 @@ namespace WFJ.Models
     {
         public string ClientName { get; set; }
         public IEnumerable<FormSectionViewModel> FormSections { get; set; }
+
+        // form fields
         public List<FormFieldViewModel> FormFieldsList { get; set; }
+
+        public IEnumerable<SelectListItem> CurrencyDropdown { get; set; }
 
 
         public List<SelectListItem> Requestors { get; set; }
@@ -52,8 +56,13 @@ namespace WFJ.Models
         public Nullable<int> rowNumber { get; set; }
         public FieldSizeViewModel FieldSize { get; set; }
 
+
+
         public FormDataViewModel FormData { get; set; }
         public FormAddressDataViewModel FormAddressData { get; set; }
+
+
+
         public IEnumerable<FormSelectionListViewModel> FormSelectionLists { get; set; }
     }
 
