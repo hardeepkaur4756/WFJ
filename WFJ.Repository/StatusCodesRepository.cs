@@ -20,5 +20,9 @@ namespace WFJ.Repository
             return context.StatusCodes.Where(x => x.FormID == FormID).ToList();
         }
 
+        public StatusCode GetByStatusCodeAndFormId(int statusCode, int formId)
+        {
+            return context.StatusCodes.FirstOrDefault(x => x.StatusCode1 == statusCode && x.FormID == formId);
+        }
     }
 }

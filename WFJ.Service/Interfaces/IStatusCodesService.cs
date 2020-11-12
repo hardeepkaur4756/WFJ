@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using WFJ.Models;
 
 namespace WFJ.Service.Interfaces
 {
     public interface IStatusCodesService
     {
         List<SelectListItem> GetByFormID(int FormID);
+        StatusCodesModel GetByStatusCodeAndFormId(int statusCode, int formId);
     }
 }

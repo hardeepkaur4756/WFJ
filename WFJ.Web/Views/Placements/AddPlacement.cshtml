@@ -84,6 +84,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <span class="status-description"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -128,10 +135,15 @@
                                                                 string inputValue = item.FormData == null ? null : item.FormData.FieldValue;
                                                                 var addressData = item.FormAddressData == null ? new FormAddressDataViewModel() : item.FormAddressData;
                                                                 var requiredMessage = Html.Raw("data-msg=\"" + item.FieldName + " is required\"");
+                                                                var selectHeight = "";
+                                                                if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
+                                                                {
+                                                                    selectHeight = "custom-multiselect-scroll";
+                                                                }
 
                                                                 if (item.FieldTypeID != 17) // Section Header
                                                                 {
-                                                                    <div class="@colClass">
+                                                                    <div class="@colClass @selectHeight">
                                                                         <div class="form-group">
                                                                             <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" />
 
@@ -142,14 +154,23 @@
 
                                                                             @if (item.FieldTypeID == 1)
                                                                             {
-                                                                                if (linesLength == null)
-                                                                                {
-                                                                                    <input name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control" @Required @requiredMessage />
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    <textarea name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control" @Required rows="@linesLength" @requiredMessage></textarea>
-                                                                                }
+                                                                                <div class="d-flex">
+                                                                                    @if (linesLength == null)
+                                                                                    {
+                                                                                        <input name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60" @Required @requiredMessage />
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <textarea name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60" @Required rows="@linesLength" @requiredMessage></textarea>
+                                                                                    }
+                                                                                    <select name="@inputName" class="form-control currency" @Required @requiredMessage>
+                                                                                        @foreach (var option in Model.CurrencyDropdown)
+                                                                                        {
+                                                                                            var optionSelected = option.Value == inputValue ? "selected" : "";
+                                                                                            <option value="@option.Value" @optionSelected>@option.Text</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
                                                                             }
                                                                             else if (item.FieldTypeID == 2) // date
                                                                             {
@@ -179,7 +200,7 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 5) // telephone
                                                                             {
-                                                                                <input name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control" @maxLength @Required @requiredMessage />
+                                                                                <input maxlength="20" name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control" @maxLength @Required @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 6) // text only
                                                                             {
@@ -232,6 +253,10 @@
                                                                             {
                                                                                 <h3>@inputValue</h3>
                                                                             }
+                                                                            else if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
+                                                                            {
+                                                                                @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new {@multiple = "multiple", @class = "multiselect" })
+                                                                            }
                                                                             else
                                                                             {
                                                                                 <input name="@inputName" value="@inputValue" type="text" class="form-control" @maxLength @Required @requiredMessage />
@@ -239,7 +264,12 @@
                                                                         </div>
                                                                     </div>
                                                                 }
+                                                                else
+                                                                {
+
+                                                                }
                                                             }
+
                                                         }
 
                                                     </div>
@@ -1537,6 +1567,18 @@
 @section scripts{
     <script>
 
+        $(document).ready(function () {
+            GetStatusDescription("#Request_StatusCode");
+            $("#Request_StatusCode").change(function () {
+                GetStatusDescription($(this).val());
+            });
+
+            $(".multiselect").multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+            });
+        });
+
         $('.jdate-picker').daterangepicker({
             autoUpdateInput: true,
             singleDatePicker: true,
@@ -1550,7 +1592,7 @@
             $(this).val(picker.startDate.format('MM/DD/YYYY'));
         });
 
-            var validator = $("#placementForm").validate();
+        var validator = $("#placementForm").validate();
 
         $("#placementForm").submit(function () {
             if ($("#placementForm").valid() == false) {
@@ -1563,6 +1605,25 @@
                 $.notify(errors.join(",<br>"), "error");
             }
         });
+
+        function GetStatusDescription(id) {
+            $.ajax({
+                type: "Get",
+                url: "/Placements/GetStatusLongDescription?statusCode=" + id + "&formId=" + $("#Request_FormID").val(),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response.success) {
+                        $(".status-description").html(response.description);
+                    }
+                    else {
+                        $(".status-description").html("");
+                    }
+                },
+                error: function (result) {
+                }
+            });
+        }
 
 
     </script>

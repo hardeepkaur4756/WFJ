@@ -17,7 +17,7 @@ namespace WFJ.Service
             ICurrenciesRepository _currencyRepo = new CurrenciesRepository();
             return _currencyRepo.GetAll().OrderBy(x => x.sequenceID).Select(x => new SelectListItem
             {
-                Text = x.currencyName,
+                Text = x.currencyCode,
                 Value = x.currencyID.ToString()
             }).ToList();
         }

@@ -6428,5 +6428,16 @@ path.domain {
     min-width: 60px;
 }
 
+.width-60{
+    width:60%;
+}
+.currency {
+    width: 38%;
+    margin-left: 2%;
+}
+.status-description{
+    font-style:italic;
+    font-size:10px;
+}
 
 

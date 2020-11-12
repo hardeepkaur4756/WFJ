@@ -180,6 +180,22 @@ namespace WFJ.Web.Controllers
                 userType = 0;
             }
         }
- 
+
+        public ActionResult GetStatusLongDescription(int statusCode,int formId)
+        {
+            IStatusCodesService _statusCodesService = new StatusCodesService();
+            bool isSuccess = false;
+            var descriptionLong = string.Empty;
+            try
+            {
+                descriptionLong = _statusCodesService.GetByStatusCodeAndFormId(statusCode, formId).DescriptionLong;
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetStatusLongDescription", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess, description = descriptionLong }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="RequestViewModel.cs" />
     <Compile Include="ResultModel.cs" />
     <Compile Include="ProfileViewModel.cs" />
+    <Compile Include="StatusCodesModel.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="UserViewModel.cs" />
   </ItemGroup>
