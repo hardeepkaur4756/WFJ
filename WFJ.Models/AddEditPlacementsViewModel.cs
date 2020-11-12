@@ -24,6 +24,10 @@ namespace WFJ.Models
         public List<SelectListItem> StatusList { get; set; }
 
         public RequestViewModel Request { get; set; }
+        public int UserAccess { get; set; }
+        public int UserType { get; set; }
+        public int ClientId { get; set; }
+        public bool isEditMode { get; set; }
     }
 
 

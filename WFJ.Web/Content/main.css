@@ -6439,5 +6439,7 @@ path.domain {
     font-style:italic;
     font-size:10px;
 }
-
+.bgColor-paleYellow {
+    background-color: #ffffbf;
+}
 

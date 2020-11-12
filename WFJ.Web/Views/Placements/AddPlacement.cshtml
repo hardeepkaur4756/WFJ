@@ -18,6 +18,9 @@
                         }).ToList();
 
     int Cnt = 0;
+    int userAccess = Model.UserAccess;
+    int clientId = Model.ClientId;
+    int userType = Model.UserType;
 }
 
 <main>
@@ -136,6 +139,37 @@
                                                                 var addressData = item.FormAddressData == null ? new FormAddressDataViewModel() : item.FormAddressData;
                                                                 var requiredMessage = Html.Raw("data-msg=\"" + item.FieldName + " is required\"");
                                                                 var selectHeight = "";
+                                                                int accessLevel = Convert.ToInt32(item.AccessLevel);
+
+                                                                var isReadonly = "";
+                                                                var isShowDataValue = true;
+                                                                var paleYellow = "";
+
+                                                                if (Model.isEditMode)
+                                                                {
+                                                                    if ((accessLevel == 3 || (accessLevel < userAccess && userType != 1))
+                                                                   || (accessLevel == 4 && userType != 1)
+                                                                   || (accessLevel == 5 && clientId != 1))
+                                                                    {
+                                                                        isReadonly = "readonly";
+                                                                        isShowDataValue = true;
+                                                                    }
+                                                                    else if ((accessLevel == 5 || accessLevel == 6) && clientId == 1)
+                                                                    {
+                                                                        paleYellow = "bgColor-paleYellow";
+                                                                    }
+                                                                    else if (accessLevel == 6 && clientId != 1)
+                                                                    {
+                                                                        isReadonly = "readonly";
+                                                                        isShowDataValue = false;
+                                                                    }
+
+                                                                    if (!isShowDataValue)
+                                                                    {
+                                                                        inputValue = string.Empty;
+                                                                    }
+                                                                }
+
                                                                 if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
                                                                 {
                                                                     selectHeight = "custom-multiselect-scroll";
@@ -157,13 +191,13 @@
                                                                                 <div class="d-flex">
                                                                                     @if (linesLength == null)
                                                                                     {
-                                                                                        <input name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60" @Required @requiredMessage />
+                                                                                        <input class="@paleYellow" @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60" @Required @requiredMessage />
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        <textarea name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60" @Required rows="@linesLength" @requiredMessage></textarea>
+                                                                                        <textarea @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60 @paleYellow" @Required rows="@linesLength" @requiredMessage></textarea>
                                                                                     }
-                                                                                    <select name="@inputName" class="form-control currency" @Required @requiredMessage>
+                                                                                    <select @isReadonly name="@inputName" class="form-control currency" @Required @requiredMessage>
                                                                                         @foreach (var option in Model.CurrencyDropdown)
                                                                                         {
                                                                                             var optionSelected = option.Value == inputValue ? "selected" : "";
@@ -174,41 +208,41 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 2) // date
                                                                             {
-                                                                                <input name="@inputName" value="@inputValue" class="form-control jdate-picker" @Required @requiredMessage />
+                                                                                <input class="@paleYellow" @isReadonly name="@inputName" value="@inputValue" class="form-control jdate-picker" @Required @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 3)
                                                                             {
                                                                                 if (linesLength == null)
                                                                                 {
-                                                                                    <input name="@inputName" value="@inputValue" type="text" class="form-control" @maxLength @Required @requiredMessage />
+                                                                                    <input @isReadonly name="@inputName" value="@inputValue" type="text" class="form-control @paleYellow" @maxLength @Required @requiredMessage />
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <textarea name="@inputName" value="@inputValue" type="text" class="form-control" @maxLength @Required @requiredMessage></textarea>
+                                                                                    <textarea @isReadonly name="@inputName" value="@inputValue" type="text" rows="@linesLength" class="form-control @paleYellow" @maxLength @Required @requiredMessage></textarea>
                                                                                 }
                                                                             }
                                                                             else if (item.FieldTypeID == 4)
                                                                             {
                                                                                 <div>
                                                                                     <label class="radio-inline">
-                                                                                        <input name="@inputName" @(inputValue == "Yes" ? "checked" : "") class="mr-1" type="radio" value="1" @Required @requiredMessage>Yes
+                                                                                        <input @isReadonly name="@inputName" @(inputValue == "Yes" ? "checked" : "") class="mr-1" type="radio" value="1" @Required @requiredMessage>Yes
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input name="@inputName" @(inputValue == "No" || inputValue == "" ? "checked" : "") class="mr-1" type="radio" value="0">No
+                                                                                        <input @isReadonly name="@inputName" @(inputValue == "No" || inputValue == "" ? "checked" : "") class="mr-1" type="radio" value="0">No
                                                                                     </label>
                                                                                 </div>
                                                                             }
                                                                             else if (item.FieldTypeID == 5) // telephone
                                                                             {
-                                                                                <input maxlength="20" name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control" @maxLength @Required @requiredMessage />
+                                                                                <input @isReadonly maxlength="20" name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control @paleYellow" @maxLength @Required @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 6) // text only
                                                                             {
-                                                                                <input name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z]" class="form-control" @maxLength @Required @requiredMessage />
+                                                                                <input @isReadonly name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z]" class="form-control @paleYellow" @maxLength @Required @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 7)
                                                                             {
-                                                                                <select name="@inputName" class="form-control" @Required @requiredMessage>
+                                                                                <select @isReadonly name="@inputName" class="form-control" @Required @requiredMessage>
                                                                                     <option></option>
                                                                                     @foreach (var option in item.FormSelectionLists.OrderBy(x => x.SeqNo))
                                                                                     {
@@ -219,34 +253,34 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 8)
                                                                             {
-                                                                                <input name="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control" maxlength="300" placeholder="Addredd line 1" @Required @requiredMessage />
-                                                                                <input name="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control" maxlength="80" placeholder="Addredd line 2" />
+                                                                                <input @isReadonly name="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow" maxlength="300" placeholder="Addredd line 1" @Required @requiredMessage />
+                                                                                <input @isReadonly name="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow" maxlength="80" placeholder="Addredd line 2" />
                                                                                 <div class="row">
                                                                                     <div class="col-md-4">
-                                                                                        <input name="@addressData.City" type="text" style="margin-bottom:1rem;" class="form-control" maxlength="50" placeholder="City" />
+                                                                                        <input @isReadonly name="@addressData.City" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow" maxlength="50" placeholder="City" />
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <input name="@addressData.State" type="text" style="margin-bottom:1rem;" class="form-control" maxlength="3" placeholder="State" />
+                                                                                        <input @isReadonly name="@addressData.State" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow" maxlength="3" placeholder="State" />
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <input name="@addressData.ZipCode" type="text" style="margin-bottom:1rem;" class="form-control" maxlength="10" placeholder="Zip code" />
+                                                                                        <input @isReadonly name="@addressData.ZipCode" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow" maxlength="10" placeholder="Zip code" />
                                                                                     </div>
                                                                                 </div>
-                                                                                <input name="@addressData.Country" type="text" class="form-control" maxlength="20" placeholder="Country" />
+                                                                                <input name="@addressData.Country" type="text" class="form-control @paleYellow" maxlength="20" placeholder="Country" />
                                                                             }
                                                                             else if (item.FieldTypeID == 13)
                                                                             {
-                                                                                <input name="@inputName" type="checkbox" @(inputValue == "1" ? "checked" : "") @requiredMessage />
+                                                                                <input @isReadonly name="@inputName" type="checkbox" @(inputValue == "1" ? "checked" : "") @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 19) // currency
                                                                             {
                                                                                 if (linesLength == null)
                                                                                 {
-                                                                                    <input name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control" @Required @requiredMessage />
+                                                                                    <input @isReadonly name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control @paleYellow" @Required @requiredMessage />
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <textarea name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control" @Required @requiredMessage></textarea>
+                                                                                    <textarea @isReadonly name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control @paleYellow" @Required @requiredMessage></textarea>
                                                                                 }
                                                                             }
                                                                             else if (item.FieldTypeID == 14) // Section heading
@@ -255,11 +289,11 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
                                                                             {
-                                                                                @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new {@multiple = "multiple", @class = "multiselect" })
+                                                                                @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new { @multiple = "multiple", @class = "multiselect", @readonly = true })
                                                                             }
                                                                             else
                                                                             {
-                                                                                <input name="@inputName" value="@inputValue" type="text" class="form-control" @maxLength @Required @requiredMessage />
+                                                                                <input @isReadonly name="@inputName" value="@inputValue" type="text" class="form-control @paleYellow" @maxLength @Required @requiredMessage />
                                                                             }
                                                                         </div>
                                                                     </div>

@@ -25,13 +25,14 @@ namespace WFJ.Web.Controllers
 
         private int UserType = 0;
         private int UserId = 0;
+        private int UserAccess = 0;
 
         [HttpGet]
         public ActionResult Index()
         {
             try
             {
-                GetSessionUser(out UserId, out UserType);
+                GetSessionUser(out UserId, out UserType, out UserAccess);
 
                 PlacementsViewModel model = new PlacementsViewModel();
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
@@ -55,7 +56,7 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                GetSessionUser(out UserId, out UserType);
+                GetSessionUser(out UserId, out UserType, out UserAccess);
 
                 ManagePlacementsModel model = new ManagePlacementsModel();
                 int pageNo = 1;
@@ -91,7 +92,7 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                GetSessionUser(out UserId, out UserType);
+                GetSessionUser(out UserId, out UserType, out UserAccess);
 
                 IUserService _userService = new UserService();
                 IStatusCodesService _statusCodesService = new StatusCodesService();
@@ -123,7 +124,7 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                GetSessionUser(out UserId, out UserType);
+                GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(formId);
 
                 IStatusCodesService _statusCodesService = new StatusCodesService();
@@ -134,10 +135,14 @@ namespace WFJ.Web.Controllers
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(formId),
-                    Collectors= _formService.GetCollectorsDropdown(),
-                    Requestors= _formService.GetRequestorsDropdown(formId),
-                    StatusList= _statusCodesService.GetByFormID(formId),
-                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId)
+                    Collectors = _formService.GetCollectorsDropdown(),
+                    Requestors = _formService.GetRequestorsDropdown(formId),
+                    StatusList = _statusCodesService.GetByFormID(formId),
+                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
+                    UserAccess = UserAccess,
+                    UserType = UserType,
+                    ClientId = Convert.ToInt32(form.ClientID),
+                    isEditMode = false
                 };
 
                 if(requestId == null)
@@ -167,17 +172,19 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public void GetSessionUser(out int userId, out int userType)
+        public void GetSessionUser(out int userId, out int userType,out int userAccess)
         {
             if (Session["UserId"] != null)
             {
                 userId = Convert.ToInt32(Session["UserId"].ToString());
                 userType = Convert.ToInt32(Session["UserType"].ToString());
+                userAccess = Convert.ToInt32(Session["UserAccess"].ToString()); 
             }
             else
             {
                 userId = 0;
                 userType = 0;
+                userAccess = 0;
             }
         }
 
