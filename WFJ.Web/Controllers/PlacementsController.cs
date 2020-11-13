@@ -166,7 +166,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPlacement(AddEditPlacementsViewModel model)
+        public ActionResult AddPlacement(SavePlacementViewModel savePlacementsViewModel)
         {
             return View();
         }
