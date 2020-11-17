@@ -134,7 +134,7 @@ namespace WFJ.Web.Controllers
                     ClientName = form.Client != null ? form.Client.ClientName : null,
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
-                    FormFieldsList = _formService.GetFormFieldsByForm(formId),
+                    FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
                     Collectors = _formService.GetCollectorsDropdown(),
                     Requestors = _formService.GetRequestorsDropdown(formId),
                     StatusList = _statusCodesService.GetByFormID(formId),
@@ -142,7 +142,7 @@ namespace WFJ.Web.Controllers
                     UserAccess = UserAccess,
                     UserType = UserType,
                     ClientId = Convert.ToInt32(form.ClientID),
-                    isEditMode = false
+                    isEditMode = Convert.ToInt32(requestId) > 0 ? true : false
                 };
 
                 if(requestId == null)

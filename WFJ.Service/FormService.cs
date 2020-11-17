@@ -93,7 +93,7 @@ namespace WFJ.Service
         }
 
 
-        public List<FormFieldViewModel> GetFormFieldsByForm(int FormID)
+        public List<FormFieldViewModel> GetFormFieldsByForm(int FormID, int? requestId)
         {
             IFormFieldsRepository _formFieldRepository = new FormFieldsRepository();
             var formFieldList = _formFieldRepository.GetFormFieldsByFormID(FormID).Select(x => new FormFieldViewModel
@@ -115,16 +115,15 @@ namespace WFJ.Service
                 showOnCalendar = x.showOnCalendar,
                 SQLStatement = x.SQLStatement,
                 rowNumber = x.rowNumber,
-
-                FormData = x.FormDatas.Select(d => new FormDataViewModel
+                FormData = Convert.ToInt32(requestId) > 0 ? x.FormDatas.Where(d=>d.RequestID == requestId).Select(d => new FormDataViewModel
                 {
                     currencyID = d.currencyID,
                     FieldValue = d.FieldValue,
                     FormFieldID = d.FormFieldID,
                     ID = d.ID,
                     RequestID = d.RequestID
-                }).FirstOrDefault(),
-                FormAddressData = x.FormAddressDatas.Select(a => new FormAddressDataViewModel
+                }).FirstOrDefault() : null,
+                FormAddressData = Convert.ToInt32(requestId) > 0 ? x.FormAddressDatas.Where(d => d.RequestID == requestId).Select(a => new FormAddressDataViewModel
                 {
                     AddressLine1 = a.AddressLine1,
                     AddressLine2 = a.AddressLine2,
@@ -136,7 +135,7 @@ namespace WFJ.Service
                     RequestID = a.RequestID,
                     State = a.State,
                     ZipCode = a.ZipCode
-                }).FirstOrDefault(),
+                }).FirstOrDefault() : null,
 
                 FieldSize = x.fieldSize == null ? null : new FieldSizeViewModel
                 {

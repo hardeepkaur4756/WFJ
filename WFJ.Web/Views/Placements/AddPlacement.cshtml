@@ -246,7 +246,7 @@
                                                                             else if (item.FieldTypeID == 7)
                                                                             {
                                                                                 <select data-type="dropdown" @isReadonly name="@inputName" class="form-control answer" data-isrequired="@item.Required" @requiredMessage>
-                                                                                    <option></option>
+                                                                                    <option value="">--Select--</option>
                                                                                     @foreach (var option in item.FormSelectionLists.OrderBy(x => x.SeqNo))
                                                                                     {
                                                                                         var optionSelected = option.Code == inputValue ? "selected" : "";
@@ -256,20 +256,20 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 8)
                                                                             {
-                                                                                <input data-type="address" @isReadonly name="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow answer address1" maxlength="300" placeholder="Addredd line 1" data-isrequired="@item.Required" @requiredMessage />
-                                                                                <input data-type="address" @isReadonly name="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  address2" maxlength="80" placeholder="Addredd line 2" />
+                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow answer address1" maxlength="300" placeholder="Addredd line 1" data-isrequired="@item.Required" @requiredMessage />
+                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  address2" maxlength="80" placeholder="Addredd line 2" />
                                                                                 <div class="row">
                                                                                     <div class="col-md-4">
-                                                                                        <input data-type="address" @isReadonly name="@addressData.City" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  city" maxlength="50" placeholder="City" />
+                                                                                        <input data-type="address" @isReadonly value="@addressData.City" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  city" maxlength="50" placeholder="City" />
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <input data-type="address" @isReadonly name="@addressData.State" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow state" maxlength="3" placeholder="State" />
+                                                                                        <input data-type="address" @isReadonly value="@addressData.State" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow state" maxlength="3" placeholder="State" />
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <input data-type="address" @isReadonly name="@addressData.ZipCode" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow zipcode" maxlength="10" placeholder="Zip code" />
+                                                                                        <input data-type="address" @isReadonly value="@addressData.ZipCode" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow zipcode" maxlength="10" placeholder="Zip code" />
                                                                                     </div>
                                                                                 </div>
-                                                                                <input data-type="address" name="@addressData.Country" type="text" class="form-control @paleYellow country" maxlength="20" placeholder="Country" />
+                                                                                <input data-type="address" value="@addressData.Country" type="text" class="form-control @paleYellow country" maxlength="20" placeholder="Country" />
                                                                             }
                                                                             else if (item.FieldTypeID == 13)
                                                                             {
