@@ -221,7 +221,7 @@
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <textarea data-type="textarea" @isReadonly name="@inputName" value="@inputValue" type="text" rows="@linesLength" class="form-control @paleYellow answer" @maxLength data-isrequired="@item.Required" @requiredMessage></textarea>
+                                                                                    <textarea data-type="textarea" @isReadonly name="@inputName" rows="@linesLength" class="form-control @paleYellow answer" @maxLength data-isrequired="@item.Required" @requiredMessage>@inputValue</textarea>
                                                                                 }
                                                                             }
                                                                             else if (item.FieldTypeID == 4)

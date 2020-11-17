@@ -294,11 +294,11 @@ namespace WFJ.Service
 
                 if (savePlacementViewModel.RequestId > 0)
                 {
-                    var formAddressData = _formAddressDataRepo.GetByRequestId(savePlacementViewModel.RequestId);
-                    _formAddressDataRepo.RemoveList(formAddressData);
+                    var formAddressData = _formAddressDataRepo.GetByRequestId(savePlacementViewModel.RequestId).ToList();
+                    _formAddressDataRepo.Delete(formAddressData);
 
-                    var formData = _formDataRepo.GetByRequestId(savePlacementViewModel.RequestId);
-                    _formDataRepo.RemoveList(formData);
+                    var formData = _formDataRepo.GetByRequestId(savePlacementViewModel.RequestId).ToList();
+                    _formDataRepo.Delete(formData);
                 }
                 foreach (var value in savePlacementViewModel.FieldValue)
                 {

@@ -13,6 +13,13 @@ namespace WFJ.Repository
         {
             _context = new WFJEntities();
         }
+
+        public void Delete(List<FormAddressData> formAddressDatas)
+        {
+            _context.FormAddressDatas.RemoveRange(formAddressDatas);
+            _context.SaveChanges();
+        }
+
         public IEnumerable<FormAddressData> GetByRequestId(int requestId)
         {
             return _context.FormAddressDatas.Where(x => x.RequestID == requestId).ToList();
