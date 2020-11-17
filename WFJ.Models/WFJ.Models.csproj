@@ -72,6 +72,7 @@
     <Compile Include="AddEditPlacementsViewModel.cs" />
     <Compile Include="CategoryModel.cs" />
     <Compile Include="ClientModel.cs" />
+    <Compile Include="DatatableModels.cs" />
     <Compile Include="DataTableParam.cs" />
     <Compile Include="DocumentsModel.cs" />
     <Compile Include="ErrorLogModel.cs" />

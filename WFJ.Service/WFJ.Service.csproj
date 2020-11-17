@@ -123,6 +123,7 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="LevelService.cs" />
     <Compile Include="MappingExtensions.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="PersonnelService.cs" />
     <Compile Include="PracticeAreaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,6 +7,7 @@ using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
+using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
@@ -20,7 +21,7 @@ namespace WFJ.Web.Controllers
         //private IPracticeAreaService _practiceAreaService = new PracticeAreaService();
         private IFormTypeService _formTypeService = new FormTypeService();
         private IUserService _userService = new UserService();
-        //private ICodesService _codesService = new CodesService();
+        private IRequestsService _requestsService = new RequestsService();
 
         private IUserClientService _userClientService = new UserClientService();
 
@@ -101,6 +102,8 @@ namespace WFJ.Web.Controllers
 
                 var form = _formService.GetFormById(id);
                 model.ClientName = form.Client != null ? form.Client.ClientName : null;
+                model.FormID = id;
+                model.TableColumns = _requestsService.GetDatatableColumns(UserId, id, (UserType)((byte)UserType));
 
                 model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
                 {
@@ -224,6 +227,56 @@ namespace WFJ.Web.Controllers
                 _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetStatusLongDescription", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
             return Json(new { success = isSuccess, description = descriptionLong }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetRequestList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime,
+                                           string beginDate, string endDate, string region,
+                                           int formId,
+                                           int requestor = -1, int assignedAttorney = -1, int collector = -1,
+                                           int statusCode = -1)
+        {
+            try
+            {
+                if (sortCol.Contains("."))
+                {
+                    sortCol = sortCol.Split('.')[1];
+                }
+
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+
+                PlacementRequestsListViewModel model = new PlacementRequestsListViewModel();
+                int pageNo = 1;
+                if (param.iDisplayStart >= param.iDisplayLength)
+                    pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+
+
+                //int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
+
+                //if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
+                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, param, sortDir, sortCol, pageNo);
+                //else
+                //    model.placements = new List<PlacementsModel>();
+
+                Dictionary<string, object> Fields = new Dictionary<string, object>();
+                Fields.Add("test1", new { test = 1 });
+
+                return Json(new
+                {
+                    aaData = model.Requests,
+                    testData = Fields,
+                    param.sEcho,
+                    iTotalDisplayRecords = model.TotalRequestsCount,
+                    iTotalRecords = model.TotalRequestsCount,
+                    Success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetPlacementList", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+
+            }
         }
     }
 }

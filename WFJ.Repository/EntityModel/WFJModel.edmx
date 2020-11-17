@@ -1754,18 +1754,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FormData__FormFi__7B9B496D">
-          <End Role="FormFields" Type="Self.FormFields" Multiplicity="0..1" />
-          <End Role="FormData" Type="Self.FormData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FormFields">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="FormData">
-              <PropertyRef Name="FormFieldID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__FormField__field__78BEDCC2">
           <End Role="fieldSizes" Type="Self.fieldSizes" Multiplicity="0..1" />
           <End Role="FormFields" Type="Self.FormFields" Multiplicity="*" />
@@ -1838,6 +1826,30 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Requests__Assign__08012052">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="AssignedCollectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__Assign__08F5448B">
+          <End Role="Personnel" Type="Self.Personnel" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="AssignedAttorney" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Requests__FormID__66A02C87">
           <End Role="Forms" Type="Self.Forms" Multiplicity="0..1" />
           <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
@@ -1847,6 +1859,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="Requests">
               <PropertyRef Name="FormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__Reques__070CFC19">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="Requestor" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2433,10 +2457,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="FormFields" EntitySet="FormFields" />
             <End Role="FormData" EntitySet="FormData" />
           </AssociationSet>
-          <AssociationSet Name="FK__FormData__FormFi__7B9B496D" Association="Self.FK__FormData__FormFi__7B9B496D">
-            <End Role="FormFields" EntitySet="FormFields" />
-            <End Role="FormData" EntitySet="FormData" />
-          </AssociationSet>
           <AssociationSet Name="FK__FormField__field__78BEDCC2" Association="Self.FK__FormField__field__78BEDCC2">
             <End Role="fieldSizes" EntitySet="fieldSizes" />
             <End Role="FormFields" EntitySet="FormFields" />
@@ -2461,8 +2481,20 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Personnel" EntitySet="Personnel" />
             <End Role="PersonnelClients" EntitySet="PersonnelClients" />
           </AssociationSet>
+          <AssociationSet Name="FK__Requests__Assign__08012052" Association="Self.FK__Requests__Assign__08012052">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__Assign__08F5448B" Association="Self.FK__Requests__Assign__08F5448B">
+            <End Role="Personnel" EntitySet="Personnel" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
           <AssociationSet Name="FK__Requests__FormID__66A02C87" Association="Self.FK__Requests__FormID__66A02C87">
             <End Role="Forms" EntitySet="Forms" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__Reques__070CFC19" Association="Self.FK__Requests__Reques__070CFC19">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Requests" EntitySet="Requests" />
           </AssociationSet>
           <AssociationSet Name="FK__Users__ClientID__1E256B9B" Association="Self.FK__Users__ClientID__1E256B9B">
@@ -3625,6 +3657,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="CommunityActivities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isShareholder" Type="Byte" />
           <NavigationProperty Name="PersonnelClients" Relationship="WFJDBModel.FK__Personnel__Perso__688874F9" FromRole="Personnel" ToRole="PersonnelClient" />
+          <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__Assign__08F5448B" FromRole="Personnel" ToRole="Request" />
         </EntityType>
         <EntityType Name="PersonnelClient">
           <Key>
@@ -3829,6 +3862,9 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="Value9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Value10" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Form" Relationship="WFJDBModel.FK__Requests__FormID__66A02C87" FromRole="Request" ToRole="Form" />
+          <NavigationProperty Name="Personnel" Relationship="WFJDBModel.FK__Requests__Assign__08F5448B" FromRole="Request" ToRole="Personnel" />
+          <NavigationProperty Name="User" Relationship="WFJDBModel.FK__Requests__Assign__08012052" FromRole="Request" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="Request" ToRole="User" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -4487,6 +4523,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="FormField" EntitySet="FormFields" />
             <End Role="FormData" EntitySet="FormDatas" />
           </AssociationSet>
+          <AssociationSet Name="FK__Requests__Assign__08F5448B" Association="WFJDBModel.FK__Requests__Assign__08F5448B">
+            <End Role="Personnel" EntitySet="Personnels" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__Assign__08012052" Association="WFJDBModel.FK__Requests__Assign__08012052">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__Reques__070CFC19" Association="WFJDBModel.FK__Requests__Reques__070CFC19">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4658,6 +4706,8 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="UserLevels" Relationship="WFJDBModel.FK_UserLevels_UserID" FromRole="User" ToRole="UserLevel" />
           <NavigationProperty Name="Users1" Relationship="WFJDBModel.FK_User_UserManagerUserID" FromRole="User" ToRole="User1" />
           <NavigationProperty Name="User1" Relationship="WFJDBModel.FK_User_UserManagerUserID" FromRole="User1" ToRole="User" />
+          <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__Assign__08012052" FromRole="User" ToRole="Request" />
+          <NavigationProperty Name="Requests1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="User" ToRole="Request" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -4958,6 +5008,42 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="FormData">
               <PropertyRef Name="FormFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__Assign__08F5448B">
+          <End Type="WFJDBModel.Personnel" Role="Personnel" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personnel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="AssignedAttorney" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__Assign__08012052">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="AssignedCollectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__Reques__070CFC19">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="Requestor" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -3520,6 +3520,7 @@
     <Content Include="Views\Placements\Index.cshtml" />
     <Content Include="Views\Placements\ViewPlacements.cshtml" />
     <Content Include="Views\Placements\AddPlacement.cshtml" />
+    <Content Include="Views\Placements\_RequestsGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

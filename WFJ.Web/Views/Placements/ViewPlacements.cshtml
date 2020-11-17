@@ -26,7 +26,7 @@
                     <h4 class="mb-4">@Html.Raw(Model.ClientName?? "&nbsp;")</h4>
                     <div class="card">
                         <div class="card-body">
-                            @Html.Partial("_CustomerGrid")
+                            @Html.Partial("_RequestsGrid")
                         </div>
                     </div>
                 </div>
@@ -53,4 +53,148 @@
         });
 
     </script>
+
+
+    <script>
+
+        var oTable;
+        var isFirstTime = true;
+        $(document).ready(function () {
+            GetDataTable();
+        });
+
+
+        $("#searchBtn").click(function () {
+            @*var clientId = $('#ddlClient option:selected').val();
+            var formTypeId = $('#ddlFormType option:selected').val();
+            //var searchKeyword = $('#txtSearchKeyword').val();
+            if (clientId == -1 && formTypeId == -1 && "@userType" != "@((int)UserType.ClientUser)") {// && searchKeyword == "") {
+                $('#errormessage').text('Please select atleast one value for search').css("color", "red");
+            }
+            else {
+                $('#errormessage').text('');*@
+                GetDataTable();
+            //}
+        });
+        //function SearchByDocumentFilters() {
+        //    var clientId = $('#ddlDocumentClient option:selected').val();
+        //    var documentTypeId = $('#ddlDocumentType option:selected').val();
+        //    var practiceAreaId = $('#ddlPracticeArea option:selected').val();
+        //    var categoryId = $('#ddlCategory option:selected').val();
+        //    var formTypeId = $('#ddlFormType option:selected').val();
+        //    var searchKeyword = $('#txtSearchKeyword').val();
+        //    if (clientId == -1 && documentTypeId == -1 && practiceAreaId == -1 && categoryId == -1 && formTypeId == -1 && searchKeyword == "") {
+        //        $('#errormessage').text('Please select atleast one value for search').css("color", "red");
+        //    }
+        //    else {
+        //        $('#errormessage').text('');
+        //        GetDataTable();
+        //    }
+
+        //}
+
+        var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
+        console.log(columns)
+
+        function GetDataTable() {
+
+            if ($.fn.DataTable.isDataTable("#myDataTable")) {
+                oTable.draw();
+            }
+            else {
+
+                oTable =
+                    $('#myDataTable').DataTable({
+                        "bServerSide": true,
+                        "sAjaxSource": "/Placements/GetRequestList",
+                        "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+
+                            console.log(aoData)
+                            @*if ("@((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator)" != "@userType" || isFirstTime == false) {*@
+                            var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
+                            var sDir = oSettings.aaSorting[0][1];
+                            var requestor = $('#ddRequestor option:selected').val();
+                            var assignedAttorney = $('#ddAssignedTo option:selected').val();
+                            var collector = $('#ddCollector option:selected').val();
+                            var statusCode = $('#ddStatus option:selected').val();
+                            var region = $('#ddRegion option:selected').val();
+                            var beginDate = $("#beginDate").val();
+                            var endDate = $("#endDate").val();
+
+                            aoData.push({ "name": "sortCol", "value": colName });
+                            aoData.push({ "name": "sortDir", "value": sDir });
+
+                            aoData.push({ "name": "formId", "value": "@Model.FormID" });
+                            aoData.push({ "name": "requestor", "value": requestor });
+                            aoData.push({ "name": "assignedAttorney", "value": assignedAttorney });
+                            aoData.push({ "name": "collector", "value": collector });
+                            aoData.push({ "name": "statusCode", "value": statusCode });
+                            aoData.push({ "name": "region", "value": region });
+                            aoData.push({ "name": "beginDate", "value": beginDate });
+                            aoData.push({ "name": "endDate", "value": endDate });
+                            aoData.push({ "name": "isFirstTime", "value": isFirstTime });
+
+
+                            $.ajax({
+                                type: "Post",
+                                data: aoData,
+                                url: sSource,
+                                success: fnCallback
+                            });
+
+
+                            isFirstTime = false;
+                        },
+                        drawCallback: function () {
+                            var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                        },
+                        "columns": columns,
+                        //    [
+                        //    { "data": "RequestorName", "title": "Requestor Name" },
+                        //    { "data": "AssignedAttorneyName" },
+                        //    { "data": "CollectorName" },
+                        //    { "data": "RequestDateString" },
+                        //    { "data": "CompletionDateString" },
+                        //    { "data": "LastViewedDateString" },
+                        //    { "data": "StatusDescription" },
+                        //    { "data": "TotalPaymentsAmount" },
+                        //    { "data": "DaysOpen" },
+                        //    //{
+                        //    //    "mData": "RequestsCount",
+                        //    //    "render": function (row, type, full) {
+                        //    //        return '<a href="/Placements/ViewPlacements/' + full.ID + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
+                        //    //    }
+                        //    //},
+                        //    //{
+                        //    //    "render": function (row, type, full) {
+                        //    //        return '<a href="/Placements/AddPlacement?formId='+full.ID+'" target="_blank" class="btn btn-sm btn-success" title="Add Placement"><i class="fa fa-plus"></i></a>';
+                        //    //    },
+                        //    //    orderable: false
+                        //    //},
+                        //],
+                        "order": [[0, "asc"]],
+                        bProcessing: true,
+                        pageLength: 10,
+                        "bFilter": false,
+                        "paging": true,
+                        //bSearching: false,
+                        bLengthChange: true,
+                        lengthMenu: [10, 25, 50],
+                        "bInfo": true,
+                        "language": {
+                            "zeroRecords": "no search results (too much data)",
+                            //"info": "Page _PAGE_ of _PAGES_",
+                            "emptyTable": "no records found",
+                            "processing": "Processing... Please wait",
+                        }
+                    });
+            }
+
+        }
+
+
+
+    </script>
+
 }

@@ -442,6 +442,7 @@
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IFormUsersRepository.cs" />
     <Compile Include="Interfaces\ILevelRepository.cs" />
+    <Compile Include="Interfaces\IListFieldRepository.cs" />
     <Compile Include="Interfaces\IPersonnelClientsRepository.cs" />
     <Compile Include="Interfaces\IPersonnelsRepository.cs" />
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
@@ -454,6 +455,7 @@
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Interfaces\IUserTypeRepository.cs" />
     <Compile Include="LevelRepository.cs" />
+    <Compile Include="ListFieldRepository.cs" />
     <Compile Include="PersonnelClientsRepository.cs" />
     <Compile Include="PersonnelsRepository.cs" />
     <Compile Include="PracticeAreaRepository.cs" />
