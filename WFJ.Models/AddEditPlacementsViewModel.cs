@@ -28,6 +28,7 @@ namespace WFJ.Models
         public int UserType { get; set; }
         public int ClientId { get; set; }
         public bool isEditMode { get; set; }
+        public string RequestorName { get; set; }
     }
 
 

@@ -54,5 +54,10 @@ namespace WFJ.Service
             return regionList;
         }
 
+        public string GetRequestorNameById(int clientId)
+        {
+            IClientRepository clientRepo = new ClientRepository();
+            return clientRepo.GetById(clientId).RequestorTitle;
+        }
     }
 }

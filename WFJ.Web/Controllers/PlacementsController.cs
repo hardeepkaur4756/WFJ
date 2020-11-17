@@ -15,10 +15,11 @@ namespace WFJ.Web.Controllers
     {
         private IErrorLogService _errorLogService = new ErrorLogService();
         private IFormService _formService = new FormService();
-        private IClientService _clientService = new ClientService();
+        public IClientService _clientService = new ClientService();
         //private ICategoryService _categoryService = new CategoryService();
         //private IPracticeAreaService _practiceAreaService = new PracticeAreaService();
         private IFormTypeService _formTypeService = new FormTypeService();
+        private IUserService _userService = new UserService();
         //private ICodesService _codesService = new CodesService();
 
         private IUserClientService _userClientService = new UserClientService();
@@ -124,9 +125,17 @@ namespace WFJ.Web.Controllers
         {
             try
             {
+                string requestorName = string.Empty;
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(formId);
 
+                var user = _userService.GetById(UserId);
+                int clientId = Convert.ToInt32(user.ClientID);
+                if (clientId > 0)
+                {
+                    requestorName = _clientService.GetRequestorNameById(clientId);
+                }
+                requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
@@ -142,7 +151,8 @@ namespace WFJ.Web.Controllers
                     UserAccess = UserAccess,
                     UserType = UserType,
                     ClientId = Convert.ToInt32(form.ClientID),
-                    isEditMode = Convert.ToInt32(requestId) > 0 ? true : false
+                    isEditMode = Convert.ToInt32(requestId) > 0 ? true : false,
+                    RequestorName = requestorName
                 };
 
                 if(requestId == null)

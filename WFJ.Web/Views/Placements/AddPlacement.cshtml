@@ -51,7 +51,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
-                                            <label>Requestor</label>
+                                            <label>@Model.RequestorName</label>
                                             @Html.DropDownListFor(x => x.Request.Requestor, new SelectList(Model.Requestors, "Value", "Text"), new { @Class = "form-control" })
                                         </div>
                                     </div>
@@ -78,13 +78,13 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Request Date</label>
-                                            @Html.TextBoxFor(x => x.Request.RequestDateString, new { @Class = "form-control jdate-picker", @readonly = true })
+                                            @Html.TextBoxFor(x => x.Request.RequestDateString, new { @Class = "form-control jdate-picker" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>WFJ File Close Date</label>
-                                            @Html.TextBoxFor(x => x.Request.CompletionDateString, new { @Class = "form-control jdate-picker", @readonly = true })
+                                            @Html.TextBoxFor(x => x.Request.CompletionDateString, new { @Class = "form-control jdate-picker" })
                                         </div>
                                     </div>
                                 </div>
@@ -92,6 +92,13 @@
                                     <div class="col-lg-12 col-xl-12">
                                         <div class="form-group">
                                             <span class="status-description"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="form-group">
+                                            <span class="text-danger error-status"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -194,11 +201,11 @@
                                                                                     <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" class="formFieldId" />
                                                                                     @if (linesLength == null)
                                                                                     {
-                                                                                        <input data-type="text" data-isrequired="@item.Required" type="text" @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60 @paleYellow answer amount" @requiredMessage />
+                                                                                        <input data-type="text" data-isrequired="@item.Required" type="text" @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control @paleYellow answer amount" @requiredMessage />
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        <textarea data-isrequired="@item.Required" data-type="textarea" @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control width-60 @paleYellow answer" rows="@linesLength" @requiredMessage></textarea>
+                                                                                        <textarea data-isrequired="@item.Required" data-type="textarea" @isReadonly @maxLength name="@inputName" value="@inputValue" pattern="[0-9]" class="form-control @paleYellow answer" rows="@linesLength" @requiredMessage></textarea>
                                                                                     }
                                                                                     <select data-type="dropdown" @isReadonly name="@inputName" class="form-control currency" data-isrequired="@item.Required" @requiredMessage>
                                                                                         @foreach (var option in Model.CurrencyDropdown)
@@ -211,7 +218,7 @@
                                                                             }
                                                                             else if (item.FieldTypeID == 2) // date
                                                                             {
-                                                                                <input readonly data-type="text" @isReadonly name="@inputName" value="@inputValue" class="form-control jdate-picker @paleYellow answer" data-isrequired="@item.Required" @requiredMessage />
+                                                                                <input data-type="text" @isReadonly name="@inputName" value="@inputValue" class="form-control jdate-picker @paleYellow answer" data-isrequired="@item.Required" @requiredMessage />
                                                                             }
                                                                             else if (item.FieldTypeID == 3)
                                                                             {
@@ -1643,6 +1650,24 @@
         var validator = $("#placementForm").validate();
 
         $("#btnSubmit").click(function () {
+                var statusCode = $("#Request_StatusCode").val();
+                var completeDate = $.trim($("#Request_CompletionDateString").val());
+                if (statusCode == 7) {
+                    if (completeDate.length == 0) {
+                        $(".error-status").html("Please select WFJ File Close Date");
+                        scrollUp();
+                        return false;
+                    }
+                }
+
+                if (completeDate.length > 0) {
+                    if (statusCode != 7) {
+                        $(".error-status").html("You must choose to Complete status.");
+                        scrollUp();
+                        return false;
+                    }
+                }
+
                 var isValid = true;
                 var savePlacementsViewModel = {};
                 var fieldValue = [];
@@ -1738,9 +1763,7 @@
                     }
                 });
             } else {
-                $('html, body').animate({
-                    scrollTop: $("body").offset().top
-                }, 3000);
+                scrollUp();
             }
         });
 
@@ -1761,6 +1784,12 @@
                 error: function (result) {
                 }
             });
+        }
+
+        function scrollUp() {
+            $('html, body').animate({
+                scrollTop: $("body").offset().top
+            }, 3000);
         }
     </script>
 }
