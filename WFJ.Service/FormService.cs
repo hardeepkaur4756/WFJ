@@ -177,7 +177,7 @@ namespace WFJ.Service
 
             List<UserClient> ClientUsers = new List<UserClient>();
             if(form.ClientID != null)
-            ClientUsers = _userClientRepo.GetByClientID(form.ClientID.Value);
+                ClientUsers = _userClientRepo.GetByClientID(form.ClientID.Value);
 
             return ClientUsers;
         }
@@ -225,10 +225,10 @@ namespace WFJ.Service
         {
             IUserRepository _userRepo = new UserRepository();
             var collectors = _userRepo.GetAll().Where(x => x.IsCollector == 1 && x.Active == 1).Select(x => new SelectListItem
-                                {
-                                    Text = x.FirstName + " " + x.LastName,
-                                    Value = x.UserID.ToString()
-                                }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
+            {
+                Text = x.FirstName + " " + x.LastName,
+                Value = x.UserID.ToString()
+            }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
             return collectors;
         }
 
@@ -250,7 +250,98 @@ namespace WFJ.Service
             return personnels;
         }
 
+        public int SavePlacements(SavePlacementViewModel savePlacementViewModel)
+        {
+            int requestId = 0;
+            List<FormData> formDatas = new List<FormData>();
+            List<FormAddressData> formAddressDatas = new List<FormAddressData>();
+            if (savePlacementViewModel != null)
+            {
+                IRequestsRepository _requestsRepo = new RequestsRepository();
+                IFormDataRepository _formDataRepo = new FormDataRepository();
+                IFormAddressDataRepository _formAddressDataRepo = new FormAddressDataRepository();
+                Request requestResult = new Request();
+                DateTime? nullable = null;
+                if (savePlacementViewModel.RequestId == 0)
+                {
+                    /// Add request
+                    Request request = new Request
+                    {
+                        FormID = savePlacementViewModel.FormId,
+                        Requestor = Convert.ToInt32(savePlacementViewModel.RequestorId),
+                        AssignedAttorney = Convert.ToInt32(savePlacementViewModel.AttorneyId),
+                        AssignedCollectorID = Convert.ToInt32(savePlacementViewModel.CollectorId),
+                        CollectorStatusCode = savePlacementViewModel.StatusId,
+                        RequestDate = !string.IsNullOrEmpty(savePlacementViewModel.RequestDate) ? Convert.ToDateTime(savePlacementViewModel.RequestDate) : nullable,
+                        CompletionDate = !string.IsNullOrEmpty(savePlacementViewModel.WFJFileCloseDate) ? Convert.ToDateTime(savePlacementViewModel.WFJFileCloseDate) : nullable
+                    };
+                    requestResult = _requestsRepo.Add(request);
+                }
+                else
+                {
+                    /// update request
+                    var request = _requestsRepo.GetById(savePlacementViewModel.RequestId);
+                    request.Requestor = Convert.ToInt32(savePlacementViewModel.RequestorId);
+                    request.AssignedAttorney = Convert.ToInt32(savePlacementViewModel.AttorneyId);
+                    request.AssignedCollectorID = Convert.ToInt32(savePlacementViewModel.CollectorId);
+                    request.CollectorStatusCode = savePlacementViewModel.StatusId;
+                    request.RequestDate = !string.IsNullOrEmpty(savePlacementViewModel.RequestDate) ? Convert.ToDateTime(savePlacementViewModel.RequestDate) : nullable;
+                    request.CompletionDate = !string.IsNullOrEmpty(savePlacementViewModel.WFJFileCloseDate) ? Convert.ToDateTime(savePlacementViewModel.WFJFileCloseDate) : nullable;
+                    requestResult = _requestsRepo.Update(request);
+                }
 
+                requestId = requestResult.ID;
 
+                if (savePlacementViewModel.RequestId > 0)
+                {
+                    var formAddressData = _formAddressDataRepo.GetByRequestId(savePlacementViewModel.RequestId);
+                    _formAddressDataRepo.RemoveList(formAddressData);
+
+                    var formData = _formDataRepo.GetByRequestId(savePlacementViewModel.RequestId);
+                    _formDataRepo.RemoveList(formData);
+                }
+                foreach (var value in savePlacementViewModel.FieldValue)
+                {
+                    if (value.FieldId > 0)
+                    {
+                        if (!string.IsNullOrEmpty(value.FieldValue) && value.AddressValue == null)
+                        {
+                            FormData formData = new FormData
+                            {
+                                RequestID = requestResult.ID,
+                                FormFieldID = value.FieldId,
+                                FieldValue = value.FieldValue,
+                                currencyID = value.CurrencyId
+                            };
+                            formDatas.Add(formData);
+                        }
+                        else if (value.FieldValue == null && value.AddressValue != null)
+                        {
+                            // for address
+                            if (!string.IsNullOrEmpty(value.AddressValue.Address1) || !string.IsNullOrEmpty(value.AddressValue.Address2)
+                                || !string.IsNullOrEmpty(value.AddressValue.City) || !string.IsNullOrEmpty(value.AddressValue.State)
+                                || !string.IsNullOrEmpty(value.AddressValue.Zipcode) || !string.IsNullOrEmpty(value.AddressValue.Country))
+                            {
+                                FormAddressData formAddressData = new FormAddressData
+                                {
+                                    RequestID = requestResult.ID,
+                                    FormFieldID = value.FieldId,
+                                    AddressLine1 = value.AddressValue.Address1,
+                                    AddressLine2 = value.AddressValue.Address2,
+                                    City = value.AddressValue.City,
+                                    State = value.AddressValue.State,
+                                    ZipCode = value.AddressValue.Zipcode,
+                                    Country = value.AddressValue.Country
+                                };
+                                formAddressDatas.Add(formAddressData);
+                            }
+                        }
+                    }
+                }
+                _formDataRepo.AddList(formDatas.AsEnumerable());
+                _formAddressDataRepo.AddList(formAddressDatas.AsEnumerable());
+            }
+            return requestId;
+        }
     }
 }

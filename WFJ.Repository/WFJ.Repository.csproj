@@ -417,6 +417,8 @@
       <DependentUpon>WFJModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="ErrorLogRepository.cs" />
+    <Compile Include="FormAddressDataRepository.cs" />
+    <Compile Include="FormDataRepository.cs" />
     <Compile Include="FormFieldsRepository.cs" />
     <Compile Include="FormSectionsRepository.cs" />
     <Compile Include="FormsRepository.cs" />
@@ -432,7 +434,7 @@
     <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
     <Compile Include="Interfaces\IErrorLogRepository.cs" />
     <Compile Include="Interfaces\IFieldTypesRepository.cs" />
-    <Compile Include="Interfaces\IFormAddressData.cs" />
+    <Compile Include="Interfaces\IFormAddressDataRepository.cs" />
     <Compile Include="Interfaces\IFormDataRepository.cs" />
     <Compile Include="Interfaces\IFormFieldsRepository.cs" />
     <Compile Include="Interfaces\IFormSectionsRepository.cs" />

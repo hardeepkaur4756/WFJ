@@ -9,5 +9,6 @@ namespace WFJ.Repository.Interfaces
 {
     public interface IFormDataRepository: IRepository<FormData>
     {
+        IEnumerable<FormData> GetByRequestId(int requestId);
     }
 }

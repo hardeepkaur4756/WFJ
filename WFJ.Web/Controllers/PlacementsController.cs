@@ -166,9 +166,20 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPlacement(SavePlacementViewModel savePlacementsViewModel)
+        public ActionResult SavePlacement(SavePlacementViewModel savePlacementsViewModel)
         {
-            return View();
+            bool isSuccess = false;
+            int requestId = 0;
+            try
+            {
+                requestId = _formService.SavePlacements(savePlacementsViewModel);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/SavePlacement", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess, requestId = requestId }, JsonRequestBehavior.AllowGet);
         }
 
 
