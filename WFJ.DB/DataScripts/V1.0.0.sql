@@ -255,7 +255,7 @@ ADD FOREIGN KEY (FormFieldID) REFERENCES [FormFields](ID);
 
 
 ALTER TABLE FormFields
-ADD FOREIGN KEY (fieldSizeID) REFERENCES [FormFields](fieldSizeID);
+ADD FOREIGN KEY (fieldSizeID) REFERENCES [fieldSizes](fieldSizeID);
 
 UPDATE [dbo].[fieldSizes]
    SET [htmlCode] = 'col-12'
