@@ -287,3 +287,11 @@ ADD FOREIGN KEY (FormFieldID) REFERENCES [FormFields](ID);
 ALTER TABLE FormAddressData
 ADD FOREIGN KEY (FormFieldID) REFERENCES [FormFields](ID);
 
+ALTER TABLE Requests
+ADD FOREIGN KEY (Requestor) REFERENCES [Users](UserID);
+
+ALTER TABLE Requests
+ADD FOREIGN KEY (AssignedCollectorID) REFERENCES [Users](UserID);
+
+ALTER TABLE Requests
+ADD FOREIGN KEY (AssignedAttorney) REFERENCES [Personnel](ID);

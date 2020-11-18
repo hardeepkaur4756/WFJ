@@ -343,7 +343,7 @@
                             <div class="col-12 pull-right">
                                 @if (Model.isEditMode)
                                 {
-                                    <button type="button" class="btn btn-secondary">Copy</button>
+                                    <button type="button" class="btn btn-secondary" onclick="copyPlacement('@Model.Request.FormID','@Model.Request.ID')">Copy</button>
                                     var activeHtml = "Active";
                                     if(Model.Request?.active == 0)
                                     {
@@ -1660,9 +1660,9 @@
         var validator = $("#placementForm").validate();
 
         $("#btnSubmit").click(function () {
-                var statusCode = $("#Request_StatusCode").val();
+            var statusCode = $.trim($("#Request_StatusCode").find(":selected").text());
                 var completeDate = $.trim($("#Request_CompletionDateString").val());
-                if (statusCode == 7) {
+            if (statusCode == "Complete") {
                     if (completeDate.length == 0) {
                         $(".error-status").html("Please select WFJ File Close Date");
                         scrollUp();
@@ -1670,8 +1670,8 @@
                     }
                 }
 
-                if (completeDate.length > 0) {
-                    if (statusCode != 7) {
+            if (completeDate.length > 0) {
+                if (statusCode != "Complete") {
                         $(".error-status").html("You must choose to Complete status.");
                         scrollUp();
                         return false;
@@ -1820,11 +1820,23 @@
                             $(".active-inactive").html("active");
                             $(".active-inactive").attr("onclick", "activeInactive('1')");
                         }
-                    }                   
+                    }
                 },
                 error: function (result) {
                 }
             });
+        }
+
+        function copyPlacement(formId, requestId) {
+            requestId = parseInt(requestId);
+            if (isNaN(requestId)) { requestId = 0; }
+
+            formId = parseInt(formId);
+            if (isNaN(formId)) { formId = 0; }
+
+            if (requestId > 0 && formId > 0) {
+                window.location.href = "/Placements/CopyPlacement?formId=" + formId + "&requestId=" + requestId;
+            }
         }
     </script>
 }
