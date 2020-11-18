@@ -30,8 +30,8 @@ namespace WFJ.Service
                 RequestDate = request.RequestDate,
                 Requestor = request.Requestor,
                 StatusCode = request.StatusCode,
-                RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("dd/MM/yyyy") : null,
-                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("dd/MM/yyyy"): null,
+                RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("MM/dd/yyyy") : null,
+                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("MM/dd/yyyy"): null,
                 active = request.active == null ? 1 : request.active
             };
 

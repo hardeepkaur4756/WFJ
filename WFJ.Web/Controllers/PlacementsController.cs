@@ -294,6 +294,50 @@ namespace WFJ.Web.Controllers
             }
             return Json(new { success = isSuccess}, JsonRequestBehavior.AllowGet);
         }
-        
+
+        public ActionResult CopyPlacement(int formId, int requestId)
+        {
+            try
+            {
+                IRequestsService _requestService = new RequestsService();
+                string requestorName = string.Empty;
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+                var form = _formService.GetFormById(formId);
+                var user = _userService.GetById(UserId);
+                int clientId = Convert.ToInt32(user.ClientID);
+                if (clientId > 0)
+                {
+                    requestorName = _clientService.GetRequestorNameById(clientId);
+                }
+                requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
+                IStatusCodesService _statusCodesService = new StatusCodesService();
+                ICurrenciesService _currenciesService = new CurrenciesService();
+                AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
+                {
+                    ClientName = form.Client != null ? form.Client.ClientName : null,
+                    CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
+                    FormSections = _formService.GetFormSections(),
+                    FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
+                    Collectors = _formService.GetCollectorsDropdown(),
+                    Requestors = _formService.GetRequestorsDropdown(formId),
+                    StatusList = _statusCodesService.GetByFormID(formId),
+                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
+                    UserAccess = UserAccess,
+                    UserType = UserType,
+                    ClientId = Convert.ToInt32(form.ClientID),
+                    isEditMode = false,
+                    RequestorName = requestorName
+                };
+                model.Request = _requestService.GetByRequestId(requestId);
+                model.Request.ID = 0;
+                return View("AddPlacement", model);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/CopyPlacement?formId=" + formId + "&requestId=" + requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return View(new AddEditPlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
+            }
+        }
+
     }
 }
