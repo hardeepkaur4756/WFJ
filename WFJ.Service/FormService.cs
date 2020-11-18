@@ -14,6 +14,9 @@ namespace WFJ.Service
 {
     public class FormService : IFormService
     {
+        IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
+        private IFormsRepository _formSearchRepository = new FormsRepository();
+
         public List<SelectListItem> GetAllForms()
         {
             IFormsRepository formsRepo = new FormsRepository();
@@ -23,7 +26,6 @@ namespace WFJ.Service
             return fornList;
         }
 
-        private IFormsRepository _formSearchRepository = new FormsRepository();
         public ManagePlacementsModel GetPlacements(int clientId, int formTypeId, string searchKeyword, DataTablesParam param, string sortDir, string sortCol, int pageNo, int? ClientUserId)
         {
             ManagePlacementsModel model = new ManagePlacementsModel();
@@ -31,9 +33,12 @@ namespace WFJ.Service
 
 
             model.totalPlacementsCount = documents?.Count();
+            
 
             if (documents != null)
             {
+               
+
                 var list1 = documents.Select(x => new PlacementsModel
                 {
                     ID = x.ID,
@@ -42,7 +47,8 @@ namespace WFJ.Service
                     FormTypeID = x.FormTypeID,
                     ClientName = x.Client != null ? x.Client.ClientName : null,
                     FormTypeName = x.FormType != null ? x.FormType.FormType1 : null,
-                    RequestsCount = x.Requests != null ? x.Requests.Count : 0
+                    RequestsCount = x.Requests == null ? 0: 
+                                    x.Requests.Where(r => _statusCodesRepo.GetActiveStatusCode(x.ID).Contains(r.StatusCode)).Count()
                 });
 
                 switch (sortCol)
@@ -265,9 +271,13 @@ namespace WFJ.Service
                 DateTime? nullable = null;
                 if (savePlacementViewModel.RequestId == 0)
                 {
+                    var statuscodes = _statusCodesRepo.GetActiveStatusCode(savePlacementViewModel.FormId);
+                    
+
                     /// Add request
                     Request request = new Request
                     {
+                        StatusCode = statuscodes.Count() > 0 ? statuscodes.FirstOrDefault() : null,// activeStatusCode != null? activeStatusCode.Value : (int?)null,
                         FormID = savePlacementViewModel.FormId,
                         Requestor = Convert.ToInt32(savePlacementViewModel.RequestorId),
                         AssignedAttorney = Convert.ToInt32(savePlacementViewModel.AttorneyId),

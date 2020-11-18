@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 col-xl-9">
-                    <h4 class="mb-4 text-md-right">@Html.Raw(Model.ClientName?? "&nbsp;")</h4>
+                    <h4 class="mb-4 text-md-right">@Html.Raw(Model.ClientName ?? "&nbsp;")</h4>
                     <div class="card">
                         <div class="card-body">
                             @Html.Partial("_RequestsGrid")
@@ -34,6 +34,30 @@
         </div>
     </div>
 </main>
+
+
+<!-- Modal -->
+<div id="columnPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 
 
 @section scripts{
@@ -95,14 +119,14 @@
 
         var editColumn = {
             data: "",
-            "orderable": false,
+            title: '<i data-toggle="modal" data-target="#columnPopup" class="fa fa-plus"></i>',
             "render": function (row, type, full) {
-                return '<a href="/Placements/AddPlacement?fomId' + full.ID + '&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
+                return '<a href="/Placements/AddPlacement?formId=@Model.FormID&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
             }
         };
 
         var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
-        columns.slice().unshift(editColumn);
+        coluns =  columns.unshift(editColumn);
         console.log(columns)
 
         function GetDataTable() {
@@ -118,9 +142,8 @@
                         "sAjaxSource": "/Placements/GetRequestList",
                         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
 
-                            console.log(aoData)
                             @*if ("@((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator)" != "@userType" || isFirstTime == false) {*@
-                            var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
+                            var colName = oSettings.aoColumns[1].mData;
                             var sDir = oSettings.aaSorting[0][1];
                             var requestor = $('#ddRequestor option:selected').val();
                             var assignedAttorney = $('#ddAssignedTo option:selected').val();
@@ -160,6 +183,9 @@
                             var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                             pagination.toggle(this.api().page.info().pages > 1);
                         },
+                        "columnDefs": [
+                            { "orderable": false, "targets": 0 }
+                        ],
                         "columns": columns,
                         //    [
                         //    { "data": "RequestorName", "title": "Requestor Name" },
@@ -184,7 +210,7 @@
                         //    //    orderable: false
                         //    //},
                         //],
-                        "order": [[0, "asc"]],
+                        //"order": [[0, "asc"]],
                         bProcessing: true,
                         pageLength: 10,
                         "bFilter": false,

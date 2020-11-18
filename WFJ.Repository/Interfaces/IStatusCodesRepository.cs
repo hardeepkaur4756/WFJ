@@ -10,6 +10,7 @@ namespace WFJ.Repository.Interfaces
     public interface IStatusCodesRepository : IRepository<StatusCode>
     {
         IEnumerable<StatusCode> GetByFormID(int FormID);
+        IEnumerable<int?> GetActiveStatusCode(int FormID);
         StatusCode GetByStatusCodeAndFormId(int statusCode, int formId);
     }
 }

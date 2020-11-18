@@ -49,11 +49,13 @@ namespace WFJ.Repository
             }
             if(statusLevel != -1)
             {
-                var statusCodes = _statusCodesRepo.GetByFormID(formId);
-                requests = (from r in requests
-                            join s in statusCodes on r.StatusCode equals s.StatusCode1
-                            where s.StatusLevel == statusLevel
-                            select r);
+                var statusCodes = _statusCodesRepo.GetByFormID(formId).Select(x => x.StatusCode1).ToArray();
+                requests = requests.Where(x => statusCodes.Contains(x.StatusCode));
+                //requests = (from r in requests
+                //            join s in statusCodes.Where(x => x.StatusLevel == statusLevel) on r.StatusCode equals s.StatusCode1 into sr
+                //            from st in sr.Take(1)
+                //            //where st.StatusLevel == statusLevel
+                //            select r);
 
             }
             if (beginDate != null)

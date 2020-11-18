@@ -301,6 +301,31 @@ namespace WFJ.Service
             return columns;
         }
 
+
+        public List<DatatableDynamicColumn> GetAllcolumns(int UserId, int FormId, UserType UserType)
+        {
+            var selectionColumns = GetSelectionColumnsByUserType(UserType);
+            var visibleColumns = GetDatatableColumns(UserId, FormId, UserType);
+
+            var requestColumns = GetRequestColumns().Select(x => new DatatableDynamicColumn
+                                {
+                                    fieldID = x.fieldID,
+                                    visible = visibleColumns.Any(f => f.fieldID == x.fieldID)
+                                }).ToList();
+            var formFields = _formFieldRepo.GetFormFieldsByFormID(FormId)
+                                .Where(x => x.ListSeqNo != null && x.ListSeqNo != 0 && selectionColumns.Contains(x.SelectionColumn))
+                                .Select(x => new DatatableDynamicColumn
+                                {
+                                    fieldID = x.ID,
+                                    visible = visibleColumns.Any(f => f.fieldID == x.ID)
+                                }).ToList();
+
+            requestColumns.AddRange(formFields);
+
+            return requestColumns;
+        }
+
+
         public List<DatatableDynamicColumn> GetRequestColumns()
         {
             List<DatatableDynamicColumn> columns1 = new List<DatatableDynamicColumn>();

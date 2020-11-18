@@ -27,7 +27,7 @@ namespace WFJ.Web.Controllers
 
         private int UserType = 0;
         private int UserId = 0;
-        private int UserAccess = 0;
+        private int? UserAccess;
 
         [HttpGet]
         public ActionResult Index()
@@ -197,13 +197,13 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public void GetSessionUser(out int userId, out int userType,out int userAccess)
+        public void GetSessionUser(out int userId, out int userType,out int? userAccess)
         {
             if (Session["UserId"] != null)
             {
                 userId = Convert.ToInt32(Session["UserId"].ToString());
                 userType = Convert.ToInt32(Session["UserType"].ToString());
-                userAccess = Convert.ToInt32(Session["UserAccess"].ToString()); 
+                userAccess = Session["UserAccess"] != null ? Convert.ToInt32(Session["UserAccess"].ToString()) : (int?)null; 
             }
             else
             {
