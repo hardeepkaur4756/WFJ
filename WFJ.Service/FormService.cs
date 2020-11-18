@@ -183,7 +183,7 @@ namespace WFJ.Service
 
         public FormModel GetFormById(int FormID)
         {
-            var form = _formSearchRepository.GetById(FormID);
+            var form = _formSearchRepository.GetFormDetailByID(FormID);
             FormModel formObj = new FormModel
             {
                 active = form.active,
@@ -191,11 +191,13 @@ namespace WFJ.Service
                 CustomerAccountFieldID = form.CustomerAccountFieldID,
                 hasAdmin = form.hasAdmin,
                 ClientID = form.ClientID,
+                ClientName = form.Client != null ? form.Client.ClientName :null,
                 ClientNumber = form.ClientNumber,
                 CustomerNameFieldID = form.CustomerNameFieldID,
                 DefaultRequestorID = form.DefaultRequestorID,
                 FormName = form.FormName,
                 FormTypeID = form.FormTypeID,
+                FormTypeName = form.FormType != null? form.FormType.FormType1 : null,
                 hasCollector = form.hasCollector,
                 ID = form.ID,
                 JobNumberFieldID = form.JobNumberFieldID,

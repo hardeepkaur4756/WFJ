@@ -17,39 +17,55 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, DateTime? beginDate, DateTime? endDate)
+        public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, DateTime? beginDate, DateTime? endDate, bool archived)
         {
-            IEnumerable<Request> documents;
+            IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
+            IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
 
-            documents = _context.Requests.Where(x => x.FormID == formId).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
-            //var test = documents.ToList();
-
+            if(archived == true)
+            {
+                requests = requests.Where(x => x.CompletionDate != null);
+            }
+            else // Include completion date is null or last month
+            {
+                DateTime LastMonth = DateTime.Now.Date.AddDays(-30);
+                requests = requests.Where(x => x.CompletionDate == null || x.CompletionDate >= LastMonth);
+            }
             if (requestor != -1)
             {
-                documents = documents.Where(x => x.Requestor == requestor);
+                requests = requests.Where(x => x.Requestor == requestor);
             }
             if (assignedAtorney != -1)
             {
-                documents = documents.Where(x => x.AssignedAttorney == assignedAtorney);
+                requests = requests.Where(x => x.AssignedAttorney == assignedAtorney);
             }
             if (collector != -1)
             {
-                documents = documents.Where(x => x.AssignedCollectorID == collector);
+                requests = requests.Where(x => x.AssignedCollectorID == collector);
             }
             if(statusCode != -1)
             {
-                documents = documents.Where(x => x.StatusCode == statusCode);
+                requests = requests.Where(x => x.StatusCode == statusCode);
+            }
+            if(statusLevel != -1)
+            {
+                var statusCodes = _statusCodesRepo.GetByFormID(formId);
+                requests = (from r in requests
+                            join s in statusCodes on r.StatusCode equals s.StatusCode1
+                            where s.StatusLevel == statusLevel
+                            select r);
+
             }
             if (beginDate != null)
             {
-                documents = documents.Where(x => x.RequestDate != null && x.RequestDate >= beginDate);
+                requests = requests.Where(x => x.RequestDate != null && x.RequestDate >= beginDate);
             }
             if(endDate != null)
             {
-                documents = documents.Where(x => x.CompletionDate != null && x.CompletionDate <= endDate);
+                requests = requests.Where(x => x.RequestDate != null && x.RequestDate <= endDate);
             }
 
-            return documents;
+            return requests;
         }
 
 

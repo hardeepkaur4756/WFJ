@@ -14,9 +14,7 @@ namespace WFJ.Service
 
         public List<SelectListItem> GetByFormID(int FormID)
         {
-            
-            var itemList = statusCodesRepo.GetByFormID(FormID).Where(x => x.Description!=null ).Select(x => new SelectListItem() { Text = x.Description, Value = x.StatusCode1.ToString() }).ToList();
-            return itemList;
+            return statusCodesRepo.GetByFormID(FormID).Where(x => x.Description != null).Select(x => new SelectListItem() { Text = x.Description, Value = x.StatusCode1.ToString() }).ToList();
         }
 
         public StatusCodesModel GetByStatusCodeAndFormId(int statusCode, int formId)

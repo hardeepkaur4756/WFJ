@@ -101,7 +101,8 @@ namespace WFJ.Web.Controllers
                 PlacementReuestsViewModel model = new PlacementReuestsViewModel();
 
                 var form = _formService.GetFormById(id);
-                model.ClientName = form.Client != null ? form.Client.ClientName : null;
+                model.ClientName = form.ClientName;//form.Client != null ? form.Client.ClientName : null;
+                model.FormType = form.FormTypeName;
                 model.FormID = id;
                 model.TableColumns = _requestsService.GetDatatableColumns(UserId, id, (UserType)((byte)UserType));
 
@@ -231,7 +232,7 @@ namespace WFJ.Web.Controllers
 
         [HttpPost]
         public JsonResult GetRequestList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime,
-                                           string beginDate, string endDate, string region,
+                                           string beginDate, string endDate, string region, bool archived,
                                            int formId,
                                            int requestor = -1, int assignedAttorney = -1, int collector = -1,
                                            int statusCode = -1)
@@ -254,7 +255,7 @@ namespace WFJ.Web.Controllers
                 //int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
 
                 //if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
-                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, param, sortDir, sortCol, pageNo);
+                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, archived, param, sortDir, sortCol, pageNo);
                 //else
                 //    model.placements = new List<PlacementsModel>();
 
