@@ -275,8 +275,24 @@ namespace WFJ.Web.Controllers
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetPlacementList", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
-
             }
         }
+
+        public ActionResult UpdateActiveRequest(int code, int requestId)
+        {
+            IStatusCodesService _statusCodesService = new StatusCodesService();
+            bool isSuccess = false;
+            try
+            {
+                isSuccess = true;
+                _requestsService.UpdateActiveCode(code, requestId);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateActiveInactiveRequest", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess}, JsonRequestBehavior.AllowGet);
+        }
+        
     }
 }

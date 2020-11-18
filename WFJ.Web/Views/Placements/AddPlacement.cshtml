@@ -340,8 +340,16 @@
                         }
                         <div class="row">
                             <div class="col-12 pull-right">
-                                <button type="button" class="btn btn-secondary">Copy</button>
-                                <a href="@Url.Action("Index")" class="btn btn-secondary">Delete</a>
+                                @if (Model.isEditMode)
+                                {
+                                    <button type="button" class="btn btn-secondary">Copy</button>
+                                    var activeHtml = "Active";
+                                    if(Model.Request?.active == 0)
+                                    {
+                                        activeHtml = "Inactive";
+                                    }
+                                    <a href="javascript:void(0)" class="btn btn-secondary active-inactive" onclick="activeInactive('@Model.Request.active')">@activeHtml</a>
+                                }
                                 <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
                             </div>
                         </div>
@@ -1790,6 +1798,31 @@
             $('html, body').animate({
                 scrollTop: $("body").offset().top
             }, 3000);
+        }
+
+        function activeInactive(code) {
+            var code = parseInt(code);
+            if (isNaN(code)) { code = 0;}
+            $.ajax({
+                type: "get",
+                url: "/Placements/UpdateActiveRequest?code=" + code + "&requestId=" + $("#Request_ID").val(),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if (response.success) {
+                        $(".active-inactive").prop("onclick", null).off("click");
+                        if (code == 1) {
+                            $(".active-inactive").html("Inactive");
+                            $(".active-inactive").attr("onclick", "activeInactive('0')");
+                        } else {
+                            $(".active-inactive").html("active");
+                            $(".active-inactive").attr("onclick", "activeInactive('1')");
+                        }
+                    }                   
+                },
+                error: function (result) {
+                }
+            });
         }
     </script>
 }

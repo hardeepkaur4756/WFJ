@@ -31,7 +31,8 @@ namespace WFJ.Service
                 Requestor = request.Requestor,
                 StatusCode = request.StatusCode,
                 RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("dd/MM/yyyy") : null,
-                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("dd/MM/yyyy"): null
+                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("dd/MM/yyyy"): null,
+                active = request.active == null ? 1 : request.active
             };
 
             return model;
@@ -394,6 +395,20 @@ namespace WFJ.Service
             }
 
             return SelectionColumns;
+        }
+
+        public void UpdateActiveCode(int code, int requestId)
+        {
+            var request = _requestsRepo.GetById(requestId);
+            if(code == 1)
+            {
+                request.active = 0;
+            }
+            else
+            {
+                request.active = 1;
+            }
+            _requestsRepo.Update(request);
         }
     }
 }
