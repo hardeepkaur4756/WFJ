@@ -35,4 +35,29 @@ namespace WFJ.Service.Model
         DocumentCenterOnly = 11
     }
 
+    public enum FieldTypes
+    {
+        Number = 1,
+        Date = 2,
+        Text = 3,
+        YesNo = 4,
+        Telephone = 5,
+        TextOnly = 6,
+        SelectionList = 7,
+        Address = 8,
+        Name = 9,
+        //SocialSecurityNumber = 10,
+        //TablewithColumnsOnly = 11,
+        //TableWithRowsAndColumns = 12,
+        Checkbox = 13,
+        SectionHeadingTextOnly = 14,
+        MultiSelectSelectionList = 15,
+        MultiSelectCheckboxes = 16,
+        SectionHeader = 17,
+        //PopUpDateSelection = 18,
+        Currency = 19,
+        //DBSelectionList = 20
+    }
+
+
 }

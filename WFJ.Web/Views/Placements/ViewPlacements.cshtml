@@ -13,7 +13,7 @@
         <div class="container-fluid site-width">
             <div class="row">
                 <div class="col-md-4 col-xl-3">
-                    <h4 class="mb-4">View Request</h4>
+                    <h4 class="mb-4">@Html.Raw(Model.FormType ?? "&nbsp;")</h4>
                     <div class="card mb-5 mb-md-0">
                         <div class="card-content">
                             <div class="card-body">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-md-8 col-xl-9">
-                    <h4 class="mb-4">@Html.Raw(Model.ClientName?? "&nbsp;")</h4>
+                    <h4 class="mb-4 text-md-right">@Html.Raw(Model.ClientName?? "&nbsp;")</h4>
                     <div class="card">
                         <div class="card-body">
                             @Html.Partial("_RequestsGrid")
@@ -93,7 +93,16 @@
 
         //}
 
+        var editColumn = {
+            data: "",
+            "orderable": false,
+            "render": function (row, type, full) {
+                return '<a href="/Placements/AddPlacement?fomId' + full.ID + '&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
+            }
+        };
+
         var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
+        columns.slice().unshift(editColumn);
         console.log(columns)
 
         function GetDataTable() {
@@ -120,6 +129,7 @@
                             var region = $('#ddRegion option:selected').val();
                             var beginDate = $("#beginDate").val();
                             var endDate = $("#endDate").val();
+                            var archived = $("#cboxArchived").is(":checked");
 
                             aoData.push({ "name": "sortCol", "value": colName });
                             aoData.push({ "name": "sortDir", "value": sDir });
@@ -132,6 +142,7 @@
                             aoData.push({ "name": "region", "value": region });
                             aoData.push({ "name": "beginDate", "value": beginDate });
                             aoData.push({ "name": "endDate", "value": endDate });
+                            aoData.push({ "name": "archived", "value": archived });
                             aoData.push({ "name": "isFirstTime", "value": isFirstTime });
 
 
@@ -154,9 +165,9 @@
                         //    { "data": "RequestorName", "title": "Requestor Name" },
                         //    { "data": "AssignedAttorneyName" },
                         //    { "data": "CollectorName" },
-                        //    { "data": "RequestDateString" },
-                        //    { "data": "CompletionDateString" },
-                        //    { "data": "LastViewedDateString" },
+                        //    { "data": "RequestDate" },
+                        //    { "data": "CompletionDate" },
+                        //    { "data": "LastViewedDate" },
                         //    { "data": "StatusDescription" },
                         //    { "data": "TotalPaymentsAmount" },
                         //    { "data": "DaysOpen" },

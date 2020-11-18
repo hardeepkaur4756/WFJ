@@ -17,7 +17,7 @@ namespace WFJ.Service
         IRequestsRepository _requestsRepo = new RequestsRepository();
         IFormFieldsRepository _formFieldRepo = new FormFieldsRepository();
         IListFieldRepository _listFieldRepo = new ListFieldRepository();
-
+        //IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         public RequestViewModel GetByRequestId(int RequestID)
         {
             var request =_requestsRepo.GetById(RequestID);
@@ -39,7 +39,7 @@ namespace WFJ.Service
         }
 
         public PlacementRequestsListViewModel GetPlacementRequests(int userId, int formId, UserType UserType, int requestor, int assignedAttorney, int collector, int status, string region,
-                                                                    string startDate, string toDate,
+                                                                    string startDate, string toDate, bool archived,
                                                                     DataTablesParam param, string sortDir, string sortCol, int pageNo)
         {
             PlacementRequestsListViewModel model = new PlacementRequestsListViewModel();
@@ -47,11 +47,15 @@ namespace WFJ.Service
             DateTime? beginDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.ParseExact(startDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
             DateTime? endDate = string.IsNullOrEmpty(toDate) ? (DateTime?)null : DateTime.ParseExact(toDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date.AddDays(1);
 
+            //Initial State -> List all active requests for the Form selected.  
+            //An active request is determined by looking at the statusCodes.statusLevel field (requests.statusCode  statusCodes.statusCode + statusCodes.formID).
+            //Status Levels: 0-New, 1-Active, 2-Completed
+            int statusLevel = status != -1 ? -1 : 1;
 
-            var documents = _requestsRepo.GetRequestsList(formId, requestor, assignedAttorney, collector, status, beginDate, endDate);
-            model.TotalRequestsCount = documents?.Count();
+            var requests = _requestsRepo.GetRequestsList(formId, requestor, assignedAttorney, collector, status, statusLevel, beginDate, endDate, archived);
+            model.TotalRequestsCount = requests?.Count();
 
-            if (documents != null)
+            if (requests != null)
             {
                 DateTime NowDate = DateTime.Now.Date;
                 IStatusCodesRepository statusCodesRepo = new StatusCodesRepository();
@@ -61,35 +65,36 @@ namespace WFJ.Service
                 var formAddressData = _formFieldRepo.GetFormFieldsByFormID(formId).SelectMany(x => x.FormAddressDatas).ToList();
                 var selectionColumns = GetSelectionColumnsByUserType(UserType);
 
-                var list1 = documents.Select(x => new PlacementRequestModel
+                var list1 = requests.Select(x => new PlacementRequestModel
                 {
                     RequestID = x.ID,
-                    AssignedAttorneyName = x.Personnel != null ? x.Personnel.FirstName + " " + x.Personnel.LastName : null,
-                    RequestorName = x.User1 != null ? x.User1.FirstName + " " + x.User1.LastName : null,
-                    CollectorName = x.User != null ? x.User.FirstName + " " + x.User.LastName : null,
-                    CompletionDate = x.CompletionDate,
-                    RequestDate = x.RequestDate,
-                    CompletionDateString = x.CompletionDate != null ? x.CompletionDate.Value.ToString("dd/MM/yyyy") : null,
-                    RequestDateString = x.RequestDate != null ? x.RequestDate.Value.ToString("dd/MM/yyyy") : null,
-                    TotalPaymentsAmount = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
-                    LastViewed = x.LastViewed,
-                    LastViewedDateString = x.LastViewed != null ? x.LastViewed.Value.ToString("dd/MM/yyyy") : null,
+                    AssignedAttorney = x.Personnel != null ? x.Personnel.FirstName + " " + x.Personnel.LastName : null,
+                    Requestor = x.User1 != null ? x.User1.FirstName + " " + x.User1.LastName : null,
+                    AssignedCollectorID = x.User != null ? x.User.FirstName + " " + x.User.LastName : null,
+                    CompletionDateVal = x.CompletionDate,
+                    RequestDateVal = x.RequestDate,
+                    CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("dd/MM/yyyy") : null,
+                    RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("dd/MM/yyyy") : null,
+                    TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
+                    LastViewedVal = x.LastViewed,
+                    LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("dd/MM/yyyy") : null,
                     DaysOpen = x.RequestDate == null ? 0 :
                                x.CompletionDate == null ? (NowDate - x.RequestDate.Value).Days : (x.CompletionDate.Value - x.RequestDate.Value).Days,
-                    StatusDescription = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
+                    StatusCode = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
+                    LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("dd/MM/yyyy") : null,
 
                     FormFields = formData.Where(f => f.RequestID == x.ID && f.FormField != null &&
                                                      (f.FormField.ListSeqNo != null && f.FormField.ListSeqNo != 0 && selectionColumns.Contains(f.FormField.SelectionColumn))
                                 ).ToDictionary(d => "field_" + d.FormField.ID,
 
                                     // dropdown
-                                    d => d.FormField.FieldTypeID == 7 &&
+                                    d => d.FormField.FieldTypeID == (byte)FieldTypes.SelectionList &&
                                     d.FormField.FormSelectionLists.FirstOrDefault(s => s.Code == d.FieldValue) != null ?
                                     d.FormField.FormSelectionLists.FirstOrDefault(s => s.Code == d.FieldValue).TextValue :
 
                                     // multi select checkbox
-                                    d.FormField.FieldTypeID == 16 && d.FieldValue != null?
-                                    string.Join(",", d.FormField.FormSelectionLists.Where(c => d.FieldValue.Split(',').Select(s => int.Parse(s)).Contains(c.ID)).Select(c => c.TextValue).ToArray())
+                                    d.FormField.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes && d.FieldValue != null?
+                                    string.Join(",", d.FormField.FormSelectionLists.Where(c => d.FieldValue.Split(',').Contains(c.Code)).Select(c => c.TextValue).ToArray())
 
                                     :
                                     // inputs
@@ -105,55 +110,36 @@ namespace WFJ.Service
                 }).ToList();
 
 
-                /*//var listFields = _listFieldRepo.GetByUserAndFormID(userId, formId).ToList();
-                var formFields = _formFieldRepo.GetFormFieldsByFormID(formId);//.Where(x => listFields.Any(a => a.FieldID == x.ID))
-                var allFormData = formFields   .SelectMany(x => x.FormDatas);
-
-                foreach (var item in list1)
-                {
-                    Dictionary<string, string> fields = new Dictionary<string, string>();
-                    foreach(var f in formFields)
-                    {
-                        string fieldVal = "";
-                        var field = allFormData.FirstOrDefault(x => x.RequestID == item.RequestID && x.FormFieldID == f.ID);
-                        if (field != null)
-                            fieldVal = field.FieldValue;
-
-                        fields.Add("field_" + f.ID, fieldVal);
-                    }
-                    item.FormFields = fields;
-                }*/
-
                 switch (sortCol)
                 {
                     case "AssignedAttorneyName":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.AssignedAttorneyName).ToList();
+                            list1 = list1.OrderBy(x => x.AssignedAttorney).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.AssignedAttorneyName).ToList();
+                            list1 = list1.OrderByDescending(x => x.AssignedAttorney).ToList();
                         }
                         break;
                     case "RequestorName":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.RequestorName).ToList();
+                            list1 = list1.OrderBy(x => x.Requestor).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.RequestorName).ToList();
+                            list1 = list1.OrderByDescending(x => x.Requestor).ToList();
                         }
                         break;
                     case "CollectorName":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.CollectorName).ToList();
+                            list1 = list1.OrderBy(x => x.AssignedCollectorID).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.CollectorName).ToList();
+                            list1 = list1.OrderByDescending(x => x.AssignedCollectorID).ToList();
                         }
                         break;
                     case "DaysOpen":
@@ -169,41 +155,41 @@ namespace WFJ.Service
                     case "StatusDescription":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.StatusDescription).ToList();
+                            list1 = list1.OrderBy(x => x.StatusCode).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.StatusDescription).ToList();
+                            list1 = list1.OrderByDescending(x => x.StatusCode).ToList();
                         }
                         break;
-                    case "RequestDateString":
+                    case "RequestDate":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.RequestDate).ToList();
+                            list1 = list1.OrderBy(x => x.RequestDateVal).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.RequestDate).ToList();
+                            list1 = list1.OrderByDescending(x => x.RequestDateVal).ToList();
                         }
                         break;
-                    case "CompletionDateString":
+                    case "CompletionDate":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.CompletionDate).ToList();
+                            list1 = list1.OrderBy(x => x.CompletionDateVal).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.CompletionDate).ToList();
+                            list1 = list1.OrderByDescending(x => x.CompletionDateVal).ToList();
                         }
                         break;
-                    case "LastViewedDateString":
+                    case "LastViewed":
                         if (sortDir == "asc")
                         {
-                            list1 = list1.OrderBy(x => x.LastViewed).ToList();
+                            list1 = list1.OrderBy(x => x.LastViewedVal).ToList();
                         }
                         if (sortDir == "desc")
                         {
-                            list1 = list1.OrderByDescending(x => x.LastViewed).ToList();
+                            list1 = list1.OrderByDescending(x => x.LastViewedVal).ToList();
                         }
                         break;
                     default:
@@ -212,8 +198,6 @@ namespace WFJ.Service
                             list1 = list1.OrderBy(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
                         if(sortDir == "desc")
                             list1 = list1.OrderByDescending(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
-                        //var sort = list1.OrderBy(x => x.FormFields.ContainsKey(sortCol) ? x.FormFields[sortCol] : string.Empty);
-                        //var sort2 = list1.OrderBy(x => x.FormFields.ContainsKey(sortCol) ? x.FormFields[sortCol] : string.Empty);
                         break;
                 }
 
@@ -230,53 +214,58 @@ namespace WFJ.Service
         }
 
         public List<DatatableDynamicColumn> GetDatatableColumns(int UserId, int FormId, UserType UserType)
-        {            
-            var requestColumns = GetRequestColumns();
+        {
+            string dataFormat = "FormFields.field_";
             var selectionColumns = GetSelectionColumnsByUserType(UserType);
+            var requestColumns = GetRequestColumns();
+            var listFieds = _listFieldRepo.GetByUserAndFormID(UserId, FormId);
+            var formFields = _formFieldRepo.GetFormFieldsByFormID(FormId).Where(x => selectionColumns.Contains(x.SelectionColumn));
+            var columns = new List<DatatableDynamicColumn>();
 
-            var columns = (from listf in _listFieldRepo.GetByUserAndFormID(UserId, FormId)
+            if (listFieds.Count() > 0)
+            {
+                columns = (from listf in listFieds
 
                            join r in requestColumns on listf.FieldID equals r.fieldID into re
                            from reqf in re.DefaultIfEmpty()
 
-                           join f in _formFieldRepo.GetFormFieldsByFormID(FormId) on listf.FieldID equals f.ID into ff
+                           join f in formFields on listf.FieldID equals f.ID into ff
                            from formf in ff.DefaultIfEmpty()
-
-                           where formf == null || (formf.ListSeqNo != null && formf.ListSeqNo != 0 && selectionColumns.Contains(formf.SelectionColumn))
 
                            select new DatatableDynamicColumn
                            {
                                data = reqf != null ? reqf.data :
-                                      formf != null ? "FormFields.field_" + formf.ID : "",
+                                      formf != null ? dataFormat + formf.ID : "",
                                fieldID = listf.FieldID != null ? listf.FieldID.Value : 0,
                                seqNo = listf.SeqNo != null ? listf.SeqNo :
                                        reqf != null ? reqf.seqNo :
                                        formf != null ? formf.ListSeqNo : null,
                                title = reqf != null ? reqf.title : formf != null ? formf.FieldName : "",
-                               defaultContent="",
+                               defaultContent = "",
                                visible = true
                            })
-                           .OrderBy(x => x.seqNo != null ? x.seqNo : byte.MaxValue).ToList();
-
+                               .OrderBy(x => x.seqNo != null ? x.seqNo : byte.MaxValue).ToList();
+            }
 
             // Default visibe columns
-            if(columns.Count == 0)
+            else
             {
                 List<string> NamesFromWebConfig = ConfigurationManager.AppSettings["RequestsDatatableDefaultColumns"] != null ?
                                                   ConfigurationManager.AppSettings["RequestsDatatableDefaultColumns"].Split(',').ToList() : new List<string>();
 
                 foreach(var item in NamesFromWebConfig)
                 {
+
                     var requestColumn = requestColumns.FirstOrDefault(x => x.data.ToLower() == item);
                     if (requestColumn != null)
                     {
                         requestColumn.visible = true;
+                        requestColumn.seqNo = 1;
                         columns.Add(requestColumn);
                     }
                     else
                     {
-                        var formFields = _formFieldRepo.GetFormFieldsByFormID(FormId);
-                        var formField = formFields.FirstOrDefault(x => x.FieldName.Trim().ToLower() == item && x.ListSeqNo != null && x.ListSeqNo != 0 && selectionColumns.Contains(x.SelectionColumn));
+                        var formField = formFields.FirstOrDefault(x => x.FieldName.Trim().ToLower() == item);
                         if(formField != null)
                         {
                             DatatableDynamicColumn formFieldColumn = new DatatableDynamicColumn
@@ -286,31 +275,30 @@ namespace WFJ.Service
                                 title = formField.FieldName,
                                 defaultContent = "",
                                 visible = true,
+                                seqNo = 1
                             };
 
                             columns.Add(formFieldColumn);
                         }
                     }
-                } // foreach ends
+                }
+
+                var FormFieldsNonZero = formFields.Where(x => x.ListSeqNo != null && x.ListSeqNo != 0).Select(x => new DatatableDynamicColumn
+                {
+                    data = dataFormat + x.ID,
+                    defaultContent = "",
+                    fieldID = x.ID,
+                    seqNo = x.ListSeqNo,
+                    title = x.FieldName,
+                    visible = true
+                });
+
+                columns.AddRange(FormFieldsNonZero);
+                columns = columns.OrderBy(x => x.seqNo).ToList();
+
             } // default columns end
 
             return columns;
-
-            //var columns =  (from formf in _formFieldRepo.GetFormFieldsByFormID(FormId)
-
-            //                join l in _listFieldRepo.GetByUserAndFormID(UserId, FormId) on formf.ID equals l.FieldID into li
-            //                from lif in li.DefaultIfEmpty()
-
-            //                select new DatatableDynamicColumn
-            //                {
-            //                    data = "FormFields.field_" + formf.ID,
-            //                    formFieldId = formf.ID,
-            //                    seqNo = lif != null ? lif.SeqNo : formf.ListSeqNo,
-            //                    title = formf.FieldName,
-            //                    visible = lif != null ? true : false
-            //                }).OrderBy(x=> x.seqNo != null ? x.seqNo : int.MaxValue).ToList();
-
-
         }
 
         public List<DatatableDynamicColumn> GetRequestColumns()
@@ -318,56 +306,56 @@ namespace WFJ.Service
             List<DatatableDynamicColumn> columns1 = new List<DatatableDynamicColumn>();
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.RequestorName),
+                data = nameof(PlacementRequestModel.Requestor),
                 title = "Requestor Name",
                 fieldID = 1,
                 //seqNo = 0,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.RequestDateString),
+                data = nameof(PlacementRequestModel.RequestDate),
                 title = "Request Date",
                 fieldID = 2,
                 //seqNo = 1,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.AssignedAttorneyName),
+                data = nameof(PlacementRequestModel.AssignedAttorney),
                 title = "Assigned Attorney",
                 fieldID = 3,
                 //seqNo = 2,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.CollectorName),
+                data = nameof(PlacementRequestModel.AssignedCollectorID),
                 title = "Collector Name",
                 fieldID = 4,
                 //seqNo = 3,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.StatusDescription),
+                data = nameof(PlacementRequestModel.StatusCode),
                 title = "Status",
                 fieldID = 5,
                 //seqNo = 4,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.TotalPaymentsAmount),
+                data = nameof(PlacementRequestModel.TotalPayments),
                 title = "Total Payments",
                 fieldID = 6,
                 //seqNo = 5,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.LastViewedDateString),
+                data = nameof(PlacementRequestModel.LastViewed),
                 title = "Last Viewed Date",
                 fieldID = 7,
                 //seqNo = 6,
             });
             columns1.Add(new DatatableDynamicColumn
             {
-                data = nameof(PlacementRequestModel.CompletionDateString),
+                data = nameof(PlacementRequestModel.CompletionDate),
                 title = "Date Completed",
                 fieldID = 8,
                 //seqNo = 7,
@@ -378,6 +366,13 @@ namespace WFJ.Service
                 title = "Days open",
                 fieldID = 9,
                 //seqNo = 8,
+            });
+            columns1.Add(new DatatableDynamicColumn
+            {
+                data = nameof(PlacementRequestModel.LastNoteDate),
+                title = "Last Note Date",
+                fieldID = 10,
+                //seqNo = 6,
             });
             return columns1;
         }

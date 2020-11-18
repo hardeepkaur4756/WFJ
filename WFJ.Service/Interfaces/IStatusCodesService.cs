@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WFJ.Models;
+using WFJ.Repository.EntityModel;
 
 namespace WFJ.Service.Interfaces
 {

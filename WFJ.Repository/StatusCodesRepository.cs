@@ -15,9 +15,9 @@ namespace WFJ.Repository
         {
             context = new WFJEntities();
         }
-        public List<StatusCode> GetByFormID(int FormID)
+        public IEnumerable<StatusCode> GetByFormID(int FormID)
         {
-            return context.StatusCodes.Where(x => x.FormID == FormID).ToList();
+            return context.StatusCodes.Where(x => x.FormID == FormID);
         }
 
         public StatusCode GetByStatusCodeAndFormId(int statusCode, int formId)

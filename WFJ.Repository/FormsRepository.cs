@@ -59,5 +59,10 @@ namespace WFJ.Repository
             return documents;
         }
 
+        public Form GetFormDetailByID(int FormID)
+        {
+            return _context.Forms.Include(x => x.FormType).Include(x => x.Client).FirstOrDefault(x => x.ID == FormID);
+        }
+
     }
 }

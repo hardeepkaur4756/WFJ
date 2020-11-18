@@ -1,4 +1,5 @@
 ﻿@using WFJ.Models;
+@using WFJ.Service.Model;
 @model AddEditPlacementsViewModel
 @using fieldType = WFJ.Web.Models.Enums.FieldTypes;
 
@@ -14,7 +15,7 @@
                             {
                                 rowNo = r.Key,
                                 rowData = r.GroupBy(b => b.rowNumber).OrderBy(b => b.Key).AsEnumerable(),
-                                sectionHeader = r.Any(b => b.FieldTypeID == 17) ? r.FirstOrDefault(b => b.FieldTypeID == 17).FieldName : null
+                                sectionHeader = r.Any(b => b.FieldTypeID == (byte)FieldTypes.SectionHeader) ? r.FirstOrDefault(b => b.FieldTypeID == (byte)FieldTypes.SectionHeader).FieldName : null
                             }),
                         }).ToList();
 
@@ -179,23 +180,23 @@
                                                                     }
                                                                 }
 
-                                                                if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
+                                                                if (item.FieldTypeID == (byte)FieldTypes.MultiSelectSelectionList || item.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes)
                                                                 {
                                                                     selectHeight = "custom-multiselect-scroll";
                                                                 }
 
-                                                                if (item.FieldTypeID != 17) // Section Header
+                                                                if (item.FieldTypeID != (byte)FieldTypes.SectionHeader) // Section Header
                                                                 {
                                                                     <div class="@colClass @selectHeight">
                                                                         <div class="form-group">
                                                                             <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" class="formFieldId" />
                                                                             <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.FieldTypeID" class="formFieldTypeId" />
-                                                                            @if (item.FieldTypeID != 14) // Heading
+                                                                            @if (item.FieldTypeID != (byte)FieldTypes.SectionHeadingTextOnly && item.FieldTypeID != (byte)FieldTypes.TextOnly) // Heading
                                                                             {
                                                                                 <label>@item.FieldName</label>
                                                                             }
 
-                                                                            @if (item.FieldTypeID == 1)
+                                                                            @if (item.FieldTypeID == (byte)FieldTypes.Number)
                                                                             {
                                                                                 <div class="d-flex amount">
                                                                                     <input name="FormFieldsList[@Cnt].ID" type="hidden" value="@item.ID" class="formFieldId" />
@@ -216,11 +217,11 @@
                                                                                     </select>
                                                                                 </div>
                                                                             }
-                                                                            else if (item.FieldTypeID == 2) // date
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Date) // date
                                                                             {
                                                                                 <input data-type="text" @isReadonly name="@inputName" value="@inputValue" class="form-control jdate-picker @paleYellow answer" data-isrequired="@item.Required" @requiredMessage />
                                                                             }
-                                                                            else if (item.FieldTypeID == 3)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Text)
                                                                             {
                                                                                 if (linesLength == null)
                                                                                 {
@@ -231,7 +232,7 @@
                                                                                     <textarea data-type="textarea" @isReadonly name="@inputName" rows="@linesLength" class="form-control @paleYellow answer" @maxLength data-isrequired="@item.Required" @requiredMessage>@inputValue</textarea>
                                                                                 }
                                                                             }
-                                                                            else if (item.FieldTypeID == 4)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.YesNo)
                                                                             {
                                                                                 <div class="answer" data-type="radio" data-name="@inputName" data-isrequired="@item.Required">
                                                                                     <label class="radio-inline">
@@ -242,15 +243,15 @@
                                                                                     </label>
                                                                                 </div>
                                                                             }
-                                                                            else if (item.FieldTypeID == 5) // telephone
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Telephone) // telephone
                                                                             {
                                                                                 <input data-type="text" @isReadonly maxlength="20" name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z0-9]" class="form-control @paleYellow answer" @maxLength data-isrequired="@item.Required" @requiredMessage />
                                                                             }
-                                                                            else if (item.FieldTypeID == 6) // text only
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.TextOnly) // text only
                                                                             {
-                                                                                <input data-type="text" @isReadonly name="@inputName" value="@inputValue" type="text" pattern="[A-Za-z]" class="form-control @paleYellow answer" @maxLength data-isrequired="@item.Required" @requiredMessage />
+                                                                                <label>@item.FieldName</label>
                                                                             }
-                                                                            else if (item.FieldTypeID == 7)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.SelectionList)
                                                                             {
                                                                                 <select data-type="dropdown" @isReadonly name="@inputName" class="form-control answer" data-isrequired="@item.Required" @requiredMessage>
                                                                                     <option value="">--Select--</option>
@@ -261,7 +262,7 @@
                                                                                     }
                                                                                 </select>
                                                                             }
-                                                                            else if (item.FieldTypeID == 8)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Address)
                                                                             {
                                                                                 <input data-type="address" @isReadonly value="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow answer address1" maxlength="300" placeholder="Addredd line 1" data-isrequired="@item.Required" @requiredMessage />
                                                                                 <input data-type="address" @isReadonly value="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  address2" maxlength="80" placeholder="Addredd line 2" />
@@ -278,11 +279,11 @@
                                                                                 </div>
                                                                                 <input data-type="address" value="@addressData.Country" type="text" class="form-control @paleYellow country" maxlength="20" placeholder="Country" />
                                                                             }
-                                                                            else if (item.FieldTypeID == 13)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Checkbox)
                                                                             {
                                                                                 <input data-type="checkbox" @isReadonly name="@inputName" class="answer" type="checkbox" @(inputValue == "1" ? "checked" : "") @requiredMessage />
                                                                             }
-                                                                            else if (item.FieldTypeID == 19) // currency
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.Currency) // currency
                                                                             {
                                                                                 if (linesLength == null)
                                                                                 {
@@ -293,11 +294,11 @@
                                                                                     <textarea data-type="textarea" @isReadonly name="@inputName" value="@inputValue" type="number" min="0.01" step="0.01" class="form-control @paleYellow answer" data-isrequired="@item.Required" @requiredMessage></textarea>
                                                                                 }
                                                                             }
-                                                                            else if (item.FieldTypeID == 14) // Section heading
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.SectionHeadingTextOnly) // Section heading
                                                                             {
                                                                                 <h3>@inputValue</h3>
                                                                             }
-                                                                            else if (item.FieldTypeID == 15 || item.FieldTypeID == 16)
+                                                                            else if (item.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes || item.FieldTypeID == (byte)FieldTypes.MultiSelectSelectionList)
                                                                             {
                                                                                 @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new { @multiple = "multiple", @class = "multiselect answer multi" + Cnt })
                                                                                 <script type="text/javascript">
@@ -1647,6 +1648,7 @@
             singleDatePicker: true,
             showDropdowns: true,
             autoUpdateInput: false,
+            locale: { format: 'DD/MM/YYYY' },
             minYear: 2000,
             maxYear: parseInt(moment().format('YYYY'), 10)
         });
