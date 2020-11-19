@@ -113,7 +113,7 @@ namespace WFJ.Service
 
                 switch (sortCol)
                 {
-                    case "AssignedAttorneyName":
+                    case "AssignedAttorney":
                         if (sortDir == "asc")
                         {
                             list1 = list1.OrderBy(x => x.AssignedAttorney).ToList();
@@ -123,7 +123,7 @@ namespace WFJ.Service
                             list1 = list1.OrderByDescending(x => x.AssignedAttorney).ToList();
                         }
                         break;
-                    case "RequestorName":
+                    case "Requestor":
                         if (sortDir == "asc")
                         {
                             list1 = list1.OrderBy(x => x.Requestor).ToList();
@@ -133,7 +133,7 @@ namespace WFJ.Service
                             list1 = list1.OrderByDescending(x => x.Requestor).ToList();
                         }
                         break;
-                    case "CollectorName":
+                    case "AssignedCollectorID":
                         if (sortDir == "asc")
                         {
                             list1 = list1.OrderBy(x => x.AssignedCollectorID).ToList();
@@ -153,7 +153,7 @@ namespace WFJ.Service
                             list1 = list1.OrderByDescending(x => x.DaysOpen).ToList();
                         }
                         break;
-                    case "StatusDescription":
+                    case "StatusCode":
                         if (sortDir == "asc")
                         {
                             list1 = list1.OrderBy(x => x.StatusCode).ToList();
@@ -449,6 +449,13 @@ namespace WFJ.Service
             }
 
             return SelectionColumns;
+        }
+
+        public void UpdateRequestLastViewed(int RequestId)
+        {
+            var request = _requestsRepo.GetById(RequestId);
+            request.LastViewed = DateTime.Now;
+            _requestsRepo.Update(request);
         }
 
         public void UpdateActiveCode(int code, int requestId)

@@ -133,12 +133,12 @@
                             fixedColumnsLeft: 1,
                             realtime: false
                         },
+                        "aaSorting": [[1, "asc"]],
                         "bServerSide": true,
                         "sAjaxSource": "/Placements/GetRequestList",
                         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
 
-                            @*if ("@((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator)" != "@userType" || isFirstTime == false) {*@
-                            var colName = oSettings.aoColumns[1].mData;
+                            var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
                             var sDir = oSettings.aaSorting[0][1];
                             var requestor = $('#ddRequestor option:selected').val();
                             var assignedAttorney = $('#ddAssignedTo option:selected').val();

@@ -170,7 +170,11 @@ namespace WFJ.Web.Controllers
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
                 }
-                   
+
+                if(requestId > 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
+                {
+                    _requestsService.UpdateRequestLastViewed(requestId.Value);
+                }
 
                 return View(model);
             }
