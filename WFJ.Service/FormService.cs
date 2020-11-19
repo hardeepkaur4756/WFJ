@@ -16,6 +16,7 @@ namespace WFJ.Service
     {
         IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         private IFormsRepository _formSearchRepository = new FormsRepository();
+        private IRequestsRepository _requestsRepository = new RequestsRepository();
 
         public List<SelectListItem> GetAllForms()
         {
@@ -47,9 +48,8 @@ namespace WFJ.Service
                     FormTypeID = x.FormTypeID,
                     ClientName = x.Client != null ? x.Client.ClientName : null,
                     FormTypeName = x.FormType != null ? x.FormType.FormType1 : null,
-                    RequestsCount = x.Requests == null ? 0: 
-                                    x.Requests.Where(r => _statusCodesRepo.GetActiveStatusCode(x.ID).Contains(r.StatusCode)).Count()
-                });
+                    RequestsCount = _requestsRepository.GetFormActiveRequestsCount(x.ID)
+                }).AsEnumerable();
 
                 switch (sortCol)
                 {
@@ -271,18 +271,17 @@ namespace WFJ.Service
                 DateTime? nullable = null;
                 if (savePlacementViewModel.RequestId == 0)
                 {
-                    var statuscodes = _statusCodesRepo.GetActiveStatusCode(savePlacementViewModel.FormId);
                     
 
                     /// Add request
                     Request request = new Request
                     {
-                        StatusCode = statuscodes.Count() > 0 ? statuscodes.FirstOrDefault() : null,// activeStatusCode != null? activeStatusCode.Value : (int?)null,
+                        //StatusCode = statuscodes.Count() > 0 ? statuscodes.FirstOrDefault() : null,// activeStatusCode != null? activeStatusCode.Value : (int?)null,
                         FormID = savePlacementViewModel.FormId,
                         Requestor = Convert.ToInt32(savePlacementViewModel.RequestorId),
                         AssignedAttorney = Convert.ToInt32(savePlacementViewModel.AttorneyId),
                         AssignedCollectorID = Convert.ToInt32(savePlacementViewModel.CollectorId),
-                        CollectorStatusCode = savePlacementViewModel.StatusId,
+                        StatusCode = Convert.ToInt32(savePlacementViewModel.StatusId),
                         RequestDate = !string.IsNullOrEmpty(savePlacementViewModel.RequestDate) ? Convert.ToDateTime(savePlacementViewModel.RequestDate) : nullable,
                         CompletionDate = !string.IsNullOrEmpty(savePlacementViewModel.WFJFileCloseDate) ? Convert.ToDateTime(savePlacementViewModel.WFJFileCloseDate) : nullable
                     };
@@ -295,7 +294,7 @@ namespace WFJ.Service
                     request.Requestor = Convert.ToInt32(savePlacementViewModel.RequestorId);
                     request.AssignedAttorney = Convert.ToInt32(savePlacementViewModel.AttorneyId);
                     request.AssignedCollectorID = Convert.ToInt32(savePlacementViewModel.CollectorId);
-                    request.CollectorStatusCode = savePlacementViewModel.StatusId;
+                    request.StatusCode = Convert.ToInt32(savePlacementViewModel.StatusId);
                     request.RequestDate = !string.IsNullOrEmpty(savePlacementViewModel.RequestDate) ? Convert.ToDateTime(savePlacementViewModel.RequestDate) : nullable;
                     request.CompletionDate = !string.IsNullOrEmpty(savePlacementViewModel.WFJFileCloseDate) ? Convert.ToDateTime(savePlacementViewModel.WFJFileCloseDate) : nullable;
                     requestResult = _requestsRepo.Update(request);

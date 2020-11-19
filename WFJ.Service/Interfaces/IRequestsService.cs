@@ -15,6 +15,9 @@ namespace WFJ.Service.Interfaces
                                                                     string startDate, string toDate, bool archived,
                                                                     DataTablesParam param, string sortDir, string sortCol, int pageNo);
         List<DatatableDynamicColumn> GetDatatableColumns(int UserId, int FormId, UserType UserType);
+        List<DatatableDynamicColumn> GetAllcolumns(int UserId, int FormId, UserType UserType);
+        void UpdateListFields(int UserId, int FormId, List<int> fieldIDs);
+        void UpdateListFieldSequence(int UserId, int FormId, List<DatatableDynamicColumn> fieldIDs);
         void UpdateActiveCode(int code, int requestId);
     }
 }

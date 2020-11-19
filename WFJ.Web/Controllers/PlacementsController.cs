@@ -105,9 +105,11 @@ namespace WFJ.Web.Controllers
                 model.FormType = form.FormTypeName;
                 model.FormID = id;
                 model.TableColumns = _requestsService.GetDatatableColumns(UserId, id, (UserType)((byte)UserType));
+                model.AllColumnsList = _requestsService.GetAllcolumns(UserId, id, (UserType)((byte)UserType));
 
                 model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
                 {
+                    FormID = id,
                     Requestors = _formService.GetRequestorsDropdown(id),
                     RegionList = _clientService.GetRegionsDropdown(),
                     Collectors = _formService.GetCollectorsDropdown(),
@@ -278,6 +280,40 @@ namespace WFJ.Web.Controllers
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
             }
         }
+
+        [HttpPost]
+        public ActionResult UpdateUserColumns(List<int> fieldIDs, int formId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+                _requestsService.UpdateListFields(UserId, formId, fieldIDs);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateUserColumns", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess });
+        }
+        [HttpPost]
+        public ActionResult UpdateColumnSequence(List<DatatableDynamicColumn> fieldIDs, int formId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+                _requestsService.UpdateListFieldSequence(UserId, formId, fieldIDs);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateUserColumns", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess });
+        }
+
 
         public ActionResult UpdateActiveRequest(int code, int requestId)
         {

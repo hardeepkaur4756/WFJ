@@ -12,9 +12,9 @@ namespace WFJ.Service
     {
         public IStatusCodesRepository statusCodesRepo = new StatusCodesRepository();
 
-        public List<SelectListItem> GetByFormID(int FormID)
+        public List<SelectListItem> GetByFormID(int FormID, bool SelectActive = false)
         {
-            return statusCodesRepo.GetByFormID(FormID).Where(x => x.Description != null).Select(x => new SelectListItem() { Text = x.Description, Value = x.StatusCode1.ToString() }).ToList();
+            return statusCodesRepo.GetByFormID(FormID).Where(x => x.Description != null).Select(x => new SelectListItem() { Text = x.Description, Value = x.StatusCode1.ToString(), Selected = x.StatusLevel == 1 }).ToList();
         }
 
         public StatusCodesModel GetByStatusCodeAndFormId(int statusCode, int formId)

@@ -11,6 +11,7 @@ namespace WFJ.Repository
 {
     public class RequestsRepository : GenericRepository<Request>, IRequestsRepository
     {
+        IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         public RequestsRepository()
         {
             _context.Configuration.LazyLoadingEnabled = true;
@@ -19,7 +20,6 @@ namespace WFJ.Repository
 
         public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, DateTime? beginDate, DateTime? endDate, bool archived)
         {
-            IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
             IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
 
             if(archived == true)
@@ -28,8 +28,8 @@ namespace WFJ.Repository
             }
             else // Include completion date is null or last month
             {
-                DateTime LastMonth = DateTime.Now.Date.AddDays(-30);
-                requests = requests.Where(x => x.CompletionDate == null || x.CompletionDate >= LastMonth);
+                DateTime lastMonth = DateTime.Now.Date.AddDays(-30);
+                requests = requests.Where(x => x.CompletionDate == null || x.CompletionDate >= lastMonth);
             }
             if (requestor != -1)
             {
@@ -70,6 +70,12 @@ namespace WFJ.Repository
             return requests;
         }
 
-
+        public int GetFormActiveRequestsCount(int formId)
+        {
+            var statuscodes = _statusCodesRepo.GetActiveStatusCode(formId).ToArray();
+            DateTime lastMonth = DateTime.Now.Date.AddDays(-30);
+            var requestsCount = _context.Requests.Where(x => x.FormID == formId && statuscodes.Contains(x.StatusCode) && (x.CompletionDate == null || x.CompletionDate >= lastMonth)).Count();
+            return requestsCount;
+        }
     }
 }

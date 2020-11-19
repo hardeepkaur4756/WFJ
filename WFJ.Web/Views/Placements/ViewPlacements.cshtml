@@ -5,6 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section style{
+    @*<link href="~/Scripts/plugins/dataTable/colReorder/css/colReorder.dataTables.min.css" rel="stylesheet" />*@
+    <link href="~/Scripts/plugins/dataTable/colReorder/css/colReorder.bootstrap4.min.css" rel="stylesheet" />
+}
+
 
 <main>
     @Html.DisplayFor(m => m.ErrorMessage)
@@ -37,30 +42,36 @@
 
 
 <!-- Modal -->
-<div id="columnPopup" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
+<div id="columnPopup" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h5 class="modal-title">Select Columns</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <div class="row" id="columnsMultiselect">
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSaveColumns">Save</button>
             </div>
         </div>
-
     </div>
 </div>
 
 
 
 
+
 @section scripts{
+    @*<script src="~/Scripts/plugins/dataTable/colReorder/js/colReorder.dataTables.min.js"></script>*@
+    <script src="~/Scripts/plugins/dataTable/colReorder/js/colReorder.bootstrap4.min.js"></script>
+    <script src="~/Scripts/plugins/dataTable/colReorder/js/dataTables.colReorder.min.js"></script>
 
     <script>
         $('.jdate-picker').daterangepicker({
@@ -80,42 +91,9 @@
 
 
     <script>
-
         var oTable;
         var isFirstTime = true;
-        $(document).ready(function () {
-            GetDataTable();
-        });
 
-
-        $("#searchBtn").click(function () {
-            @*var clientId = $('#ddlClient option:selected').val();
-            var formTypeId = $('#ddlFormType option:selected').val();
-            //var searchKeyword = $('#txtSearchKeyword').val();
-            if (clientId == -1 && formTypeId == -1 && "@userType" != "@((int)UserType.ClientUser)") {// && searchKeyword == "") {
-                $('#errormessage').text('Please select atleast one value for search').css("color", "red");
-            }
-            else {
-                $('#errormessage').text('');*@
-                GetDataTable();
-            //}
-        });
-        //function SearchByDocumentFilters() {
-        //    var clientId = $('#ddlDocumentClient option:selected').val();
-        //    var documentTypeId = $('#ddlDocumentType option:selected').val();
-        //    var practiceAreaId = $('#ddlPracticeArea option:selected').val();
-        //    var categoryId = $('#ddlCategory option:selected').val();
-        //    var formTypeId = $('#ddlFormType option:selected').val();
-        //    var searchKeyword = $('#txtSearchKeyword').val();
-        //    if (clientId == -1 && documentTypeId == -1 && practiceAreaId == -1 && categoryId == -1 && formTypeId == -1 && searchKeyword == "") {
-        //        $('#errormessage').text('Please select atleast one value for search').css("color", "red");
-        //    }
-        //    else {
-        //        $('#errormessage').text('');
-        //        GetDataTable();
-        //    }
-
-        //}
 
         var editColumn = {
             data: "",
@@ -124,10 +102,23 @@
                 return '<a href="/Placements/AddPlacement?formId=@Model.FormID&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
             }
         };
-
         var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
-        coluns =  columns.unshift(editColumn);
-        console.log(columns)
+        columns.unshift(editColumn);
+
+        var allColumns = JSON.parse('@Html.Raw(Json.Encode( Model.AllColumnsList))');
+
+
+        $(document).ready(function () {
+            bindMultiselect();
+            GetDataTable();
+        });
+
+
+        $("#searchBtn").click(function () {
+
+                GetDataTable();
+        });
+
 
         function GetDataTable() {
 
@@ -138,6 +129,10 @@
 
                 oTable =
                     $('#myDataTable').DataTable({
+                        colReorder: {
+                            fixedColumnsLeft: 1,
+                            realtime: false
+                        },
                         "bServerSide": true,
                         "sAjaxSource": "/Placements/GetRequestList",
                         "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
@@ -187,30 +182,6 @@
                             { "orderable": false, "targets": 0 }
                         ],
                         "columns": columns,
-                        //    [
-                        //    { "data": "RequestorName", "title": "Requestor Name" },
-                        //    { "data": "AssignedAttorneyName" },
-                        //    { "data": "CollectorName" },
-                        //    { "data": "RequestDate" },
-                        //    { "data": "CompletionDate" },
-                        //    { "data": "LastViewedDate" },
-                        //    { "data": "StatusDescription" },
-                        //    { "data": "TotalPaymentsAmount" },
-                        //    { "data": "DaysOpen" },
-                        //    //{
-                        //    //    "mData": "RequestsCount",
-                        //    //    "render": function (row, type, full) {
-                        //    //        return '<a href="/Placements/ViewPlacements/' + full.ID + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
-                        //    //    }
-                        //    //},
-                        //    //{
-                        //    //    "render": function (row, type, full) {
-                        //    //        return '<a href="/Placements/AddPlacement?formId='+full.ID+'" target="_blank" class="btn btn-sm btn-success" title="Add Placement"><i class="fa fa-plus"></i></a>';
-                        //    //    },
-                        //    //    orderable: false
-                        //    //},
-                        //],
-                        //"order": [[0, "asc"]],
                         bProcessing: true,
                         pageLength: 10,
                         "bFilter": false,
@@ -229,6 +200,102 @@
             }
 
         }
+
+
+
+
+
+
+
+
+
+
+        function bindMultiselect() {
+            $("#columnsMultiselect").empty();
+            var options = '';
+            $.each(allColumns, function (index, item) {
+                var isSelected = item.visible == true ? 'checked="checked"' : "";
+                options = options + '<div class="col-sm-6 mb-2">' +
+                                    '<div class="custom-control custom-checkbox custom-control-inline">' +
+                                    '<input id="cbox'+item.fieldID+'" type="checkbox" ' + isSelected + ' value=' + item.fieldID + ' class="custom-control-input">' +
+                                    '<label class="custom-control-label" for="cbox' + item.fieldID +'">' + item.title + '</label>' +
+                                    '</div>' +
+                                    '</div>';
+            })
+            $("#columnsMultiselect").html(options);
+        }
+
+        $("#columnPopup").on("show.bs.modal", function () {
+            bindMultiselect();
+        });
+
+        $("#btnSaveColumns").click(function () {
+
+            var selectedIDs = [];
+            $("#columnsMultiselect input:checked").each(function () {
+                selectedIDs.push($(this).val());
+            });
+
+            $.ajax({
+                data: { 'fieldIDs': selectedIDs, formId: '@Model.FormID' },
+                traditional: true,
+                url: '@Url.Action("UpdateUserColumns", "Placements")',
+                type: 'post',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.success == true) {
+                        location.href = location.href;
+                    }
+                    else {
+                        alert("There was an error");
+                    }
+                }
+            });
+
+        });
+
+
+
+
+
+
+        $(function () {
+
+            oTable.on('column-reorder', function (e, settings, details) {
+
+                if (details.drop === true) {
+                    var fields = [];
+                    if (columns.length == details.mapping.length) {
+                        for (var i = 1; i < details.mapping.length; i++) {
+                            var newSeqNo = oTable.colReorder.transpose(i);
+                            fields.push({ fieldID: columns[i].fieldID, seqNo: newSeqNo });
+                        }
+
+                        $.ajax({
+                            data: JSON.stringify({ 'fieldIDs': fields, formId: '@Model.FormID' }),
+                            //traditional: true,
+                            contentType: 'application/json; charset=utf-8',
+                            url: '@Url.Action("UpdateColumnSequence", "Placements")',
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (resp) {
+                                if (resp.success == true) {
+                                    location.href = location.href;
+                                }
+                                else {
+                                    alert("There was an error while saving the sequence");
+                                }
+                            }
+                        });
+
+                    }
+                    else {
+                        alert("There was an error");
+                    }
+                }
+
+            });
+        });
 
 
 

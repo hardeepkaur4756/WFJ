@@ -10,5 +10,6 @@ namespace WFJ.Repository.Interfaces
     public interface IRequestsRepository: IRepository<Request>
     {
         IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, DateTime? beginDate, DateTime? endDate, bool archived);
+        int GetFormActiveRequestsCount(int formId);
     }
 }

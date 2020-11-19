@@ -10,24 +10,24 @@ namespace WFJ.Repository
 {
     public class StatusCodesRepository: GenericRepository<StatusCode>, IStatusCodesRepository
     {
-        private WFJEntities context;
-        public StatusCodesRepository()
-        {
-            context = new WFJEntities();
-        }
+        //private WFJEntities context;
+        //public StatusCodesRepository()
+        //{
+        //    context = new WFJEntities();
+        //}
         public IEnumerable<StatusCode> GetByFormID(int FormID)
         {
-            return context.StatusCodes.Where(x => x.FormID == FormID);
+            return _context.StatusCodes.Where(x => x.FormID == FormID);
         }
 
         public IEnumerable<int?> GetActiveStatusCode(int FormID)
         {
-            return context.StatusCodes.Where(x => x.FormID == FormID && x.StatusLevel == 1).Select(x => x.StatusCode1).AsEnumerable();
+            return _context.StatusCodes.Where(x => x.FormID == FormID && x.StatusLevel == 1).Select(x => x.StatusCode1);
         }
 
         public StatusCode GetByStatusCodeAndFormId(int statusCode, int formId)
         {
-            return context.StatusCodes.FirstOrDefault(x => x.StatusCode1 == statusCode && x.FormID == formId);
+            return _context.StatusCodes.FirstOrDefault(x => x.StatusCode1 == statusCode && x.FormID == formId);
         }
     }
 }

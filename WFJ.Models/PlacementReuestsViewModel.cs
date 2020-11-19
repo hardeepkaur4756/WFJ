@@ -16,10 +16,12 @@ namespace WFJ.Models
         public PlacementReuestsFilterViewModel placementReuestsFilterViewModel { get; set; }
 
         public IEnumerable<DatatableDynamicColumn> TableColumns { get; set; }
+        public IEnumerable<DatatableDynamicColumn> AllColumnsList { get; set; }
     }
 
     public class PlacementReuestsFilterViewModel
     {
+        public int FormID { get; set; }
         public List<SelectListItem> Requestors { get; set; }
         public List<SelectListItem> AssignedToList { get; set; }
         public List<SelectListItem> StatusList { get; set; }

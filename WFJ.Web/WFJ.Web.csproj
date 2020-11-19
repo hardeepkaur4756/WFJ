@@ -304,6 +304,16 @@
     <Content Include="Scripts\morris.script.js" />
     <Content Include="Scripts\notes.script.js" />
     <Content Include="Scripts\peity.script.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\css\colReorder.bootstrap4.css" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\css\colReorder.bootstrap4.min.css" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\css\colReorder.dataTables.css" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\css\colReorder.dataTables.min.css" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\colReorder.bootstrap4.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\colReorder.bootstrap4.min.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\colReorder.dataTables.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\colReorder.dataTables.min.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\dataTables.colReorder.js" />
+    <Content Include="Scripts\plugins\dataTable\colReorder\js\dataTables.colReorder.min.js" />
     <Content Include="Scripts\plugins\daterangepicker\daterangepicker.css" />
     <Content Include="Scripts\plugins\daterangepicker\daterangepicker.js" />
     <Content Include="Scripts\plugins\daterangepicker\moment.min.js" />

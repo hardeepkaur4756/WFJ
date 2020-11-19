@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WFJ.Models;
 using WFJ.Repository;
+using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
@@ -44,8 +45,8 @@ namespace WFJ.Service
         {
             PlacementRequestsListViewModel model = new PlacementRequestsListViewModel();
 
-            DateTime? beginDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.ParseExact(startDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime? endDate = string.IsNullOrEmpty(toDate) ? (DateTime?)null : DateTime.ParseExact(toDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date.AddDays(1);
+            DateTime? beginDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.ParseExact(startDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime? endDate = string.IsNullOrEmpty(toDate) ? (DateTime?)null : DateTime.ParseExact(toDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture).Date.AddDays(1);
 
             //Initial State -> List all active requests for the Form selected.  
             //An active request is determined by looking at the statusCodes.statusLevel field (requests.statusCode  statusCodes.statusCode + statusCodes.formID).
@@ -73,15 +74,15 @@ namespace WFJ.Service
                     AssignedCollectorID = x.User != null ? x.User.FirstName + " " + x.User.LastName : null,
                     CompletionDateVal = x.CompletionDate,
                     RequestDateVal = x.RequestDate,
-                    CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("dd/MM/yyyy") : null,
-                    RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("dd/MM/yyyy") : null,
+                    CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
+                    RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("MM/dd/yyyy") : null,
                     TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
                     LastViewedVal = x.LastViewed,
-                    LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("dd/MM/yyyy") : null,
+                    LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("MM/dd/yyyy") : null,
                     DaysOpen = x.RequestDate == null ? 0 :
                                x.CompletionDate == null ? (NowDate - x.RequestDate.Value).Days : (x.CompletionDate.Value - x.RequestDate.Value).Days,
                     StatusCode = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
-                    LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("dd/MM/yyyy") : null,
+                    LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : null,
 
                     FormFields = formData.Where(f => f.RequestID == x.ID && f.FormField != null &&
                                                      (f.FormField.ListSeqNo != null && f.FormField.ListSeqNo != 0 && selectionColumns.Contains(f.FormField.SelectionColumn))
@@ -255,31 +256,12 @@ namespace WFJ.Service
 
                 foreach(var item in NamesFromWebConfig)
                 {
-
                     var requestColumn = requestColumns.FirstOrDefault(x => x.data.ToLower() == item);
                     if (requestColumn != null)
                     {
                         requestColumn.visible = true;
                         requestColumn.seqNo = 1;
                         columns.Add(requestColumn);
-                    }
-                    else
-                    {
-                        var formField = formFields.FirstOrDefault(x => x.FieldName.Trim().ToLower() == item);
-                        if(formField != null)
-                        {
-                            DatatableDynamicColumn formFieldColumn = new DatatableDynamicColumn
-                            {
-                                data = "FormFields.field_" + formField.ID,
-                                fieldID = formField.ID,
-                                title = formField.FieldName,
-                                defaultContent = "",
-                                visible = true,
-                                seqNo = 1
-                            };
-
-                            columns.Add(formFieldColumn);
-                        }
                     }
                 }
 
@@ -310,19 +292,23 @@ namespace WFJ.Service
             var requestColumns = GetRequestColumns().Select(x => new DatatableDynamicColumn
                                 {
                                     fieldID = x.fieldID,
-                                    visible = visibleColumns.Any(f => f.fieldID == x.fieldID)
+                                    title = x.title,
+                                    visible = visibleColumns.Any(f => f.fieldID == x.fieldID),
+                                    seqNo = visibleColumns.Any(f => f.fieldID == x.fieldID) ? visibleColumns.FirstOrDefault(f => f.fieldID == x.fieldID).seqNo : int.MaxValue
                                 }).ToList();
             var formFields = _formFieldRepo.GetFormFieldsByFormID(FormId)
                                 .Where(x => x.ListSeqNo != null && x.ListSeqNo != 0 && selectionColumns.Contains(x.SelectionColumn))
                                 .Select(x => new DatatableDynamicColumn
                                 {
                                     fieldID = x.ID,
-                                    visible = visibleColumns.Any(f => f.fieldID == x.ID)
+                                    title = x.FieldName,
+                                    visible = visibleColumns.Any(f => f.fieldID == x.ID),
+                                    seqNo = visibleColumns.Any(f => f.fieldID == x.ID) ? visibleColumns.FirstOrDefault(f => f.fieldID == x.ID).seqNo : int.MaxValue
                                 }).ToList();
 
             requestColumns.AddRange(formFields);
 
-            return requestColumns;
+            return requestColumns.OrderBy(x => x.seqNo).ToList();
         }
 
 
@@ -400,6 +386,54 @@ namespace WFJ.Service
                 //seqNo = 6,
             });
             return columns1;
+        }
+
+        public void UpdateListFields(int UserId, int FormId, List<int> fieldIDs)
+        {
+            var oldFields =_listFieldRepo.GetByUserAndFormID(UserId, FormId);
+            var removeList = oldFields.Where(x => x.FieldID != null && fieldIDs.Contains(x.FieldID.Value) == false).AsEnumerable();
+
+            int seqNew = oldFields.Count() - removeList.Count() + 1;
+
+            var addList = fieldIDs.Where(x => oldFields.Any(o => o.FieldID == x) == false).Select((x, i) => new ListField
+            {
+                FieldID = x,
+                FormID = FormId,
+                UserID = UserId,
+                SeqNo = seqNew + i
+            });
+
+            _listFieldRepo.RemoveList(removeList);
+            _listFieldRepo.AddList(addList);
+
+        }
+
+        public void UpdateListFieldSequence(int UserId, int FormId, List<DatatableDynamicColumn> ListFields)
+        {
+            var oldFields = _listFieldRepo.GetByUserAndFormID(UserId, FormId).ToList();
+            if(oldFields.Count() == 0)
+            {
+                var addList = ListFields.Select(x => new ListField
+                {
+                    FieldID = x.fieldID,
+                    FormID = FormId,
+                    SeqNo = x.seqNo,
+                    UserID = UserId,
+                });
+                _listFieldRepo.AddList(addList);
+            }
+            else
+            {
+                foreach(var item in oldFields)
+                {
+                    var newItem = ListFields.FirstOrDefault(x => x.fieldID == item.FieldID);
+                    if(newItem != null)
+                    {
+                        item.SeqNo = newItem.seqNo;
+                        _listFieldRepo.Update(item);
+                    }
+                }
+            }
         }
 
         List<int?> GetSelectionColumnsByUserType(UserType UserType)

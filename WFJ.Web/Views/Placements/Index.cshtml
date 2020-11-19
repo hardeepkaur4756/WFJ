@@ -126,7 +126,8 @@
                             {
                                 "mData": "RequestsCount",
                                 "render": function (row, type, full) {
-                                    return '<a href="/Placements/ViewPlacements/' + full.ID + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
+                                    var redirectPath = full.RequestsCount > 0 ? '/Placements/ViewPlacements/' + full.ID : 'javascript:;';
+                                    return '<a href="' + redirectPath + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
                                 }
                             },
                             {
