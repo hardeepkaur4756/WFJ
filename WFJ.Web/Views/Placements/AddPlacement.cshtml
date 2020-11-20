@@ -264,8 +264,8 @@
                                                                             }
                                                                             else if (item.FieldTypeID == (byte)FieldTypes.Address)
                                                                             {
-                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow answer address1" maxlength="300" placeholder="Addredd line 1" data-isrequired="@item.Required" @requiredMessage />
-                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  address2" maxlength="80" placeholder="Addredd line 2" />
+                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine1" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow answer address1" maxlength="300" placeholder="Address line 1" data-isrequired="@item.Required" @requiredMessage />
+                                                                                <input data-type="address" @isReadonly value="@addressData.AddressLine2" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  address2" maxlength="80" placeholder="Address line 2" />
                                                                                 <div class="row">
                                                                                     <div class="col-md-4">
                                                                                         <input data-type="address" @isReadonly value="@addressData.City" type="text" style="margin-bottom:1rem;" class="form-control @paleYellow  city" maxlength="50" placeholder="City" />
@@ -1764,7 +1764,10 @@
                     success: function (response) {
                         if (response.success) {
                             $("#Request_ID").val(response.requestId);
-                            alert("Saved Successfully !!");
+
+                            var succesMessage = "@(Model.isEditMode ? "Record Updated Successfully." : "Record Inserted Successfully.")";
+
+                            location.href = "@Url.Action("ViewPlacements", "Placements", new { id= Model.Request.FormID })?success=" + succesMessage;
                         }
                         else {
                         }

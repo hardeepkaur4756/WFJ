@@ -90,8 +90,10 @@ namespace WFJ.Web.Controllers
             }
         }
 
-        public ActionResult ViewPlacements(int id)
+        public ActionResult ViewPlacements(int id, string success)
         {
+            ViewData["SuccessMessage"] = success;
+
             try
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
