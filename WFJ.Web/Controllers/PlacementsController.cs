@@ -258,20 +258,12 @@ namespace WFJ.Web.Controllers
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
 
-                //int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
-
-                //if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
                 model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, archived, param, sortDir, sortCol, pageNo);
-                //else
-                //    model.placements = new List<PlacementsModel>();
 
-                Dictionary<string, object> Fields = new Dictionary<string, object>();
-                Fields.Add("test1", new { test = 1 });
 
                 return Json(new
                 {
                     aaData = model.Requests,
-                    testData = Fields,
                     param.sEcho,
                     iTotalDisplayRecords = model.TotalRequestsCount,
                     iTotalRecords = model.TotalRequestsCount,
@@ -289,33 +281,45 @@ namespace WFJ.Web.Controllers
         public ActionResult UpdateUserColumns(List<int> fieldIDs, int formId)
         {
             bool isSuccess = false;
+            List<DatatableDynamicColumn> visibleColumns = new List<DatatableDynamicColumn>();
+            List<DatatableDynamicColumn> allColumns = new List<DatatableDynamicColumn>();
+
             try
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 _requestsService.UpdateListFields(UserId, formId, fieldIDs);
+
+                visibleColumns = _requestsService.GetDatatableColumns(UserId, formId, (UserType)((byte)UserType));
+                allColumns = _requestsService.GetAllcolumns(UserId, formId, (UserType)((byte)UserType));
+
                 isSuccess = true;
             }
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateUserColumns", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
-            return Json(new { success = isSuccess });
+            return Json(new { success = isSuccess, visibleColumns = visibleColumns, allColumns = allColumns });
         }
+
         [HttpPost]
         public ActionResult UpdateColumnSequence(List<DatatableDynamicColumn> fieldIDs, int formId)
         {
             bool isSuccess = false;
+            List<DatatableDynamicColumn> visibleColumns = new List<DatatableDynamicColumn>();
+
             try
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 _requestsService.UpdateListFieldSequence(UserId, formId, fieldIDs);
+                visibleColumns = _requestsService.GetDatatableColumns(UserId, formId, (UserType)((byte)UserType));
                 isSuccess = true;
             }
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateUserColumns", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
-            return Json(new { success = isSuccess });
+
+            return Json(new { success = isSuccess, visibleColumns = visibleColumns });
         }
 
 

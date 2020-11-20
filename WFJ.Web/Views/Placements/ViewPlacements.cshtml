@@ -8,6 +8,12 @@
 @section style{
     @*<link href="~/Scripts/plugins/dataTable/colReorder/css/colReorder.dataTables.min.css" rel="stylesheet" />*@
     <link href="~/Scripts/plugins/dataTable/colReorder/css/colReorder.bootstrap4.min.css" rel="stylesheet" />
+
+    <style>
+        .column-close{
+            padding:5px;
+        }
+    </style>
 }
 
 
@@ -52,13 +58,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id="columnsMultiselect">
-
+                <label>Select Columns</label>
+                @*<div class="row" id="columnsMultiselect"></div>*@
+                <div class="custom-multiselect-scroll" style="height:200px;">
+                    <div><select id="columnsMultiselect" multiple="multiple"></select></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="btnSaveColumns">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSaveColumns">Save changes</button>
             </div>
         </div>
     </div>
@@ -103,12 +111,29 @@
             }
         };
         var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
-        columns.unshift(editColumn);
 
         var allColumns = JSON.parse('@Html.Raw(Json.Encode( Model.AllColumnsList))');
 
+        function ReloadVisibleColumns(colArr) {
+            colArr.unshift(editColumn);
+            columns = colArr.splice(0);
+        }
+
+        function ReloadColumnsList(colArr) {
+            allColumns = colArr.splice(0);
+        }
+
+        function ReloadDatatable() {
+            if ($.fn.DataTable.isDataTable("#myDataTable")) {
+                $('#myDataTable').DataTable().clear().destroy();
+                $('#myDataTable').empty();
+            }
+            GetDataTable();
+        }
+
 
         $(document).ready(function () {
+            ReloadVisibleColumns(columns);
             bindMultiselect();
             GetDataTable();
         });
@@ -195,8 +220,23 @@
                             //"info": "Page _PAGE_ of _PAGES_",
                             "emptyTable": "no records found",
                             "processing": "Processing... Please wait",
-                        }
+                        },
+
+                        "headerCallback": function (nHead, aData, iStart, iEnd, aiDisplay) {
+                            oTable.columns().iterator('column', function (settings, column) {
+
+                                if (column > 0) {
+                                    $(oTable.column(column).header()).html(settings.aoColumns[column].title + ' &nbsp;<i data-fieldid="' + $(settings.aoColumns[column])[0].fieldID+'" class="fa fa-times column-close" aria-hidden="true"></i>');
+                                }
+                                    //settings.aoColumns[column].title = settings.aoColumns[column].title + ' <i class="fa fa-times" aria-hidden="true"></i>';
+                                //if (settings.aoColumns[column].tooltip !== undefined) {
+                                //    //$(oTable.column(column).header()).attr('title', settings.aoColumns[column].tooltip);
+                                //}
+                            });
+                        },
+
                     });
+
             }
 
         }
@@ -206,36 +246,7 @@
 
 
 
-
-
-
-
-        function bindMultiselect() {
-            $("#columnsMultiselect").empty();
-            var options = '';
-            $.each(allColumns, function (index, item) {
-                var isSelected = item.visible == true ? 'checked="checked"' : "";
-                options = options + '<div class="col-sm-6 mb-2">' +
-                                    '<div class="custom-control custom-checkbox custom-control-inline">' +
-                                    '<input id="cbox'+item.fieldID+'" type="checkbox" ' + isSelected + ' value=' + item.fieldID + ' class="custom-control-input">' +
-                                    '<label class="custom-control-label" for="cbox' + item.fieldID +'">' + item.title + '</label>' +
-                                    '</div>' +
-                                    '</div>';
-            })
-            $("#columnsMultiselect").html(options);
-        }
-
-        $("#columnPopup").on("show.bs.modal", function () {
-            bindMultiselect();
-        });
-
-        $("#btnSaveColumns").click(function () {
-
-            var selectedIDs = [];
-            $("#columnsMultiselect input:checked").each(function () {
-                selectedIDs.push($(this).val());
-            });
-
+        function updateFields(selectedIDs) {
             $.ajax({
                 data: { 'fieldIDs': selectedIDs, formId: '@Model.FormID' },
                 traditional: true,
@@ -244,7 +255,11 @@
                 dataType: 'json',
                 success: function (resp) {
                     if (resp.success == true) {
-                        location.href = location.href;
+
+                        ReloadVisibleColumns(resp.visibleColumns);
+                        ReloadColumnsList(resp.allColumns);
+                        ReloadDatatable();
+                        $("#columnPopup").modal("hide");
                     }
                     else {
                         alert("There was an error");
@@ -252,9 +267,70 @@
                 }
             });
 
+        }
+
+
+
+        function bindMultiselect() {
+            $('#columnsMultiselect').multiselect('destroy');
+            $("#columnsMultiselect").empty();
+
+            var options = '';
+            $.each(allColumns, function (index, item) {
+                if (item.visible == false) {
+                    var isSelected = item.visible == true ? 'selected="selected"' : "";
+                    options = options + '<option value="' + item.fieldID + '" ' + isSelected + '>' + item.title + '</option>';
+                    //options = options + '<div class="col-sm-6 mb-2">' +
+                    //    '<div class="custom-control custom-checkbox custom-control-inline">' +
+                    //    '<input id="cbox' + item.fieldID + '" type="checkbox" ' + isSelected + ' value=' + item.fieldID + ' class="custom-control-input">' +
+                    //    '<label class="custom-control-label" for="cbox' + item.fieldID + '">' + item.title + '</label>' +
+                    //    '</div>' +
+                    //    '</div>';
+                }
+            });
+            $("#columnsMultiselect").html(options);
+            $("#columnsMultiselect").multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+            });
+        }
+
+        $("#columnPopup").on("show.bs.modal", function () {
+            bindMultiselect();
         });
 
+        $("#btnSaveColumns").click(function () {
 
+            var selectedIDs = $("#columnsMultiselect").val();
+            //$("#columnsMultiselect input:checked").each(function () {
+            //    selectedIDs.push($(this).val());
+            //});
+            var fields = [];
+            for (var i = 0; i < columns.length; i++) {
+                if (columns[i].hasOwnProperty('fieldID') && columns[i].data != "") {
+                    fields.push(columns[i].fieldID);
+                }
+            }
+            for (var i = 0; i < selectedIDs.length; i++) {
+                fields.push(Number(selectedIDs[i]));
+            }
+
+            updateFields(fields);
+        });
+
+        $("table").on("click", ".column-close", function (event) {
+            event.stopPropagation();
+            var fieldId = $(this).data("fieldid");
+
+            var fields = [];
+            for (var i = 0; i < columns.length; i++) {
+                if (columns[i].fieldID != fieldId && columns[i].hasOwnProperty('fieldID') && columns[i].data != "") {
+                    fields.push(columns[i].fieldID);
+                }
+            }
+
+            updateFields(fields);
+        });
 
 
 
@@ -273,14 +349,16 @@
 
                         $.ajax({
                             data: JSON.stringify({ 'fieldIDs': fields, formId: '@Model.FormID' }),
-                            //traditional: true,
                             contentType: 'application/json; charset=utf-8',
                             url: '@Url.Action("UpdateColumnSequence", "Placements")',
                             type: 'post',
                             dataType: 'json',
                             success: function (resp) {
                                 if (resp.success == true) {
-                                    location.href = location.href;
+
+                                    ReloadVisibleColumns(resp.visibleColumns);
+                                    ReloadDatatable();
+
                                 }
                                 else {
                                     alert("There was an error while saving the sequence");
