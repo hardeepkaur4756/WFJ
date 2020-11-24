@@ -31,15 +31,18 @@ namespace WFJ.Service
                 RequestDate = request.RequestDate,
                 Requestor = request.Requestor,
                 StatusCode = request.StatusCode,
+                AssignedAdminStaffID = request.AssignedAdminStaffID,
+                CompletionDate = request.CompletionDate,
+                LevelID = request.LevelID,
                 RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("MM/dd/yyyy") : null,
                 CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("MM/dd/yyyy"): null,
-                active = request.active == null ? 1 : request.active
+                active = request.active //request.active == null ? 1 : request.active
             };
 
             return model;
         }
 
-        public PlacementRequestsListViewModel GetPlacementRequests(int userId, int formId, UserType UserType, int requestor, int assignedAttorney, int collector, int status, string region,
+        public PlacementRequestsListViewModel GetPlacementRequests(int userId, int formId, UserType UserType, int requestor, int assignedAttorney, int collector, int status, int region,
                                                                     string startDate, string toDate, bool archived,
                                                                     DataTablesParam param, string sortDir, string sortCol, int pageNo)
         {
@@ -53,7 +56,10 @@ namespace WFJ.Service
             //Status Levels: 0-New, 1-Active, 2-Completed
             int statusLevel = status != -1 ? -1 : 1;
 
-            var requests = _requestsRepo.GetRequestsList(formId, requestor, assignedAttorney, collector, status, statusLevel, beginDate, endDate, archived);
+            // only admin can active/inactive requests
+            bool activeOnly = UserType != UserType.SystemAdministrator;
+
+            var requests = _requestsRepo.GetRequestsList(formId, requestor, assignedAttorney, collector, status, statusLevel, region, beginDate, endDate, archived, activeOnly);
             model.TotalRequestsCount = requests?.Count();
 
             if (requests != null)
@@ -83,6 +89,10 @@ namespace WFJ.Service
                                x.CompletionDate == null ? (NowDate - x.RequestDate.Value).Days : (x.CompletionDate.Value - x.RequestDate.Value).Days,
                     StatusCode = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
                     LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : null,
+                    LastNoteDateVal = x.LastNoteDate,
+
+                    LevelIDVal = x.LevelID,
+                    LevelID = x.Level != null ? x.Level.Name : null,
 
                     FormFields = formData.Where(f => f.RequestID == x.ID && f.FormField != null &&
                                                      (f.FormField.ListSeqNo != null && f.FormField.ListSeqNo != 0 && selectionColumns.Contains(f.FormField.SelectionColumn))
@@ -191,6 +201,26 @@ namespace WFJ.Service
                         if (sortDir == "desc")
                         {
                             list1 = list1.OrderByDescending(x => x.LastViewedVal).ToList();
+                        }
+                        break;
+                    case "LastNoteDate":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.LastNoteDateVal).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.LastNoteDateVal).ToList();
+                        }
+                        break;
+                    case "LevelID":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.LevelIDVal).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.LevelIDVal).ToList();
                         }
                         break;
                     default:
@@ -383,6 +413,13 @@ namespace WFJ.Service
                 data = nameof(PlacementRequestModel.LastNoteDate),
                 title = "Last Note Date",
                 fieldID = 10,
+                //seqNo = 6,
+            });
+            columns1.Add(new DatatableDynamicColumn
+            {
+                data = nameof(PlacementRequestModel.LevelID),
+                title = "Region",
+                fieldID = 11,
                 //seqNo = 6,
             });
             return columns1;

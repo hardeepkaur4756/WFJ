@@ -24,6 +24,7 @@ namespace WFJ.Web.Controllers
         private IRequestsService _requestsService = new RequestsService();
 
         private IUserClientService _userClientService = new UserClientService();
+        private ILevelService _levelService = new LevelService();
 
         private int UserType = 0;
         private int UserId = 0;
@@ -39,7 +40,7 @@ namespace WFJ.Web.Controllers
                 PlacementsViewModel model = new PlacementsViewModel();
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
                 {
-                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId,1) : _clientService.GetActiveInactiveOrderedList(),
+                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId,1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
                     placementTypeModels = _formTypeService.GetAll().Where(x => x.FormType1 != null).ToList(),
                 };
 
@@ -69,7 +70,7 @@ namespace WFJ.Web.Controllers
                 int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
 
                 if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
-                    model = _formService.GetPlacements(clientId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo, userSpecific);
+                    model = _formService.GetPlacements((UserType)((byte)UserType), clientId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo, userSpecific);
                 else
                     model.placements = new List<PlacementsModel>();
 
@@ -113,7 +114,7 @@ namespace WFJ.Web.Controllers
                 {
                     FormID = id,
                     Requestors = _formService.GetRequestorsDropdown(id),
-                    RegionList = _clientService.GetRegionsDropdown(),
+                    RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value), //_clientService.GetRegionsDropdown(),
                     Collectors = _formService.GetCollectorsDropdown(),
                     StatusList = _statusCodesService.GetByFormID(id),
                     AssignedToList = _formService.GetPersonnelsDropdown(id)
@@ -129,26 +130,24 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddPlacement(int formId, int? requestId)
+        public ActionResult AddPlacement(int formId, int? requestId, int? copy)
         {
             try
             {
-                string requestorName = string.Empty;
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(formId);
 
-                var user = _userService.GetById(UserId);
-                int clientId = Convert.ToInt32(user.ClientID);
-                if (clientId > 0)
-                {
-                    requestorName = _clientService.GetRequestorNameById(clientId);
-                }
-                requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
+                //var user = _userService.GetById(UserId);
+                //int clientId = Convert.ToInt32(user.ClientID);
+                //if (clientId > 0)
+                //{
+                //    requestorName = _clientService.GetRequestorNameById(clientId);
+                //}
+                //requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
-                    ClientName = form.Client != null ? form.Client.ClientName : null,
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
@@ -156,24 +155,44 @@ namespace WFJ.Web.Controllers
                     Requestors = _formService.GetRequestorsDropdown(formId),
                     StatusList = _statusCodesService.GetByFormID(formId),
                     AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
+                    RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
+                    AdminStaffList = form.hasAdmin == 1 ? _userService.GetAdminStaffDropdown() : new List<SelectListItem>(),
                     UserAccess = UserAccess,
                     UserType = UserType,
                     ClientId = Convert.ToInt32(form.ClientID),
-                    isEditMode = Convert.ToInt32(requestId) > 0 ? true : false,
-                    RequestorName = requestorName
+                    isEditMode = Convert.ToInt32(requestId) > 0 && Convert.ToInt32(copy) == 0 ? true : false,
+                    RequestorName = form.ClientName == null ? "Requestor" : form.ClientName,
+                    FormDetail = form
                 };
 
                 if(requestId == null)
                 {
-                    model.Request = new RequestViewModel { FormID = formId };
+                    model.Request = new RequestViewModel { FormID = formId, RequestDateString = DateTime.Now.ToString("MM/dd/yyyy") };
                 }
                 else
                 {
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
+
+                    if(copy == 1)
+                    {
+                        model.isCopyMode = true;
+                        model.Request.ID = 0;
+                        foreach(var item in model.FormFieldsList)
+                        {
+                            if(item.FormData != null)
+                            {
+                                item.FormData.RequestID = null;
+                            }
+                            if(item.FormAddressData != null)
+                            {
+                                item.FormAddressData.RequestID = null;
+                            }
+                        }
+                    }
                 }
 
-                if(requestId > 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
+                if(requestId > 0 && Convert.ToInt32(copy) == 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
                 {
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
                 }
@@ -240,7 +259,7 @@ namespace WFJ.Web.Controllers
 
         [HttpPost]
         public JsonResult GetRequestList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime,
-                                           string beginDate, string endDate, string region, bool archived,
+                                           string beginDate, string endDate, int region, bool archived,
                                            int formId,
                                            int requestor = -1, int assignedAttorney = -1, int collector = -1,
                                            int statusCode = -1)
@@ -346,21 +365,20 @@ namespace WFJ.Web.Controllers
             try
             {
                 IRequestsService _requestService = new RequestsService();
-                string requestorName = string.Empty;
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(formId);
-                var user = _userService.GetById(UserId);
-                int clientId = Convert.ToInt32(user.ClientID);
-                if (clientId > 0)
-                {
-                    requestorName = _clientService.GetRequestorNameById(clientId);
-                }
-                requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
+                //var user = _userService.GetById(UserId);
+                //int clientId = Convert.ToInt32(user.ClientID);
+                //if (clientId > 0)
+                //{
+                //    requestorName = _clientService.GetRequestorNameById(clientId);
+                //}
+                //requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
-                    ClientName = form.Client != null ? form.Client.ClientName : null,
+                    //ClientName = form.Client != null ? form.Client.ClientName : null,
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
@@ -368,11 +386,14 @@ namespace WFJ.Web.Controllers
                     Requestors = _formService.GetRequestorsDropdown(formId),
                     StatusList = _statusCodesService.GetByFormID(formId),
                     AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
+                    RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
+                    AdminStaffList = form.hasAdmin == 1 ? _userService.GetAdminStaffDropdown() : new List<SelectListItem>(),
                     UserAccess = UserAccess,
                     UserType = UserType,
                     ClientId = Convert.ToInt32(form.ClientID),
                     isEditMode = false,
-                    RequestorName = requestorName
+                    RequestorName = form.ClientName != null ? form.ClientName : "Requestor",
+                    FormDetail = form
                 };
                 model.Request = _requestService.GetByRequestId(requestId);
                 model.Request.ID = 0;

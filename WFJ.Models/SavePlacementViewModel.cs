@@ -12,6 +12,10 @@ namespace WFJ.Models
         public string RequestDate { get; set; }
         public string WFJFileCloseDate { get; set; }
         public int FormId { get; set; }
+
+        public int? LevelID { get; set; }
+        public int? AssignedAdminStaffID { get; set; }
+
         public List<Fields> FieldValue { get; set; }
 
     }

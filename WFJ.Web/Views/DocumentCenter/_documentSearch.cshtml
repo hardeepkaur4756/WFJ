@@ -22,21 +22,7 @@
     }
     <div class="form-group" style="@clientDisplay">
         <label>Client</label>
-        <select id="ddlDocumentClient" name="ddlDocumentClient" class="form-control">
-            @if ((int)WFJ.Web.Models.Enums.UserType.ClientUser != userType || ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType && Model.client.Count > 1))
-            {
-                <option selected="" value="-1">All</option>
-            }
-            @{
-                foreach (var item in Model.client)
-                {
-                    if (item.Text != null)
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                }
-            }
-        </select>
+        @Html.DropDownList("ddlDocumentClient", new SelectList(Model.client, "Value", "Text"), new { @Class = "form-control" })
     </div>
 
     <div class="form-group">

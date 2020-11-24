@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
+using System.Data.Entity;
 
 namespace WFJ.Repository
 {
@@ -16,6 +16,10 @@ namespace WFJ.Repository
         {
             context = new WFJEntities();
         }
-        
+
+        public IEnumerable<Level> GetByClientID(int ClientId)
+        {
+            return _context.Levels.Include(x => x.Levels1).Where(x => x.ClientID == ClientId).ToList();
+        }
     }
 }

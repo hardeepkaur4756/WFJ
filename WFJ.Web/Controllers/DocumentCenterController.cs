@@ -7,6 +7,7 @@ using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Models;
 using WFJ.Helper;
+using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
@@ -38,7 +39,7 @@ namespace WFJ.Web.Controllers
                 manageDocumentViewModel.ManageDocumentFilterViewModel = new ManageDocumentFilterViewModel()
                 {
                     documentViewModel = new DocumentViewModel(),
-                    client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients(UserId) : _clientService.GetAllClients(),
+                    client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)userType), UserId) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)userType)),
                     practiceArea = _practiceAreaService.GetAllPracticeArea(),
                     categoryModels = _categoryService.GetAll(),
                     formTypeModels = _formTypeService.GetAll(),

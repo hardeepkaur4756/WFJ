@@ -8,6 +8,7 @@ using WFJ.Repository;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
+using WFJ.Service.Model;
 
 namespace WFJ.Service
 {
@@ -18,17 +19,24 @@ namespace WFJ.Service
         {
             return _UserClientRepo.GetByUserId(userId);
         }
-        public List<SelectListItem> GetUserClients(int userId, byte? activeInactive = null)
+        public List<SelectListItem> GetUserClients(UserType userType, int userId, byte? activeInactive = null)
         {
-            List<SelectListItem> clientList = new List<SelectListItem>();
             var clients = _UserClientRepo.GetByUserId(userId);
-            if(activeInactive == null)
-                clientList = clients.Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }
-                ).ToList();
-            else
-                clientList = clients.Where(x => x.Client.Active == activeInactive).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }
-                ).ToList();
-            return clientList;
+            var clientList = clients.Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null);
+
+            if (activeInactive != null)
+                clientList = clients.Where(x => x.Client.Active == activeInactive).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null);
+
+            List<SelectListItem> clientDropdownList = new List<SelectListItem>();
+
+            if (UserType.ClientUser != userType || ((UserType.ClientUser == userType && clientList.Count() > 1)))
+            {
+                clientDropdownList.Add(new SelectListItem { Text = "All", Value = "-1" });
+            }
+
+            clientDropdownList.AddRange(clientList);
+
+            return clientDropdownList;
         }
 
         public List<SelectListItem> GetManageUsersByClient(List<int?> ClientIds, int userId)

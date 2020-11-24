@@ -1,19 +1,7 @@
 ﻿@model WFJ.Models.PlacementsFilterViewModel
 
 @{
-    //string clientDisplay = "";
-    //string display = "";
     int userType = Convert.ToInt32(Session["UserType"]);
-    //if ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType)
-    //{
-    //    display = "display:none;";
-    //}
-    //else
-    //{
-    //    display = "";
-    //}
-
-
 }
 
     <form>
@@ -22,21 +10,7 @@
         {
             <div class="form-group">
                 <label for="ddlClient">Client</label>
-                <select id="ddlClient" class="form-control">
-                    @if ((int)WFJ.Web.Models.Enums.UserType.ClientUser != userType || ((int)WFJ.Web.Models.Enums.UserType.ClientUser == userType && Model.client.Count > 1))
-                    {
-                        <option selected="" value="-1">All</option>
-                    }
-                    @{
-                        foreach (var item in Model.client)
-                        {
-                            if (item.Text != null)
-                            {
-                                <option value="@item.Value">@item.Text</option>
-                            }
-                        }
-                    }
-                </select>
+                @Html.DropDownList("ddlClient", new SelectList(Model.client, "Value", "Text"), new { @Class = "form-control" })
             </div>
         }
         <div class="form-group">

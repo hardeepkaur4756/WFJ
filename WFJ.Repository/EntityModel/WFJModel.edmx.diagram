@@ -136,6 +136,8 @@
         <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__08F5448B" />
         <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__08012052" />
         <AssociationConnector Association="WFJDBModel.FK__Requests__Reques__070CFC19" />
+        <AssociationConnector Association="WFJDBModel.FK__Levels__ParentID__2E26C93A" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__LevelI__300F11AC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

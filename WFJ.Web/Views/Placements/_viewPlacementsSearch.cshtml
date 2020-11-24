@@ -49,6 +49,7 @@
             <div class="col-6">
                 <label for="ddRegion">Region</label>
                 <select id="ddRegion" class="form-control">
+                    <option selected="" value="-1">All</option>
                     @foreach (var item in Model.RegionList)
                     {
                         <option value="@item.Value">@item.Text</option>

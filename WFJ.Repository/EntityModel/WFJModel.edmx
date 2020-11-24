@@ -1814,6 +1814,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Levels__ParentID__2E26C93A">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Levels1" Type="Self.Levels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Levels1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Personnel__Perso__688874F9">
           <End Role="Personnel" Type="Self.Personnel" Multiplicity="0..1" />
           <End Role="PersonnelClients" Type="Self.PersonnelClients" Multiplicity="*" />
@@ -1859,6 +1871,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="Requests">
               <PropertyRef Name="FormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__LevelI__300F11AC">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="LevelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2477,6 +2501,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="FormFields" EntitySet="FormFields" />
             <End Role="FormSelectionLists" EntitySet="FormSelectionLists" />
           </AssociationSet>
+          <AssociationSet Name="FK__Levels__ParentID__2E26C93A" Association="Self.FK__Levels__ParentID__2E26C93A">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="Levels1" EntitySet="Levels" />
+          </AssociationSet>
           <AssociationSet Name="FK__Personnel__Perso__688874F9" Association="Self.FK__Personnel__Perso__688874F9">
             <End Role="Personnel" EntitySet="Personnel" />
             <End Role="PersonnelClients" EntitySet="PersonnelClients" />
@@ -2491,6 +2519,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           </AssociationSet>
           <AssociationSet Name="FK__Requests__FormID__66A02C87" Association="Self.FK__Requests__FormID__66A02C87">
             <End Role="Forms" EntitySet="Forms" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__LevelI__300F11AC" Association="Self.FK__Requests__LevelI__300F11AC">
+            <End Role="Levels" EntitySet="Levels" />
             <End Role="Requests" EntitySet="Requests" />
           </AssociationSet>
           <AssociationSet Name="FK__Requests__Reques__070CFC19" Association="Self.FK__Requests__Reques__070CFC19">
@@ -3161,6 +3193,9 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="ClientID" Type="Int32" />
           <NavigationProperty Name="UserLevels" Relationship="WFJDBModel.FK_UserLevels_LevelID" FromRole="Level" ToRole="UserLevel" />
           <NavigationProperty Name="Users" Relationship="WFJDBModel.FK__Users__levelID__1F198FD4" FromRole="Level" ToRole="User" />
+          <NavigationProperty Name="Levels1" Relationship="WFJDBModel.FK__Levels__ParentID__2E26C93A" FromRole="Level" ToRole="Level1" />
+          <NavigationProperty Name="Level1" Relationship="WFJDBModel.FK__Levels__ParentID__2E26C93A" FromRole="Level1" ToRole="Level" />
+          <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__LevelI__300F11AC" FromRole="Level" ToRole="Request" />
         </EntityType>
         <EntityType Name="ListField">
           <Key>
@@ -3865,6 +3900,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Personnel" Relationship="WFJDBModel.FK__Requests__Assign__08F5448B" FromRole="Request" ToRole="Personnel" />
           <NavigationProperty Name="User" Relationship="WFJDBModel.FK__Requests__Assign__08012052" FromRole="Request" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="Request" ToRole="User" />
+          <NavigationProperty Name="Level" Relationship="WFJDBModel.FK__Requests__LevelI__300F11AC" FromRole="Request" ToRole="Level" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -4535,6 +4571,14 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="User" EntitySet="Users" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
+          <AssociationSet Name="FK__Levels__ParentID__2E26C93A" Association="WFJDBModel.FK__Levels__ParentID__2E26C93A">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="Level1" EntitySet="Levels" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__LevelI__300F11AC" Association="WFJDBModel.FK__Requests__LevelI__300F11AC">
+            <End Role="Level" EntitySet="Levels" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -5044,6 +5088,30 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="Request">
               <PropertyRef Name="Requestor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Levels__ParentID__2E26C93A">
+          <End Type="WFJDBModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Level" Role="Level1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Level1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__LevelI__300F11AC">
+          <End Type="WFJDBModel.Level" Role="Level" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Level">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="LevelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

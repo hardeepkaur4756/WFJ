@@ -23,6 +23,7 @@
     int? userAccess = Model.UserAccess;
     int clientId = Model.ClientId;
     int userType = Model.UserType;
+    bool AssociateCounselVisible = Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
 }
 <script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>
 <main>
@@ -32,10 +33,10 @@
 
             <div class="row">
                 <div class="col-md-5">
-                    <h4 class="mb-4">Add Placement</h4>
+                    <h4 class="mb-4">@(Model.isEditMode ? "Edit" : "Add") Placement</h4>
                 </div>
                 <div class="col-md-7">
-                    <h4 class="mb-4">@Html.Raw(Model.ClientName ?? "&nbsp;")</h4>
+                    <h4 class="mb-4">@Html.Raw(Model.FormDetail.ClientName ?? "&nbsp;")</h4>
                 </div>
             </div>
 
@@ -53,19 +54,19 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>@Model.RequestorName</label>
-                                            @Html.DropDownListFor(x => x.Request.Requestor, new SelectList(Model.Requestors, "Value", "Text"), new { @Class = "form-control" })
+                                            @Html.DropDownListFor(x => x.Request.Requestor, new SelectList(Model.Requestors, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Assigned Atorney</label>
-                                            @Html.DropDownListFor(x => x.Request.AssignedAttorney, new SelectList(Model.AssignedAtorneys, "Value", "Text"), new { @Class = "form-control" })
+                                            @Html.DropDownListFor(x => x.Request.AssignedAttorney, new SelectList(Model.AssignedAtorneys, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Assigned Collector</label>
-                                            @Html.DropDownListFor(x => x.Request.AssignedCollectorID, new SelectList(Model.Collectors, "Value", "Text"), new { @Class = "form-control" })
+                                            @Html.DropDownListFor(x => x.Request.AssignedCollectorID, new SelectList(Model.Collectors, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +74,7 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Status</label>
-                                            @Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "Value", "Text"), new { @Class = "form-control" })
+                                            @Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
@@ -88,6 +89,27 @@
                                             @Html.TextBoxFor(x => x.Request.CompletionDateString, new { @Class = "form-control jdate-picker" })
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+
+                                    @*If the value in clients.regionName = "NONE" (case insensitive), then the Region field can be omitted.  You can save a "0" in the database (requests.levelID) for the Region.*@
+                                    <div class="col-lg-6 col-xl-4" style="@(Model.FormDetail.ClientLevelName != null && Model.FormDetail.ClientLevelName.ToLower() == "none" ? "display:none;" : "")">
+                                        <div class="form-group">
+                                            <label>Region</label>
+                                            @Html.DropDownListFor(x => x.Request.LevelID, new SelectList(Model.RegionList, "Value", "Text"), "Select", new { @Class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    @if (Model.FormDetail.hasAdmin == 1)
+                                    {
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Admin Staff</label>
+                                            @Html.DropDownListFor(x => x.Request.AssignedAdminStaffID, new SelectList(Model.AdminStaffList, "Value", "Text"), "Select", new { @Class = "form-control" })
+                                        </div>
+                                    </div>
+                                    }
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-xl-12">
@@ -239,7 +261,7 @@
                                                                                         <input @isReadonly name="@inputName" @(inputValue == "1" ? "checked" : "") class="mr-1" type="radio" value="1" @requiredMessage>Yes
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input @isReadonly name="@inputName" @(inputValue == "0" || inputValue == "" ? "checked" : "") class="mr-1" type="radio" value="0">No
+                                                                                        <input @isReadonly name="@inputName" @(inputValue == "0" || inputValue == null ? "checked" : "") class="mr-1" type="radio" value="0">No
                                                                                     </label>
                                                                                 </div>
                                                                             }
@@ -344,12 +366,16 @@
                                 @if (Model.isEditMode)
                                 {
                                     <button type="button" class="btn btn-secondary" onclick="copyPlacement('@Model.Request.FormID','@Model.Request.ID')">Copy</button>
-                                    var activeHtml = "Active";
-                                    if(Model.Request?.active == 0)
+
+                                    if (Model.UserType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
                                     {
-                                        activeHtml = "Inactive";
-                                    }
+                                        var activeHtml = "Active";
+                                        if (Model.Request?.active == 1)
+                                        {
+                                            activeHtml = "Inactive";
+                                        }
                                     <a href="javascript:void(0)" class="btn btn-secondary active-inactive" onclick="activeInactive('@Model.Request.active')">@activeHtml</a>
+                                    }
                                 }
                                 <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
                             </div>
@@ -380,9 +406,12 @@
                                 <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
                             </li>
 
+                            @if (AssociateCounselVisible == true)
+                            {
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
                             </li>
+                            }
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
@@ -1570,6 +1599,8 @@
                                 </div>
                             </div>
 
+                            @if(AssociateCounselVisible == true)
+                            {
                             <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
                                 <div class="card">
                                     <div class="card-body">
@@ -1617,6 +1648,7 @@
                                     </div>
                                 </div>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -1688,6 +1720,8 @@
                 savePlacementsViewModel.StatusId = $("#Request_StatusCode").val();
                 savePlacementsViewModel.RequestDate = $.trim($("#Request_RequestDateString").val());
                 savePlacementsViewModel.WFJFileCloseDate = $.trim($("#Request_CompletionDateString").val());
+                savePlacementsViewModel.LevelID = $.trim($("#Request_LevelID").val());
+                savePlacementsViewModel.AssignedAdminStaffID = $.trim($("#Request_AssignedAdminStaffID").val());
                 var reqId = parseInt($("#Request_ID").val());
                 if (isNaN(reqId)) { reqId = 0; }
                 savePlacementsViewModel.RequestId = reqId;
@@ -1815,12 +1849,15 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (response) {
                     if (response.success) {
+
+                        $.notify("Changes saved successfully", "success");
+
                         $(".active-inactive").prop("onclick", null).off("click");
                         if (code == 1) {
-                            $(".active-inactive").html("Inactive");
+                            $(".active-inactive").html("Active");
                             $(".active-inactive").attr("onclick", "activeInactive('0')");
                         } else {
-                            $(".active-inactive").html("active");
+                            $(".active-inactive").html("Inactive");
                             $(".active-inactive").attr("onclick", "activeInactive('1')");
                         }
                     }
@@ -1838,7 +1875,7 @@
             if (isNaN(formId)) { formId = 0; }
 
             if (requestId > 0 && formId > 0) {
-                window.location.href = "/Placements/CopyPlacement?formId=" + formId + "&requestId=" + requestId;
+                window.location.href = "/Placements/AddPlacement?formId=" + formId + "&requestId=" + requestId + "&copy=1";
             }
         }
     </script>

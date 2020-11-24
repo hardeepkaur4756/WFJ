@@ -19,7 +19,8 @@ namespace WFJ.Models
         //public Nullable<int> LegalAssistantID { get; set; }
         public Nullable<System.DateTime> RequestDate { get; set; }
         public string RequestDateString { get; set; }
-        //public Nullable<int> LevelID { get; set; }
+        public Nullable<int> LevelID { get; set; }
+        public Nullable<int> AssignedAdminStaffID { get; set; }
         //public Nullable<int> newLevelID { get; set; }
         //public Nullable<int> oldLevelID { get; set; }
         //public string LocalCounselName { get; set; }

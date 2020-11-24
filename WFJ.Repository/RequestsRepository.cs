@@ -18,7 +18,7 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, DateTime? beginDate, DateTime? endDate, bool archived)
+        public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, int levelId, DateTime? beginDate, DateTime? endDate, bool archived, bool activeOnly)
         {
             IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
 
@@ -52,6 +52,10 @@ namespace WFJ.Repository
                 var statusCodes = _statusCodesRepo.GetByFormID(formId).Where(x => x.StatusLevel == 1).Select(x => x.StatusCode1).ToArray();
                 requests = requests.Where(x => statusCodes.Contains(x.StatusCode));
             }
+            if (levelId != -1)
+            {
+                requests = requests.Where(x => x.LevelID == levelId);
+            }
             if (beginDate != null)
             {
                 requests = requests.Where(x => x.RequestDate != null && x.RequestDate >= beginDate);
@@ -60,16 +64,22 @@ namespace WFJ.Repository
             {
                 requests = requests.Where(x => x.RequestDate != null && x.RequestDate <= endDate);
             }
+            if(activeOnly == true)
+            {
+                requests = requests.Where(x => x.active == 1);
+            }
 
             return requests;
         }
 
-        public int GetFormActiveRequestsCount(int formId)
+        public int GetFormActiveRequestsCount(int formId, bool activeOnly = false)
         {
             var statuscodes = _statusCodesRepo.GetActiveStatusCode(formId).ToArray();
             DateTime lastMonth = DateTime.Now.Date.AddDays(-30);
-            var requestsCount = _context.Requests.Where(x => x.FormID == formId && statuscodes.Contains(x.StatusCode) && (x.CompletionDate == null || x.CompletionDate >= lastMonth)).Count();
-            return requestsCount;
+            var requests = _context.Requests.Where(x => x.FormID == formId && statuscodes.Contains(x.StatusCode) && (x.CompletionDate == null || x.CompletionDate >= lastMonth));
+            if (activeOnly == true)
+                requests = requests.Where(x => x.active == 1);
+            return requests.Count();
         }
     }
 }

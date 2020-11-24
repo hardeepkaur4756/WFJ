@@ -10,5 +10,6 @@ namespace WFJ.Repository.Interfaces
 {
     public interface ILevelRepository : IRepository<Level>
     {
+        IEnumerable<Level> GetByClientID(int ClientId);
     }
 }

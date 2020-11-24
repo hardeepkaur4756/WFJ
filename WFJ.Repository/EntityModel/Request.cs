@@ -53,5 +53,6 @@ namespace WFJ.Repository.EntityModel
         public virtual Personnel Personnel { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual Level Level { get; set; }
     }
 }

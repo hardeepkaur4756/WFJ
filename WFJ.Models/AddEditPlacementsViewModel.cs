@@ -9,7 +9,7 @@ namespace WFJ.Models
 {
     public class AddEditPlacementsViewModel: ExceptionModel
     {
-        public string ClientName { get; set; }
+        //public string ClientName { get; set; }
         public IEnumerable<FormSectionViewModel> FormSections { get; set; }
 
         // form fields
@@ -22,13 +22,18 @@ namespace WFJ.Models
         public List<SelectListItem> AssignedAtorneys { get; set; }
         public List<SelectListItem> Collectors { get; set; }
         public List<SelectListItem> StatusList { get; set; }
+        public List<SelectListItem> RegionList { get; set; }
+        public List<SelectListItem> AdminStaffList { get; set; }
 
         public RequestViewModel Request { get; set; }
         public int? UserAccess { get; set; }
         public int UserType { get; set; }
         public int ClientId { get; set; }
         public bool isEditMode { get; set; }
+        public bool isCopyMode { get; set; }
         public string RequestorName { get; set; }
+
+        public FormModel FormDetail { get; set; }
     }
 
 

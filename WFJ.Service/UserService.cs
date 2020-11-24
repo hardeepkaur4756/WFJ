@@ -708,5 +708,17 @@ namespace WFJ.Service
             }).Where(x =>x .Text.Trim() != "").OrderBy(x => x.Text).ToList();            
         }
 
+        public List<SelectListItem> GetAdminStaffDropdown()
+        {
+            var users =  _userRepo.GetAll().Where(x => x.Active == 1 && x.IsAdminStaff == 1);
+
+            return users.Select(x => new SelectListItem
+            {
+                Text = x.FirstName + " " + x.LastName,
+                Value = x.UserID.ToString()
+            }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
+
+        }
+
     }
 }

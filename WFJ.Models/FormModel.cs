@@ -14,6 +14,7 @@ namespace WFJ.Models
         public string FormTypeName { get; set; }
         public Nullable<int> ClientID { get; set; }
         public string ClientName { get; set; }
+        public string ClientLevelName { get; set; }
         public Nullable<int> AccountBalanceFieldID { get; set; }
         public Nullable<int> TotalPaymentsFieldID { get; set; }
         public Nullable<int> CustomerNameFieldID { get; set; }

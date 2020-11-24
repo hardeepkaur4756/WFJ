@@ -57,6 +57,8 @@ namespace WFJ.Models
         //public Nullable<double> TotalPayments { get; set; }
         public float TotalPayments { get; set; }
         public int DaysOpen { get; set; }
+        public string LevelID { get; set; }
+        public int? LevelIDVal { get; set; }
 
         public Dictionary<string, string> FormFields { get; set; }
 

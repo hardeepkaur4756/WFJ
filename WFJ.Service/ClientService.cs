@@ -11,6 +11,7 @@ using WFJ.Models;
 using AutoMapper;
 using WFJ.Service;
 using System.Web.Mvc;
+using WFJ.Service.Model;
 
 namespace WFJ.Service
 {
@@ -31,7 +32,9 @@ namespace WFJ.Service
                 ).ToList();
             return clientList;
         }
-        public List<SelectListItem> GetActiveInactiveOrderedList()
+
+
+        public List<SelectListItem> GetActiveInactiveOrderedList(UserType userType)
         {
             IClientRepository clientRepo = new ClientRepository();
 
@@ -40,9 +43,19 @@ namespace WFJ.Service
                 ).OrderBy(x => x.Text).ToList();
             List<SelectListItem> inactiveClientList = allClients.Where(x => x.Active == 0).Select(x => new SelectListItem() { Text = x.ClientName, Value = x.ID.ToString() }
                 ).OrderBy(x => x.Text).ToList();
-            activeClientList.AddRange(inactiveClientList);
 
-            return activeClientList;
+
+            List<SelectListItem> clientDropdownList = new List<SelectListItem>();
+
+            if (UserType.ClientUser != userType || ((UserType.ClientUser == userType && activeClientList.Count() > 1 || inactiveClientList.Count() > 1)))
+            {
+                clientDropdownList.Add(new SelectListItem { Text = "All", Value = "-1" });
+            }
+
+            clientDropdownList.AddRange(activeClientList);
+            clientDropdownList.AddRange(inactiveClientList);
+
+            return clientDropdownList;
         }
 
 
