@@ -91,7 +91,7 @@ CREATE TABLE [dbo].[UserClients](
  CONSTRAINT [PK_UserClients] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -278,7 +278,6 @@ UPDATE [dbo].[fieldSizes]
  WHERE fieldSizeID=3
 GO
 
-
 update [FormData] set FormFieldID = null where FormFieldID not in (select ID from [FormFields])
 update FormAddressData set FormFieldID = null where FormFieldID not in (select ID from [FormFields])
 
@@ -296,9 +295,6 @@ ADD FOREIGN KEY (AssignedCollectorID) REFERENCES [Users](UserID);
 ALTER TABLE Requests
 ADD FOREIGN KEY (AssignedAttorney) REFERENCES [Personnel](ID);
 
-
-
-
  -- For Regions dropdown
 update [wfj_testdb].[dbo].[Levels] set ParentID= 0 where ParentID not in (select id from Levels)
 
@@ -310,17 +306,3 @@ Update Requests set LevelID=null where LevelID not in (select id from levels)
 
 ALTER TABLE Requests
 ADD FOREIGN KEY (LevelID) REFERENCES [Levels](ID);
-
-
-
-
-
-
-
-
-
-
-
-
-
-

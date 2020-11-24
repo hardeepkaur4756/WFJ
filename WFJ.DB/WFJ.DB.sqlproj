@@ -172,6 +172,7 @@
     <None Include="Security\KMF_1.sql" />
     <Build Include="Security\RoleMemberships.sql" />
     <None Include="Security\wfjuser_3.sql" />
+    <None Include="DataScripts\V1.0.1.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataScripts\V1.0.0.sql" />
