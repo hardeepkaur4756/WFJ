@@ -11,6 +11,7 @@ using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
+    [CustomAttribute.AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
     public class DocumentCenterController : Controller
     {
         private IErrorLogService _errorLogService = new ErrorLogService();
@@ -40,10 +41,10 @@ namespace WFJ.Web.Controllers
                 {
                     documentViewModel = new DocumentViewModel(),
                     client = userType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)userType), UserId) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)userType)),
-                    practiceArea = _practiceAreaService.GetAllPracticeArea(),
-                    categoryModels = _categoryService.GetAll(),
-                    formTypeModels = _formTypeService.GetAll(),
-                    documentType = _codesService.GetAllByType("DOCTYPE"),
+                    practiceArea = DropdownHelpers.PrependALL(_practiceAreaService.GetAllPracticeArea()),
+                    categoryDropdown = DropdownHelpers.PrependALL(_categoryService.GetCategoryPracticeAreaDropdown()),
+                    formTypeDropdown = _formTypeService.GetFormTypesDropdown(),
+                    documentType = DropdownHelpers.PrependALL(_codesService.GetAllByType("DOCTYPE")),
                     state = _codesService.GetAllStateByType("STATE")
                 };
 
@@ -107,8 +108,8 @@ namespace WFJ.Web.Controllers
                 manageDocumentFilterViewModel.client = _clientService.GetAllClients();
                 /*manageDocumentFilterViewModel.practiceAreaModels = _practiceAreaService.GetAll();*/
                 manageDocumentFilterViewModel.practiceArea = _practiceAreaService.GetAllPracticeArea();
-                manageDocumentFilterViewModel.categoryModels = _categoryService.GetAll();
-                manageDocumentFilterViewModel.formTypeModels = _formTypeService.GetAll();
+                //manageDocumentFilterViewModel.categoryModels = _categoryService.GetAll(); // i think it is not used in view
+                //manageDocumentFilterViewModel.formTypeModels = _formTypeService.GetAll();// i think it is not used in view
                 manageDocumentFilterViewModel.documentType = _codesService.GetAllByType("DOCTYPE");
                 manageDocumentFilterViewModel.state = _codesService.GetAllStateByType("STATE");
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditDocument", manageDocumentFilterViewModel) }, JsonRequestBehavior.AllowGet);

@@ -18,5 +18,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> FormID { get; set; }
         public Nullable<int> UserID { get; set; }
         public Nullable<int> SeqNo { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

@@ -34,6 +34,9 @@ namespace WFJ.Models
         public string RequestorName { get; set; }
 
         public FormModel FormDetail { get; set; }
+
+        // Notes
+        public List<SelectListItem> NotesSendToDropdown { get; set; }
     }
 
 

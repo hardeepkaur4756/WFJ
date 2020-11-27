@@ -437,10 +437,11 @@
 
 
 
-    if (uri.indexOf("?") > 0) {
+    /*if (uri.indexOf("?") > 0) {
         var clean_uri = uri.substring(0, uri.indexOf("?"));
         window.history.replaceState({}, document.title, clean_uri);
-    }
+    }*/
+
 
 })(jQuery);
 function createCookie(name, value) {

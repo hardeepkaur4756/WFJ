@@ -59,13 +59,14 @@ namespace WFJ.Service
         }
 
 
-        public List<SelectListItem> GetRegionsDropdown()
+        /* Client changed dropdown binding
+         * public List<SelectListItem> GetRegionsDropdown()
         {
             IClientRepository clientRepo = new ClientRepository();
             List<SelectListItem> regionList = clientRepo.GetAll().Where(x =>x .LevelName != null).Select(x => x.LevelName.Trim()).Where(x => x != "").Distinct().OrderBy(s => s).Select(s => new SelectListItem() { Text = s, Value = s })
                                             .ToList();
             return regionList;
-        }
+        }*/
 
         public string GetRequestorNameById(int clientId)
         {

@@ -17,6 +17,7 @@ namespace WFJ.Service.Interfaces
 
         List<FormFieldViewModel> GetFormFieldsByForm(int FormID,int? requestId);
         List<FormSectionViewModel> GetFormSections();
+        List<UserClient> GetUsersByFormID(int FormID);
         FormModel GetFormById(int FormID);
         List<SelectListItem> GetRequestorsDropdown(int FormID);
         List<SelectListItem> GetCollectorsDropdown();

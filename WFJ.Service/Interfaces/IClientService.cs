@@ -15,7 +15,7 @@ namespace WFJ.Service.Interfaces
         List<ClientModel> GetClients();
         List<SelectListItem> GetAllClients();
         List<SelectListItem> GetActiveInactiveOrderedList(UserType userType);
-        List<SelectListItem> GetRegionsDropdown();
+        //List<SelectListItem> GetRegionsDropdown();
         string GetRequestorNameById(int clientId);
     }
 }

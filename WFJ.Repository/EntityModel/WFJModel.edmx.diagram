@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1" ZoomLevel="70">
+      <Diagram DiagramId="d67b078ca2354a50ac2e437461ecfcba" Name="Diagram1" ZoomLevel="66">
         <EntityTypeShape EntityType="WFJDBModel.AssociateCounsel" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.author" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.clickCount" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
@@ -40,7 +40,6 @@
         <EntityTypeShape EntityType="WFJDBModel.FormUser" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.FormUserType" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.FunctionsTable" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.hiddenRequestNote" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.hrDocument" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.LegalAssistant" Width="1.5" PointX="12.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Letter" Width="1.5" PointX="18.75" PointY="13.75" IsExpanded="true" />
@@ -72,7 +71,6 @@
         <EntityTypeShape EntityType="WFJDBModel.Question" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Region" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.RequestDocument" Width="1.5" PointX="12.75" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="24.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.RequestNotice" Width="1.5" PointX="14.75" PointY="24.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Request" Width="1.5" PointX="16.75" PointY="24.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Resource" Width="1.5" PointX="24.75" PointY="19.75" IsExpanded="true" />
@@ -138,6 +136,10 @@
         <AssociationConnector Association="WFJDBModel.FK__Requests__Reques__070CFC19" />
         <AssociationConnector Association="WFJDBModel.FK__Levels__ParentID__2E26C93A" />
         <AssociationConnector Association="WFJDBModel.FK__Requests__LevelI__300F11AC" />
+        <EntityTypeShape EntityType="WFJDBModel.hiddenRequestNote" Width="1.5" PointX="33.625" PointY="2" />
+        <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="31.375" PointY="1" />
+        <AssociationConnector Association="WFJDBModel.FK__hiddenReq__noteI__53584DE9" />
+        <AssociationConnector Association="WFJDBModel.FK__FormNotes__UserI__544C7222" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

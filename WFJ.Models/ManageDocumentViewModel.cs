@@ -18,8 +18,10 @@ namespace WFJ.Models
         public List<SelectListItem> client { get; set; }
         //public List<PracticeAreaModel> practiceAreaModels { get; set; }
         public List<SelectListItem> practiceArea { get; set; }
-        public List<CategoryModel> categoryModels { get; set; }
-        public List<FormTypeModel> formTypeModels { get; set; }
+        //public List<CategoryModel> categoryModels { get; set; }
+        public List<SelectListItem> categoryDropdown { get; set; }
+        //public List<FormTypeModel> formTypeModels { get; set; }
+        public List<SelectListItem> formTypeDropdown { get; set; }
         public List<SelectListItem> documentType { get; set; }
         public DocumentViewModel documentViewModel { get; set; }
 

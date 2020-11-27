@@ -91,7 +91,7 @@ namespace WFJ.Web.Controllers
                 {
                     userViewModel = new UserViewModel(),
                     //Clients = _clientService.GetClients(),
-                    Clients = _clientService.GetAllClients(),
+                    Clients = DropdownHelpers.PrependALL(_clientService.GetAllClients()),
                     ManageUsers=new List<SelectListItem>(),
                     UserType = _userService.GetAllUserTypes(),
                     Regions = new List<SelectListItem>(),

@@ -1,0 +1,97 @@
+﻿@model WFJ.Models.AddRequestNoteViewModel
+
+
+<form action="">
+
+    @Html.HiddenFor(x => x.ID, new { @id = "noteId" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="noteDate">Note Date*</label>
+                @Html.TextBoxFor(x => x.NotesDate, new { @Class = "form-control", id = "noteDate" })
+                @*<input type="text" class="form-control datepicker hasDatepicker" id="noteDate" value="@DateTime.Now.ToString("MM/dd/yyyy")">*@
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Author</label>
+                @{ 
+                    List<SelectListItem> Authors = new List<SelectListItem>();
+                    Authors.Add(new SelectListItem { Text = ViewData["LoginUserName"].ToString(), Value = Session["UserId"].ToString() });
+                }
+                @Html.DropDownListFor(x => x.AuthorID, new SelectList(Authors, "Value", "Text"), new { @Class = "form-control", @id = "noteAuthor" })
+                @*<select id="noteAuthor" class="form-control">
+                    <option value="@Session["UserId"]" selected>@ViewData["LoginUserName"]</option>
+                </select>*@
+            </div>
+
+            <input id="notesDefaultDate" type="hidden" value="@DateTime.Now.ToString("MM/dd/yyyy")" />
+        </div>
+
+        <div class="col-md-12">
+            <label for="followupDate">Follow Up Date</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.TextBoxFor(x => x.FollowupDate, new { @Class = "form-control", id = "followupDate" })
+                        @*<input type="text" class="form-control datepicker hasDatepicker" id="followupDate">*@
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select id="followupTime" class="form-control">
+                            <option selected=""></option>
+                            <option>7:00 a.m.</option>
+                            <option>7:15 a.m.</option>
+                            <option>7:15 a.m.</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+
+                            <input type="checkbox" class="custom-control-input" id="sendToAuthorsOnly" @(Model.SendToAuthorOnly == 1 ? "checked" : "")>
+                            <label class="custom-control-label" for="sendToAuthorsOnly">Send Follow Up Email to Note Author Only</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Standard Note</label>
+                <select id="inputState" class="form-control">
+                    <option selected="">Select</option>
+                    <option>ABF Printing</option>
+                    <option>Action Advertising and Flags</option>
+                    <option>Ad Specialties by ken</option>
+                </select>
+            </div>
+        </div>
+
+        @if (Convert.ToInt32(Session["UserType"]) == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+        {
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="internalNote" @(Model.internalNote == 1 ? "checked" : "")>
+                        <label class="custom-control-label" for="internalNote">Internal Note</label>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Notes*</label>
+                @Html.TextAreaFor(x => x.Notes, new { @Class= "form-control", @Rows = "4", @Id = "notesText" })
+                @*<textarea class="form-control" id="notesText" rows="4" placeholder=""></textarea>*@
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

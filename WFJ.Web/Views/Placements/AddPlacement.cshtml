@@ -25,7 +25,8 @@
     int userType = Model.UserType;
     bool AssociateCounselVisible = Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
 }
-<script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>
+@*<script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>*@
+
 <main>
     <div class="document-center">
         <div class="container-fluid site-width">
@@ -45,6 +46,7 @@
 
                     <div class="form-group">
                         <button type="button" class="btn btn-secondary">PDF</button>
+                        <a href="@Url.Action("ViewPlacements", "Placements", new { id = Model.FormDetail.ID })" class="btn btn-primary pull-right">Return to List</a>
                     </div>
 
                     <div class="card mb-4">
@@ -59,7 +61,7 @@
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
-                                            <label>Assigned Atorney</label>
+                                            <label>Assigned Attorney</label>
                                             @Html.DropDownListFor(x => x.Request.AssignedAttorney, new SelectList(Model.AssignedAtorneys, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
@@ -322,7 +324,7 @@
                                                                             }
                                                                             else if (item.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes || item.FieldTypeID == (byte)FieldTypes.MultiSelectSelectionList)
                                                                             {
-                                                                                @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new { @multiple = "multiple", @class = "multiselect answer multi" + Cnt })
+                                                                                @Html.DropDownList(inputName, item.FormSelectionLists.OrderBy(x => x.SeqNo).Select(x => new SelectListItem { Text = x.TextValue, Value = x.Code }), new { @multiple = "multiple", @class = "multiselects answer multi" + Cnt })
                                                                                 <script type="text/javascript">
                                                                                     var values = '@inputValue';
                                                                                     if (values.length > 0) {
@@ -414,7 +416,7 @@
                             }
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                            <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
@@ -433,20 +435,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-right">
-                                            <button type="submit" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#addnotes">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="addNotes()">
                                                 Add Notes
                                             </button>
-                                            <button type="submit" class="btn btn-secondary mb-3">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="sendNotes()">
                                                 Send Notes
                                             </button>
-                                            <button type="submit" class="btn btn-secondary mb-3">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="hideNotes()">
                                                 Hide Notes
                                             </button>
-                                            <button type="submit" class="btn btn-secondary mb-3">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="flagNotes()">
                                                 Flag Notes
                                             </button>
                                         </div>
@@ -493,10 +495,12 @@
                                             </ul>
 
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="inputDate">Send to</label>
-                                                        <input type="text" class="form-control">
+                                                        <div class="custom-multiselect-scroll">
+                                                            @Html.DropDownList("NotesSendTo", new SelectList(Model.NotesSendToDropdown, "Value", "Text"), new { @Multiple = "multiple" })
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -521,9 +525,16 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div style="display:none;" id="hiddenNotes">
+                                            <div class="alert alert-info">
+                                                <strong id="hiddenNotesCount">0</strong> hidden notes <a href="javascript: showNotes();" class="alert-link">Show all notes</a>.
+                                            </div>
+                                        </div>
+
                                         <div class="table-responsive">
-                                            <table id="" class="table table-striped layout-primary table-bordered document-center-table">
-                                                <thead>
+                                            <table id="requestNotesTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table">
+                                                @*<thead>
                                                     <tr>
                                                         <th></th>
                                                         <th></th>
@@ -1104,7 +1115,7 @@
                                                             judgment.
                                                         </td>
                                                     </tr>
-                                                </tbody>
+                                                </tbody>*@
                                             </table>
                                         </div>
                                     </div>
@@ -1660,16 +1671,54 @@
 
 
 
+<div class="modal fade" id="addnotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-right: 17px;" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addnotesModallLabel">Add Notes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="currentUserId" type="hidden" value="@Session["UserId"]" />
+                <input id="canDeleteNote" type="hidden" value="@(Model.UserType == (int)WFJ.Service.Model.UserType.SystemAdministrator ? 1 : 0)" />
+
+                <div id="addNotesDiv">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="addNotesSubmit()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 @section scripts{
+    <script src="~/Content/manageRequestNotes.js"></script>
+
     <script>
 
         $(document).ready(function () {
-            GetStatusDescription("#Request_StatusCode");
+
+            if ("@Model.isEditMode" == "True") {
+                GetRequestNotesDataTable();
+            }
+
+
+            GetStatusDescription($("#Request_StatusCode").val());
             $("#Request_StatusCode").change(function () {
                 GetStatusDescription($(this).val());
             });
 
-            $(".multiselect").multiselect({
+            $(".multiselects").multiselect({
                 includeSelectAllOption: true,
                 enableFiltering: true,
             });
@@ -1750,7 +1799,7 @@
                         var name = $(this).data("name");
                         field.FieldValue = $("input:radio[name='" + name + "']:checked").val()
                     }
-                    else if ($(this).hasClass("multiselect")) {
+                    else if ($(this).hasClass("multiselects")) {
                         field.FieldId = $(this).parent().parent().find(".formFieldId").val();
                         if ($(this).val().length > 0) {
                             field.FieldValue = $(this).val().join(",");

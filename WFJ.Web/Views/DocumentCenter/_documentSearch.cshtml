@@ -27,13 +27,7 @@
 
     <div class="form-group">
         <label>Document Type</label>
-        <select id="ddlDocumentType" class="form-control">
-            <option selected="" value="-1">All</option>
-            @foreach (var item in Model.documentType)
-            {
-                <option value="@item.Value">@item.Text</option>
-            }
-        </select>
+        @Html.DropDownList("ddlDocumentType", new SelectList(Model.documentType, "Value", "Text"), new { @Class = "form-control" })
     </div>
 
     <div class="form-group">
@@ -43,51 +37,18 @@
 
     <div class="form-group">
         <label>Practice Area</label>
-        <select id="ddlPracticeArea" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.practiceArea)
-                {
-                    if (item.Text != null)
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                }
-            }
-        </select>
+        @Html.DropDownList("ddlPracticeArea", new SelectList(Model.practiceArea, "Value", "Text"), new { @Class = "form-control" })
     </div>
 
     <div class="form-group" style=@display>
         <label>Category (WFJ Use)</label>
-        <select id="ddlCategory" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.categoryModels)
-                {
-                    if (item.CategoryName != null)
-                    {
-                        <option value="@item.CategoryID">@item.PracticeAreaName ---> @item.CategoryName</option>
-                    }
-                }
-            }
-        </select>
+        @Html.DropDownList("ddlCategory", new SelectList(Model.categoryDropdown, "Value", "Text"), new { @Class = "form-control" })
+       
     </div>
 
     <div class="form-group">
         <label>Form Type</label>
-        <select id="ddlFormType" class="form-control">
-            <option selected="" value="-1">All</option>
-            @{
-                foreach (var item in Model.formTypeModels)
-                {
-                    if (item.FormType1 != null)
-                    {
-                        <option value="@item.FormTypeID">@item.FormType1</option>
-                    }
-
-                }
-            }
-        </select>
+        @Html.DropDownList("ddlFormType", new SelectList(Model.formTypeDropdown, "Value", "Text"), new { @Class = "form-control" })
     </div>
 
     <div class="clearfix">

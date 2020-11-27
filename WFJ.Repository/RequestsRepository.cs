@@ -81,5 +81,13 @@ namespace WFJ.Repository
                 requests = requests.Where(x => x.active == 1);
             return requests.Count();
         }
+
+        public Request GetRequestWithDetail(int requestId)
+        {
+            return _context.Requests.Include(x => x.User) // collector
+                .Include(x => x.User1) // Requestor
+                .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
+        }
+
     }
 }

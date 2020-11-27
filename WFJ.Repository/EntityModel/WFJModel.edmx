@@ -1439,6 +1439,8 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="flaggedNote" Type="tinyint" />
           <Property Name="deadlineCalendar" Type="tinyint" />
           <Property Name="internalNote" Type="tinyint" />
+          <Property Name="LastSent" Type="datetime" />
+          <Property Name="LastSentTo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="RequestNotices">
           <Key>
@@ -1766,6 +1768,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__FormNotes__UserI__544C7222">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="FormNotesUsers" Type="Self.FormNotesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FormNotesUsers">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Forms__ClientID__63C3BFDC">
           <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
           <End Role="Forms" Type="Self.Forms" Multiplicity="*" />
@@ -1811,6 +1825,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="FormSelectionLists">
               <PropertyRef Name="FormFieldID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__hiddenReq__noteI__53584DE9">
+          <End Role="RequestNotes" Type="Self.RequestNotes" Multiplicity="0..1" />
+          <End Role="hiddenRequestNotes" Type="Self.hiddenRequestNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestNotes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="hiddenRequestNotes">
+              <PropertyRef Name="noteID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2485,6 +2511,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="fieldSizes" EntitySet="fieldSizes" />
             <End Role="FormFields" EntitySet="FormFields" />
           </AssociationSet>
+          <AssociationSet Name="FK__FormNotes__UserI__544C7222" Association="Self.FK__FormNotes__UserI__544C7222">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FormNotesUsers" EntitySet="FormNotesUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK__Forms__ClientID__63C3BFDC" Association="Self.FK__Forms__ClientID__63C3BFDC">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="Forms" EntitySet="Forms" />
@@ -2500,6 +2530,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <AssociationSet Name="FK__FormSelec__FormF__75E27017" Association="Self.FK__FormSelec__FormF__75E27017">
             <End Role="FormFields" EntitySet="FormFields" />
             <End Role="FormSelectionLists" EntitySet="FormSelectionLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__hiddenReq__noteI__53584DE9" Association="Self.FK__hiddenReq__noteI__53584DE9">
+            <End Role="RequestNotes" EntitySet="RequestNotes" />
+            <End Role="hiddenRequestNotes" EntitySet="hiddenRequestNotes" />
           </AssociationSet>
           <AssociationSet Name="FK__Levels__ParentID__2E26C93A" Association="Self.FK__Levels__ParentID__2E26C93A">
             <End Role="Levels" EntitySet="Levels" />
@@ -3030,6 +3064,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="FormID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="SeqNo" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="WFJDBModel.FK__FormNotes__UserI__544C7222" FromRole="FormNotesUser" ToRole="User" />
         </EntityType>
         <EntityType Name="Form">
           <Key>
@@ -3124,15 +3159,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="HasChildren" Type="Byte" />
           <Property Name="LoginRequired" Type="Byte" />
           <Property Name="PathNameZ" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="hiddenRequestNote">
-          <Key>
-            <PropertyRef Name="hiddenRequestNoteID" />
-          </Key>
-          <Property Name="hiddenRequestNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userID" Type="Int32" />
-          <Property Name="requestID" Type="Int32" />
-          <Property Name="noteID" Type="Int32" />
         </EntityType>
         <EntityType Name="hrDocument">
           <Key>
@@ -3828,25 +3854,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="FileName" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
           <Property Name="DocumentType" Type="Int32" />
         </EntityType>
-        <EntityType Name="RequestNote">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RequestType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="RequestID" Type="Int32" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="contactTypeID" Type="Int32" />
-          <Property Name="NotesDate" Type="DateTime" Precision="0" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FollowupDate" Type="DateTime" Precision="3" />
-          <Property Name="ReminderSent" Type="Byte" />
-          <Property Name="dateReminderSent" Type="DateTime" Precision="3" />
-          <Property Name="SendToAuthorOnly" Type="Byte" />
-          <Property Name="flaggedNote" Type="Byte" />
-          <Property Name="deadlineCalendar" Type="Byte" />
-          <Property Name="internalNote" Type="Byte" />
-        </EntityType>
         <EntityType Name="RequestNotice">
           <Key>
             <PropertyRef Name="RequestNoticeID" />
@@ -4239,7 +4246,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySet Name="FormUsers" EntityType="Self.FormUser" />
           <EntitySet Name="FormUserTypes" EntityType="Self.FormUserType" />
           <EntitySet Name="FunctionsTables" EntityType="Self.FunctionsTable" />
-          <EntitySet Name="hiddenRequestNotes" EntityType="Self.hiddenRequestNote" />
           <EntitySet Name="hrDocuments" EntityType="Self.hrDocument" />
           <EntitySet Name="LegalAssistants" EntityType="Self.LegalAssistant" />
           <EntitySet Name="Letters" EntityType="Self.Letter" />
@@ -4271,7 +4277,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySet Name="Questions" EntityType="Self.Question" />
           <EntitySet Name="Regions" EntityType="Self.Region" />
           <EntitySet Name="RequestDocuments" EntityType="Self.RequestDocument" />
-          <EntitySet Name="RequestNotes" EntityType="Self.RequestNote" />
           <EntitySet Name="RequestNotices" EntityType="Self.RequestNotice" />
           <EntitySet Name="Requests" EntityType="Self.Request" />
           <EntitySet Name="Resources" EntityType="Self.Resource" />
@@ -4579,6 +4584,16 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Level" EntitySet="Levels" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
+          <EntitySet Name="hiddenRequestNotes" EntityType="WFJDBModel.hiddenRequestNote" />
+          <EntitySet Name="RequestNotes" EntityType="WFJDBModel.RequestNote" />
+          <AssociationSet Name="FK__hiddenReq__noteI__53584DE9" Association="WFJDBModel.FK__hiddenReq__noteI__53584DE9">
+            <End Role="RequestNote" EntitySet="RequestNotes" />
+            <End Role="hiddenRequestNote" EntitySet="hiddenRequestNotes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FormNotes__UserI__544C7222" Association="WFJDBModel.FK__FormNotes__UserI__544C7222">
+            <End Role="User" EntitySet="Users" />
+            <End Role="FormNotesUser" EntitySet="FormNotesUsers" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4752,6 +4767,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="User1" Relationship="WFJDBModel.FK_User_UserManagerUserID" FromRole="User1" ToRole="User" />
           <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__Assign__08012052" FromRole="User" ToRole="Request" />
           <NavigationProperty Name="Requests1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="User" ToRole="Request" />
+          <NavigationProperty Name="FormNotesUsers" Relationship="WFJDBModel.FK__FormNotes__UserI__544C7222" FromRole="User" ToRole="FormNotesUser" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -5112,6 +5128,62 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="Request">
               <PropertyRef Name="LevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="hiddenRequestNote">
+          <Key>
+            <PropertyRef Name="hiddenRequestNoteID" />
+          </Key>
+          <Property Name="hiddenRequestNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="requestID" Type="Int32" />
+          <Property Name="noteID" Type="Int32" />
+          <NavigationProperty Name="RequestNote" Relationship="WFJDBModel.FK__hiddenReq__noteI__53584DE9" FromRole="hiddenRequestNote" ToRole="RequestNote" />
+        </EntityType>
+        <EntityType Name="RequestNote">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="RequestID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="contactTypeID" Type="Int32" />
+          <Property Name="NotesDate" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FollowupDate" Type="DateTime" Precision="3" />
+          <Property Name="ReminderSent" Type="Byte" />
+          <Property Name="dateReminderSent" Type="DateTime" Precision="3" />
+          <Property Name="SendToAuthorOnly" Type="Byte" />
+          <Property Name="flaggedNote" Type="Byte" />
+          <Property Name="deadlineCalendar" Type="Byte" />
+          <Property Name="internalNote" Type="Byte" />
+          <NavigationProperty Name="hiddenRequestNotes" Relationship="WFJDBModel.FK__hiddenReq__noteI__53584DE9" FromRole="RequestNote" ToRole="hiddenRequestNote" />
+          <Property Name="LastSent" Type="DateTime" Precision="3" />
+          <Property Name="LastSentTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__hiddenReq__noteI__53584DE9">
+          <End Type="WFJDBModel.RequestNote" Role="RequestNote" Multiplicity="0..1" />
+          <End Type="WFJDBModel.hiddenRequestNote" Role="hiddenRequestNote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestNote">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="hiddenRequestNote">
+              <PropertyRef Name="noteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FormNotes__UserI__544C7222">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="WFJDBModel.FormNotesUser" Role="FormNotesUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FormNotesUser">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5663,16 +5735,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
                 <ScalarProperty Name="HasChildren" ColumnName="HasChildren" />
                 <ScalarProperty Name="LoginRequired" ColumnName="LoginRequired" />
                 <ScalarProperty Name="PathNameZ" ColumnName="PathNameZ" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="hiddenRequestNotes">
-            <EntityTypeMapping TypeName="WFJDBModel.hiddenRequestNote">
-              <MappingFragment StoreEntitySet="hiddenRequestNotes">
-                <ScalarProperty Name="hiddenRequestNoteID" ColumnName="hiddenRequestNoteID" />
-                <ScalarProperty Name="userID" ColumnName="userID" />
-                <ScalarProperty Name="requestID" ColumnName="requestID" />
-                <ScalarProperty Name="noteID" ColumnName="noteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6391,26 +6453,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RequestNotes">
-            <EntityTypeMapping TypeName="WFJDBModel.RequestNote">
-              <MappingFragment StoreEntitySet="RequestNotes">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
-                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="contactTypeID" ColumnName="contactTypeID" />
-                <ScalarProperty Name="NotesDate" ColumnName="NotesDate" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="FollowupDate" ColumnName="FollowupDate" />
-                <ScalarProperty Name="ReminderSent" ColumnName="ReminderSent" />
-                <ScalarProperty Name="dateReminderSent" ColumnName="dateReminderSent" />
-                <ScalarProperty Name="SendToAuthorOnly" ColumnName="SendToAuthorOnly" />
-                <ScalarProperty Name="flaggedNote" ColumnName="flaggedNote" />
-                <ScalarProperty Name="deadlineCalendar" ColumnName="deadlineCalendar" />
-                <ScalarProperty Name="internalNote" ColumnName="internalNote" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RequestNotices">
             <EntityTypeMapping TypeName="WFJDBModel.RequestNotice">
               <MappingFragment StoreEntitySet="RequestNotices">
@@ -6960,6 +7002,38 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
                 <ScalarProperty Name="htmlCode" ColumnName="htmlCode" />
                 <ScalarProperty Name="fieldSize1" ColumnName="fieldSize" />
                 <ScalarProperty Name="fieldSizeID" ColumnName="fieldSizeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hiddenRequestNotes">
+            <EntityTypeMapping TypeName="WFJDBModel.hiddenRequestNote">
+              <MappingFragment StoreEntitySet="hiddenRequestNotes">
+                <ScalarProperty Name="noteID" ColumnName="noteID" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="hiddenRequestNoteID" ColumnName="hiddenRequestNoteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestNotes">
+            <EntityTypeMapping TypeName="WFJDBModel.RequestNote">
+              <MappingFragment StoreEntitySet="RequestNotes">
+                <ScalarProperty Name="LastSentTo" ColumnName="LastSentTo" />
+                <ScalarProperty Name="LastSent" ColumnName="LastSent" />
+                <ScalarProperty Name="internalNote" ColumnName="internalNote" />
+                <ScalarProperty Name="deadlineCalendar" ColumnName="deadlineCalendar" />
+                <ScalarProperty Name="flaggedNote" ColumnName="flaggedNote" />
+                <ScalarProperty Name="SendToAuthorOnly" ColumnName="SendToAuthorOnly" />
+                <ScalarProperty Name="dateReminderSent" ColumnName="dateReminderSent" />
+                <ScalarProperty Name="ReminderSent" ColumnName="ReminderSent" />
+                <ScalarProperty Name="FollowupDate" ColumnName="FollowupDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="NotesDate" ColumnName="NotesDate" />
+                <ScalarProperty Name="contactTypeID" ColumnName="contactTypeID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

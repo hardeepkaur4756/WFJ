@@ -420,11 +420,13 @@
     <Compile Include="FormAddressDataRepository.cs" />
     <Compile Include="FormDataRepository.cs" />
     <Compile Include="FormFieldsRepository.cs" />
+    <Compile Include="FormNotesUsersRepository.cs" />
     <Compile Include="FormSectionsRepository.cs" />
     <Compile Include="FormsRepository.cs" />
     <Compile Include="FormTypeRepository.cs" />
     <Compile Include="FormUsersRepository.cs" />
     <Compile Include="GenericRepository.cs" />
+    <Compile Include="HiddenRequestNotesRepository.cs" />
     <Compile Include="Interfaces\IAccessLevelsRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
@@ -437,10 +439,12 @@
     <Compile Include="Interfaces\IFormAddressDataRepository.cs" />
     <Compile Include="Interfaces\IFormDataRepository.cs" />
     <Compile Include="Interfaces\IFormFieldsRepository.cs" />
+    <Compile Include="Interfaces\IFormNotesUsersRepository.cs" />
     <Compile Include="Interfaces\IFormSectionsRepository.cs" />
     <Compile Include="Interfaces\IFormsRepository.cs" />
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IFormUsersRepository.cs" />
+    <Compile Include="Interfaces\IHiddenRequestNotesRepository.cs" />
     <Compile Include="Interfaces\ILevelRepository.cs" />
     <Compile Include="Interfaces\IListFieldRepository.cs" />
     <Compile Include="Interfaces\IPersonnelClientsRepository.cs" />
@@ -448,6 +452,7 @@
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
     <Compile Include="Interfaces\IRegionsRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IRequestNotesRepository.cs" />
     <Compile Include="Interfaces\IRequestsRepository.cs" />
     <Compile Include="Interfaces\IStatusCodesRepository.cs" />
     <Compile Include="Interfaces\IUserClientRepository.cs" />
@@ -461,6 +466,7 @@
     <Compile Include="PracticeAreaRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionsRepository.cs" />
+    <Compile Include="RequestNotesRepository.cs" />
     <Compile Include="RequestsRepository.cs" />
     <Compile Include="StatusCodesRepository.cs" />
     <Compile Include="UserClientRepository.cs" />

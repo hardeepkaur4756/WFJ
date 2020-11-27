@@ -61,7 +61,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<FormUser> FormUsers { get; set; }
         public virtual DbSet<FormUserType> FormUserTypes { get; set; }
         public virtual DbSet<FunctionsTable> FunctionsTables { get; set; }
-        public virtual DbSet<hiddenRequestNote> hiddenRequestNotes { get; set; }
         public virtual DbSet<hrDocument> hrDocuments { get; set; }
         public virtual DbSet<LegalAssistant> LegalAssistants { get; set; }
         public virtual DbSet<Letter> Letters { get; set; }
@@ -93,7 +92,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<RequestDocument> RequestDocuments { get; set; }
-        public virtual DbSet<RequestNote> RequestNotes { get; set; }
         public virtual DbSet<RequestNotice> RequestNotices { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
@@ -131,6 +129,8 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<fieldSize> fieldSizes { get; set; }
+        public virtual DbSet<hiddenRequestNote> hiddenRequestNotes { get; set; }
+        public virtual DbSet<RequestNote> RequestNotes { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

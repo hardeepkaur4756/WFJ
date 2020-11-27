@@ -141,6 +141,7 @@
     <Compile Include="Controllers\EncryptPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlacementsController.cs" />
+    <Compile Include="Controllers\RequestNotesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAttribute\AuthorizeActivity.cs" />
     <Compile Include="Global.asax.cs">
@@ -154,9 +155,12 @@
     <Content Include="Content\images\button-icon.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="Content\manageDocument.js" />
+    <Content Include="Content\manageRequestNotes.js" />
     <Content Include="Content\ManageUser.js" />
     <Content Include="Content\style.css" />
+    <Content Include="EmailTemplate\RequestNotes.html" />
     <Content Include="EmailTemplate\ForgotEmail.html" />
+    <Content Include="EmailTemplate\RequestNotesList.html" />
     <Content Include="Images\author.jpg" />
     <Content Include="Images\author1.jpg" />
     <Content Include="Images\author10.jpg" />
@@ -208,6 +212,7 @@
     <Content Include="Images\ecommerce-img7.jpg" />
     <Content Include="Images\ecommerce-img8.jpg" />
     <Content Include="Images\ecommerce-img9.jpg" />
+    <Content Include="Images\email\logo.png" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\firefox.png" />
     <Content Include="Images\g.jpg" />
@@ -318,6 +323,8 @@
     <Content Include="Scripts\plugins\daterangepicker\daterangepicker.js" />
     <Content Include="Scripts\plugins\daterangepicker\moment.min.js" />
     <Content Include="Scripts\plugins\daterangepicker\package.js" />
+    <Content Include="Scripts\plugins\eModal\eModal.js" />
+    <Content Include="Scripts\plugins\eModal\eModal.min.js" />
     <Content Include="Scripts\select2.script.js" />
     <Content Include="Scripts\sparkline.script.js" />
     <Content Include="Scripts\summernote.script.js" />
@@ -3531,6 +3538,7 @@
     <Content Include="Views\Placements\ViewPlacements.cshtml" />
     <Content Include="Views\Placements\AddPlacement.cshtml" />
     <Content Include="Views\Placements\_RequestsGrid.cshtml" />
+    <Content Include="Views\RequestNotes\_AddRequestNotes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

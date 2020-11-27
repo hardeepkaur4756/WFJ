@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class RequestNote
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RequestNote()
+        {
+            this.hiddenRequestNotes = new HashSet<hiddenRequestNote>();
+        }
+    
         public int ID { get; set; }
         public string RequestType { get; set; }
         public Nullable<int> RequestID { get; set; }
@@ -28,5 +34,10 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> flaggedNote { get; set; }
         public Nullable<byte> deadlineCalendar { get; set; }
         public Nullable<byte> internalNote { get; set; }
+        public Nullable<System.DateTime> LastSent { get; set; }
+        public string LastSentTo { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<hiddenRequestNote> hiddenRequestNotes { get; set; }
     }
 }

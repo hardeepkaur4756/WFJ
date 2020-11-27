@@ -10,7 +10,7 @@ namespace WFJ.Models
     public class PlacementsFilterViewModel
     {
         public List<SelectListItem> client { get; set; }
-        public List<FormTypeModel> placementTypeModels { get; set; }
+        public List<SelectListItem> placementTypeModels { get; set; }
     }
     public class PlacementsViewModel : ExceptionModel
     {

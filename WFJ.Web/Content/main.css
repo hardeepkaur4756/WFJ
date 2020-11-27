@@ -6445,3 +6445,17 @@ path.domain {
 .error-message{
     color:red;
 }
+
+td .td-with-inline-icons{
+    display: flex;
+}
+td .td-with-inline-icons i{
+    line-height:20px;
+    margin-left:0.5rem;
+}
+td .td-with-inline-icons .custom-control-inline
+{
+    margin-right:0;
+}
+
+

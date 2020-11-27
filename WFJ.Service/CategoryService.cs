@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
+using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -17,10 +19,17 @@ namespace WFJ.Service
 
         public List<CategoryModel> GetAll()
         {
-            ICategoryRepository categoryRepository = new CategoryRepository();
-            var categoryModels = categoryRepository.GetAll().ToList();
+            var categoryModels = _categoryRepository.GetAll().ToList();
             return MappingExtensions.MapList<Category, CategoryModel>(categoryModels);
-
         }
+
+        public List<SelectListItem> GetCategoryPracticeAreaDropdown()
+        {
+            var categories = _categoryRepository.GetAll().Where(x => x.CategoryName != null).Select(x => new SelectListItem { Value = x.CategoryID.ToString(), Text = x.PracticeArea.PracticeAreaName + " ---> " + x.CategoryName }).ToList();
+
+            return categories;
+        }
+
+
     }
 }

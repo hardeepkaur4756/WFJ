@@ -41,7 +41,7 @@ namespace WFJ.Web.Controllers
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
                 {
                     client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId,1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
-                    placementTypeModels = _formTypeService.GetAll().Where(x => x.FormType1 != null).ToList(),
+                    placementTypeModels = _formTypeService.GetFormTypesDropdown(),
                 };
 
                 return View(model);
@@ -104,7 +104,7 @@ namespace WFJ.Web.Controllers
                 PlacementReuestsViewModel model = new PlacementReuestsViewModel();
 
                 var form = _formService.GetFormById(id);
-                model.ClientName = form.ClientName;//form.Client != null ? form.Client.ClientName : null;
+                model.ClientName = form.ClientName;
                 model.FormType = form.FormTypeName;
                 model.FormID = id;
                 model.TableColumns = _requestsService.GetDatatableColumns(UserId, id, (UserType)((byte)UserType));
@@ -113,11 +113,11 @@ namespace WFJ.Web.Controllers
                 model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
                 {
                     FormID = id,
-                    Requestors = _formService.GetRequestorsDropdown(id),
-                    RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value), //_clientService.GetRegionsDropdown(),
-                    Collectors = _formService.GetCollectorsDropdown(),
-                    StatusList = _statusCodesService.GetByFormID(id),
-                    AssignedToList = _formService.GetPersonnelsDropdown(id)
+                    Requestors = DropdownHelpers.PrependALL(_formService.GetRequestorsDropdown(id)),
+                    RegionList = DropdownHelpers.PrependALL(form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value)), //_clientService.GetRegionsDropdown(),
+                    Collectors = DropdownHelpers.PrependALL(_formService.GetCollectorsDropdown()),
+                    StatusList = DropdownHelpers.PrependALL(_statusCodesService.GetByFormID(id)),
+                    AssignedToList = DropdownHelpers.PrependALL(_formService.GetPersonnelsDropdown(id))
                 };
 
                 return View(model);
@@ -137,13 +137,6 @@ namespace WFJ.Web.Controllers
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(formId);
 
-                //var user = _userService.GetById(UserId);
-                //int clientId = Convert.ToInt32(user.ClientID);
-                //if (clientId > 0)
-                //{
-                //    requestorName = _clientService.GetRequestorNameById(clientId);
-                //}
-                //requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
@@ -162,7 +155,8 @@ namespace WFJ.Web.Controllers
                     ClientId = Convert.ToInt32(form.ClientID),
                     isEditMode = Convert.ToInt32(requestId) > 0 && Convert.ToInt32(copy) == 0 ? true : false,
                     RequestorName = form.ClientName == null ? "Requestor" : form.ClientName,
-                    FormDetail = form
+                    FormDetail = form,
+                    NotesSendToDropdown = new List<SelectListItem>()
                 };
 
                 if(requestId == null)
@@ -189,6 +183,11 @@ namespace WFJ.Web.Controllers
                                 item.FormAddressData.RequestID = null;
                             }
                         }
+                    }
+                    else
+                    {
+                        IRequestNotesService _requestNotesService = new RequestNotesService();
+                        model.NotesSendToDropdown = _requestNotesService.GetSendToDropdown(formId, requestId.Value);
                     }
                 }
 
@@ -360,51 +359,6 @@ namespace WFJ.Web.Controllers
             return Json(new { success = isSuccess}, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult CopyPlacement(int formId, int requestId)
-        {
-            try
-            {
-                IRequestsService _requestService = new RequestsService();
-                GetSessionUser(out UserId, out UserType, out UserAccess);
-                var form = _formService.GetFormById(formId);
-                //var user = _userService.GetById(UserId);
-                //int clientId = Convert.ToInt32(user.ClientID);
-                //if (clientId > 0)
-                //{
-                //    requestorName = _clientService.GetRequestorNameById(clientId);
-                //}
-                //requestorName = string.IsNullOrEmpty(requestorName) ? "Requestor" : requestorName;
-                IStatusCodesService _statusCodesService = new StatusCodesService();
-                ICurrenciesService _currenciesService = new CurrenciesService();
-                AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
-                {
-                    //ClientName = form.Client != null ? form.Client.ClientName : null,
-                    CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
-                    FormSections = _formService.GetFormSections(),
-                    FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
-                    Collectors = _formService.GetCollectorsDropdown(),
-                    Requestors = _formService.GetRequestorsDropdown(formId),
-                    StatusList = _statusCodesService.GetByFormID(formId),
-                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
-                    RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
-                    AdminStaffList = form.hasAdmin == 1 ? _userService.GetAdminStaffDropdown() : new List<SelectListItem>(),
-                    UserAccess = UserAccess,
-                    UserType = UserType,
-                    ClientId = Convert.ToInt32(form.ClientID),
-                    isEditMode = false,
-                    RequestorName = form.ClientName != null ? form.ClientName : "Requestor",
-                    FormDetail = form
-                };
-                model.Request = _requestService.GetByRequestId(requestId);
-                model.Request.ID = 0;
-                return View("AddPlacement", model);
-            }
-            catch (Exception ex)
-            {
-                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/CopyPlacement?formId=" + formId + "&requestId=" + requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
-                return View(new AddEditPlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
-            }
-        }
 
     }
 }

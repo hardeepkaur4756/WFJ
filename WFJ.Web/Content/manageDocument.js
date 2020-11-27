@@ -71,8 +71,9 @@ function GetDataGrid() {
                 {
                     "mData": null,
                     "render": function (row, type, full) {
+                        console.log(full)
                         if (full.CurrentUserType == 1 || full.CurrentUserType == 6 || full.CurrentUserType == 8) {
-                            var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.ID + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
+                            var buttons = "<a class='anchor-design' href='#' id='' data-Id='" + full.Id + "' data-toggle='modal' data-target='' onclick='return EditDocument(this)'>Edit</a>";
                             return buttons;
                         }
                         else {

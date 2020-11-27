@@ -13,7 +13,7 @@ namespace WFJ.Helper
         public static void SendMail(string toEmail,string subject,string body)
         {
             MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("mail.tela.com");
+            SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTPHost"]);//"mail.tela.com");
             mail.From = new MailAddress(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]));
             mail.To.Add(toEmail);
             mail.Subject = subject;

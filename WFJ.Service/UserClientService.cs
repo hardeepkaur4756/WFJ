@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using WFJ.Helper;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
@@ -22,21 +23,17 @@ namespace WFJ.Service
         public List<SelectListItem> GetUserClients(UserType userType, int userId, byte? activeInactive = null)
         {
             var clients = _UserClientRepo.GetByUserId(userId);
-            var clientList = clients.Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null);
+            var clientList = clients.Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null).ToList();
 
             if (activeInactive != null)
-                clientList = clients.Where(x => x.Client.Active == activeInactive).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null);
-
-            List<SelectListItem> clientDropdownList = new List<SelectListItem>();
+                clientList = clients.Where(x => x.Client.Active == activeInactive).Select(x => new SelectListItem() { Text = x.Client.ClientName, Value = x.Client.ID.ToString() }).Where(x => x.Text != null).ToList();
 
             if (UserType.ClientUser != userType || ((UserType.ClientUser == userType && clientList.Count() > 1)))
             {
-                clientDropdownList.Add(new SelectListItem { Text = "All", Value = "-1" });
+                clientList = DropdownHelpers.PrependALL(clientList);
             }
 
-            clientDropdownList.AddRange(clientList);
-
-            return clientDropdownList;
+            return clientList;
         }
 
         public List<SelectListItem> GetManageUsersByClient(List<int?> ClientIds, int userId)

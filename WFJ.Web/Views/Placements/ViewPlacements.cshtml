@@ -13,6 +13,10 @@
         .column-close{
             padding:5px;
         }
+
+        .dataTables_wrapper .dt-buttons {
+            float: right;
+        }
     </style>
 }
 
@@ -157,6 +161,32 @@
                 GetDataTable();
         });
 
+        var custom_csv = {
+            extend: 'csv',
+            text: 'CSV',
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+
+                        if (typeof data === 'string' || data instanceof String)
+                            return data.replace(/&nbsp;/g, '');
+                        else
+                            return data;
+                        //return data.replace(/&nbsp;<(i)[\s\S="]*?<\/(i)>/g, '');
+                    }
+                },
+                columns: 'th:not(:first-child)'
+            },
+        }
+
+        var wide_pdf = {
+            extend: 'pdfHtml5',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            exportOptions: {
+                columns: 'th:not(:first-child)'
+            },
+        };
 
         function GetDataTable() {
 
@@ -171,6 +201,8 @@
                             fixedColumnsLeft: 1,
                             realtime: false
                         },
+                        dom: 'lBfrtip',
+                        buttons: [custom_csv, wide_pdf],
                         "aaSorting": [[1, "asc"]],
                         "bServerSide": true,
                         "sAjaxSource": "/Placements/GetRequestList",
@@ -235,11 +267,12 @@
                             "processing": "Processing... Please wait",
                         },
 
+                        // for x icon with column heading
                         "headerCallback": function (nHead, aData, iStart, iEnd, aiDisplay) {
                             oTable.columns().iterator('column', function (settings, column) {
 
                                 if (column > 0) {
-                                    $(oTable.column(column).header()).html(settings.aoColumns[column].title + ' &nbsp;<i data-fieldid="' + $(settings.aoColumns[column])[0].fieldID+'" class="fa fa-times column-close" aria-hidden="true"></i>');
+                                    $(oTable.column(column).header()).html(settings.aoColumns[column].title + ' <i data-fieldid="' + $(settings.aoColumns[column])[0].fieldID+'" class="fa fa-times column-close" aria-hidden="true"></i>');
                                 }
                                     //settings.aoColumns[column].title = settings.aoColumns[column].title + ' <i class="fa fa-times" aria-hidden="true"></i>';
                                 //if (settings.aoColumns[column].tooltip !== undefined) {
