@@ -31,5 +31,7 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetAllAccessLevels();
         List<SelectListItem> GetUsersDropdown(byte? active = null);
         List<SelectListItem> GetAdminStaffDropdown();
+        List<SelectListItem> GetUsersByClientId(int clientId);
+        
     }
 }

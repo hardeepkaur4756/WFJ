@@ -25,6 +25,7 @@ namespace WFJ.Service
         IUserRepository _userRepo = new UserRepository();
         IPersonnelsRepository _personalRepo = new PersonnelsRepository();
         IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
+        ICodesRepository _codesRepo = new CodesRepository();
 
         public RequestNotesGrid GetNotesGrid(int loginUserId, UserType userType, int requestId, DataTablesParam param, string sortDir, string sortCol, int pageNo)
         {
@@ -178,7 +179,7 @@ namespace WFJ.Service
         {
 
             // email code pending
-            DateTime? followupDate = string.IsNullOrEmpty(model.FollowupDate) ? (DateTime?)null : DateTime.ParseExact(model.FollowupDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime? followupDate = string.IsNullOrEmpty(model.FollowupDate) ? (DateTime?)null : Convert.ToDateTime(model.FollowupDate);
             DateTime? notedate = string.IsNullOrEmpty(model.NotesDate) ? (DateTime?)null : DateTime.ParseExact(model.NotesDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
             if (model.ID == 0)
@@ -355,8 +356,31 @@ namespace WFJ.Service
 
         }
 
+        public List<SelectListItem> GetFollowUpTime()
+        {
+            var sTime = ConfigurationManager.AppSettings["FollowUpStartTime"].ToString();
+            var eTime = ConfigurationManager.AppSettings["FollowUpEndTime"].ToString();
+            var slot = Convert.ToInt32(ConfigurationManager.AppSettings["FollowUpSlot"]);
+            DateTime startTime = Convert.ToDateTime(DateTime.Now.Date.ToString("dd/MM/yyyy") + " " + sTime);
+            DateTime endTime = Convert.ToDateTime(DateTime.Now.Date.ToString("dd/MM/yyyy") + " " + eTime);
+            List<SelectListItem> followupTimes = new List<SelectListItem>();
+            while (startTime <= endTime)
+            {
+                followupTimes.Add(new SelectListItem { Text = startTime.ToString("hh:mm tt"), Value = startTime.ToString("hh:mm tt") });
+                startTime = startTime.AddMinutes(slot);
+            }
+            return followupTimes;
+        }
 
-
-
+        public List<SelectListItem> GetStandardNotes()
+        {
+            var codes = _codesRepo.GetAllByType("STDNOTE");
+            List<SelectListItem> standardCodes = new List<SelectListItem>();
+            foreach (var code in codes)
+            {
+                standardCodes.Add(new SelectListItem { Text = code.Value, Value = code.ID.ToString() });
+            }
+            return standardCodes;
+        }
     }
 }

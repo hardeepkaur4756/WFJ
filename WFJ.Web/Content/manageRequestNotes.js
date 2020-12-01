@@ -3,6 +3,15 @@
     enableFiltering: true,
 });
 
+function SetNotes() {
+    if ($("#standardNotes option:selected").val() != "") {
+        var notes = $("#standardNotes option:selected").text();
+        $("#notesText").val(notes);
+    } else {
+        $("#notesText").val("");
+    }
+}
+
 function GetRequestNotesDataTable() {
 
     if ($.fn.DataTable.isDataTable("#requestNotesTable")) {
@@ -149,12 +158,11 @@ function deleteNote(noteid) {
 }
 
 
-function addNotes(noteId) {
-
+function addNotes(noteId,clientId) {
     $.ajax({
         type: "Get",
         url: "/RequestNotes/AddEditNote",
-        data: { noteId: noteId },
+        data: { noteId: noteId, clientId: clientId },
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
@@ -217,6 +225,10 @@ function addNotesSubmit() {
 
     if ($("#internalNote").length > 0) {
         internalNote = $("#internalNote").is(":checked") ? 1 : "";
+    }
+
+    if ($.trim(followupDate).length && $.trim(followupTime).length > 0) {
+        followupDate = followupDate + " " + followupTime; 
     }
     //var sendToUsers = $("#NotesSendTo").val();
 

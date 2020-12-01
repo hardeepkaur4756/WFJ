@@ -15,14 +15,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Author</label>
-                @{ 
-                    List<SelectListItem> Authors = new List<SelectListItem>();
-                    Authors.Add(new SelectListItem { Text = ViewData["LoginUserName"].ToString(), Value = Session["UserId"].ToString() });
-                }
-                @Html.DropDownListFor(x => x.AuthorID, new SelectList(Authors, "Value", "Text"), new { @Class = "form-control", @id = "noteAuthor" })
-                @*<select id="noteAuthor" class="form-control">
-                    <option value="@Session["UserId"]" selected>@ViewData["LoginUserName"]</option>
-                </select>*@
+                @Html.DropDownListFor(x => x.AuthorID, new SelectList(Model.Authors, "Value", "Text"),"--Select--", new { @Class = "form-control", @id = "noteAuthor" })
             </div>
 
             <input id="notesDefaultDate" type="hidden" value="@DateTime.Now.ToString("MM/dd/yyyy")" />
@@ -39,12 +32,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <select id="followupTime" class="form-control">
-                            <option selected=""></option>
-                            <option>7:00 a.m.</option>
-                            <option>7:15 a.m.</option>
-                            <option>7:15 a.m.</option>
-                        </select>
+                        @Html.DropDownListFor(x => x.SelectedFollowUpTime, new SelectList(Model.FollowUpTimes, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "followupTime" })
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -62,12 +50,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>Standard Note</label>
-                <select id="inputState" class="form-control">
-                    <option selected="">Select</option>
-                    <option>ABF Printing</option>
-                    <option>Action Advertising and Flags</option>
-                    <option>Ad Specialties by ken</option>
-                </select>
+                    @Html.DropDownListFor(x => x.StandardNoteId, new SelectList(Model.StandardNotes, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "standardNotes", onchange= "SetNotes()" })
             </div>
         </div>
 
@@ -87,7 +70,6 @@
             <div class="form-group">
                 <label>Notes*</label>
                 @Html.TextAreaFor(x => x.Notes, new { @Class= "form-control", @Rows = "4", @Id = "notesText" })
-                @*<textarea class="form-control" id="notesText" rows="4" placeholder=""></textarea>*@
             </div>
         </div>
     </div>

@@ -136,7 +136,7 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddEditNote(int? noteId)
+        public ActionResult AddEditNote(int? noteId,int? clientId)
         {
             try
             {
@@ -154,6 +154,10 @@ namespace WFJ.Web.Controllers
                 {
                     model = _notesService.GetEditRequestNote(noteId.Value);
                 }
+
+                model.Authors = _userService.GetUsersByClientId(Convert.ToInt32(clientId));
+                model.FollowUpTimes = _notesService.GetFollowUpTime();
+                model.StandardNotes = _notesService.GetStandardNotes();
 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddRequestNotes", model) }, JsonRequestBehavior.AllowGet);
             }

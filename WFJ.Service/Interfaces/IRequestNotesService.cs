@@ -22,6 +22,8 @@ namespace WFJ.Service.Interfaces
         void AddUpdateRequestNote(AddRequestNoteViewModel model);
         void DeleteRequestNote(int noteId);
         void SendNotes(int requestId, List<int> notes, List<string> users);
+        List<SelectListItem> GetFollowUpTime();
+        List<SelectListItem> GetStandardNotes();
     }
 
 }

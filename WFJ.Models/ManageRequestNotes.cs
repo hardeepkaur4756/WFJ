@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace WFJ.Models
 {
@@ -60,6 +61,11 @@ namespace WFJ.Models
         [Required]
         public string NotesDate { get; set; }
         public string FollowupDate { get; set; }
+        public List<SelectListItem> Authors { get; set; }
+        public List<SelectListItem> FollowUpTimes { get; set; }
+        public string SelectedFollowUpTime { get; set; }
+        public List<SelectListItem> StandardNotes { get; set; }
+        public string StandardNoteId { get; set; }
     }
 
 
