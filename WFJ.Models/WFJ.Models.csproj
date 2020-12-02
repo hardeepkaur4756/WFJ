@@ -87,6 +87,7 @@
     <Compile Include="ManageUserModel.cs" />
     <Compile Include="ManageUserViewModel.cs" />
     <Compile Include="ManagePlacementsModel.cs" />
+    <Compile Include="PaymentViewModel.cs" />
     <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />

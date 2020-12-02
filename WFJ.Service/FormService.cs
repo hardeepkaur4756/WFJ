@@ -360,5 +360,83 @@ namespace WFJ.Service
             }
             return requestId;
         }
+
+        public SummaryInformation GetSummaryInformation(ClientModel clientModel, ProfileViewModel userDetail)
+        {
+            SummaryInformation summaryInformation = new SummaryInformation();
+            #region ClientDetail
+            summaryInformation.Clients = new Detail {
+                Name = !string.IsNullOrEmpty(clientModel.ClientName) ? clientModel.ClientName : "-",
+                Address = GetAddress(clientModel.Address1, clientModel.Address2, clientModel.City, clientModel.State, clientModel.PostalCode),
+                Email = !string.IsNullOrEmpty(clientModel.EMail) ? clientModel.EMail : "-",
+                Phone = !string.IsNullOrEmpty(clientModel.Telephone) ? clientModel.Telephone : "-",
+                Contact = !string.IsNullOrEmpty(clientModel.ContactName) ? clientModel.ContactName : "-"
+            };
+            #endregion
+
+            #region Requestor           
+            summaryInformation.Requestors = new Detail {
+                Name = userDetail.FirstName +" "+ userDetail.LastName,
+                Address = GetAddress(userDetail.Address1, userDetail.Address2, userDetail.City, userDetail.State, userDetail.PostalCode),
+                Email = !string.IsNullOrEmpty(userDetail.Email) ? userDetail.Email : "-",
+                Phone = !string.IsNullOrEmpty(userDetail.Telephone) ? userDetail.Telephone : "-",
+            };
+            #endregion
+            return summaryInformation;
+        }
+
+        public string GetAddress(string address1,string address2,string city,string state,string postalCode)
+        {
+            string address = string.Empty;
+            if (!string.IsNullOrEmpty(address1))
+            {
+                address += address1;
+            }
+            if (!string.IsNullOrEmpty(address2))
+            {
+                if (!string.IsNullOrEmpty(address1))
+                {
+                    address += ", " + address2;
+                }
+                else
+                {
+                    address += "<br/>" + address2;
+                }
+            }
+            if (!string.IsNullOrEmpty(city))
+            {
+                address += "<br/>" + city;
+            }
+            if (!string.IsNullOrEmpty(state))
+            {
+                if (!string.IsNullOrEmpty(city))
+                {
+                    address += ", " + state;
+                }
+                else
+                {
+                    address += "<br/>" + state;
+                }
+            }
+            if (!string.IsNullOrEmpty(postalCode))
+            {
+                if (!string.IsNullOrEmpty(city) || !string.IsNullOrEmpty(state))
+                {
+                    address += " " + postalCode;
+                }
+                else
+                {
+                    address += "<br/>" + postalCode;
+                }
+            }
+            if (string.IsNullOrEmpty(address))
+            {
+                return "-";
+            }
+            else
+            {
+                return address;
+            }
+        }
     }
 }

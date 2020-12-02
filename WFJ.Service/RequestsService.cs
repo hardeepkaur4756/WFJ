@@ -21,7 +21,7 @@ namespace WFJ.Service
         //IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         public RequestViewModel GetByRequestId(int RequestID)
         {
-            var request =_requestsRepo.GetById(RequestID);
+            var request =_requestsRepo.GetRequestWithDetail(RequestID);
             RequestViewModel model = new RequestViewModel
             {
                 ID = RequestID,
@@ -35,10 +35,15 @@ namespace WFJ.Service
                 CompletionDate = request.CompletionDate,
                 LevelID = request.LevelID,
                 RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("MM/dd/yyyy") : null,
-                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("MM/dd/yyyy"): null,
-                active = request.active //request.active == null ? 1 : request.active
+                CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
+                active = request.active,
+                RequestNotes = request.RequestNotes.Select(x => new RequestNoteModel
+                {
+                    NotesDate = x.NotesDate.Value.ToString("MM/dd/yyyy"),
+                    Notes = x.Notes,
+                    flaggedNote = x.flaggedNote
+                }).OrderBy(x=>x.NotesDate).ToList()
             };
-
             return model;
         }
 

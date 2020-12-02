@@ -23,5 +23,6 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetCollectorsDropdown();
         List<SelectListItem> GetPersonnelsDropdown(int FormID);
         int SavePlacements(SavePlacementViewModel savePlacementViewModel);
+        SummaryInformation GetSummaryInformation(ClientModel clientModel, ProfileViewModel userDetail);
     }
 }

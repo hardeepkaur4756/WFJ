@@ -122,9 +122,11 @@
     <Compile Include="Interfaces\IStatusCodesService.cs" />
     <Compile Include="Interfaces\IUserClientService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Interfaces\IPaymentService.cs" />
     <Compile Include="LevelService.cs" />
     <Compile Include="MappingExtensions.cs" />
     <Compile Include="Model\Enums.cs" />
+    <Compile Include="PaymentService.cs" />
     <Compile Include="PersonnelService.cs" />
     <Compile Include="PracticeAreaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

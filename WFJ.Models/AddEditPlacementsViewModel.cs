@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using WFJ.Repository.EntityModel;
 
 namespace WFJ.Models
 {
@@ -37,6 +38,7 @@ namespace WFJ.Models
 
         // Notes
         public List<SelectListItem> NotesSendToDropdown { get; set; }
+        public SummaryInformation summaryInformation { get; set; }
     }
 
 
@@ -118,6 +120,34 @@ namespace WFJ.Models
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string Country { get; set; }
+    }
+
+    public class SummaryInformation
+    {
+        public PaymentDetail Payments { get; set; }
+        public Detail Clients { get; set; }
+        public Detail Requestors { get; set; }
+        public List<RequestNoteModel> ClientNotes { get; set; }
+        public List<RequestNoteModel> FlagNotes { get; set; }
+    }
+
+    public class PaymentDetail
+    {
+        public decimal BalanceDue { get; set; }
+        public decimal TotalPayment { get; set; }
+        public decimal RemainingAmount { get; set; }
+        public string LastPaymentDate { get; set; }
+        public string CustomerPhone { get; set; }
+        public bool isPaymentFieldShow { get; set; }
+    }
+
+    public class Detail
+    {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Contact { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
     }
 
 }

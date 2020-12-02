@@ -143,7 +143,8 @@ namespace WFJ.Web.Controllers
                 }
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(Convert.ToInt32(formId));
-
+                int accountBalanceFieldId = Convert.ToInt32(form.AccountBalanceFieldID);
+                var userDetail = _userService.GetById(UserId);
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
@@ -163,8 +164,33 @@ namespace WFJ.Web.Controllers
                     isEditMode = Convert.ToInt32(requestId) > 0 && Convert.ToInt32(copy) == 0 ? true : false,
                     RequestorName = form.ClientName == null ? "Requestor" : form.ClientName,
                     FormDetail = form,
-                    NotesSendToDropdown = new List<SelectListItem>()
+                    NotesSendToDropdown = new List<SelectListItem>(),
+                    summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail)
                 };
+
+                #region Bind PaymentInformation in Summary
+                string customerPhone = string.Empty;
+                decimal balanceDue = 0;
+                model.summaryInformation.Payments = new PaymentDetail();
+                model.summaryInformation.ClientNotes = new List<RequestNoteModel>();
+                model.summaryInformation.FlagNotes = new List<RequestNoteModel>();
+                var customerPhoneField = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "customer phone");
+                if (customerPhoneField != null)
+                {
+                    customerPhone = customerPhoneField.FormData?.FieldValue;
+                }
+                model.summaryInformation.Payments.CustomerPhone = string.IsNullOrEmpty(customerPhone) ? "-" : customerPhone;
+                if (accountBalanceFieldId > 0)
+                {
+                    var formField = model.FormFieldsList.FirstOrDefault(x => x.ID == accountBalanceFieldId);
+                    balanceDue = Convert.ToDecimal(formField.FormData?.FieldValue);
+                }
+                model.summaryInformation.Payments.BalanceDue = balanceDue;
+                model.summaryInformation.Payments.LastPaymentDate = "-";
+                model.summaryInformation.Payments.TotalPayment = balanceDue;
+                model.summaryInformation.Payments.RemainingAmount = balanceDue;
+                model.summaryInformation.Payments.isPaymentFieldShow = false;
+                #endregion
 
                 if(requestId == null)
                 {
@@ -174,6 +200,26 @@ namespace WFJ.Web.Controllers
                 {
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
+                    model.summaryInformation.ClientNotes = model.Request.RequestNotes;
+                    model.summaryInformation.FlagNotes = model.Request.RequestNotes.Where(x=>x.flaggedNote == 1).ToList();
+                    if (balanceDue > 0)
+                    {
+                        IPaymentService _paymentService = new PaymentService();
+                        model.summaryInformation.Payments.isPaymentFieldShow = true;
+                        var payments = _paymentService.GetByRequestId(requestId.Value);
+                        double? totalPayment = 0;
+                        if (payments.Any())
+                        {
+                            model.summaryInformation.Payments.LastPaymentDate = payments.OrderBy(x => x.PaymentDate).FirstOrDefault().PaymentDate.Value.ToString("MM/dd/yyyy");
+                            totalPayment = payments.Sum(x => x.Amount);
+                        }
+                        model.summaryInformation.Payments.TotalPayment = Convert.ToDecimal(totalPayment);
+                        model.summaryInformation.Payments.RemainingAmount = balanceDue - Convert.ToDecimal(totalPayment);
+                    }
+                    else
+                    {
+                        model.summaryInformation.Payments.isPaymentFieldShow = false;
+                    }
 
                     if(copy == 1)
                     {

@@ -85,6 +85,7 @@ namespace WFJ.Repository
         public Request GetRequestWithDetail(int requestId)
         {
             return _context.Requests.Include(x => x.User) // collector
+                .Include(x=>x.RequestNotes)
                 .Include(x => x.User1) // Requestor
                 .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
         }
