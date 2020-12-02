@@ -295,7 +295,7 @@ namespace WFJ.Service
                 status = statuscode.Description;
             }
             string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace("RequestNotes/SendNotes", "");
-            string queryString = baseUrl + "/Placements/AddPlacement" + "?" + Util.Encode("requestId=" + request.ID + "&formId=" + request.FormID);
+            string queryString = baseUrl + "/Placements/AddPlacement?value=" + Util.Encode(request.FormID + "|" + request.ID);
             string subject = "WFJ Notes";
             string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
             string xlsTemplatePath = dirpath + "/RequestNotes.html";
