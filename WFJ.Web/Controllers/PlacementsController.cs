@@ -130,12 +130,19 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddPlacement(int formId, int? requestId, int? copy)
+        public ActionResult AddPlacement(int? formId, int? requestId, int? copy,string value = null)
         {
             try
             {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var decodeKey = Util.Decode(value.ToString());
+                    var decryptValue = decodeKey.Split('|');
+                    formId = Convert.ToInt32(decryptValue[0]);
+                    requestId = Convert.ToInt32(decryptValue[1]);
+                }
                 GetSessionUser(out UserId, out UserType, out UserAccess);
-                var form = _formService.GetFormById(formId);
+                var form = _formService.GetFormById(Convert.ToInt32(formId));
 
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
@@ -143,11 +150,11 @@ namespace WFJ.Web.Controllers
                 {
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
                     FormSections = _formService.GetFormSections(),
-                    FormFieldsList = _formService.GetFormFieldsByForm(formId, requestId),
+                    FormFieldsList = _formService.GetFormFieldsByForm(Convert.ToInt32(formId), requestId),
                     Collectors = _formService.GetCollectorsDropdown(),
-                    Requestors = _formService.GetRequestorsDropdown(formId),
-                    StatusList = _statusCodesService.GetByFormID(formId),
-                    AssignedAtorneys = _formService.GetPersonnelsDropdown(formId),
+                    Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId)),
+                    StatusList = _statusCodesService.GetByFormID(Convert.ToInt32(formId)),
+                    AssignedAtorneys = _formService.GetPersonnelsDropdown(Convert.ToInt32(formId)),
                     RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
                     AdminStaffList = form.hasAdmin == 1 ? _userService.GetAdminStaffDropdown() : new List<SelectListItem>(),
                     UserAccess = UserAccess,
@@ -187,7 +194,7 @@ namespace WFJ.Web.Controllers
                     else
                     {
                         IRequestNotesService _requestNotesService = new RequestNotesService();
-                        model.NotesSendToDropdown = _requestNotesService.GetSendToDropdown(formId, requestId.Value);
+                        model.NotesSendToDropdown = _requestNotesService.GetSendToDropdown(Convert.ToInt32(formId), requestId.Value);
                     }
                 }
 

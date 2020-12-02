@@ -14,6 +14,12 @@ namespace WFJ.Repository.EntityModel
     
     public partial class Request
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Request()
+        {
+            this.RequestNotes = new HashSet<RequestNote>();
+        }
+    
         public int ID { get; set; }
         public Nullable<int> FormID { get; set; }
         public Nullable<int> Requestor { get; set; }
@@ -54,5 +60,7 @@ namespace WFJ.Repository.EntityModel
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         public virtual Level Level { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RequestNote> RequestNotes { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace WFJ.Repository
             _context.Configuration.LazyLoadingEnabled = true;
             _context.Configuration.ProxyCreationEnabled = true;
 
-            var requests = _context.RequestNotes.Include(x => x.hiddenRequestNotes);
+            var requests = _context.RequestNotes.Include(x => x.hiddenRequestNotes).Include(x=>x.User);
 
             if (requestId != -1)
             {

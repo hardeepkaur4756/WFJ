@@ -20,12 +20,13 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
             try
             {
                 LoginViewModel loginViewModel = new LoginViewModel();
                 loginViewModel.UserCookieCheck = true;
+                loginViewModel.ReturnUrl = returnUrl;
                 System.Web.HttpCookie loginUserCookie = HttpContext.Request.Cookies.Get("loginUserCookie");
                 if (loginUserCookie != null && loginUserCookie.HasKeys)
                 {
@@ -156,7 +157,15 @@ namespace WFJ.Web.Controllers
                     {
                         AddUserCookie("", "");
                     }
-                    return RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(loginViewModel.ReturnUrl))
+                    {
+                        return Redirect(loginViewModel.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    
                 }
                 else
                 {

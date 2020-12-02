@@ -26,15 +26,19 @@ namespace WFJ.Service
         {
             List<SelectListItem> regionList = new List<SelectListItem>();
             var list = levelRepo.GetByClientID(ClientId).Where(x => x.ParentID == null);
-            GetFlatRegionsFromTable(list, regionList, "");
+            GetFlatRegionsFromTable(list, regionList, "","parent");
             return regionList.Where(x => x.Text.Trim() != "").ToList();
         }
 
 
-        void GetFlatRegionsFromTable(IEnumerable<Level> Levels, List<SelectListItem> OrginialList, string InitialSpace)
+        void GetFlatRegionsFromTable(IEnumerable<Level> Levels, List<SelectListItem> OrginialList, string InitialSpace,string parentName)
         {
             foreach (var level in Levels.OrderBy(x => x.SeqNo))
             {
+                if (string.IsNullOrEmpty(parentName))
+                {
+                    InitialSpace = "";
+                }
                 SelectListItem item = new SelectListItem
                 {
                     Text = InitialSpace + level.Name,
@@ -43,7 +47,7 @@ namespace WFJ.Service
                 OrginialList.Add(item);
                 if (level.Levels1 != null && level.Levels1.Count > 0)
                 {
-                    GetFlatRegionsFromTable(level.Levels1, OrginialList, InitialSpace + "\xA0\xA0\xA0\xA0");
+                    GetFlatRegionsFromTable(level.Levels1, OrginialList, InitialSpace + "\xA0\xA0\xA0\xA0",level.Name);
                 }
             }
 

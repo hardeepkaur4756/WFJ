@@ -14,5 +14,6 @@ namespace WFJ.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter password.")]
         public string Password { get; set; }
         public bool UserCookieCheck { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

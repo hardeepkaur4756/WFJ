@@ -135,6 +135,7 @@
                     <form id="placementForm">
                         @Html.HiddenFor(x => x.Request.FormID)
                         @Html.HiddenFor(x => x.Request.ID)
+                        @Html.HiddenFor(x=>x.ClientId)
 
                         @foreach (var section in Model.FormSections)
                         {
@@ -397,9 +398,12 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active bg-white mr-3" id="summary-tab" data-toggle="pill" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link bg-white mr-3" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false">Notes</a>
-                            </li>
+                            @if (Model.Request != null && Model.Request.ID > 0)
+                            {
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link bg-white mr-3" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false">Notes</a>
+                                </li>
+                            }
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link bg-white mr-3" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payments</a>
                             </li>
@@ -410,13 +414,13 @@
 
                             @if (AssociateCounselVisible == true)
                             {
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
-                            </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
+                                </li>
                             }
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                            <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
@@ -435,11 +439,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-right">
-                                            <button type="button" class="btn btn-secondary mb-3" onclick="addNotes(null,@clientId)">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="addNotes()">
                                                 Add Notes
                                             </button>
                                             <button type="button" class="btn btn-secondary mb-3" onclick="sendNotes()">

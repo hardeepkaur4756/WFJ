@@ -23,7 +23,10 @@ namespace WFJ.Web.CustomAttribute
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             filterContext.Result = new RedirectToRouteResult(new
-                  RouteValueDictionary(new { controller = "Account", action = "Login" }));
+                  RouteValueDictionary(new { controller = "Account",
+                      action = "Login",
+                      returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                  }));
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)

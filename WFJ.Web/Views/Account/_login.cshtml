@@ -15,6 +15,7 @@
     {
         <div class="form-group mb-3">
             <label for="emailaddress">Username / Email address</label>
+            @Html.HiddenFor(x=>x.ReturnUrl)
             @Html.TextBoxFor(m => m.Email, new { @placeholder = "Enter your Username / Email address", @class = "form-control login-text" })
             @Html.ValidationMessageFor(m => m.Email)
         </div>

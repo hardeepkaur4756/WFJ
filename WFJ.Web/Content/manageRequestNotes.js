@@ -158,7 +158,9 @@ function deleteNote(noteid) {
 }
 
 
-function addNotes(noteId,clientId) {
+function addNotes(noteId) {
+    var clientId = parseInt($("#ClientId").val());
+    if (isNaN(clientId)) { clientId = 0; }
     $.ajax({
         type: "Get",
         url: "/RequestNotes/AddEditNote",

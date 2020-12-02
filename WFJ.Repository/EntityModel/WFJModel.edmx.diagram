@@ -140,6 +140,8 @@
         <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="31.375" PointY="1" />
         <AssociationConnector Association="WFJDBModel.FK__hiddenReq__noteI__53584DE9" />
         <AssociationConnector Association="WFJDBModel.FK__FormNotes__UserI__544C7222" />
+        <AssociationConnector Association="WFJDBModel.FK__RequestNo__Reque__6D181FEC" />
+        <AssociationConnector Association="WFJDBModel.FK__RequestNo__UserI__6C23FBB3" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

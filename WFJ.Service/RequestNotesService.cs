@@ -43,7 +43,7 @@ namespace WFJ.Service
                 var list1 = requests.Select(x => new RequestNoteModel
                 {
                     SendToAuthorOnly = x.SendToAuthorOnly,
-                    AuthorName = "",
+                    AuthorName = x.User?.FirstName + " " + x.User?.LastName,
                     dateReminderSent = x.dateReminderSent,
                     deadlineCalendar = x.deadlineCalendar,
                     flaggedNote = x.flaggedNote,
@@ -56,8 +56,7 @@ namespace WFJ.Service
                     ReminderSent = x.ReminderSent,
                     RequestID = x.RequestID,
                     UserID = x.UserID,
-                    NotesDateVal = x.NotesDate,
-
+                    NotesDateVal = x.NotesDate
                 });
 
                 // Omit from the display any records in the hiddenRequestNotes table.
@@ -169,7 +168,8 @@ namespace WFJ.Service
                 FollowupDate = note.FollowupDate != null ? note.FollowupDate.Value.ToString("MM/dd/yyyy") : null,
                 NotesDate = note.NotesDate != null ? note.NotesDate.Value.ToString("MM/dd/yyyy") : null,
                 Notes = note.Notes,
-                RequestID = note.RequestID
+                RequestID = note.RequestID,
+                SelectedFollowUpTime = note.FollowupDate != null ? note.FollowupDate.Value.ToString("hh:mm tt") : null
             };
 
             return requestNote;
@@ -205,7 +205,7 @@ namespace WFJ.Service
                     if (attorneyUser != null && email != null && Util.ValidateEmail(email))
                     {
                         string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace("RequestNotes/AddNote", "");
-                        string queryString = baseUrl + "/Placements/AddPlacement" + "?" + Util.Encode("requestId=" + request.ID+"&formId="+request.FormID);
+                        string queryString = baseUrl + "/Placements/AddPlacement?value=" + Util.Encode(request.FormID + "|" + request.ID);
                         string subject = "WFJ Notes";
                         string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
                         string xlsTemplatePath = dirpath + "/RequestNotes.html";
@@ -273,6 +273,7 @@ namespace WFJ.Service
                 note.internalNote = model.internalNote;
                 note.Notes = model.Notes;
                 note.SendToAuthorOnly = model.SendToAuthorOnly;
+                note.UserID = model.AuthorID;
                 _notesRepo.Update(note);
             }
 
