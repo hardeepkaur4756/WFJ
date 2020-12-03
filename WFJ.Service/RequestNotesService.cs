@@ -26,6 +26,8 @@ namespace WFJ.Service
         IPersonnelsRepository _personalRepo = new PersonnelsRepository();
         IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         ICodesRepository _codesRepo = new CodesRepository();
+        IFormFieldsRepository _formfieldRepo = new FormFieldsRepository();
+        IFormDataRepository _formDataRepo = new FormDataRepository();
 
         public RequestNotesGrid GetNotesGrid(int loginUserId, UserType userType, int requestId, DataTablesParam param, string sortDir, string sortCol, int pageNo)
         {
@@ -220,11 +222,39 @@ namespace WFJ.Service
                         //sb1.Replace("[Collector]", request.User != null ? request.User.FirstName + " " + request.User.LastName : "" );
                         sb1.Replace("[Attorney]", request.Personnel != null ? request.Personnel.FirstName + " " + request.Personnel.LastName : "");
 
-                        // Need to implement
-                        sb1.Replace("[CustomerName]", "");
-                        sb1.Replace("[CustomerAccount]", "");
-                        sb1.Replace("[CollectMaxNo]", "");
-                        sb1.Replace("[WFJFileNo]", "");
+                        var formFields = _formfieldRepo.GetFormFieldsByFormID(request.FormID.Value);
+                        var customerNameFieldId = formFields.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "customer name")?.ID;
+                        var customerAccountFieldId = formFields.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "customer account #")?.ID;
+                        var collectMaxNoFieldId = formFields.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "collectmax record number")?.ID;
+                        var wfjFileNoFieldId = formFields.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "wfj file #")?.ID;
+
+                        var formdata = _formDataRepo.GetByRequestId(request.ID);
+                        string customerName = string.Empty;
+                        string customerAccount = string.Empty;
+                        string collectMaxNo = string.Empty;
+                        string wfjFileNo = string.Empty;
+
+                        if (Convert.ToInt32(customerNameFieldId) > 0)
+                        {
+                            customerName = formdata.FirstOrDefault(x => x.FormFieldID == customerNameFieldId).FieldValue;
+                        }
+                        if (Convert.ToInt32(customerAccountFieldId) > 0)
+                        {
+                            customerAccount = formdata.FirstOrDefault(x => x.FormFieldID == customerAccountFieldId).FieldValue;
+                        }
+                        if (Convert.ToInt32(collectMaxNoFieldId) > 0)
+                        {
+                            collectMaxNo = formdata.FirstOrDefault(x => x.FormFieldID == collectMaxNoFieldId).FieldValue;
+                        }
+                        if (Convert.ToInt32(wfjFileNoFieldId) > 0)
+                        {
+                            wfjFileNo = formdata.FirstOrDefault(x => x.FormFieldID == wfjFileNoFieldId).FieldValue;
+                        }
+
+                        sb1.Replace("[CustomerName]", !string.IsNullOrEmpty(customerName) ? customerName : "-" );
+                        sb1.Replace("[CustomerAccount]", !string.IsNullOrEmpty(customerAccount) ? customerAccount : "-");
+                        sb1.Replace("[CollectMaxNo]", !string.IsNullOrEmpty(collectMaxNo) ? collectMaxNo : "-");
+                        sb1.Replace("[WFJFileNo]", !string.IsNullOrEmpty(wfjFileNo) ? wfjFileNo : "-");
 
                         // Bind Notes
                         string xlsTemplatePath2 = dirpath + "/RequestNotesList.html";
