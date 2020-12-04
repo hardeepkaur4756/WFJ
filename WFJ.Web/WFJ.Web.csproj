@@ -148,6 +148,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\FieldTypes.cs" />
+    <Compile Include="Models\Enums\RequestDocumentType.cs" />
     <Compile Include="Models\Enums\UserType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

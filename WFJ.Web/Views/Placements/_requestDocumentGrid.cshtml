@@ -3,12 +3,13 @@
 
 @{
     var requestDocumentList = Model.RequestDocumentDetails;
+    int rowNumber = 0;
     foreach (var requestDocument in requestDocumentList)
     {
         <div class="col-md-2">
             <div class="form-group">
                 <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" checked="checked" id="sendRequestDocumentNotice">
+                    <input type="checkbox" class="custom-control-input" checked="checked" id="sendRequestDocumentNotice-@rowNumber">
                     <label class="custom-control-label" for="customCheck3"></label>
                 </div>
             </div>
@@ -24,11 +25,10 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-primary document-search-btn" onclick="removeRequestDocument('@requestDocument.RequestDocumentId','@requestDocument.RequestId','@requestDocument.FileName')">
+            <button type="button" class="btn btn-primary document-search-btn" onclick="removeRequestDocument('@requestDocument.RequestDocumentId','@requestDocument.RequestId','@requestDocument.FileName','@rowNumber')">
                 Remove
             </button>
         </div>
-
-
+        rowNumber++;
     }
 }

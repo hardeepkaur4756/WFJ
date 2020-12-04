@@ -2048,11 +2048,12 @@
             }
         }
 
-        function removeRequestDocument(requestDocumentId, requestId, fileName) {
+        function removeRequestDocument(requestDocumentId, requestId, fileName, rowNumber) {
+            var sendNotice = $("#sendRequestDocumentNotice-" + rowNumber).is(":checked");
                $.ajax({
                     type: "Post",
                    url: "/Placements/removeRequestDocument",
-                   data: { 'requestDocumentId': requestDocumentId, 'requestId': requestId, 'fileName': fileName},
+                   data: { 'requestDocumentId': requestDocumentId, 'requestId': requestId, 'fileName': fileName, 'sendNotice': sendNotice},
                     dataType: "json",
                    success: function (response) {
                        console.log(response);

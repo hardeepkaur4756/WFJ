@@ -37,6 +37,8 @@ namespace WFJ.Service
                 RequestDateString = request.RequestDate != null ? request.RequestDate.Value.ToString("MM/dd/yyyy") : null,
                 CompletionDateString = request.CompletionDate != null ? request.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
                 active = request.active,
+                RequestorEmail = request.User1?.EMail,
+                AssignedAttorneyEmail = request.Personnel?.EMail,
                 RequestNotes = request.RequestNotes.Select(x => new RequestNoteModel
                 {
                     NotesDate = x.NotesDate.Value.ToString("MM/dd/yyyy"),

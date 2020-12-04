@@ -477,9 +477,11 @@ namespace WFJ.Web.Controllers
                     {
                         message = "Format is not supported";
                     }
+                    /// send mail to assigned attorney and requestor
                     if (sendNote && isSuccess)
                     {
-                        /// send mail
+                        var request = _requestsService.GetByRequestId(requestId);
+                        _formService.sendDocumentMail(request.AssignedAttorneyEmail,request.RequestorEmail, Models.Enums.RequestDocumentType.add.ToString());
                     }
 
                     string requestDocumentHtml = string.Empty;
@@ -502,7 +504,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string fileName)
+        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string fileName,bool sendNotice)
         {
             string message = string.Empty;
             bool success = false;
@@ -515,6 +517,12 @@ namespace WFJ.Web.Controllers
                 System.IO.File.Delete(fName);
                 message = "Deleted Successfully";
                 requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
+                /// send mail to assigned attorney and requestor
+                if (sendNotice)
+                {
+                    var request = _requestsService.GetByRequestId(requestId);
+                    _formService.sendDocumentMail(request.AssignedAttorneyEmail, request.RequestorEmail, Models.Enums.RequestDocumentType.remove.ToString());
+                }
                 success = true;
             }
             catch (Exception ex)

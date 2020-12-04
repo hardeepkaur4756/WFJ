@@ -10,6 +10,7 @@ using WFJ.Repository.Interfaces;
 using WFJ.Repository.EntityModel;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
+using WFJ.Helper;
 
 namespace WFJ.Service
 {
@@ -437,6 +438,40 @@ namespace WFJ.Service
             {
                 return address;
             }
+        }
+
+        public void sendDocumentMail(string assignedAttorneyEmail, string RequestorEmail, string uploadType)
+        {
+            string emailto = string.Empty;
+            string subject = string.Empty;
+            string body = string.Empty;
+            if (uploadType == "add")
+            {
+                subject = "WFJ upload new document";
+                body = "New document uploaded";
+            }
+            else
+            {
+                subject = "WFJ remove document";
+                body = "document removed";
+            }
+           
+            if (!string.IsNullOrEmpty(assignedAttorneyEmail))
+            {
+                emailto = assignedAttorneyEmail;
+            }
+            if (!string.IsNullOrEmpty(RequestorEmail))
+            {
+                if (string.IsNullOrEmpty(emailto))
+                {
+                    emailto = RequestorEmail;
+                }
+                else
+                {
+                    emailto = emailto + "," + RequestorEmail;
+                }
+            }
+            EmailHelper.SendMail(emailto, subject, body);
         }
     }
 }

@@ -32,6 +32,8 @@ namespace WFJ.Models
         public string CompletionDateString { get; set; }
         public Nullable<byte> active { get; set; } // store 1
         public List<RequestNoteModel> RequestNotes { get; set; }
+        public string RequestorEmail { get; set; }
+        public string AssignedAttorneyEmail { get; set; }
         //public Nullable<System.DateTime> LastViewed { get; set; }
         //public Nullable<System.DateTime> LastNoteDate { get; set; }
         //public Nullable<double> TotalPayments { get; set; }
