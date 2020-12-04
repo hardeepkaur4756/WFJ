@@ -1584,16 +1584,35 @@
                                             </li>
                                             <li>To add files, follow the directions below.</li>
                                         </ul>
+                                        @{
+                                            if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label class="d-block">Send Notice</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label>Document Type</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>File Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label class="invisible d-block">dummy</label>
+                                                    </div>
+                                                </div>
 
-                                        <div class="row" id="requestDocumentGrid">
-                                            @{
-                                                if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
-                                                {
+                                                <div class="row" id="requestDocumentGrid">
                                                     @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
-                                                }
+                                                </div>
                                             }
-                                        </div>
-
+                                        }
                                         <label class="for-bold">Attach a document to this request</label>
                                         <p>
                                             Attach copies of Purchase Orders, Account
@@ -1612,8 +1631,8 @@
                                                 <div class="custom-file">
                                                     @*@Html.TextBoxFor(x => x.requestDocumentViewModel.documentFile, new { @id = "customFile", @type = "file", @class = "custom-file-input", @name = "documentFile" })*@
                                                     @*<label class="custom-file-label n-custom-file-label" for="customFile"></label>
-                                                        <input type="file" class="custom-file-input" id="customFile">
-                                                        <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>*@
+                    <input type="file" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>*@
                                                     <input type="file" id="requestDocumentFileUpload" />
                                                 </div>
                                             </div>
@@ -1762,7 +1781,14 @@
             });
 
             $('#btnUpload').click(function () {
-                console.log(window.FormData);
+                var reqId = parseInt($("#Request_ID").val());
+                if (isNaN(reqId)) { reqId = 0; }
+
+                var documentTypeId = parseInt($("#DocumentId").val());
+                if (isNaN(documentTypeId)) { documentTypeId = 0; }
+
+                if (documentTypeId > 0) {
+
                 // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
 
@@ -1777,12 +1803,6 @@
                         fileData.append(files[i].name, files[i]);
                     }
 
-                    var reqId = parseInt($("#Request_ID").val());
-                    if (isNaN(reqId)) { reqId = 0; }
-
-                    var documentTypeId = parseInt($("#DocumentId").val());
-                    if (isNaN(documentTypeId)) { documentTypeId = 0; }
-
                     fileData.append('requestId', reqId);
                     fileData.append('documentTypeId', documentTypeId);
 
@@ -1791,7 +1811,6 @@
                     } else {
                         fileData.append('sendNote', false);
                     }
-                    console.log(fileData);
 
                     $.ajax({
                         url: '/Placements/AddRequestDocument',
@@ -1800,11 +1819,11 @@
                         processData: false, // Not to process data
                         data: fileData,
                         success: function (response) {
-                            console.log(response);
-                            console.log(response.html);
                             if (response.success) {
                                 $("#requestDocumentGrid").html(response.html);
                                 $.notify(response.message, "success");
+                                $("#DocumentId").val("");
+                                $("#requestDocumentFileUpload").val("");
                             } else {
                                 $.notify(response.message, "danger");
                             }
@@ -1818,6 +1837,9 @@
                     }
                 } else {
                     $.notify("FormData is not supported.", "danger");
+                    }
+                } else {
+                    $.notify("Please select document type", "danger");
                 }
             });
         });

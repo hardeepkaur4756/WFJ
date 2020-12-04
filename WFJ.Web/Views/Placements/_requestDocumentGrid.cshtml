@@ -7,7 +7,6 @@
     {
         <div class="col-md-2">
             <div class="form-group">
-                <label class="d-block">Send Notice</label>
                 <div class="custom-control custom-checkbox custom-control-inline">
                     <input type="checkbox" class="custom-control-input" checked="checked" id="sendRequestDocumentNotice">
                     <label class="custom-control-label" for="customCheck3"></label>
@@ -16,18 +15,15 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <label>Document Type</label>
                 @Html.DropDownListFor(x => requestDocument.DocumentTypeId, new SelectList(Model.DocumentType, "Value", "Text"), "Select", new { @Class = "form-control" })
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label>File Name</label>
                 <p class="for-bold">@requestDocument.FileName</p>
             </div>
         </div>
         <div class="col-md-3">
-            <label class="invisible d-block">dummy</label>
             <button type="button" class="btn btn-primary document-search-btn" onclick="removeRequestDocument('@requestDocument.RequestDocumentId','@requestDocument.RequestId','@requestDocument.FileName')">
                 Remove
             </button>
@@ -36,4 +32,3 @@
 
     }
 }
-s
