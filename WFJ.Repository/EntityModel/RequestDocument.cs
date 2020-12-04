@@ -19,5 +19,6 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> RequestID { get; set; }
         public string FileName { get; set; }
         public Nullable<int> DocumentType { get; set; }
+        public string PhysicalPathFileName { get; set; }
     }
 }
