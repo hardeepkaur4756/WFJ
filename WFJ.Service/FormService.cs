@@ -484,7 +484,13 @@ namespace WFJ.Service
             sb1.Append(emailTemplate);
             sb1.Replace("[Requestor]", request.User1 != null ? request.User1.FirstName + " " + request.User1.LastName : "");
             sb1.Replace("[Attorney]", request.Personnel != null ? request.Personnel.FirstName + " " + request.Personnel.LastName : "");
-            sb1.Replace("[NotesList]", documentHtml);
+
+            string xlsTemplatePath2 = dirpath + "/RequestNotesList.html";
+            string html = File.ReadAllText(xlsTemplatePath2);
+            html = html.Replace("[NoteDate]", DateTime.Now.ToString("MM/dd/yyyy")).Replace("[Author]", request.User.FirstName + " " + request.User.LastName)
+                                .Replace("[Notes]", documentHtml);
+
+            sb1.Replace("[NotesList]", html);
             EmailHelper.SendMail(emailto, subject, sb1.ToString());
         }
     }
