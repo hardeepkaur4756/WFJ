@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -455,7 +456,7 @@ namespace WFJ.Web.Controllers
                     if (Util.ExtensionList().Contains(fileExtension))
                     {
                         // Get the complete folder path and store the file inside it.  
-                        var path = Path.Combine(Server.MapPath("~/PlacementAttachment/"));
+                        var path = Path.Combine(Server.MapPath(Convert.ToString(ConfigurationManager.AppSettings["PlacementAttachmentPath"])));
                         if (!Directory.Exists(path))
                         {
                             Directory.CreateDirectory(path);
@@ -482,8 +483,7 @@ namespace WFJ.Web.Controllers
                     /// send mail to assigned attorney and requestor
                     if (sendNote && isSuccess)
                     {
-                        var request = _requestsService.GetByRequestId(requestId);
-                        _formService.sendDocumentMail(request.AssignedAttorneyEmail,request.RequestorEmail, Models.Enums.RequestDocumentType.add.ToString());
+                        _formService.sendDocumentMail(requestId, Models.Enums.RequestDocumentType.add.ToString(),fname);
                     }
 
                     string requestDocumentHtml = string.Empty;
@@ -506,7 +506,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string fileName,bool sendNotice)
+        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string physicalFileName,bool sendNotice,string fileName)
         {
             string message = string.Empty;
             bool success = false;
@@ -514,16 +514,15 @@ namespace WFJ.Web.Controllers
             try
             {
                 _requestDocumentService.Delete(requestDocumentId);
-                var path = Path.Combine(Server.MapPath("~/PlacementAttachment/"));
-                var fName = Path.Combine(path, fileName);
+                var path = Path.Combine(Server.MapPath(Convert.ToString(ConfigurationManager.AppSettings["PlacementAttachmentPath"])));
+                var fName = Path.Combine(path, physicalFileName);
                 System.IO.File.Delete(fName);
                 message = "Deleted Successfully";
                 requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
                 /// send mail to assigned attorney and requestor
                 if (sendNotice)
                 {
-                    var request = _requestsService.GetByRequestId(requestId);
-                    _formService.sendDocumentMail(request.AssignedAttorneyEmail, request.RequestorEmail, Models.Enums.RequestDocumentType.remove.ToString());
+                    _formService.sendDocumentMail(requestId, Models.Enums.RequestDocumentType.remove.ToString(), fileName);
                 }
                 success = true;
             }

@@ -11,6 +11,8 @@ using WFJ.Repository.EntityModel;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
 using WFJ.Helper;
+using System.Web;
+using System.IO;
 
 namespace WFJ.Service
 {
@@ -440,38 +442,50 @@ namespace WFJ.Service
             }
         }
 
-        public void sendDocumentMail(string assignedAttorneyEmail, string RequestorEmail, string uploadType)
+        public void sendDocumentMail(int requestId, string uploadType, string fileName)
         {
+            IRequestsRepository _requestsRepo = new RequestsRepository();
+            var request = _requestsRepo.GetRequestWithDetail(requestId);
             string emailto = string.Empty;
             string subject = string.Empty;
-            string body = string.Empty;
+            string documentHtml = string.Empty;
             if (uploadType == "add")
             {
-                subject = "WFJ upload new document";
-                body = "New document uploaded";
+                subject = " WFJ upload new document";
+                documentHtml = fileName + " is uploaded";
             }
             else
             {
-                subject = "WFJ remove document";
-                body = "document removed";
+                subject = " WFJ remove document";
+                documentHtml = fileName + " is deleted";
             }
            
-            if (!string.IsNullOrEmpty(assignedAttorneyEmail))
+            if (!string.IsNullOrEmpty(request.Personnel?.EMail))
             {
-                emailto = assignedAttorneyEmail;
+                emailto = request.Personnel?.EMail;
             }
-            if (!string.IsNullOrEmpty(RequestorEmail))
+            if (!string.IsNullOrEmpty(request.User1?.EMail))
             {
                 if (string.IsNullOrEmpty(emailto))
                 {
-                    emailto = RequestorEmail;
+                    emailto = request.User1?.EMail;
                 }
                 else
                 {
-                    emailto = emailto + "," + RequestorEmail;
+                    emailto = emailto + "," + request.User1?.EMail;
                 }
             }
-            EmailHelper.SendMail(emailto, subject, body);
+            
+            string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
+            string xlsTemplatePath = dirpath + "/RequestNotes.html";
+            string emailTemplate = File.ReadAllText(xlsTemplatePath);
+
+            StringBuilder sb1 = new StringBuilder();
+            sb1.Append(emailTemplate);
+            sb1.Replace("[Requestor]", request.User1 != null ? request.User1.FirstName + " " + request.User1.LastName : "");
+            sb1.Replace("[Attorney]", request.Personnel != null ? request.Personnel.FirstName + " " + request.Personnel.LastName : "");
+            sb1.Replace("[NotesList]", documentHtml);
+            EmailHelper.SendMail(emailto, subject, sb1.ToString());
         }
     }
 }

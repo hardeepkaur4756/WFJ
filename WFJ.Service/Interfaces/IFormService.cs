@@ -24,6 +24,6 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetPersonnelsDropdown(int FormID);
         int SavePlacements(SavePlacementViewModel savePlacementViewModel);
         SummaryInformation GetSummaryInformation(ClientModel clientModel, ProfileViewModel userDetail);
-        void sendDocumentMail(string assignedAttorneyEmail, string RequestorEmail, string uploadType);
+        void sendDocumentMail(int requestId, string uploadType,string fileName);
     }
 }

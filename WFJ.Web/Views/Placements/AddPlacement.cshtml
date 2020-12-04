@@ -1822,7 +1822,6 @@
                         data: fileData,
                         success: function (response) {
                             if (response.success) {
-                                console.log(response.html);
                                 $("#requestDocumentGrid").html(response.html);
                                 $.notify(response.message, "success");
                                 $("#DocumentId").val("");
@@ -1960,7 +1959,6 @@
                     }
                 });
                 savePlacementsViewModel.FieldValue = fieldValue;
-            //console.log(JSON.stringify(savePlacementsViewModel));
             if (isValid) {
                 $.ajax({
                     type: "Post",
@@ -2051,16 +2049,14 @@
             }
         }
 
-        function removeRequestDocument(requestDocumentId, requestId, fileName, rowNumber) {
+        function removeRequestDocument(requestDocumentId, requestId, physicalFileName, rowNumber, fileName) {
             var sendNotice = $("#sendRequestDocumentNotice-" + rowNumber).is(":checked");
                $.ajax({
                     type: "Post",
                    url: "/Placements/removeRequestDocument",
-                   data: { 'requestDocumentId': requestDocumentId, 'requestId': requestId, 'fileName': fileName, 'sendNotice': sendNotice},
+                   data: { 'requestDocumentId': requestDocumentId, 'requestId': requestId, 'physicalFileName': physicalFileName, 'sendNotice': sendNotice, 'fileName': fileName},
                     dataType: "json",
                    success: function (response) {
-                       console.log(response);
-                       console.log(response.html);
                         if (response.success) {
                             $("#requestDocumentGrid").html(response.html);
                             $.notify("File Deleted Succesfully.", "success");
