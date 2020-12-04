@@ -15,5 +15,6 @@ namespace WFJ.Models
         public int RequestId { get; set; }
         public int DocumentTypeId { get; set; }
         public string FileName { get; set; }
+        public string PhysicalPathFileName { get; set; }
     }
 }

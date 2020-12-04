@@ -436,7 +436,8 @@ namespace WFJ.Web.Controllers
                     var sendNote = Convert.ToBoolean(Request.Form[2]);
 
                     HttpPostedFileBase file = files[0];
-                    string fname;
+                    string fname = string.Empty;
+                    string physicalPathFileName = string.Empty;
 
                     // Checking for Internet Explorer  
                     if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
@@ -459,8 +460,8 @@ namespace WFJ.Web.Controllers
                         {
                             Directory.CreateDirectory(path);
                         }
-
-                        var fileName = Path.Combine(path, fname);
+                        physicalPathFileName = fname.Replace(Path.GetExtension(fname), "") + "_" + DateTime.Now.Ticks + Path.GetExtension(fname);
+                        var fileName = Path.Combine(path, physicalPathFileName);
                         file.SaveAs(fileName);
 
                         /// save into database table
@@ -468,7 +469,8 @@ namespace WFJ.Web.Controllers
                         {
                             DocumentTypeId = documentTypeId,
                             FileName = fname,
-                            RequestId = requestId
+                            RequestId = requestId,
+                            PhysicalPathFileName = physicalPathFileName
                         });
                         message = "File Uploaded Successfully!";
                         isSuccess = true;

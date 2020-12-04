@@ -27,7 +27,8 @@ namespace WFJ.Service
             DocumentTypeId = Convert.ToInt32(x.DocumentType),
             FileName = x.FileName,
             RequestDocumentId = x.ID,
-            RequestId = Convert.ToInt32(x.RequestID)
+            RequestId = Convert.ToInt32(x.RequestID),
+            PhysicalPathFileName = x.PhysicalPathFileName
             }).ToList();
         }
 
@@ -37,7 +38,8 @@ namespace WFJ.Service
             {
                 RequestID = requestDocumentViewModel.RequestId,
                 DocumentType = requestDocumentViewModel.DocumentTypeId,
-                FileName = requestDocumentViewModel.FileName
+                FileName = requestDocumentViewModel.FileName,
+                PhysicalPathFileName = requestDocumentViewModel.PhysicalPathFileName
             };
            var request =  requestDocumentRepo.Save(requestDocument);
         }

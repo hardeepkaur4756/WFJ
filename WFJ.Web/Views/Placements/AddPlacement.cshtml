@@ -1584,9 +1584,7 @@
                                             </li>
                                             <li>To add files, follow the directions below.</li>
                                         </ul>
-                                        @{
-                                            if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
-                                            {
+                                        
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <div class="form-group">
@@ -1609,10 +1607,14 @@
                                                 </div>
 
                                                 <div class="row" id="requestDocumentGrid">
-                                                    @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
+                                                    @{
+                                                        if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
+                                                        {
+                                                            @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
+                                                        }
+                                                    }
                                                 </div>
-                                            }
-                                        }
+                                          
                                         <label class="for-bold">Attach a document to this request</label>
                                         <p>
                                             Attach copies of Purchase Orders, Account
@@ -1647,8 +1649,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" checked="checked" id="customCheck3">
-                                                        <label class="custom-control-label" for="customCheck3">
+                                                        <input type="checkbox" class="custom-control-input" checked="checked" id="sendNoticeCheckbox">
+                                                        <label class="custom-control-label" for="sendNoticeCheckbox">
                                                             To send a notice to the Requestor and
                                                             Assigned Attorney regarding this new file,
                                                             check the box to the right
@@ -1806,7 +1808,7 @@
                     fileData.append('requestId', reqId);
                     fileData.append('documentTypeId', documentTypeId);
 
-                    if ($("#sendRequestDocumentNotice").is(":checked")) {
+                    if ($("#sendNoticeCheckbox").is(":checked")) {
                         fileData.append('sendNote', true);
                     } else {
                         fileData.append('sendNote', false);
@@ -1820,6 +1822,7 @@
                         data: fileData,
                         success: function (response) {
                             if (response.success) {
+                                console.log(response.html);
                                 $("#requestDocumentGrid").html(response.html);
                                 $.notify(response.message, "success");
                                 $("#DocumentId").val("");

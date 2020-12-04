@@ -9,14 +9,14 @@
         <div class="col-md-2">
             <div class="form-group">
                 <div class="custom-control custom-checkbox custom-control-inline">
-                    <input type="checkbox" class="custom-control-input" checked="checked" id="sendRequestDocumentNotice-@rowNumber">
-                    <label class="custom-control-label" for="customCheck3"></label>
+                    <input type="checkbox" class="custom-control-input"  id="sendRequestDocumentNotice-@rowNumber">
+                    <label class="custom-control-label" for="sendRequestDocumentNotice-@rowNumber"></label>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                @Html.DropDownListFor(x => requestDocument.DocumentTypeId, new SelectList(Model.DocumentType, "Value", "Text"), "Select", new { @Class = "form-control" })
+                @Html.DropDownListFor(x => requestDocument.DocumentTypeId, new SelectList(Model.DocumentType, "Value", "Text", requestDocument.DocumentTypeId), "Select", new { @Class = "form-control" })
             </div>
         </div>
         <div class="col-md-4">
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <button type="button" class="btn btn-primary document-search-btn" onclick="removeRequestDocument('@requestDocument.RequestDocumentId','@requestDocument.RequestId','@requestDocument.FileName','@rowNumber')">
+            <button type="button" class="btn btn-primary document-search-btn" onclick="removeRequestDocument('@requestDocument.RequestDocumentId','@requestDocument.RequestId','@requestDocument.PhysicalPathFileName','@rowNumber')">
                 Remove
             </button>
         </div>
