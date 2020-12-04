@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,14 +18,13 @@ namespace WFJ.Web.Controllers
         private IErrorLogService _errorLogService = new ErrorLogService();
         private IFormService _formService = new FormService();
         public IClientService _clientService = new ClientService();
-        //private ICategoryService _categoryService = new CategoryService();
-        //private IPracticeAreaService _practiceAreaService = new PracticeAreaService();
         private IFormTypeService _formTypeService = new FormTypeService();
         private IUserService _userService = new UserService();
         private IRequestsService _requestsService = new RequestsService();
-
+        private ICodesService _codeService = new CodesService();
         private IUserClientService _userClientService = new UserClientService();
         private ILevelService _levelService = new LevelService();
+        private IRequestDocumentService _requestDocumentService = new RequestDocumentService();
 
         private int UserType = 0;
         private int UserId = 0;
@@ -40,7 +40,7 @@ namespace WFJ.Web.Controllers
                 PlacementsViewModel model = new PlacementsViewModel();
                 model.placementsFilterViewModel = new PlacementsFilterViewModel()
                 {
-                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId,1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
+                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId, 1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
                     placementTypeModels = _formTypeService.GetFormTypesDropdown(),
                 };
 
@@ -130,7 +130,7 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddPlacement(int? formId, int? requestId, int? copy,string value = null)
+        public ActionResult AddPlacement(int? formId, int? requestId, int? copy, string value = null)
         {
             try
             {
@@ -145,6 +145,7 @@ namespace WFJ.Web.Controllers
                 var form = _formService.GetFormById(Convert.ToInt32(formId));
                 int accountBalanceFieldId = Convert.ToInt32(form.AccountBalanceFieldID);
                 var userDetail = _userService.GetById(UserId);
+                var documentType = _codeService.GetAllByType("DOCTYPE");
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
@@ -165,7 +166,8 @@ namespace WFJ.Web.Controllers
                     RequestorName = form.ClientName == null ? "Requestor" : form.ClientName,
                     FormDetail = form,
                     NotesSendToDropdown = new List<SelectListItem>(),
-                    summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail)
+                    summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail),
+                    DocumentType = documentType
                 };
 
                 #region Bind PaymentInformation in Summary
@@ -192,7 +194,7 @@ namespace WFJ.Web.Controllers
                 model.summaryInformation.Payments.isPaymentFieldShow = false;
                 #endregion
 
-                if(requestId == null)
+                if (requestId == null)
                 {
                     model.Request = new RequestViewModel { FormID = formId, RequestDateString = DateTime.Now.ToString("MM/dd/yyyy") };
                 }
@@ -201,7 +203,7 @@ namespace WFJ.Web.Controllers
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
                     model.summaryInformation.ClientNotes = model.Request.RequestNotes;
-                    model.summaryInformation.FlagNotes = model.Request.RequestNotes.Where(x=>x.flaggedNote == 1).ToList();
+                    model.summaryInformation.FlagNotes = model.Request.RequestNotes.Where(x => x.flaggedNote == 1).ToList();
                     if (balanceDue > 0)
                     {
                         IPaymentService _paymentService = new PaymentService();
@@ -221,17 +223,22 @@ namespace WFJ.Web.Controllers
                         model.summaryInformation.Payments.isPaymentFieldShow = false;
                     }
 
-                    if(copy == 1)
+                    RequestDocumentViewModel requestDocumentViewModel = new RequestDocumentViewModel();
+                    requestDocumentViewModel.RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId.Value);
+                    requestDocumentViewModel.DocumentType = documentType;
+                    model.requestDocumentViewModel = requestDocumentViewModel;
+
+                    if (copy == 1)
                     {
                         model.isCopyMode = true;
                         model.Request.ID = 0;
-                        foreach(var item in model.FormFieldsList)
+                        foreach (var item in model.FormFieldsList)
                         {
-                            if(item.FormData != null)
+                            if (item.FormData != null)
                             {
                                 item.FormData.RequestID = null;
                             }
-                            if(item.FormAddressData != null)
+                            if (item.FormAddressData != null)
                             {
                                 item.FormAddressData.RequestID = null;
                             }
@@ -244,7 +251,7 @@ namespace WFJ.Web.Controllers
                     }
                 }
 
-                if(requestId > 0 && Convert.ToInt32(copy) == 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
+                if (requestId > 0 && Convert.ToInt32(copy) == 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
                 {
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
                 }
@@ -253,7 +260,7 @@ namespace WFJ.Web.Controllers
             }
             catch (Exception ex)
             {
-                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddPlacement?formId="+ formId+"&requestId="+requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddPlacement?formId=" + formId + "&requestId=" + requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return View(new AddEditPlacementsViewModel() { ErrorMessage = "Sorry, An error occurred!" });
             }
         }
@@ -276,13 +283,13 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public void GetSessionUser(out int userId, out int userType,out int? userAccess)
+        public void GetSessionUser(out int userId, out int userType, out int? userAccess)
         {
             if (Session["UserId"] != null)
             {
                 userId = Convert.ToInt32(Session["UserId"].ToString());
                 userType = Convert.ToInt32(Session["UserType"].ToString());
-                userAccess = Session["UserAccess"] != null ? Convert.ToInt32(Session["UserAccess"].ToString()) : (int?)null; 
+                userAccess = Session["UserAccess"] != null ? Convert.ToInt32(Session["UserAccess"].ToString()) : (int?)null;
             }
             else
             {
@@ -292,7 +299,7 @@ namespace WFJ.Web.Controllers
             }
         }
 
-        public ActionResult GetStatusLongDescription(int statusCode,int formId)
+        public ActionResult GetStatusLongDescription(int statusCode, int formId)
         {
             IStatusCodesService _statusCodesService = new StatusCodesService();
             bool isSuccess = false;
@@ -409,9 +416,120 @@ namespace WFJ.Web.Controllers
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Placements/UpdateActiveInactiveRequest", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
-            return Json(new { success = isSuccess}, JsonRequestBehavior.AllowGet);
+            return Json(new { success = isSuccess }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult AddRequestDocument()
+        {
+            string message = string.Empty;
+            bool isSuccess = false;
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    var requestId = Convert.ToInt32(Request.Form[0]);
+                    var documentTypeId = Convert.ToInt32(Request.Form[1]);
+                    var sendNote = Convert.ToBoolean(Request.Form[2]);
 
+                    HttpPostedFileBase file = files[0];
+                    string fname;
+
+                    // Checking for Internet Explorer  
+                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    {
+                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                        fname = testfiles[testfiles.Length - 1];
+                    }
+                    else
+                    {
+                        fname = file.FileName;
+                    }
+
+                    /// check extension
+                    string fileExtension = Path.GetExtension(fname).ToLower().Trim().Replace(".", "");
+                    if (Util.ExtensionList().Contains(fileExtension))
+                    {
+                        // Get the complete folder path and store the file inside it.  
+                        var path = Path.Combine(Server.MapPath("~/Uploads/"));
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        var fileName = Path.Combine(path, fname);
+                        file.SaveAs(fileName);
+
+                        /// save into database table
+                        _requestDocumentService.Save(new RequestDocumentDetail()
+                        {
+                            DocumentTypeId = documentTypeId,
+                            FileName = fname,
+                            RequestId = requestId
+                        });
+                        message = "File Uploaded Successfully!";
+                        isSuccess = true;
+                    }
+                    else
+                    {
+                        message = "Format is not supported";
+                    }
+                    if (sendNote && isSuccess)
+                    {
+                        /// send mail
+                    }
+
+                    string requestDocumentHtml = string.Empty;
+                    if (isSuccess)
+                    {
+                        requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
+                    }
+                    return Json(new { success = isSuccess, html = requestDocumentHtml, message= message }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception ex)
+                {
+                    _errorLogService.Add(new ErrorLogModel() { Page = "Placements/AddRequestDocument", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { success = false,html= "No files selected." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string fileName)
+        {
+            string message = string.Empty;
+            bool success = false;
+            string requestDocumentHtml = string.Empty;
+            try
+            {
+                _requestDocumentService.Delete(requestDocumentId);
+                var path = Path.Combine(Server.MapPath("~/Uploads/"));
+                var fName = Path.Combine(path, fileName);
+                System.IO.File.Delete(fName);
+                message = "Deleted Successfully";
+                requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/RemoveRequestDocument", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = success, html = requestDocumentHtml }, JsonRequestBehavior.AllowGet);
+        }
+
+        public string GetRequestDocumentGridHtml(int requestId)
+        {
+            RequestDocumentViewModel requestDocumentViewModels = new RequestDocumentViewModel();
+            requestDocumentViewModels.RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId);
+            requestDocumentViewModels.DocumentType = _codeService.GetAllByType("DOCTYPE");
+            return this.RenderPartialViewToString("_requestDocumentGrid", requestDocumentViewModels);
+        }
     }
 }

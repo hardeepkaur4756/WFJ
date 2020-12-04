@@ -33,5 +33,21 @@ namespace WFJ.Helper
             bool isVaidPassword = Regex.IsMatch(password, strRegex, RegexOptions.IgnoreCase);
             if (isVaidPassword) { return (true); } else { return (false); }
         }
+        public static List<string> ExtensionList()
+        {
+            List<string> extensions = new List<string>();
+            extensions.Add("gif");
+            extensions.Add("jpg");
+            extensions.Add("png");
+            extensions.Add("pdf");
+            extensions.Add("doc");
+            extensions.Add("docx");
+            extensions.Add("xls");
+            extensions.Add("xlsx");
+            extensions.Add("ppt");
+            extensions.Add("pptx");
+            extensions.Add("txt");
+            return extensions;
+        }
     }
 }

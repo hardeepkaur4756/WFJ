@@ -135,7 +135,7 @@
                     <form id="placementForm">
                         @Html.HiddenFor(x => x.Request.FormID)
                         @Html.HiddenFor(x => x.Request.ID)
-                        @Html.HiddenFor(x=>x.ClientId)
+                        @Html.HiddenFor(x => x.ClientId)
 
                         @foreach (var section in Model.FormSections)
                         {
@@ -407,11 +407,12 @@
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link bg-white mr-3" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payments</a>
                             </li>
-
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
-                            </li>
-
+                            @if (Model.Request != null && Model.Request.ID > 0)
+                            {
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
+                                </li>
+                            }
                             @if (AssociateCounselVisible == true)
                             {
                                 <li class="nav-item" role="presentation">
@@ -1584,41 +1585,13 @@
                                             <li>To add files, follow the directions below.</li>
                                         </ul>
 
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <label class="d-block">Send Notice</label>
-                                                    <div class="custom-control custom-checkbox custom-control-inline">
-                                                        <input type="checkbox" class="custom-control-input" checked="checked" id="customCheck3">
-                                                        <label class="custom-control-label" for="customCheck3"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>Document Type</label>
-                                                    <select id="inputState" class="form-control">
-                                                        <option selected="">Select</option>
-                                                        <option>Contingent</option>
-                                                        <option>Hourly</option>
-                                                        <option>Flat Fee</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label>File Name</label>
-                                                    <p class="for-bold">scredit1234567890.pdf</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3">
-                                                <label class="invisible d-block">dummy</label>
-                                                <button type="submit" class="btn btn-primary document-search-btn">
-                                                    Remove
-                                                </button>
-                                            </div>
+                                        <div class="row" id="requestDocumentGrid">
+                                            @{
+                                                if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
+                                                {
+                                                    @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
+                                                }
+                                            }
                                         </div>
 
                                         <label class="for-bold">Attach a document to this request</label>
@@ -1637,20 +1610,18 @@
                                             <div class="col-md-6">
                                                 <label>Upload Document</label>
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="customFile">
-                                                    <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>
+                                                    @*@Html.TextBoxFor(x => x.requestDocumentViewModel.documentFile, new { @id = "customFile", @type = "file", @class = "custom-file-input", @name = "documentFile" })*@
+                                                    @*<label class="custom-file-label n-custom-file-label" for="customFile"></label>
+                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                        <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>*@
+                                                    <input type="file" id="requestDocumentFileUpload" />
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Document Type</label>
-                                                    <select id="inputState" class="form-control">
-                                                        <option selected="">Select</option>
-                                                        <option>Contingent</option>
-                                                        <option>Hourly</option>
-                                                        <option>Flat Fee</option>
-                                                    </select>
+                                                    @Html.DropDownListFor(x => x.DocumentId, new SelectList(Model.DocumentType, "Value", "Text"), "Select", new { @Class = "form-control" })
                                                 </div>
                                             </div>
 
@@ -1668,7 +1639,7 @@
                                             </div>
 
                                             <div class="col-md-12 text-right">
-                                                <button type="submit" class="btn btn-primary document-search-btn">
+                                                <button type="button" id="btnUpload" class="btn btn-primary document-search-btn">
                                                     Upload File
                                                 </button>
                                             </div>
@@ -1788,6 +1759,66 @@
             $(".multiselects").multiselect({
                 includeSelectAllOption: true,
                 enableFiltering: true,
+            });
+
+            $('#btnUpload').click(function () {
+                console.log(window.FormData);
+                // Checking whether FormData is available in browser
+                if (window.FormData !== undefined) {
+
+                    var fileUpload = $("#requestDocumentFileUpload").get(0);
+                    var files = fileUpload.files;
+
+                    // Create FormData object
+                    var fileData = new FormData();
+
+                    if (files.length > 0) {
+                    for (var i = 0; i < files.length; i++) {
+                        fileData.append(files[i].name, files[i]);
+                    }
+
+                    var reqId = parseInt($("#Request_ID").val());
+                    if (isNaN(reqId)) { reqId = 0; }
+
+                    var documentTypeId = parseInt($("#DocumentId").val());
+                    if (isNaN(documentTypeId)) { documentTypeId = 0; }
+
+                    fileData.append('requestId', reqId);
+                    fileData.append('documentTypeId', documentTypeId);
+
+                    if ($("#sendRequestDocumentNotice").is(":checked")) {
+                        fileData.append('sendNote', true);
+                    } else {
+                        fileData.append('sendNote', false);
+                    }
+                    console.log(fileData);
+
+                    $.ajax({
+                        url: '/Placements/AddRequestDocument',
+                        type: "POST",
+                        contentType: false, // Not to set any content header
+                        processData: false, // Not to process data
+                        data: fileData,
+                        success: function (response) {
+                            console.log(response);
+                            console.log(response.html);
+                            if (response.success) {
+                                $("#requestDocumentGrid").html(response.html);
+                                $.notify(response.message, "success");
+                            } else {
+                                $.notify(response.message, "danger");
+                            }
+                        },
+                        error: function (err) {
+                            $.notify(err.statusText, "danger");
+                        }
+                    });
+                    } else {
+                        $.notify("Please select file.", "danger");
+                    }
+                } else {
+                    $.notify("FormData is not supported.", "danger");
+                }
             });
         });
 
@@ -1993,6 +2024,28 @@
             if (requestId > 0 && formId > 0) {
                 window.location.href = "/Placements/AddPlacement?formId=" + formId + "&requestId=" + requestId + "&copy=1";
             }
+        }
+
+        function removeRequestDocument(requestDocumentId, requestId, fileName) {
+               $.ajax({
+                    type: "Post",
+                   url: "/Placements/removeRequestDocument",
+                   data: { 'requestDocumentId': requestDocumentId, 'requestId': requestId, 'fileName': fileName},
+                    dataType: "json",
+                   success: function (response) {
+                       console.log(response);
+                       console.log(response.html);
+                        if (response.success) {
+                            $("#requestDocumentGrid").html(response.html);
+                            $.notify("File Deleted Succesfully.", "success");
+                        }
+                        else {
+
+                        }
+                    },
+                    error: function (result) {
+                    }
+                });
         }
     </script>
 }

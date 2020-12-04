@@ -91,6 +91,7 @@
     <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />
+    <Compile Include="RequestDocumentViewModel.cs" />
     <Compile Include="SavePlacementViewModel.cs" />
     <Compile Include="PracticeAreaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,6 +39,11 @@ namespace WFJ.Models
         // Notes
         public List<SelectListItem> NotesSendToDropdown { get; set; }
         public SummaryInformation summaryInformation { get; set; }
+        
+        public int DocumentTypeId { get; set; }
+        public RequestDocumentViewModel requestDocumentViewModel { get; set; }
+        public List<SelectListItem> DocumentType { get; set; }
+        public int DocumentId { get; set; }
     }
 
 
