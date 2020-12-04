@@ -454,7 +454,7 @@ namespace WFJ.Web.Controllers
                     if (Util.ExtensionList().Contains(fileExtension))
                     {
                         // Get the complete folder path and store the file inside it.  
-                        var path = Path.Combine(Server.MapPath("~/Uploads/"));
+                        var path = Path.Combine(Server.MapPath("~/PlacementAttachment/"));
                         if (!Directory.Exists(path))
                         {
                             Directory.CreateDirectory(path);
@@ -512,7 +512,7 @@ namespace WFJ.Web.Controllers
             try
             {
                 _requestDocumentService.Delete(requestDocumentId);
-                var path = Path.Combine(Server.MapPath("~/Uploads/"));
+                var path = Path.Combine(Server.MapPath("~/PlacementAttachment/"));
                 var fName = Path.Combine(path, fileName);
                 System.IO.File.Delete(fName);
                 message = "Deleted Successfully";
