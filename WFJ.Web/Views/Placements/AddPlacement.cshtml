@@ -4,7 +4,15 @@
 @using fieldType = WFJ.Web.Models.Enums.FieldTypes;
 
 @{
-    ViewBag.Title = "AddPlacement";
+    if (!Model.isEditMode)
+    {
+        ViewBag.Title = "Add Placement";
+    }
+    else
+    {
+        ViewBag.Title = "Edit Placement";
+    }
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var FieldsGrouped = Model.FormFieldsList.GroupBy(x => x.formSectionID)
