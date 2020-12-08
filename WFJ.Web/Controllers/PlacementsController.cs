@@ -182,14 +182,14 @@ namespace WFJ.Web.Controllers
                 {
                     customerPhone = customerPhoneField.FormData?.FieldValue;
                 }
-                model.summaryInformation.Payments.CustomerPhone = string.IsNullOrEmpty(customerPhone) ? "-" : customerPhone;
+                model.summaryInformation.Payments.CustomerPhone = string.IsNullOrEmpty(customerPhone) ? string.Empty : customerPhone;
                 if (accountBalanceFieldId > 0)
                 {
                     var formField = model.FormFieldsList.FirstOrDefault(x => x.ID == accountBalanceFieldId);
                     balanceDue = Convert.ToDecimal(formField.FormData?.FieldValue);
                 }
                 model.summaryInformation.Payments.BalanceDue = balanceDue;
-                model.summaryInformation.Payments.LastPaymentDate = "-";
+                model.summaryInformation.Payments.LastPaymentDate = string.Empty;
                 model.summaryInformation.Payments.TotalPayment = balanceDue;
                 model.summaryInformation.Payments.RemainingAmount = balanceDue;
                 model.summaryInformation.Payments.isPaymentFieldShow = false;
@@ -244,6 +244,9 @@ namespace WFJ.Web.Controllers
                                 item.FormAddressData.RequestID = null;
                             }
                         }
+                        model.summaryInformation.Payments = new PaymentDetail();
+                        model.summaryInformation.ClientNotes = null;
+                        model.summaryInformation.FlagNotes = null;
                     }
                     else
                     {

@@ -67,9 +67,9 @@ function GetRequestNotesDataTable() {
 
                             var deletebtn = '';
                             if (canDelete === "1")
-                                deletebtn = ' <a class="note-edit" data-id="'+full.ID+'" href="javascript: deleteNote('+full.ID+');" class="anchor-design" title="Edit">Delete</a>'
+                                deletebtn = ' <a class="note-edit" data-id="' + full.ID + '" href="javascript: deleteNote(' + full.ID +');" class="anchor-design" title="Edit"><u>Delete</u></a>'
 
-                            return '<a class="note-delete" data-id="' + full.ID + '" href="javascript: addNotes(' + full.ID +');" class="anchor-design" title="Edit">Edit</a>' +
+                            return '<a class="note-delete" data-id="' + full.ID + '" href="javascript: addNotes(' + full.ID +');" class="anchor-design" title="Edit"><u>Edit</u></a>' +
                                 deletebtn;  
                         }
                     },
@@ -159,6 +159,7 @@ function deleteNote(noteid) {
 
 
 function addNotes(noteId) {
+    $(".se-pre-con").fadeIn();
     var clientId = parseInt($("#ClientId").val());
     if (isNaN(clientId)) { clientId = 0; }
     $.ajax({
@@ -168,6 +169,7 @@ function addNotes(noteId) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
+            $(".se-pre-con").fadeOut("slow");
             if (response.Success) {
                 if (noteId > 0) {
                     $('#addnotesModallLabel').html('Edit Note');

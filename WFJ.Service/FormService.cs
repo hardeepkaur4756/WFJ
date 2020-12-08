@@ -39,11 +39,11 @@ namespace WFJ.Service
             bool activeOnly = userType != UserType.SystemAdministrator;
 
             model.totalPlacementsCount = documents?.Count();
-            
+
 
             if (documents != null)
             {
-               
+
 
                 var list1 = documents.Select(x => new PlacementsModel
                 {
@@ -126,7 +126,7 @@ namespace WFJ.Service
                 showOnCalendar = x.showOnCalendar,
                 SQLStatement = x.SQLStatement,
                 rowNumber = x.rowNumber,
-                FormData = Convert.ToInt32(requestId) > 0 ? x.FormDatas.Where(d=>d.RequestID == requestId).Select(d => new FormDataViewModel
+                FormData = Convert.ToInt32(requestId) > 0 ? x.FormDatas.Where(d => d.RequestID == requestId).Select(d => new FormDataViewModel
                 {
                     currencyID = d.currencyID,
                     FieldValue = d.FieldValue,
@@ -186,7 +186,7 @@ namespace WFJ.Service
             var form = _formSearchRepository.GetById(FormID);
 
             List<UserClient> ClientUsers = new List<UserClient>();
-            if(form.ClientID != null)
+            if (form.ClientID != null)
                 ClientUsers = _userClientRepo.GetByClientID(form.ClientID.Value);
 
             return ClientUsers;
@@ -202,14 +202,14 @@ namespace WFJ.Service
                 CustomerAccountFieldID = form.CustomerAccountFieldID,
                 hasAdmin = form.hasAdmin,
                 ClientID = form.ClientID,
-                ClientName = form.Client != null ? form.Client.ClientName :null,
+                ClientName = form.Client != null ? form.Client.ClientName : null,
                 ClientLevelName = form.Client != null ? form.Client.LevelName : null,
                 ClientNumber = form.ClientNumber,
                 CustomerNameFieldID = form.CustomerNameFieldID,
                 DefaultRequestorID = form.DefaultRequestorID,
                 FormName = form.FormName,
                 FormTypeID = form.FormTypeID,
-                FormTypeName = form.FormType != null? form.FormType.FormType1 : null,
+                FormTypeName = form.FormType != null ? form.FormType.FormType1 : null,
                 hasCollector = form.hasCollector,
                 ID = form.ID,
                 JobNumberFieldID = form.JobNumberFieldID,
@@ -218,7 +218,14 @@ namespace WFJ.Service
                 Client = form.Client == null ? null : new ClientModel
                 {
                     //autoShowFiles = form.Client.autoShowFiles == null ? (byte)0 : form.Client.autoShowFiles.Value,
-                    ClientName = form.Client.ClientName
+                    ClientName = form.Client.ClientName,
+                    ContactName = form.Client.ContactName,
+                    Telephone = form.Client.Telephone,
+                    EMail = form.Client.EMail,
+                    Address1 = form.Client.Address1,
+                    Address2 = form.Client.Address2,
+                    City = form.Client.City,
+                    State = form.Client.State
                 }
             };
 
@@ -277,14 +284,14 @@ namespace WFJ.Service
                 DateTime? nullable = null;
                 if (savePlacementViewModel.RequestId == 0)
                 {
-                    
+
 
                     /// Add request
                     Request request = new Request
                     {
                         active = 1,
                         FormID = savePlacementViewModel.FormId,
-                        Requestor = savePlacementViewModel.RequestorId == null ? (int?)null :  Convert.ToInt32(savePlacementViewModel.RequestorId),
+                        Requestor = savePlacementViewModel.RequestorId == null ? (int?)null : Convert.ToInt32(savePlacementViewModel.RequestorId),
                         AssignedAttorney = savePlacementViewModel.AttorneyId == null ? (int?)null : Convert.ToInt32(savePlacementViewModel.AttorneyId),
                         AssignedCollectorID = savePlacementViewModel.CollectorId == null ? (int?)null : Convert.ToInt32(savePlacementViewModel.CollectorId),
                         StatusCode = savePlacementViewModel.StatusId == null ? (int?)null : Convert.ToInt32(savePlacementViewModel.StatusId),
@@ -368,27 +375,29 @@ namespace WFJ.Service
         {
             SummaryInformation summaryInformation = new SummaryInformation();
             #region ClientDetail
-            summaryInformation.Clients = new Detail {
-                Name = !string.IsNullOrEmpty(clientModel.ClientName) ? clientModel.ClientName : "-",
+            summaryInformation.Clients = new Detail
+            {
+                Name = clientModel.ClientName,
                 Address = GetAddress(clientModel.Address1, clientModel.Address2, clientModel.City, clientModel.State, clientModel.PostalCode),
-                Email = !string.IsNullOrEmpty(clientModel.EMail) ? clientModel.EMail : "-",
-                Phone = !string.IsNullOrEmpty(clientModel.Telephone) ? clientModel.Telephone : "-",
-                Contact = !string.IsNullOrEmpty(clientModel.ContactName) ? clientModel.ContactName : "-"
+                Email = clientModel.EMail,
+                Phone = clientModel.Telephone,
+                Contact = clientModel.ContactName
             };
             #endregion
 
             #region Requestor           
-            summaryInformation.Requestors = new Detail {
-                Name = userDetail.FirstName +" "+ userDetail.LastName,
+            summaryInformation.Requestors = new Detail
+            {
+                Name = userDetail.FirstName + " " + userDetail.LastName,
                 Address = GetAddress(userDetail.Address1, userDetail.Address2, userDetail.City, userDetail.State, userDetail.PostalCode),
-                Email = !string.IsNullOrEmpty(userDetail.Email) ? userDetail.Email : "-",
-                Phone = !string.IsNullOrEmpty(userDetail.Telephone) ? userDetail.Telephone : "-",
+                Email = userDetail.Email,
+                Phone = userDetail.Telephone,
             };
             #endregion
             return summaryInformation;
         }
 
-        public string GetAddress(string address1,string address2,string city,string state,string postalCode)
+        public string GetAddress(string address1, string address2, string city, string state, string postalCode)
         {
             string address = string.Empty;
             if (!string.IsNullOrEmpty(address1))
@@ -432,14 +441,7 @@ namespace WFJ.Service
                     address += "<br/>" + postalCode;
                 }
             }
-            if (string.IsNullOrEmpty(address))
-            {
-                return "-";
-            }
-            else
-            {
-                return address;
-            }
+            return address;
         }
 
         public void sendDocumentMail(int requestId, string uploadType, string fileName)
@@ -459,7 +461,7 @@ namespace WFJ.Service
                 subject = " WFJ remove document";
                 documentHtml = fileName + " is deleted";
             }
-           
+
             if (!string.IsNullOrEmpty(request.Personnel?.EMail))
             {
                 emailto = request.Personnel?.EMail;
@@ -475,7 +477,7 @@ namespace WFJ.Service
                     emailto = emailto + "," + request.User1?.EMail;
                 }
             }
-            
+
             string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
             string xlsTemplatePath = dirpath + "/RequestNotes.html";
             string emailTemplate = File.ReadAllText(xlsTemplatePath);
