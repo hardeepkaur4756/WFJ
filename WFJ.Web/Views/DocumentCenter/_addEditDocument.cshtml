@@ -23,23 +23,9 @@
             </div>
         </div>
 
-        @*<div class="col-md-6">
-                <div class="form-group">
-                    <label>Project Type</label>
-                    <select id="inputState" class="form-control">
-                        <option selected="">Private</option>
-                        <option>Private</option>
-                        <option>Public</option>
-                    </select>
-                </div>
-            </div>*@
-
         <div class="col-md-12">
             <div class="form-group custom-multiselect-scroll">
                 <label>Client</label>
-                @*@Html.DropDownListFor(m => m.documentViewModel.ClientId, new SelectList( Model.client, "Value", "Text"),
-                    new { id = "det", multiple = "multiple" });*@
-                @*@Html.DropDownListFor(m => m.documentViewModel.ClientId, Model.client, new { @multiple = "multiple", @class = "multiselect boot-multiselect222" })*@
                 @Html.DropDownListFor(m => m.documentViewModel.ClientId, Model.client, new { @id = "boot-document-multiselect", @multiple = "multiple", @class = "multiselect" })
             </div>
         </div>
@@ -51,23 +37,6 @@
             </div>
         </div>
 
-        @*<div class="col-md-12">
-                <div class="form-group">
-                    <label>Category (for WFJ Use)</label>
-                    <select id="inputState" class="form-control">
-                        <option selected="">
-                            Commercial Litigation ---&gt; Category Name 1
-                        </option>
-                        <option>
-                            Commercial Litigation ---&gt; Category Name 1
-                        </option>
-                        <option>
-                            Commercial Litigation ---&gt; Category Name 2
-                        </option>
-                    </select>
-                </div>
-            </div>*@
-
         <div class="col-md-6">
             <div class="form-group">
                 <label for="inputDate">Document Name</label>
@@ -76,20 +45,6 @@
                 @*<input type="text" class="form-control" />*@
             </div>
         </div>
-
-        @*<div class="col-md-6">
-                <div class="form-group">
-                    <label for="inputDate">WFJ File #</label>
-                    <input type="text" class="form-control" />
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="inputDate">Notify Days</label>
-                    <input type="text" class="form-control" />
-                </div>
-            </div>*@
 
         <div class="col-md-12">
             <div class="form-group">
@@ -102,11 +57,7 @@
         <div class="col-md-12">
             <div class="custom-file">
                 @Html.TextBoxFor(m => m.documentFile, new { @id = "customFile", @type = "file", @class = "custom-file-input", @name = "documentFile" })
-                @*<label class="custom-file-label n-custom-file-label" for="customFile"> Choose file</label>*@
                 <label class="custom-file-label n-custom-file-label" for="customFile"> @Model.documentViewModel.FileName</label>
-                @*<label class="" for="">Choose file</label>*@
-                @*<input type="file" class="custom-file-input" id="customFile" />*@
-
             </div>
         </div>
     </div>

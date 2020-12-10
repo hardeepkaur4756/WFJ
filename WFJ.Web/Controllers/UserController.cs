@@ -82,6 +82,7 @@ namespace WFJ.Web.Controllers
 
         }
 
+        [AuthorizeActivity((int)Web.Models.Enums.UserType.SystemAdministrator)]
         public ActionResult ManageUsers()
         {
             try
