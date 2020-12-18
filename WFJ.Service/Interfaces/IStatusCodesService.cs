@@ -9,5 +9,6 @@ namespace WFJ.Service.Interfaces
     {
         List<SelectListItem> GetByFormID(int FormID);
         StatusCodesModel GetByStatusCodeAndFormId(int statusCode, int formId);
+        List<StatusCodesModel> GetModelByFormID(int formId);
     }
 }

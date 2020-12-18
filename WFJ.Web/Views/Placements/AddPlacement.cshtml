@@ -84,7 +84,22 @@
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Status</label>
-                                            @Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "Value", "Text"), "Select", new { @Class = "form-control" })
+                                            @*@Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "StatusCode", "Description"), "Select", new { @Class = "form-control" })*@
+                                        <select class="form-control" id="Request_StatusCode">
+                                            @{
+                                                <option value="">Select</option>
+                                                foreach (var statusList in Model.StatusList)
+                                                {
+                                                    var selected = "";
+                                                    if(@statusList.StatusCode == Model.Request?.StatusCode)
+                                                    {
+                                                        selected = "selected";
+                                                    }
+                                                    <option data-statuslevel="@statusList.StatusLevel" value="@statusList.StatusCode" @selected>@statusList.Description</option>
+                                                }
+                                            }
+
+                                        </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
@@ -520,10 +535,10 @@
                                             {
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <ul class="update-associate">
+                                                        <ul class="flag-notes">
                                                             @foreach (var flagNotes in Model.summaryInformation.FlagNotes)
                                                             {
-                                                                <li>@flagNotes.NotesDate : @flagNotes.Notes</li>
+                                                                <li><b>@flagNotes.NotesDate: </b>  @flagNotes.Notes </li> <br />
                                                             }
                                                         </ul>
                                                     </div>
@@ -1799,7 +1814,7 @@
                 var documentTypeId = parseInt($("#DocumentId").val());
                 if (isNaN(documentTypeId)) { documentTypeId = 0; }
 
-                if (documentTypeId > 0) {
+                //if (documentTypeId > 0) {
 
                 // Checking whether FormData is available in browser
                 if (window.FormData !== undefined) {
@@ -1850,9 +1865,9 @@
                 } else {
                     $.notify("FormData is not supported.", "danger");
                     }
-                } else {
-                    $.notify("Please select document type", "danger");
-                }
+                //} else {
+                //    $.notify("Please select document type", "danger");
+                //}
             });
         });
 
@@ -1874,8 +1889,9 @@
 
         $("#btnSubmit").click(function () {
             var statusCode = $.trim($("#Request_StatusCode").find(":selected").text());
-                var completeDate = $.trim($("#Request_CompletionDateString").val());
-            if (statusCode == "Complete") {
+            var completeDate = $.trim($("#Request_CompletionDateString").val());
+            var statusLevel = $("#Request_StatusCode").find(':selected').data("statuslevel");
+            if (statusLevel == 2) {
                     if (completeDate.length == 0) {
                         $(".error-status").html("Please select WFJ File Close Date");
                         scrollUp();
@@ -1884,8 +1900,8 @@
                 }
 
             if (completeDate.length > 0) {
-                if (statusCode != "Complete") {
-                        $(".error-status").html("You must choose to Complete status.");
+                if (statusLevel != 2) {
+                    $(".error-status").html("You must choose a valid status to close this placement.");
                         scrollUp();
                         return false;
                     }

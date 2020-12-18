@@ -145,7 +145,26 @@ namespace WFJ.Web.Controllers
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 var form = _formService.GetFormById(Convert.ToInt32(formId));
                 int accountBalanceFieldId = Convert.ToInt32(form.AccountBalanceFieldID);
-                var userDetail = _userService.GetById(UserId);
+
+                var userDetail = new ProfileViewModel();
+                if (Convert.ToInt32(requestId) > 0)
+                {
+                    IRequestsService _requestService = new RequestsService();
+                    var requestor = Convert.ToInt32(_requestService.GetByRequestId(requestId.Value).Requestor);
+                    if (requestor > 0)
+                    {
+                        userDetail = _userService.GetById(requestor);
+                    }
+                    else
+                    {
+                        userDetail = null;
+                    }
+                }
+                else
+                {
+                    userDetail = null;
+                }
+                
                 var documentType = _codeService.GetAllByType("DOCTYPE");
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
@@ -156,7 +175,7 @@ namespace WFJ.Web.Controllers
                     FormFieldsList = _formService.GetFormFieldsByForm(Convert.ToInt32(formId), requestId),
                     Collectors = _formService.GetCollectorsDropdown(),
                     Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId)),
-                    StatusList = _statusCodesService.GetByFormID(Convert.ToInt32(formId)),
+                    StatusList = _statusCodesService.GetModelByFormID(Convert.ToInt32(formId)),
                     AssignedAtorneys = _formService.GetPersonnelsDropdown(Convert.ToInt32(formId)),
                     RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
                     AdminStaffList = form.hasAdmin == 1 ? _userService.GetAdminStaffDropdown() : new List<SelectListItem>(),
@@ -540,7 +559,7 @@ namespace WFJ.Web.Controllers
         {
             RequestDocumentViewModel requestDocumentViewModels = new RequestDocumentViewModel();
             requestDocumentViewModels.RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId);
-            requestDocumentViewModels.DocumentType = _codeService.GetAllByType("DOCTYPE");
+            requestDocumentViewModels.DocumentType = _codeService.GetAllByType("REQUESTDOCTYPE");
             return this.RenderPartialViewToString("_requestDocumentGrid", requestDocumentViewModels);
         }
     }

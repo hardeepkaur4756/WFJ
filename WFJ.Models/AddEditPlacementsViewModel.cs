@@ -22,7 +22,7 @@ namespace WFJ.Models
         public List<SelectListItem> Requestors { get; set; }
         public List<SelectListItem> AssignedAtorneys { get; set; }
         public List<SelectListItem> Collectors { get; set; }
-        public List<SelectListItem> StatusList { get; set; }
+        public List<StatusCodesModel> StatusList { get; set; }
         public List<SelectListItem> RegionList { get; set; }
         public List<SelectListItem> AdminStaffList { get; set; }
 

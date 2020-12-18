@@ -385,14 +385,40 @@ namespace WFJ.Service
             };
             #endregion
 
-            #region Requestor           
-            summaryInformation.Requestors = new Detail
+
+            #region Requestor    
+            if(userDetail != null)
             {
-                Name = userDetail.FirstName + " " + userDetail.LastName,
-                Address = GetAddress(userDetail.Address1, userDetail.Address2, userDetail.City, userDetail.State, userDetail.PostalCode),
-                Email = userDetail.Email,
-                Phone = userDetail.Telephone,
-            };
+                var address1 = !string.IsNullOrEmpty(userDetail.Address1) ? userDetail.Address1 : clientModel.Address1;
+                var address2 = !string.IsNullOrEmpty(userDetail.Address2) ? userDetail.Address2 : clientModel.Address2;
+                var city = !string.IsNullOrEmpty(userDetail.City) ? userDetail.City : clientModel.City;
+                var state = !string.IsNullOrEmpty(userDetail.State) ? userDetail.State : clientModel.State;
+                var postalCode = !string.IsNullOrEmpty(userDetail.PostalCode) ? userDetail.PostalCode : clientModel.PostalCode;
+                var name = userDetail.FirstName + " " + userDetail.LastName;
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = clientModel.ClientName;
+                }
+
+                summaryInformation.Requestors = new Detail
+                {
+                    Name = name,
+                    Address = GetAddress(address1, address2, city, state, postalCode),
+                    Email = !string.IsNullOrEmpty(userDetail.Email) ? userDetail.Email : clientModel.EMail,
+                    Phone = !string.IsNullOrEmpty(userDetail.Telephone) ? userDetail.Telephone : clientModel.Telephone,
+                };
+            }
+            else
+            {
+                summaryInformation.Requestors = new Detail
+                {
+                    Name = clientModel.ClientName,
+                    Address = GetAddress(clientModel.Address1, clientModel.Address2, clientModel.City, clientModel.State, clientModel.PostalCode),
+                    Email = clientModel.EMail,
+                    Phone = clientModel.Telephone,
+                };
+            }
+            
             #endregion
             return summaryInformation;
         }
