@@ -20,7 +20,7 @@ namespace WFJ.Repository
 
         public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, int levelId, DateTime? beginDate, DateTime? endDate, bool archived, bool activeOnly)
         {
-            IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
+            IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x=>x.Form).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel);
 
             if(archived == true)
             {

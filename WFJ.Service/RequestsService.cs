@@ -17,7 +17,9 @@ namespace WFJ.Service
     {
         IRequestsRepository _requestsRepo = new RequestsRepository();
         IFormFieldsRepository _formFieldRepo = new FormFieldsRepository();
+        IFormsRepository _formsRepo = new FormsRepository();
         IListFieldRepository _listFieldRepo = new ListFieldRepository();
+        IFormDataRepository _formDataRepo = new FormDataRepository();
         //IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
         public RequestViewModel GetByRequestId(int RequestID)
         {
@@ -74,11 +76,11 @@ namespace WFJ.Service
                 DateTime NowDate = DateTime.Now.Date;
                 IStatusCodesRepository statusCodesRepo = new StatusCodesRepository();
                 var StatusList = statusCodesRepo.GetByFormID(formId);
-
+                var forms = _formsRepo.GetById(formId);
+                var accountBalanceFields = Convert.ToInt32(forms.AccountBalanceFieldID);
                 var formData = _formFieldRepo.GetFormFieldsByFormID(formId).SelectMany(x => x.FormDatas).ToList();
                 var formAddressData = _formFieldRepo.GetFormFieldsByFormID(formId).SelectMany(x => x.FormAddressDatas).ToList();
                 var selectionColumns = GetSelectionColumnsByUserType(UserType);
-
                 var list1 = requests.Select(x => new PlacementRequestModel
                 {
                     RequestID = x.ID,
@@ -89,7 +91,8 @@ namespace WFJ.Service
                     RequestDateVal = x.RequestDate,
                     CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
                     RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("MM/dd/yyyy") : null,
-                    TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
+                    //TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
+                    TotalPayments = (float)(accountBalanceFields > 0 ? _formDataRepo.GetBalanceDueByRequestId(accountBalanceFields,x.ID) : 0),
                     LastViewedVal = x.LastViewed,
                     LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("MM/dd/yyyy") : null,
                     DaysOpen = x.RequestDate == null ? 0 :

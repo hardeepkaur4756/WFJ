@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Web;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -22,13 +25,15 @@ namespace WFJ.Service
         public List<RequestDocumentDetail> GetbyRequestId(int requestId)
         {
             var requestDocuments = requestDocumentRepo.GetbyRequestId(requestId);
+            var folderName = Convert.ToString(ConfigurationManager.AppSettings["PlacementAttachmentPath"]).Replace("~","");
             return requestDocuments.Select(x => new RequestDocumentDetail
             { 
             DocumentTypeId = Convert.ToInt32(x.DocumentType),
             FileName = x.FileName,
             RequestDocumentId = x.ID,
             RequestId = Convert.ToInt32(x.RequestID),
-            PhysicalPathFileName = x.PhysicalPathFileName
+            PhysicalPathFileName = x.PhysicalPathFileName,
+            FilePath = folderName + "/" + x.PhysicalPathFileName
             }).ToList();
         }
 

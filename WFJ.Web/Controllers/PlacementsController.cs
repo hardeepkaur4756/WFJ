@@ -165,7 +165,7 @@ namespace WFJ.Web.Controllers
                     userDetail = null;
                 }
                 
-                var documentType = _codeService.GetAllByType("DOCTYPE");
+                var documentType = _codeService.GetAllByType("REQUESTDOCTYPE");
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
@@ -274,7 +274,7 @@ namespace WFJ.Web.Controllers
                     }
                 }
 
-                if (requestId > 0 && Convert.ToInt32(copy) == 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
+                if (requestId > 0 && Convert.ToInt32(copy) == 0)
                 {
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
                 }

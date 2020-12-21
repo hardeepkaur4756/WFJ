@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
@@ -22,6 +23,13 @@ namespace WFJ.Repository
         {
             _context.FormDatas.RemoveRange(FormDatas);
             _context.SaveChanges();
+        }
+
+        public decimal GetBalanceDueByRequestId(int formFieldId,int requestId)
+        {
+            decimal balanceDue = 0;
+            balanceDue = Convert.ToDecimal(_context.FormDatas.FirstOrDefault(x => x.FormFieldID == formFieldId && x.RequestID == requestId)?.FieldValue);
+            return balanceDue;
         }
     }
 }

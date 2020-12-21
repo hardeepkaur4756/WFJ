@@ -11,5 +11,6 @@ namespace WFJ.Repository.Interfaces
     {
         IEnumerable<FormData> GetByRequestId(int requestId);
         void Delete(List<FormData> formDatas);
+        decimal GetBalanceDueByRequestId(int formFieldId,int requestId);
     }
 }
