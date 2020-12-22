@@ -3542,6 +3542,7 @@
     <Content Include="Views\Placements\_RequestsGrid.cshtml" />
     <Content Include="Views\RequestNotes\_AddRequestNotes.cshtml" />
     <Content Include="Views\Placements\_requestDocumentGrid.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
