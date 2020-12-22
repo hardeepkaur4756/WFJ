@@ -19,7 +19,7 @@ namespace WFJ.Service.Interfaces
         List<FormSectionViewModel> GetFormSections();
         List<UserClient> GetUsersByFormID(int FormID);
         FormModel GetFormById(int FormID);
-        List<SelectListItem> GetRequestorsDropdown(int FormID);
+        List<SelectListItem> GetRequestorsDropdown(int FormID, int? requestorId, UserType userType);
         List<SelectListItem> GetCollectorsDropdown();
         List<SelectListItem> GetPersonnelsDropdown(int FormID);
         int SavePlacements(SavePlacementViewModel savePlacementViewModel);

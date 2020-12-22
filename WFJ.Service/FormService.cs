@@ -225,20 +225,56 @@ namespace WFJ.Service
                     Address1 = form.Client.Address1,
                     Address2 = form.Client.Address2,
                     City = form.Client.City,
-                    State = form.Client.State
+                    State = form.Client.State,
+                    ClientNotes = form.Client.clientNotes
                 }
             };
 
             return formObj;
         }
 
-        public List<SelectListItem> GetRequestorsDropdown(int FormID)
+        public List<SelectListItem> GetRequestorsDropdown(int FormID, int? requestorId, UserType userType)
         {
-            return GetUsersByFormID(FormID).Where(x => x.User.Active == 1).Select(x => new SelectListItem
+            List<SelectListItem> requestors = new List<SelectListItem>();
+
+            /// for requestor
+            if(Convert.ToInt32(requestorId) > 0)
+            {
+                IUserRepository _userRepo = new UserRepository();
+                var user = _userRepo.GetById(requestorId);
+                string name = user.FirstName + " " + user.LastName;
+                if (!string.IsNullOrEmpty(name))
+                {
+                    requestors.Add(new SelectListItem
+                    {
+                        Text = name,
+                        Value = user.UserID.ToString()
+                    });
+                }
+            }
+
+            var userRquestor = GetUsersByFormID(FormID).Where(x => x.User.Active == 1).Select(x => new SelectListItem
             {
                 Text = x.User.FirstName + " " + x.User.LastName,
                 Value = x.UserID.ToString()
             }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
+
+            requestors.AddRange(userRquestor);
+
+            /// for WFJ user only
+            if (userType == UserType.SystemAdministrator)
+            {
+                IUserClientRepository _userClientRepo = new UserClientRepository();
+                var userClient = _userClientRepo.GetByClientID(1);
+                var wfjRequestor = userClient.Where(x => x.User.Active == 1).Select(x => new SelectListItem
+                {
+                    Text = x.User.FirstName + " " + x.User.LastName,
+                    Value = x.UserID.ToString()
+                }).Where(x => x.Text.Trim() != "");
+                requestors.AddRange(wfjRequestor);
+            }
+            requestors = requestors.GroupBy(x => x.Value).Select(x => x.First()).ToList();
+            return requestors;
         }
 
         public List<SelectListItem> GetCollectorsDropdown()

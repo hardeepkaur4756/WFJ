@@ -85,21 +85,21 @@
                                         <div class="form-group">
                                             <label>Status</label>
                                             @*@Html.DropDownListFor(x => x.Request.StatusCode, new SelectList(Model.StatusList, "StatusCode", "Description"), "Select", new { @Class = "form-control" })*@
-                                        <select class="form-control" id="Request_StatusCode">
-                                            @{
-                                                <option value="">Select</option>
-                                                foreach (var statusList in Model.StatusList)
-                                                {
-                                                    var selected = "";
-                                                    if(@statusList.StatusCode == Model.Request?.StatusCode)
+                                            <select class="form-control" id="Request_StatusCode">
+                                                @{
+                                                    <option value="">Select</option>
+                                                    foreach (var statusList in Model.StatusList)
                                                     {
-                                                        selected = "selected";
+                                                        var selected = "";
+                                                        if (@statusList.StatusCode == Model.Request?.StatusCode)
+                                                        {
+                                                            selected = "selected";
+                                                        }
+                                                        <option data-statuslevel="@statusList.StatusLevel" value="@statusList.StatusCode" @selected>@statusList.Description</option>
                                                     }
-                                                    <option data-statuslevel="@statusList.StatusLevel" value="@statusList.StatusCode" @selected>@statusList.Description</option>
                                                 }
-                                            }
 
-                                        </select>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
@@ -514,16 +514,12 @@
                                             </div>
 
                                             @{
-                                                if (Model.summaryInformation.ClientNotes != null && Model.summaryInformation.ClientNotes.Any())
+                                                if (!string.IsNullOrEmpty(Model.summaryInformation.ClientNotes))
                                                 {
                                                     <div class="col-md-6">
                                                         <ul class="update-associate div-client-notes">
                                                             <li><b>Client Notes:</b></li>
-                                                            @foreach (var notes in Model.summaryInformation.ClientNotes)
-                                                            {
-                                                                <li>@notes.NotesDate : @notes.Notes</li>
-                                                            }
-
+                                                            <li>@Model.summaryInformation.ClientNotes</li>
                                                         </ul>
                                                     </div>
                                                 }
@@ -538,7 +534,8 @@
                                                         <ul class="flag-notes">
                                                             @foreach (var flagNotes in Model.summaryInformation.FlagNotes)
                                                             {
-                                                                <li><b>@flagNotes.NotesDate: </b>  @flagNotes.Notes </li> <br />
+                                                                <li><b>@flagNotes.NotesDate: </b>  @flagNotes.Notes </li>
+                                                                <br />
                                                             }
                                                         </ul>
                                                     </div>
@@ -1609,37 +1606,37 @@
                                             </li>
                                             <li>To add files, follow the directions below.</li>
                                         </ul>
-                                        
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <div class="form-group">
-                                                            <label class="d-block">Send Notice</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label>Document Type</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label>File Name</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label class="invisible d-block">dummy</label>
-                                                    </div>
-                                                </div>
 
-                                                <div class="row" id="requestDocumentGrid">
-                                                    @{
-                                                        if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
-                                                        {
-                                                            @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
-                                                        }
-                                                    }
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="d-block">Send Notice</label>
                                                 </div>
-                                          
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Document Type</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>File Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="invisible d-block">dummy</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" id="requestDocumentGrid">
+                                            @{
+                                                if (Model.requestDocumentViewModel != null && Model.requestDocumentViewModel.RequestDocumentDetails.Any())
+                                                {
+                                                    @Html.Partial("~/Views/Placements/_requestDocumentGrid.cshtml", Model.requestDocumentViewModel)
+                                                }
+                                            }
+                                        </div>
+
                                         <label class="for-bold">Attach a document to this request</label>
                                         <p>
                                             Attach copies of Purchase Orders, Account
@@ -1658,8 +1655,8 @@
                                                 <div class="custom-file">
                                                     @*@Html.TextBoxFor(x => x.requestDocumentViewModel.documentFile, new { @id = "customFile", @type = "file", @class = "custom-file-input", @name = "documentFile" })*@
                                                     @*<label class="custom-file-label n-custom-file-label" for="customFile"></label>
-                    <input type="file" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>*@
+                                                        <input type="file" class="custom-file-input" id="customFile">
+                                                        <label class="custom-file-label n-custom-file-label" for="customFile">Choose file</label>*@
                                                     <input type="file" id="requestDocumentFileUpload" />
                                                 </div>
                                             </div>
