@@ -192,6 +192,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
           <Property Name="hasExportFiles" Type="tinyint" />
           <Property Name="showWFJFees" Type="tinyint" />
           <Property Name="Active" Type="tinyint" />
+          <Property Name="clientNotes" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -1781,6 +1782,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__FormNotes__UserI__675F4696">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="FormNotesUsers" Type="Self.FormNotesUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="FormNotesUsers">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Forms__ClientID__63C3BFDC">
           <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
           <End Role="Forms" Type="Self.Forms" Multiplicity="*" />
@@ -1841,7 +1854,31 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__hiddenReq__noteI__666B225D">
+          <End Role="RequestNotes" Type="Self.RequestNotes" Multiplicity="0..1" />
+          <End Role="hiddenRequestNotes" Type="Self.hiddenRequestNotes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestNotes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="hiddenRequestNotes">
+              <PropertyRef Name="noteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Levels__ParentID__2E26C93A">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Levels1" Type="Self.Levels" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Levels1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Levels__ParentID__6A3BB341">
           <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
           <End Role="Levels1" Type="Self.Levels" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1865,7 +1902,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RequestNo__Reque__6D181FEC">
+        <Association Name="FK__RequestNo__Reque__69478F08">
           <End Role="Requests" Type="Self.Requests" Multiplicity="0..1" />
           <End Role="RequestNotes" Type="Self.RequestNotes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1877,7 +1914,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__RequestNo__UserI__6C23FBB3">
+        <Association Name="FK__RequestNo__UserI__68536ACF">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
           <End Role="RequestNotes" Type="Self.RequestNotes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1926,6 +1963,18 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Requests__LevelI__300F11AC">
+          <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Levels">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="LevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Requests__LevelI__6B2FD77A">
           <End Role="Levels" Type="Self.Levels" Multiplicity="0..1" />
           <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2540,6 +2589,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Users" EntitySet="Users" />
             <End Role="FormNotesUsers" EntitySet="FormNotesUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK__FormNotes__UserI__675F4696" Association="Self.FK__FormNotes__UserI__675F4696">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FormNotesUsers" EntitySet="FormNotesUsers" />
+          </AssociationSet>
           <AssociationSet Name="FK__Forms__ClientID__63C3BFDC" Association="Self.FK__Forms__ClientID__63C3BFDC">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="Forms" EntitySet="Forms" />
@@ -2560,7 +2613,15 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="RequestNotes" EntitySet="RequestNotes" />
             <End Role="hiddenRequestNotes" EntitySet="hiddenRequestNotes" />
           </AssociationSet>
+          <AssociationSet Name="FK__hiddenReq__noteI__666B225D" Association="Self.FK__hiddenReq__noteI__666B225D">
+            <End Role="RequestNotes" EntitySet="RequestNotes" />
+            <End Role="hiddenRequestNotes" EntitySet="hiddenRequestNotes" />
+          </AssociationSet>
           <AssociationSet Name="FK__Levels__ParentID__2E26C93A" Association="Self.FK__Levels__ParentID__2E26C93A">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="Levels1" EntitySet="Levels" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Levels__ParentID__6A3BB341" Association="Self.FK__Levels__ParentID__6A3BB341">
             <End Role="Levels" EntitySet="Levels" />
             <End Role="Levels1" EntitySet="Levels" />
           </AssociationSet>
@@ -2568,11 +2629,11 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Personnel" EntitySet="Personnel" />
             <End Role="PersonnelClients" EntitySet="PersonnelClients" />
           </AssociationSet>
-          <AssociationSet Name="FK__RequestNo__Reque__6D181FEC" Association="Self.FK__RequestNo__Reque__6D181FEC">
+          <AssociationSet Name="FK__RequestNo__Reque__69478F08" Association="Self.FK__RequestNo__Reque__69478F08">
             <End Role="Requests" EntitySet="Requests" />
             <End Role="RequestNotes" EntitySet="RequestNotes" />
           </AssociationSet>
-          <AssociationSet Name="FK__RequestNo__UserI__6C23FBB3" Association="Self.FK__RequestNo__UserI__6C23FBB3">
+          <AssociationSet Name="FK__RequestNo__UserI__68536ACF" Association="Self.FK__RequestNo__UserI__68536ACF">
             <End Role="Users" EntitySet="Users" />
             <End Role="RequestNotes" EntitySet="RequestNotes" />
           </AssociationSet>
@@ -2589,6 +2650,10 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Requests" EntitySet="Requests" />
           </AssociationSet>
           <AssociationSet Name="FK__Requests__LevelI__300F11AC" Association="Self.FK__Requests__LevelI__300F11AC">
+            <End Role="Levels" EntitySet="Levels" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Requests__LevelI__6B2FD77A" Association="Self.FK__Requests__LevelI__6B2FD77A">
             <End Role="Levels" EntitySet="Levels" />
             <End Role="Requests" EntitySet="Requests" />
           </AssociationSet>
@@ -2808,6 +2873,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Documents" Relationship="WFJDBModel.FK_DocumentClientID" FromRole="Client" ToRole="Document" />
           <NavigationProperty Name="Forms" Relationship="WFJDBModel.FK__Forms__ClientID__63C3BFDC" FromRole="Client" ToRole="Form" />
           <NavigationProperty Name="Forms1" Relationship="WFJDBModel.FK__Forms__ClientID__64B7E415" FromRole="Client" ToRole="Form" />
+          <Property Name="clientNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -5385,6 +5451,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="WFJDBModel.Client">
               <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="clientNotes" ColumnName="clientNotes" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />

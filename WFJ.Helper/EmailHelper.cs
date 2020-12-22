@@ -10,7 +10,7 @@ namespace WFJ.Helper
 {
     public class EmailHelper
     {
-        public static void SendMail(string toEmail,string subject,string body)
+        public static void SendMail(string toEmail,string subject,string body,bool isReply = false)
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient(ConfigurationManager.AppSettings["SMTPHost"]);//"mail.tela.com");
@@ -19,6 +19,10 @@ namespace WFJ.Helper
             mail.Subject = subject;
             mail.Body = body;
             mail.IsBodyHtml = true;
+            if (isReply)
+            {
+                mail.ReplyTo = new MailAddress(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]));
+            }
             SmtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
             SmtpServer.Credentials = new System.Net.NetworkCredential(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]), Convert.ToString(ConfigurationManager.AppSettings["EmailPassword"]));
             SmtpServer.EnableSsl = true;

@@ -225,20 +225,56 @@ namespace WFJ.Service
                     Address1 = form.Client.Address1,
                     Address2 = form.Client.Address2,
                     City = form.Client.City,
-                    State = form.Client.State
+                    State = form.Client.State,
+                    ClientNotes = form.Client.clientNotes
                 }
             };
 
             return formObj;
         }
 
-        public List<SelectListItem> GetRequestorsDropdown(int FormID)
+        public List<SelectListItem> GetRequestorsDropdown(int FormID, int? requestorId, UserType userType)
         {
-            return GetUsersByFormID(FormID).Where(x => x.User.Active == 1).Select(x => new SelectListItem
+            List<SelectListItem> requestors = new List<SelectListItem>();
+
+            /// for requestor
+            if (Convert.ToInt32(requestorId) > 0)
+            {
+                IUserRepository _userRepo = new UserRepository();
+                var user = _userRepo.GetById(requestorId);
+                string name = user.FirstName + " " + user.LastName;
+                if (!string.IsNullOrEmpty(name))
+                {
+                    requestors.Add(new SelectListItem
+                    {
+                        Text = name,
+                        Value = user.UserID.ToString()
+                    });
+                }
+            }
+
+            var userRquestor = GetUsersByFormID(FormID).Where(x => x.User.Active == 1).Select(x => new SelectListItem
             {
                 Text = x.User.FirstName + " " + x.User.LastName,
                 Value = x.UserID.ToString()
             }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
+
+            requestors.AddRange(userRquestor);
+
+            /// for WFJ user only
+            if (userType == UserType.SystemAdministrator)
+            {
+                IUserClientRepository _userClientRepo = new UserClientRepository();
+                var userClient = _userClientRepo.GetByClientID(1);
+                var wfjRequestor = userClient.Where(x => x.User.Active == 1).Select(x => new SelectListItem
+                {
+                    Text = x.User.FirstName + " " + x.User.LastName,
+                    Value = x.UserID.ToString()
+                }).Where(x => x.Text.Trim() != "");
+                requestors.AddRange(wfjRequestor);
+            }
+            requestors = requestors.GroupBy(x => x.Value).Select(x => x.First()).ToList();
+            return requestors;
         }
 
         public List<SelectListItem> GetCollectorsDropdown()
@@ -284,8 +320,6 @@ namespace WFJ.Service
                 DateTime? nullable = null;
                 if (savePlacementViewModel.RequestId == 0)
                 {
-
-
                     /// Add request
                     Request request = new Request
                     {
@@ -368,7 +402,130 @@ namespace WFJ.Service
                 _formDataRepo.AddList(formDatas.AsEnumerable());
                 _formAddressDataRepo.AddList(formAddressDatas.AsEnumerable());
             }
+            sendMail(savePlacementViewModel, requestId);
             return requestId;
+        }
+
+        public void sendMail(SavePlacementViewModel savePlacementViewModel, int requestId)
+        {
+            IUserRepository _userRepo = new UserRepository();
+            IFormFieldsRepository _formFieldRepo = new FormFieldsRepository();
+            IClientRepository _clientRepo = new ClientRepository();
+            var request = _requestsRepository.GetRequestWithDetail(requestId);
+            string message = string.Empty;
+            string messageInRed = string.Empty;
+            string subject = string.Empty;
+            string clientName = string.Empty;
+            string status = "";
+            List<string> emailTo = new List<string>();
+            List<string> cc = new List<string>();
+
+            var form = _formSearchRepository.GetById(savePlacementViewModel.FormId);
+            var client = _clientRepo.GetById(form.ClientID);
+
+            var statusCode = _statusCodesRepo.GetByStatusCodeAndFormId(request.StatusCode.Value, request.FormID.Value);
+            status = statusCode.Description;
+
+            var formfields = _formFieldRepo.GetFormFieldsByFormID(savePlacementViewModel.FormId).Where(x => x.EMailField == 1).ToList();
+            string fieldsTr = string.Empty;
+            foreach (var field in formfields)
+            {
+                var formData = field.FormDatas.FirstOrDefault(x => x.RequestID == requestId);
+                fieldsTr += "<tr><td class=\"bodycopy width-cus-50\">" + field.FieldName + ":</td><td class=\"bodycopy width-cus-50\">" + formData?.FieldValue + "</td><tr/>";
+            }
+
+
+            string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
+            string xlsTemplatePath = dirpath + "/BaseTemplate.html";
+            string emailTemplate = File.ReadAllText(xlsTemplatePath);
+
+            StringBuilder sb1 = new StringBuilder();
+            sb1.Append(emailTemplate);
+            sb1.Replace("[Status]", status);
+            sb1.Replace("[Requestor]", request.User1 != null ? request.User1.FirstName + " " + request.User1.LastName : "");
+            sb1.Replace("[Attorney]", request.Personnel != null ? request.Personnel.FirstName + " " + request.Personnel.LastName : "");
+            sb1.Replace("[FormFields]", fieldsTr);            
+
+            if (statusCode.StatusLevel == 0)
+            {
+                message = "Thank you for your " + form.FormName + " Request. ";
+                messageInRed = "This information has been forwarded to the Wagner, Falconer & Judd staff for processing.";
+                subject = form.FormName + " for " + client.ClientName + " ** New Request **";
+            }
+            else if (statusCode.StatusLevel == 1)
+            {
+                message = "This " + form.FormName + " Request has been reviewed by Wagner, Falconer & Judd.";
+                messageInRed = "You will be contacted for any follow-up questions by Wagner, Falconer & Judd.";
+                subject = form.FormName + " for " + client.ClientName + " ** Active **";
+                IRequestNotesRepository _requestNotes = new RequestNotesRepository();
+                var notes = _requestNotes.GetRequestNotes(requestId, true);
+                string xlsTemplatePath2 = dirpath + "/RequestNotesList.html";
+                string noteHtml = File.ReadAllText(xlsTemplatePath2);
+                foreach (var note in notes.ToList())
+                {
+                    noteHtml += noteHtml.Replace("[NoteDate]", note.NotesDate.Value.ToString("MM/dd/yyyy")).Replace("[Author]", note.User.FirstName + " " + note.User.LastName)
+                                   .Replace("[Notes]", note.Notes);
+                }
+                sb1.Replace("[NotesList]", noteHtml);
+            }
+            else if (statusCode.StatusLevel == 2)
+            {
+                message = "This " + form.FormName + " Request has been completed.";
+                subject = form.FormName + " for " + client.ClientName + " ** Completed **";
+            }
+
+            sb1.Replace("[Message]", message);
+            sb1.Replace("[MessageInRed]", messageInRed);
+
+            /// email to
+            var requestorEmail = request.User1.EMail;
+            emailTo.Add(requestorEmail);
+            IPersonnelsRepository _personnelsRepo = new PersonnelsRepository();
+            var personnel = _personnelsRepo.GetEmailByPersonelRequestId(requestId);
+            if (!string.IsNullOrEmpty(personnel?.EMail))
+            {
+                emailTo.Add(personnel?.EMail);
+            }
+
+            IEmailCopiesRepository _emailCopiesRepository = new EmailCopiesRepository();
+            var usersEmail = _emailCopiesRepository.GetUsers().Where(x => x.EMail != null && x.EMail != "").Select(x => x.EMail).ToList();
+            emailTo.AddRange(usersEmail);
+
+            if (form.FormName.ToLower().Trim() == "wfj helpdesk")
+            {
+                emailTo.Add("mfischer@wfjlawfirm.com");
+            }
+
+            if (statusCode.StatusCode1 == 0)
+            {
+                IPersonnelClientsRepository _personnelClientsRepo = new PersonnelClientsRepository();
+                if (form.ClientID != null)
+                {
+                    var personnels = _personnelClientsRepo.GetPersonnelsByClientID(Convert.ToInt32(form.ClientID));
+                    emailTo.AddRange(personnels.Where(x => x.EMail != null && x.EMail != "").Select(x => x.EMail).ToList());
+                }
+                cc.Add("Reception@wfjlawfirm.com");
+            }
+            else
+            {
+                if ((statusCode.StatusCode1 >= 1 && statusCode.StatusCode1 <= 5) && form.FormTypeID == 10)
+                {
+                    cc.Add("mfischer@wfjlawfirm.com");
+                    cc.Add("myoung @wfjlawfirm.com");
+                }
+                if (form.ClientID == 91 || form.ClientID == 97 || form.ClientID == 96 || form.ClientID == 102 || form.ClientID == 95 || form.ClientID == 109)
+                {
+                    emailTo.Add("sfalconer@wfjlawfirm.com");
+                }
+            }
+
+            if (form.FormName.ToLower().Trim() != "lien request")
+            {
+                emailTo.Remove("MGeislinger@wfjlawfirm.com");
+            }
+            emailTo = emailTo.Distinct().ToList();
+            var emails = string.Join(";", emailTo); 
+            EmailHelper.SendMail(emails, subject, sb1.ToString(),true);
         }
 
         public SummaryInformation GetSummaryInformation(ClientModel clientModel, ProfileViewModel userDetail)
@@ -387,7 +544,7 @@ namespace WFJ.Service
 
 
             #region Requestor    
-            if(userDetail != null)
+            if (userDetail != null)
             {
                 var address1 = !string.IsNullOrEmpty(userDetail.Address1) ? userDetail.Address1 : clientModel.Address1;
                 var address2 = !string.IsNullOrEmpty(userDetail.Address2) ? userDetail.Address2 : clientModel.Address2;
@@ -418,7 +575,7 @@ namespace WFJ.Service
                     Phone = clientModel.Telephone,
                 };
             }
-            
+
             #endregion
             return summaryInformation;
         }

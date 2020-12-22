@@ -83,6 +83,7 @@
     <Compile Include="CurrenciesRepository.cs" />
     <Compile Include="DocumentClientsRepository.cs" />
     <Compile Include="DocumentSearchRepository.cs" />
+    <Compile Include="EmailCopiesRepository.cs" />
     <Compile Include="EntityModel\AccessLevel.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
@@ -434,6 +435,7 @@
     <Compile Include="Interfaces\ICurrenciesRepository.cs" />
     <Compile Include="Interfaces\IDocumentClientsRepository.cs" />
     <Compile Include="Interfaces\IDocumentSearchRepository.cs" />
+    <Compile Include="Interfaces\IEmailCopiesRepository.cs" />
     <Compile Include="Interfaces\IErrorLogRepository.cs" />
     <Compile Include="Interfaces\IFieldTypesRepository.cs" />
     <Compile Include="Interfaces\IFormAddressDataRepository.cs" />

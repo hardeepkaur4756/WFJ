@@ -34,5 +34,6 @@ namespace WFJ.Models
         public byte hasExportFiles { get; set; }
         public byte showWFJFees { get; set; }
         public byte Active { get; set; }
+        public string ClientNotes { get; set; }
     }
 }

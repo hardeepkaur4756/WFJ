@@ -114,7 +114,7 @@ namespace WFJ.Web.Controllers
                 model.placementReuestsFilterViewModel = new PlacementReuestsFilterViewModel()
                 {
                     FormID = id,
-                    Requestors = DropdownHelpers.PrependALL(_formService.GetRequestorsDropdown(id)),
+                    Requestors = DropdownHelpers.PrependALL(_formService.GetRequestorsDropdown(id, null, (UserType)((byte)UserType))),
                     RegionList = DropdownHelpers.PrependALL(form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value)), //_clientService.GetRegionsDropdown(),
                     Collectors = DropdownHelpers.PrependALL(_formService.GetCollectorsDropdown()),
                     StatusList = DropdownHelpers.PrependALL(_statusCodesService.GetByFormID(id)),
@@ -147,13 +147,14 @@ namespace WFJ.Web.Controllers
                 int accountBalanceFieldId = Convert.ToInt32(form.AccountBalanceFieldID);
 
                 var userDetail = new ProfileViewModel();
+                int requestorId = 0;
                 if (Convert.ToInt32(requestId) > 0)
                 {
                     IRequestsService _requestService = new RequestsService();
-                    var requestor = Convert.ToInt32(_requestService.GetByRequestId(requestId.Value).Requestor);
-                    if (requestor > 0)
+                    requestorId = Convert.ToInt32(_requestService.GetByRequestId(requestId.Value).Requestor);
+                    if (requestorId > 0)
                     {
-                        userDetail = _userService.GetById(requestor);
+                        userDetail = _userService.GetById(requestorId);
                     }
                     else
                     {
@@ -174,7 +175,7 @@ namespace WFJ.Web.Controllers
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(Convert.ToInt32(formId), requestId),
                     Collectors = _formService.GetCollectorsDropdown(),
-                    Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId)),
+                    Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId), requestorId,(UserType)((byte)UserType)),
                     StatusList = _statusCodesService.GetModelByFormID(Convert.ToInt32(formId)),
                     AssignedAtorneys = _formService.GetPersonnelsDropdown(Convert.ToInt32(formId)),
                     RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
@@ -194,7 +195,7 @@ namespace WFJ.Web.Controllers
                 string customerPhone = string.Empty;
                 decimal balanceDue = 0;
                 model.summaryInformation.Payments = new PaymentDetail();
-                model.summaryInformation.ClientNotes = new List<RequestNoteModel>();
+                model.summaryInformation.ClientNotes = null;
                 model.summaryInformation.FlagNotes = new List<RequestNoteModel>();
                 var customerPhoneField = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "customer phone");
                 if (customerPhoneField != null)
@@ -222,7 +223,7 @@ namespace WFJ.Web.Controllers
                 {
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
-                    model.summaryInformation.ClientNotes = model.Request.RequestNotes;
+                    model.summaryInformation.ClientNotes = form.Client.ClientNotes;
                     model.summaryInformation.FlagNotes = model.Request.RequestNotes.Where(x => x.flaggedNote == 1).ToList();
                     if (balanceDue > 0)
                     {

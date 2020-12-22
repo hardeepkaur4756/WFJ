@@ -131,7 +131,7 @@ namespace WFJ.Models
         public PaymentDetail Payments { get; set; }
         public Detail Clients { get; set; }
         public Detail Requestors { get; set; }
-        public List<RequestNoteModel> ClientNotes { get; set; }
+        public string ClientNotes { get; set; }
         public List<RequestNoteModel> FlagNotes { get; set; }
     }
 
