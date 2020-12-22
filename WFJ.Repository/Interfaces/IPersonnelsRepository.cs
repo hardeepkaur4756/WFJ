@@ -9,5 +9,6 @@ namespace WFJ.Repository.Interfaces
 {
     public interface IPersonnelsRepository : IRepository<Personnel>
     {
+        Personnel GetEmailByPersonelRequestId(int requestId);
     }
 }
