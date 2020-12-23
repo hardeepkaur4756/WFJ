@@ -16,3 +16,12 @@
 /WFJ.Web/packages
 /.vs
 *.dbmdl
+/WFJ.Helper
+/WFJ.Models/bin/Release
+/WFJ.Models/obj/Release
+/WFJ.Repository/bin/Release
+/WFJ.Repository/obj/Release
+/WFJ.Service/bin/Release
+/WFJ.Web/obj/Release
+/WFJ.DB/bin/Debug
+/WFJ.Service/obj/Release
