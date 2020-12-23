@@ -392,8 +392,8 @@ namespace WFJ.Service
             var sTime = ConfigurationManager.AppSettings["FollowUpStartTime"].ToString();
             var eTime = ConfigurationManager.AppSettings["FollowUpEndTime"].ToString();
             var slot = Convert.ToInt32(ConfigurationManager.AppSettings["FollowUpSlot"]);
-            DateTime startTime = Convert.ToDateTime(DateTime.Now.Date.ToString("dd/MM/yyyy") + " " + sTime);
-            DateTime endTime = Convert.ToDateTime(DateTime.Now.Date.ToString("dd/MM/yyyy") + " " + eTime);
+            DateTime startTime = Convert.ToDateTime(DateTime.Now.Date.ToString("MM/dd/yyyy") + " " + sTime);
+            DateTime endTime = Convert.ToDateTime(DateTime.Now.Date.ToString("MM/dd/yyyy") + " " + eTime);
             List<SelectListItem> followupTimes = new List<SelectListItem>();
             while (startTime <= endTime)
             {

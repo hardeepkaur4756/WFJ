@@ -458,15 +458,16 @@ namespace WFJ.Service
                 messageInRed = "You will be contacted for any follow-up questions by Wagner, Falconer & Judd.";
                 subject = form.FormName + " for " + client.ClientName + " ** Active **";
                 IRequestNotesRepository _requestNotes = new RequestNotesRepository();
-                var notes = _requestNotes.GetRequestNotes(requestId, true);
+                var notes = _requestNotes.GetRequestNotes(requestId, true).ToList();
                 string xlsTemplatePath2 = dirpath + "/RequestNotesList.html";
                 string noteHtml = File.ReadAllText(xlsTemplatePath2);
-                foreach (var note in notes.ToList())
+                string html = string.Empty;
+                foreach (var note in notes)
                 {
-                    noteHtml += noteHtml.Replace("[NoteDate]", note.NotesDate.Value.ToString("MM/dd/yyyy")).Replace("[Author]", note.User.FirstName + " " + note.User.LastName)
+                    html += noteHtml.Replace("[NoteDate]", note.NotesDate.Value.ToString("MM/dd/yyyy")).Replace("[Author]", note.User.FirstName + " " + note.User.LastName)
                                    .Replace("[Notes]", note.Notes);
                 }
-                sb1.Replace("[NotesList]", noteHtml);
+                sb1.Replace("[NotesList]", html);
             }
             else if (statusCode.StatusLevel == 2)
             {
@@ -524,7 +525,8 @@ namespace WFJ.Service
                 emailTo.Remove("MGeislinger@wfjlawfirm.com");
             }
             emailTo = emailTo.Distinct().ToList();
-            var emails = string.Join(";", emailTo); 
+            var emails = string.Join(";", emailTo);
+            var body = sb1.ToString();
             EmailHelper.SendMail(emails, subject, sb1.ToString(),true);
         }
 
