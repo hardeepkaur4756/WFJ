@@ -91,8 +91,8 @@ namespace WFJ.Service
                     RequestDateVal = x.RequestDate,
                     CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
                     RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("MM/dd/yyyy") : null,
-                    //TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
-                    TotalPayments = (float)(accountBalanceFields > 0 ? _formDataRepo.GetBalanceDueByRequestId(accountBalanceFields,x.ID) : 0),
+                    TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
+                    //TotalPayments = (float)(accountBalanceFields > 0 ? _formDataRepo.GetBalanceDueByRequestId(accountBalanceFields,x.ID) : 0),
                     LastViewedVal = x.LastViewed,
                     LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("MM/dd/yyyy") : null,
                     DaysOpen = x.RequestDate == null ? 0 :

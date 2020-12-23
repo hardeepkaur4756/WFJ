@@ -275,8 +275,9 @@ namespace WFJ.Web.Controllers
                     }
                 }
 
-                if (requestId > 0 && Convert.ToInt32(copy) == 0)
+                if (requestId > 0 && Convert.ToInt32(copy) == 0 && UserType == (int)WFJ.Service.Model.UserType.ClientUser)
                 {
+
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
                 }
 
