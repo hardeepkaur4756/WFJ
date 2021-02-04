@@ -24,5 +24,13 @@ namespace WFJ.Repository.EntityModel
         public Nullable<double> WFJFees { get; set; }
         public Nullable<int> PaymentTypeID { get; set; }
         public Nullable<int> currencyID { get; set; }
+        public string WFJReferenceNumber { get; set; }
+        public Nullable<System.DateTime> WFJReferenceDate { get; set; }
+        public Nullable<System.DateTime> WFJInvoiceDatePaid { get; set; }
+    
+        public virtual currency currency { get; set; }
+        public virtual PaymentType PaymentType { get; set; }
+        public virtual Request Request { get; set; }
+        public virtual User User { get; set; }
     }
 }

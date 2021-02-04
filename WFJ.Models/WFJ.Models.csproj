@@ -83,6 +83,7 @@
     <Compile Include="LoginViewModel.cs" />
     <Compile Include="ManageDocumentModel.cs" />
     <Compile Include="ManageDocumentViewModel.cs" />
+    <Compile Include="ManagePaymentsModel.cs" />
     <Compile Include="ManageRequestNotes.cs" />
     <Compile Include="ManageUserModel.cs" />
     <Compile Include="ManageUserViewModel.cs" />

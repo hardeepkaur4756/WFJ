@@ -18,6 +18,7 @@ namespace WFJ.Repository.EntityModel
         public Request()
         {
             this.RequestNotes = new HashSet<RequestNote>();
+            this.Payments = new HashSet<Payment>();
         }
     
         public int ID { get; set; }
@@ -62,5 +63,7 @@ namespace WFJ.Repository.EntityModel
         public virtual Level Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestNote> RequestNotes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

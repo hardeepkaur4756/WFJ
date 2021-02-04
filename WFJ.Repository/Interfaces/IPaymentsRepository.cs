@@ -3,7 +3,7 @@ using WFJ.Repository.EntityModel;
 
 namespace WFJ.Repository.Interfaces
 {
-    public interface IPaymentsRepository
+    public interface IPaymentsRepository : IRepository<Payment>
     {
         List<Payment> GetByReqestId(int requestId);
     }

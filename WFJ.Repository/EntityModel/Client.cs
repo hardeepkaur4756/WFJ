@@ -52,6 +52,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> showWFJFees { get; set; }
         public Nullable<byte> Active { get; set; }
         public string clientNotes { get; set; }
+        public string clientPaymentNotes { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserClient> UserClients { get; set; }

@@ -14,9 +14,18 @@ namespace WFJ.Repository.EntityModel
     
     public partial class currency
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public currency()
+        {
+            this.Payments = new HashSet<Payment>();
+        }
+    
         public int currencyID { get; set; }
         public string currencyCode { get; set; }
         public string currencyName { get; set; }
         public Nullable<int> sequenceID { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

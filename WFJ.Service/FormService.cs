@@ -226,7 +226,8 @@ namespace WFJ.Service
                     Address2 = form.Client.Address2,
                     City = form.Client.City,
                     State = form.Client.State,
-                    ClientNotes = form.Client.clientNotes
+                    ClientNotes = form.Client.clientNotes,
+                    ClientPaymentNotes = form.Client.clientPaymentNotes
                 }
             };
 

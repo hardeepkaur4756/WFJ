@@ -20,5 +20,6 @@ namespace WFJ.Service.Interfaces
         void UpdateListFieldSequence(int UserId, int FormId, List<DatatableDynamicColumn> fieldIDs);
         void UpdateRequestLastViewed(int RequestId);
         void UpdateActiveCode(int code, int requestId);
+        void UpdateRequestLastNoteDate(int RequestId);
     }
 }

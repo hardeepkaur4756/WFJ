@@ -196,6 +196,7 @@ namespace WFJ.Web.Controllers
                 decimal balanceDue = 0;
                 model.summaryInformation.Payments = new PaymentDetail();
                 model.summaryInformation.ClientNotes = null;
+                model.summaryInformation.ClientPaymentNotes = null;
                 model.summaryInformation.FlagNotes = new List<RequestNoteModel>();
                 var customerPhoneField = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim() == "customer phone");
                 if (customerPhoneField != null)
@@ -224,6 +225,7 @@ namespace WFJ.Web.Controllers
                     IRequestsService _requestService = new RequestsService();
                     model.Request = _requestService.GetByRequestId(requestId.Value);
                     model.summaryInformation.ClientNotes = form.Client.ClientNotes;
+                    model.summaryInformation.ClientPaymentNotes = form.Client.ClientPaymentNotes;
                     model.summaryInformation.FlagNotes = model.Request.RequestNotes.Where(x => x.flaggedNote == 1).ToList();
                     if (balanceDue > 0)
                     {
@@ -266,6 +268,7 @@ namespace WFJ.Web.Controllers
                         }
                         model.summaryInformation.Payments = new PaymentDetail();
                         model.summaryInformation.ClientNotes = null;
+                        model.summaryInformation.ClientPaymentNotes = null;
                         model.summaryInformation.FlagNotes = null;
                     }
                     else

@@ -193,6 +193,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
           <Property Name="showWFJFees" Type="tinyint" />
           <Property Name="Active" Type="tinyint" />
           <Property Name="clientNotes" Type="varchar" MaxLength="8000" />
+          <Property Name="clientPaymentNotes" Type="varchar" MaxLength="8000" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -1252,6 +1253,9 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="WFJFees" Type="float" />
           <Property Name="PaymentTypeID" Type="int" />
           <Property Name="currencyID" Type="int" />
+          <Property Name="WFJReferenceNumber" Type="varchar" MaxLength="20" />
+          <Property Name="WFJReferenceDate" Type="smalldatetime" />
+          <Property Name="WFJInvoiceDatePaid" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="PaymentTypes">
           <Key>
@@ -1443,6 +1447,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="internalNote" Type="tinyint" />
           <Property Name="LastSent" Type="datetime" />
           <Property Name="LastSentTo" Type="varchar(max)" />
+          <Property Name="paymentDate" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="RequestNotices">
           <Key>
@@ -2100,6 +2105,54 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Payment_Currency">
+          <End Role="currencies" Type="Self.currencies" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="currencies">
+              <PropertyRef Name="currencyID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="currencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_PaymentType">
+          <End Role="PaymentTypes" Type="Self.PaymentTypes" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="PaymentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_Request">
+          <End Role="Requests" Type="Self.Requests" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PracticeAreasID">
           <End Role="PracticeAreas" Type="Self.PracticeAreas" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2693,6 +2746,22 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Codes" EntitySet="Codes" />
             <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
+          <AssociationSet Name="FK_Payment_Currency" Association="Self.FK_Payment_Currency">
+            <End Role="currencies" EntitySet="currencies" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_PaymentType" Association="Self.FK_Payment_PaymentType">
+            <End Role="PaymentTypes" EntitySet="PaymentTypes" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_Request" Association="Self.FK_Payment_Request">
+            <End Role="Requests" EntitySet="Requests" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
           <AssociationSet Name="FK_PracticeAreasID" Association="Self.FK_PracticeAreasID">
             <End Role="PracticeAreas" EntitySet="PracticeAreas" />
             <End Role="Documents" EntitySet="Documents" />
@@ -2874,6 +2943,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Forms" Relationship="WFJDBModel.FK__Forms__ClientID__63C3BFDC" FromRole="Client" ToRole="Form" />
           <NavigationProperty Name="Forms1" Relationship="WFJDBModel.FK__Forms__ClientID__64B7E415" FromRole="Client" ToRole="Form" />
           <Property Name="clientNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="clientPaymentNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -2945,6 +3015,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="currencyCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="currencyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="sequenceID" Type="Int32" />
+          <NavigationProperty Name="Payments" Relationship="WFJDBModel.FK_Payment_Currency" FromRole="currency" ToRole="Payment" />
         </EntityType>
         <EntityType Name="DocumentUsage">
           <Key>
@@ -3778,6 +3849,13 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="WFJFees" Type="Double" />
           <Property Name="PaymentTypeID" Type="Int32" />
           <Property Name="currencyID" Type="Int32" />
+          <Property Name="WFJReferenceNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WFJReferenceDate" Type="DateTime" Precision="0" />
+          <Property Name="WFJInvoiceDatePaid" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="currency" Relationship="WFJDBModel.FK_Payment_Currency" FromRole="Payment" ToRole="currency" />
+          <NavigationProperty Name="PaymentType" Relationship="WFJDBModel.FK_Payment_PaymentType" FromRole="Payment" ToRole="PaymentType" />
+          <NavigationProperty Name="Request" Relationship="WFJDBModel.FK_Payment_Request" FromRole="Payment" ToRole="Request" />
+          <NavigationProperty Name="User" Relationship="WFJDBModel.FK_Payment_User" FromRole="Payment" ToRole="User" />
         </EntityType>
         <EntityType Name="PaymentType">
           <Key>
@@ -3788,6 +3866,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="Source" Type="Byte" />
           <Property Name="ClientID" Type="Int32" />
           <Property Name="active" Type="Byte" />
+          <NavigationProperty Name="Payments" Relationship="WFJDBModel.FK_Payment_PaymentType" FromRole="PaymentType" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Personnel">
           <Key>
@@ -4009,6 +4088,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="User1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="Request" ToRole="User" />
           <NavigationProperty Name="Level" Relationship="WFJDBModel.FK__Requests__LevelI__300F11AC" FromRole="Request" ToRole="Level" />
           <NavigationProperty Name="RequestNotes" Relationship="WFJDBModel.FK__RequestNo__Reque__6D181FEC" FromRole="Request" ToRole="RequestNote" />
+          <NavigationProperty Name="Payments" Relationship="WFJDBModel.FK_Payment_Request" FromRole="Request" ToRole="Payment" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -4703,6 +4783,22 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="User" EntitySet="Users" />
             <End Role="RequestNote" EntitySet="RequestNotes" />
           </AssociationSet>
+          <AssociationSet Name="FK_Payment_Currency" Association="WFJDBModel.FK_Payment_Currency">
+            <End Role="currency" EntitySet="currencies" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_PaymentType" Association="WFJDBModel.FK_Payment_PaymentType">
+            <End Role="PaymentType" EntitySet="PaymentTypes" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_Request" Association="WFJDBModel.FK_Payment_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_User" Association="WFJDBModel.FK_Payment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -4878,6 +4974,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Requests1" Relationship="WFJDBModel.FK__Requests__Reques__070CFC19" FromRole="User" ToRole="Request" />
           <NavigationProperty Name="FormNotesUsers" Relationship="WFJDBModel.FK__FormNotes__UserI__544C7222" FromRole="User" ToRole="FormNotesUser" />
           <NavigationProperty Name="RequestNotes" Relationship="WFJDBModel.FK__RequestNo__UserI__6C23FBB3" FromRole="User" ToRole="RequestNote" />
+          <NavigationProperty Name="Payments" Relationship="WFJDBModel.FK_Payment_User" FromRole="User" ToRole="Payment" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -5274,6 +5371,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="LastSentTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Request" Relationship="WFJDBModel.FK__RequestNo__Reque__6D181FEC" FromRole="RequestNote" ToRole="Request" />
           <NavigationProperty Name="User" Relationship="WFJDBModel.FK__RequestNo__UserI__6C23FBB3" FromRole="RequestNote" ToRole="User" />
+          <Property Name="paymentDate" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK__hiddenReq__noteI__53584DE9">
           <End Type="WFJDBModel.RequestNote" Role="RequestNote" Multiplicity="0..1" />
@@ -5319,6 +5417,54 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="RequestNote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_Currency">
+          <End Type="WFJDBModel.currency" Role="currency" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="currency">
+              <PropertyRef Name="currencyID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="currencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_PaymentType">
+          <End Type="WFJDBModel.PaymentType" Role="PaymentType" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PaymentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_Request">
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_User">
+          <End Type="WFJDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="WFJDBModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Payment">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -5451,6 +5597,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="WFJDBModel.Client">
               <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="clientPaymentNotes" ColumnName="clientPaymentNotes" />
                 <ScalarProperty Name="clientNotes" ColumnName="clientNotes" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
@@ -6394,6 +6541,9 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="WFJDBModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="WFJInvoiceDatePaid" ColumnName="WFJInvoiceDatePaid" />
+                <ScalarProperty Name="WFJReferenceDate" ColumnName="WFJReferenceDate" />
+                <ScalarProperty Name="WFJReferenceNumber" ColumnName="WFJReferenceNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -7156,6 +7306,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="RequestNotes">
             <EntityTypeMapping TypeName="WFJDBModel.RequestNote">
               <MappingFragment StoreEntitySet="RequestNotes">
+                <ScalarProperty Name="paymentDate" ColumnName="paymentDate" />
                 <ScalarProperty Name="LastSentTo" ColumnName="LastSentTo" />
                 <ScalarProperty Name="LastSent" ColumnName="LastSent" />
                 <ScalarProperty Name="internalNote" ColumnName="internalNote" />

@@ -1,0 +1,82 @@
+﻿@model WFJ.Models.ManagePaymentsModel
+
+
+<form action="">
+
+    @Html.HiddenFor(x => x.Id, new { @id = "paymentId" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="paymentDate">Payment Date*</label>
+                @Html.TextBoxFor(x => x.PaymentDate, new { @Class = "form-control", id = "paymentDate" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Remit Date*</label>
+                @Html.TextBoxFor(x => x.RemitDate, new { @Class = "form-control", id = "remitDate" })
+            </div>
+
+            <input id="paymentDefaultDate" type="hidden" value="@DateTime.Now.ToString("MM/dd/yyyy")" />
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="noteDate">Entered By*</label>
+                @Html.DropDownListFor(x => x.EnteredBy, new SelectList(Model.Users, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "enteredBy" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Payment Type*</label>
+                @Html.DropDownListFor(x => x.PaymentTypeId, new SelectList(Model.PaymentTypes, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "paymentType" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="noteDate">Check Number*</label>
+                @Html.TextBoxFor(x => x.CheckNumber, new { @Class = "form-control", id = "checkNumber" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Payment amount*</label>
+                @Html.TextBoxFor(x => x.PaymentAmount, new { @Class = "form-control", id = "paymentAmount", @type="number", @step="any"})
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="noteDate">Currency*</label>
+                @Html.DropDownListFor(x => x.Currency, new SelectList(Model.Currencies, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "currency" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>WFJ Fee</label>
+                @Html.TextBoxFor(x => x.WFJFees, new { @Class = "form-control", id = "WFJFees", @type = "number", @step = "any" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="noteDate">WFJ Reference Number</label>
+                @Html.TextBoxFor(x => x.WFJReferenceNumber, new { @Class = "form-control", id = "WFJReferenceNumber" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>WFJ Reference Date</label>
+                @Html.TextBoxFor(x => x.WFJReferenceDate, new { @Class = "form-control", id = "WFJReferenceDate" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>WFJ Invoice Paid Date</label>
+                @Html.TextBoxFor(x => x.WFJInvoiceDatePaid, new { @Class = "form-control", id = "WFJInvoiceDatePaid" })
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+

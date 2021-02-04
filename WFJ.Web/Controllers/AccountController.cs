@@ -170,7 +170,7 @@ namespace WFJ.Web.Controllers
                 else
                 {
                     ModelState.AddModelError("Password", resultModel.Message);
-                    return View();
+                    return View(loginViewModel);
                 }
             }
             catch (Exception ex)

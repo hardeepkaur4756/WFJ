@@ -505,6 +505,12 @@ namespace WFJ.Service
             _requestsRepo.Update(request);
         }
 
+        public void UpdateRequestLastNoteDate(int RequestId)
+        {
+            var request = _requestsRepo.GetById(RequestId);
+            request.LastNoteDate = DateTime.Now;
+            _requestsRepo.Update(request);
+        }
         public void UpdateActiveCode(int code, int requestId)
         {
             var request = _requestsRepo.GetById(requestId);

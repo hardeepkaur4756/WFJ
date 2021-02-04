@@ -132,6 +132,7 @@ namespace WFJ.Models
         public Detail Clients { get; set; }
         public Detail Requestors { get; set; }
         public string ClientNotes { get; set; }
+        public string ClientPaymentNotes { get; set; }
         public List<RequestNoteModel> FlagNotes { get; set; }
     }
 

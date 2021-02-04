@@ -14,10 +14,19 @@ namespace WFJ.Repository.EntityModel
     
     public partial class PaymentType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PaymentType()
+        {
+            this.Payments = new HashSet<Payment>();
+        }
+    
         public int ID { get; set; }
         public string PaymentTypeDesc { get; set; }
         public Nullable<byte> Source { get; set; }
         public Nullable<int> ClientID { get; set; }
         public Nullable<byte> active { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

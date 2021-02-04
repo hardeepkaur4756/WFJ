@@ -142,6 +142,10 @@
         <AssociationConnector Association="WFJDBModel.FK__FormNotes__UserI__544C7222" />
         <AssociationConnector Association="WFJDBModel.FK__RequestNo__Reque__6D181FEC" />
         <AssociationConnector Association="WFJDBModel.FK__RequestNo__UserI__6C23FBB3" />
+        <AssociationConnector Association="WFJDBModel.FK_Payment_Currency" />
+        <AssociationConnector Association="WFJDBModel.FK_Payment_PaymentType" />
+        <AssociationConnector Association="WFJDBModel.FK_Payment_Request" />
+        <AssociationConnector Association="WFJDBModel.FK_Payment_User" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

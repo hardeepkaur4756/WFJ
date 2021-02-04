@@ -35,5 +35,6 @@ namespace WFJ.Models
         public byte showWFJFees { get; set; }
         public byte Active { get; set; }
         public string ClientNotes { get; set; }
+        public string ClientPaymentNotes { get; set; }
     }
 }

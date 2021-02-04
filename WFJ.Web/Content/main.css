@@ -6395,3 +6395,29 @@ td .td-with-inline-icons {
 .div-client-notes::-webkit-scrollbar-thumb:hover {
     background: #1e3d73;
 }
+
+
+.div-client-payment-notes {
+    height: 100px;
+    overflow-y: auto;
+}
+
+    /* width */
+    .div-client-payment-notes::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+.div-client-payment-notes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+    /* Handle */
+.div-client-payment-notes::-webkit-scrollbar-thumb {
+    background: #1e3d73;
+}
+
+        /* Handle on hover */
+    .div-client-payment-notes::-webkit-scrollbar-thumb:hover {
+        background: #1e3d73;
+    }

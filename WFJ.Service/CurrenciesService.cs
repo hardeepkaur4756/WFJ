@@ -15,7 +15,7 @@ namespace WFJ.Service
         public List<SelectListItem> GetCurrencyDropdown()
         {
             ICurrenciesRepository _currencyRepo = new CurrenciesRepository();
-            return _currencyRepo.GetAll().OrderBy(x => x.sequenceID).Select(x => new SelectListItem
+            return _currencyRepo.GetAll().Where(x => !string.IsNullOrEmpty(x.currencyCode)).OrderBy(x => x.sequenceID).Select(x => new SelectListItem
             {
                 Text = x.currencyCode,
                 Value = x.currencyID.ToString()

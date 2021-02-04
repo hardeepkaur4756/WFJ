@@ -446,6 +446,7 @@
                             }
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
+                            <!--------Summary section------->
                             <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                                 <div class="card">
                                     <div class="card-body">
@@ -545,6 +546,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!--------Notes section------->
                             <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                 <div class="card">
                                     <div class="card-body">
@@ -569,21 +572,21 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.BalanceDue</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.TotalPayment</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.RemainingAmount</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -624,601 +627,21 @@
 
                                         <div class="table-responsive">
                                             <table id="requestNotesTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table">
-                                                @*<thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th>Note Date</th>
-                                                            <th>Follow Up Date</th>
-                                                            <th>Author</th>
-                                                            <th>Contact Notes</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <a href="" class="anchor-design">Edit</a>
-                                                            </td>
-
-                                                            <td>
-                                                                <div class="custom-control custom-checkbox custom-control-inline">
-                                                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                    <label class="custom-control-label" for="customCheck6"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>8/31/2020</td>
-                                                            <td>9/9/2020 7:00:00 AM</td>
-                                                            <td>Test Admin</td>
-                                                            <td>
-                                                                No answer received. Preparing default
-                                                                judgment.
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>*@
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!--------Payment section------->
                             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="text-right">
-                                            <button type="submit" class="btn btn-secondary mb-3" data-toggle="modal" data-target="#addpayments">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="addPayments()">
                                                 Add Payments
                                             </button>
-                                            <button type="submit" class="btn btn-secondary mb-3">
+                                            <button type="button" class="btn btn-secondary mb-3">
                                                 Send Payments
                                             </button>
                                         </div>
@@ -1229,31 +652,36 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.BalanceDue</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.TotalPayment</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold">$11,280.82</p>
+                                                        <p class="for-bold">$@amountDetail.RemainingAmount</p>
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            @{
+                                                if (!string.IsNullOrEmpty(Model.summaryInformation.ClientPaymentNotes))
+                                                {
+                                                    <div class="col-md-12">
+                                                        <ul class="update-associate div-client-payment-notes">
+                                                            <li><b>Client Payment Notes:</b></li>
+                                                            <li>@Model.summaryInformation.ClientPaymentNotes</li>
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            }
                                             <ul class="attached-file">
-                                                <li>
-                                                    Click on a Payment Date to view the details of
-                                                    the Payment, make changes to the Payment or
-                                                    delete the Payment.
-                                                </li>
                                                 <li>
                                                     Send the Payments checked in the list below to
                                                     the Recipient entered in the space below. You
@@ -1284,310 +712,14 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table id="" class="table table-striped layout-primary table-bordered document-center-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th>Payment Date</th>
-                                                        <th>Payment Type</th>
-                                                        <th>Check Number</th>
-                                                        <th>Entered By</th>
-                                                        <th>Amount</th>
-                                                        <th>Currency</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="" class="anchor-design">Edit</a>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="custom-control custom-checkbox custom-control-inline">
-                                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                                <label class="custom-control-label" for="customCheck6"></label>
-                                                            </div>
-                                                        </td>
-                                                        <td>8/31/2020</td>
-                                                        <td>8/31/2020</td>
-                                                        <td>9/9/2020 7:00:00 AM</td>
-                                                        <td>Test Admin</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody>
+                                            <table id="paymentsTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table">
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!--------Attach file section------->
                             <div class="tab-pane fade" id="attached-file" role="tabpanel" aria-labelledby="attached-tab">
                                 <div class="card">
                                     <div class="card-body">
@@ -1691,6 +823,7 @@
                                 </div>
                             </div>
 
+                            <!-------- Associate counsel section------->
                             @if (AssociateCounselVisible == true)
                             {
                                 <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
@@ -1779,18 +912,43 @@
     </div>
 </div>
 
+<div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="padding-right: 17px;" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPaymentsModallLabel">Add Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="currentUserId" type="hidden" value="@Session["UserId"]" />
+                <div id="addPaymentsDiv">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="addPaymentSubmit()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @section scripts{
     <script src="~/Content/manageRequestNotes.js"></script>
-
+    <script src="~/Content/managePayments.js"></script>
     <script>
 
         $(document).ready(function () {
 
             if ("@Model.isEditMode" == "True") {
                 GetRequestNotesDataTable();
+                GetPaymentsDataTable();
             }
 
 
