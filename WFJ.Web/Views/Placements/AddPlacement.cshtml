@@ -455,14 +455,14 @@
                                                 <ul class="update-associate">
                                                     @{
                                                         var amountDetail = Model.summaryInformation.Payments;
-                                                        <li>Balance Due:<span>$@amountDetail.BalanceDue</span></li>
+                                                        <li>Balance Due:<span class="paymentBalanceDue">$@amountDetail.BalanceDue</span></li>
                                                         if (amountDetail.isPaymentFieldShow)
                                                         {
                                                             <li>
-                                                                Total Customer Payments/Credits:<span>$@amountDetail.TotalPayment</span>
+                                                                Total Customer Payments/Credits:<span class="paymentTotalPayment">$@amountDetail.TotalPayment</span>
                                                             </li>
                                                             <li>
-                                                                Remaining Amount Due:<span>$@amountDetail.RemainingAmount</span>
+                                                                Remaining Amount Due:<span class="paymentRemainingAmount">$@amountDetail.RemainingAmount</span>
                                                             </li>
                                                             <li>
                                                                 Last Payment Date:<span>@amountDetail.LastPaymentDate</span>
@@ -572,21 +572,21 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold">$@amountDetail.BalanceDue</p>
+                                                        <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold">$@amountDetail.TotalPayment</p>
+                                                        <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold">$@amountDetail.RemainingAmount</p>
+                                                        <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -641,7 +641,7 @@
                                             <button type="button" class="btn btn-secondary mb-3" onclick="addPayments()">
                                                 Add Payments
                                             </button>
-                                            <button type="button" class="btn btn-secondary mb-3">
+                                            <button type="button" class="btn btn-secondary mb-3" onclick="sendPayments()">
                                                 Send Payments
                                             </button>
                                         </div>
@@ -652,21 +652,66 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold">$@amountDetail.BalanceDue</p>
+                                                        @if (!string.IsNullOrEmpty(amountDetail.BalanceDueCurrency))
+                                                        {
+                                                            if (amountDetail.BalanceDueCurrency == "USD")
+                                                            {
+                                                                <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue</p>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue @amountDetail.BalanceDueCurrency</p>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue</p>
+                                                        }
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold">$@amountDetail.TotalPayment</p>
+                                                        @if (!string.IsNullOrEmpty(amountDetail.TotalPaymentCurrency))
+                                                        {
+                                                            if (amountDetail.TotalPaymentCurrency == "USD")
+                                                            {
+                                                                <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment</p>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment @amountDetail.TotalPaymentCurrency</p>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment</p>
+                                                        }
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold">$@amountDetail.RemainingAmount</p>
+                                                        @if (!string.IsNullOrEmpty(amountDetail.RemainingAmountCurrency))
+                                                        {
+                                                            if (amountDetail.RemainingAmountCurrency == "USD")
+                                                            {
+                                                                <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount</p>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount @amountDetail.RemainingAmountCurrency</p>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount</p>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -693,19 +738,11 @@
                                             </ul>
 
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="inputDate">Send to</label>
-                                                        <input type="text" class="form-control">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="form-group">
-                                                        <label class="d-block">Send to Rhonda Whitmore</label>
-                                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                                            <input type="checkbox" class="custom-control-input" checked="checked" id="customCheck122">
-                                                            <label class="custom-control-label" for="customCheck122"></label>
+                                                        <div class="custom-multiselect-scroll">
+                                                            @Html.DropDownList("PaymentSendTo", new SelectList(Model.NotesSendToDropdown, "Value", "Text"), new { @Multiple = "multiple" })
                                                         </div>
                                                     </div>
                                                 </div>

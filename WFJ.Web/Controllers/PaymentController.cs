@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using WFJ.Helper;
@@ -72,6 +73,7 @@ namespace WFJ.Web.Controllers
                 model.Users = _userService.GetUsersByClientId(Convert.ToInt32(clientId));
                 model.PaymentTypes = _paymentTypeService.GetPaymentTypeDropdown();
                 model.Currencies = _currencyService.GetCurrencyDropdown();
+                model.Currency = _currencyService.GetDefaultCurrencyId("USD");
                 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddPayment", model) }, JsonRequestBehavior.AllowGet);
             }
@@ -88,15 +90,21 @@ namespace WFJ.Web.Controllers
         public ActionResult AddPayment(ManagePaymentsModel model)
         {
             bool isSuccess = false;
+            string balanceDue = "", totalPayment = "", remainingAmount = "";
             string errorMessage = "";
-
             if (ModelState.IsValid)
             {
                 try
                 {
                     GetSessionUser(out UserId, out UserType, out UserAccess);
                     _paymentService.AddUpdatePayment(model);
+                  var detail = _paymentService.GetPaymentDetail(model.FormId, model.RequestId);
                     isSuccess = true;
+                    if (detail.BalanceDue > 0) {
+                        balanceDue = detail.BalanceDueCurrency == "USD" ? "$"+ detail.BalanceDue : detail.BalanceDue + " " + detail.BalanceDueCurrency;
+                        totalPayment = detail.TotalPaymentCurrency == "USD" ? "$" + detail.TotalPayment :  detail.TotalPayment + " " + detail.TotalPaymentCurrency;
+                        remainingAmount = detail.RemainingAmountCurrency == "USD" ? "$" + detail.RemainingAmount : detail.RemainingAmount + " " + detail.RemainingAmountCurrency;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -105,14 +113,11 @@ namespace WFJ.Web.Controllers
             }
             else
             {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                         .Where(y => y.Count > 0)
-                         .ToList();
                 errorMessage = "Form is not valid. Please add mandatory fields";
             }
 
 
-            return Json(new { success = isSuccess, errorMessage = errorMessage });
+            return Json(new { success = isSuccess, errorMessage = errorMessage, balanceDue = balanceDue, totalPayment = totalPayment, remainingAmount  = remainingAmount });
         }
 
         [HttpPost]
@@ -129,6 +134,24 @@ namespace WFJ.Web.Controllers
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Payment/DeletePayment", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+
+            return Json(new { success = isSuccess });
+        }
+
+        [HttpPost]
+        public ActionResult SendPayments(List<int> payments, List<string> users, int requestId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                _paymentService.SendPayments(requestId, payments, users);
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Payment/SendPayments", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
 
             return Json(new { success = isSuccess });

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Text;
+using System.Web;
+using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
@@ -17,7 +21,10 @@ namespace WFJ.Service
         IRequestsService _requestsService = new RequestsService();
         ICurrenciesRepository _currencyRepo = new CurrenciesRepository();
         IPaymentTypesRepository _paymentTypeRepo = new PaymentTypesRepository();
-
+        IRequestsRepository _requestsRepo = new RequestsRepository();
+        IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
+        IUserRepository _userRepo = new UserRepository();
+        private IFormService _formService = new FormService();
         public List<PaymentViewModel> GetByRequestId(int requestId)
         {
             return _paymentsRepo.GetByReqestId(requestId).Select(x => new PaymentViewModel { 
@@ -45,8 +52,10 @@ namespace WFJ.Service
                     PaymentType = x.PaymentType?.PaymentTypeDesc,
                     CheckNumber = x.CheckNumber,
                     PaymentAmount = x.Amount,
+                    PaymentAmountStr = (x.Amount ?? 0) > 0 ? _currencyRepo.GetById(x.currencyID)?.currencyCode == "USD" ? $"${x.Amount}" : $"{x.Amount} {_currencyRepo.GetById(x.currencyID)?.currencyCode}"  : "",
                     Currency = x.currencyID,
                     WFJFees = x.WFJFees,
+                    WFJFeesStr = (x.WFJFees ?? 0) > 0 ? _currencyRepo.GetById(x.currencyID)?.currencyCode == "USD" ? $"${x.WFJFees}" : $"{x.WFJFees} {_currencyRepo.GetById(x.currencyID)?.currencyCode}" : "",
                     WFJReferenceNumber = x.WFJReferenceNumber,
                     WFJReferenceDate = x.WFJReferenceDate != null ? x.WFJReferenceDate.Value.ToString("MM/dd/yyyy") : null,
                     WFJInvoiceDatePaid = x.WFJInvoiceDatePaid != null ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy") : null,
@@ -144,7 +153,7 @@ namespace WFJ.Service
                 paymentDate = paymentDate,
                 UserID = model.EnteredBy,
                 RequestID = model.RequestId,
-                Notes = $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of {model.PaymentAmount} {currency?.currencyCode}",
+                Notes = currency?.currencyCode == "USD" ? $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of ${model.PaymentAmount}" : $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of {model.PaymentAmount} {currency?.currencyCode}",
                 NotesDate = DateTime.Now
 
             };
@@ -153,6 +162,102 @@ namespace WFJ.Service
             //Update Request last note date
             if(model.RequestId.HasValue)
             _requestsService.UpdateRequestLastNoteDate(model.RequestId.Value);
+        }
+
+        public void SendPayments(int requestId, List<int> payments, List<string> users)
+        {
+            var request = _requestsRepo.GetRequestWithDetail(requestId);
+            string status = "";
+            if (request.StatusCode != null)
+            {
+                var statuscode = _statusCodesRepo.GetByStatusCodeAndFormId(request.StatusCode.Value, request.FormID.Value);
+                status = statuscode.Description;
+            }
+            string baseUrl = HttpContext.Current.Request.Url.AbsoluteUri.Replace("Payment/SendPayments", "");
+            string queryString = baseUrl + "/Placements/AddPlacement?value=" + Util.Encode(request.FormID + "|" + request.ID);
+            string subject = "WFJ Payments";
+            string dirpath = HttpContext.Current.Server.MapPath("/EmailTemplate");
+            string xlsTemplatePath = dirpath + "/PaymentNotes.html";
+            string emailTemplate = File.ReadAllText(xlsTemplatePath);
+
+            StringBuilder sb1 = new StringBuilder();
+            sb1.Append(emailTemplate);
+            sb1.Replace("[RequestUrl]", queryString);
+            sb1.Replace("[baseurl]", baseUrl);
+            sb1.Replace("[Status]", status);
+            sb1.Replace("[Requestor]", request.User1 != null ? request.User1.FirstName + " " + request.User1.LastName : "");
+            //sb1.Replace("[Collector]", request.User != null ? request.User.FirstName + " " + request.User.LastName : "" );
+            sb1.Replace("[Attorney]", request.Personnel != null ? request.Personnel.FirstName + " " + request.Personnel.LastName : "");
+
+            // Need to implement
+            sb1.Replace("[CustomerName]", "");
+            sb1.Replace("[CustomerAccount]", "");
+            sb1.Replace("[CollectMaxNo]", "");
+            sb1.Replace("[WFJFileNo]", "");
+
+
+
+
+            string xlsTemplatePath2 = dirpath + "/PaymentNotesList.html";
+            string notesList = "";
+
+            foreach (var id in payments)
+            {
+                var payment = _paymentsRepo.GetById(id);
+                var currency = _currencyRepo.GetById(payment.currencyID);
+                var paymentType = _paymentTypeRepo.GetById(payment.PaymentTypeID);
+                string note = currency?.currencyCode == "USD" ? $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of ${payment.Amount}" 
+                    : $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of {payment.Amount} {currency?.currencyCode}";
+                string noteHtml = File.ReadAllText(xlsTemplatePath2);
+                noteHtml = noteHtml.Replace("[NoteDate]", payment.PaymentDate != null ? payment.PaymentDate.Value.ToString("MM/dd/yyyy") : "")
+                                   .Replace("[Author]", "")
+                                    .Replace("[Notes]", note);
+                notesList = notesList + noteHtml;
+            }
+
+            sb1.Replace("[NotesList]", notesList);
+            string noteEmail = sb1.ToString();
+
+            foreach (var email in users)
+            {
+                if (Util.ValidateEmail(email))
+                {
+                    EmailHelper.SendMail(email, subject, noteEmail);
+                }
+            }
+        }
+
+        public PaymentDetail GetPaymentDetail(int formId, int? requestId) {
+            PaymentDetail model = new PaymentDetail();
+            var form = _formService.GetFormById(Convert.ToInt32(formId));
+            int accountBalanceFieldId = Convert.ToInt32(form.AccountBalanceFieldID);
+            decimal balanceDue = 0;
+            string balanceDueCurrency = "";
+            if (accountBalanceFieldId > 0)
+            {
+                var formField = _formService.GetFormFieldsByForm(Convert.ToInt32(formId), requestId)?.FirstOrDefault(x => x.ID == accountBalanceFieldId);
+                balanceDue = Convert.ToDecimal(formField.FormData?.FieldValue);
+                balanceDueCurrency = (formField.FormData.currencyID ?? 0) > 0 && balanceDue > 0 ? _currencyRepo.GetById((int)formField.FormData.currencyID)?.currencyCode : balanceDue > 0 ? "USD" : "";
+            }
+           
+            if (balanceDue > 0 && requestId.HasValue)
+            {
+                model.BalanceDue = balanceDue;
+                model.BalanceDueCurrency = balanceDueCurrency;
+                model.TotalPaymentCurrency = balanceDueCurrency;
+                model.RemainingAmountCurrency = balanceDueCurrency;
+
+                IPaymentService _paymentService = new PaymentService();
+                var payments = _paymentService.GetByRequestId(requestId.Value);
+                double? totalPayment = 0;
+                if (payments.Any())
+                {
+                    totalPayment = payments.Sum(x => x.Amount);
+                }
+                model.TotalPayment = Convert.ToDecimal(totalPayment);
+                model.RemainingAmount = balanceDue - Convert.ToDecimal(totalPayment);
+            }
+            return model;
         }
     }
 }

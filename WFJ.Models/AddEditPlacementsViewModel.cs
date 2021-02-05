@@ -139,8 +139,11 @@ namespace WFJ.Models
     public class PaymentDetail
     {
         public decimal BalanceDue { get; set; }
+        public string BalanceDueCurrency { get; set; }
         public decimal TotalPayment { get; set; }
+        public string TotalPaymentCurrency { get; set; }
         public decimal RemainingAmount { get; set; }
+        public string RemainingAmountCurrency { get; set; }
         public string LastPaymentDate { get; set; }
         public string CustomerPhone { get; set; }
         public bool isPaymentFieldShow { get; set; }

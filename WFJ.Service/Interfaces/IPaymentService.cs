@@ -10,5 +10,7 @@ namespace WFJ.Service.Interfaces
         ManagePaymentsModel GetEditPayment(int paymentId);
         void DeletePayment(int paymentId);
         void AddUpdatePayment(ManagePaymentsModel model);
+        void SendPayments(int requestId, List<int> payments, List<string> users);
+        PaymentDetail GetPaymentDetail(int formId, int? requestId);
     }
 }

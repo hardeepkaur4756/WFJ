@@ -10,5 +10,7 @@ namespace WFJ.Service.Interfaces
     public interface ICurrenciesService
     {
         List<SelectListItem> GetCurrencyDropdown();
+        int? GetDefaultCurrencyId(string currecyCode);
+        string GetCurrencyById(int currencyId);
     }
 }

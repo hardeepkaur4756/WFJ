@@ -35,5 +35,8 @@ namespace WFJ.Models
         public List<SelectListItem> Users { get; set; }
         public List<SelectListItem> PaymentTypes { get; set; }
         public List<SelectListItem> Currencies { get; set; }
+        public string PaymentAmountStr { get; set; }
+        public string WFJFeesStr { get; set; }
+        public int FormId { get; set; }
     }
 }

@@ -1,4 +1,9 @@
-﻿function GetPaymentsDataTable() {
+﻿$("#PaymentSendTo").multiselect({
+    includeSelectAllOption: true,
+    enableFiltering: true,
+});
+
+function GetPaymentsDataTable() {
 
     if ($.fn.DataTable.isDataTable("#paymentsTable")) {
         oTable.draw();
@@ -29,10 +34,18 @@
                             return '<a class="note-delete" data-id="' + full.Id + '" href="javascript: addPayments(' + full.Id + ');" class="anchor-design" title="Edit"><u>Edit</u></a> <a class="note-edit" data-id="' + full.Id + '" href="javascript: deletePayment(' + full.Id + ');" class="anchor-design" title="Edit"><u>Delete</u></a>';
                         }
                     },
+                    {
+                        data: "",
+                        "render": function (row, type, full) {
+                            
+                            return '<div class="td-with-inline-icons">' +
+                                '<div class="custom-control custom-checkbox custom-control-inline"><input type="checkbox" class="custom-control-input" id="noteCb' + full.Id + '" value="' + full.Id + '"><label class="custom-control-label" for="noteCb' + full.Id + '"></label></div></div>';
+                        }
+                    },
                     { "data": "PaymentDate", "title": "Payment Date" },
                     { "data": "PaymentType", "title": "Payment Type" },
-                    { "data": "PaymentAmount", "title": "Payment Amount" },
-                    { "data": "WFJFees", "title": "WFJ Fees" },
+                    { "data": "PaymentAmountStr", "title": "Payment Amount" },
+                    { "data": "WFJFeesStr", "title": "WFJ Fees" },
                     { "data": "WFJReferenceNumber", "title": "WFJ Ref No" },
                     { "data": "WFJReferenceDate", "title": "WFJ Ref Date" }
                 ],
@@ -153,6 +166,7 @@ function addPaymentSubmit() {
 
     var requestId = $("#Request_ID").val();
     var paymentId = $("#paymentId").val();
+    var formId = parseInt($("#Request_FormID").val());
 
     $.ajax({
         url: '/Payment/AddPayment',
@@ -169,13 +183,16 @@ function addPaymentSubmit() {
             WFJFees: WFJFees,
             WFJReferenceNumber: WFJReferenceNumber,
             WFJReferenceDate: WFJReferenceDate,
-            WFJInvoiceDatePaid: WFJInvoiceDatePaid
+            WFJInvoiceDatePaid: WFJInvoiceDatePaid,
+            FormId: formId
         },
         type: 'post',
         dataType: 'json',
         success: function (resp) {
             if (resp.success === true) {
-
+                $(".paymentBalanceDue").text(resp.balanceDue);
+                $(".paymentTotalPayment").text(resp.totalPayment);
+                $(".paymentRemainingAmount").text(resp.remainingAmount);
                 $("#addPaymentModal").modal("hide");
                 GetPaymentsDataTable();
                 $.notify("Success.", "success");
@@ -220,4 +237,42 @@ function deletePayment(paymentId) {
             });
 
         }, function myfunction() { });
+}
+
+function getSelectedPayments() {
+    var selectedPayments = [];
+    $("#paymentsTable").find("input:checked").each(function () {
+        selectedPayments.push($(this).val());
+    });
+    return selectedPayments;
+}
+function sendPayments() {
+    var selectedPayments = getSelectedPayments();
+    var sendToUsers = $("#PaymentSendTo").val();
+
+    if (selectedPayments.length === 0) {
+        $.notify("Please select some payments", "danger");
+    }
+    else if (sendToUsers.length === 0) {
+        $.notify("Please select some users", "danger");
+    }
+    else {
+        var requestId = $("#Request_ID").val();
+        $.ajax({
+            data: { payments: selectedPayments, requestId: requestId, users: sendToUsers },
+            traditional: true,
+            url: '/Payment/SendPayments',
+            type: 'post',
+            dataType: 'json',
+            success: function (resp) {
+                if (resp.success === true) {
+
+                    $.notify("Payments sent to selected users.", "success");
+                }
+                else {
+                    $.notify("There was an error", "danger");
+                }
+            }
+        });
+    }
 }

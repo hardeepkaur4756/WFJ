@@ -194,6 +194,7 @@ namespace WFJ.Web.Controllers
                 #region Bind PaymentInformation in Summary
                 string customerPhone = string.Empty;
                 decimal balanceDue = 0;
+                string balanceDueCurrency = "";
                 model.summaryInformation.Payments = new PaymentDetail();
                 model.summaryInformation.ClientNotes = null;
                 model.summaryInformation.ClientPaymentNotes = null;
@@ -208,11 +209,15 @@ namespace WFJ.Web.Controllers
                 {
                     var formField = model.FormFieldsList.FirstOrDefault(x => x.ID == accountBalanceFieldId);
                     balanceDue = Convert.ToDecimal(formField.FormData?.FieldValue);
+                    balanceDueCurrency = (formField.FormData.currencyID ?? 0) > 0 && balanceDue > 0 ? _currenciesService.GetCurrencyById((int)formField.FormData.currencyID) : balanceDue > 0 ? "USD" : "";
                 }
                 model.summaryInformation.Payments.BalanceDue = balanceDue;
+                model.summaryInformation.Payments.BalanceDueCurrency = balanceDueCurrency;
                 model.summaryInformation.Payments.LastPaymentDate = string.Empty;
                 model.summaryInformation.Payments.TotalPayment = balanceDue;
+                model.summaryInformation.Payments.TotalPaymentCurrency = balanceDueCurrency;
                 model.summaryInformation.Payments.RemainingAmount = balanceDue;
+                model.summaryInformation.Payments.RemainingAmountCurrency = balanceDueCurrency;
                 model.summaryInformation.Payments.isPaymentFieldShow = false;
                 #endregion
 

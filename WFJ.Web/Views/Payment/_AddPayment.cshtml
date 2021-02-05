@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Remit Date*</label>
+                <label>Remit Date</label>
                 @Html.TextBoxFor(x => x.RemitDate, new { @Class = "form-control", id = "remitDate" })
             </div>
 
@@ -38,13 +38,13 @@
                 @Html.TextBoxFor(x => x.CheckNumber, new { @Class = "form-control", id = "checkNumber" })
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="form-group">
-                <label>Payment amount*</label>
+                <label>Amount*</label>
                 @Html.TextBoxFor(x => x.PaymentAmount, new { @Class = "form-control", id = "paymentAmount", @type="number", @step="any"})
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="form-group">
                 <label for="noteDate">Currency*</label>
                 @Html.DropDownListFor(x => x.Currency, new SelectList(Model.Currencies, "Value", "Text"), "--Select--", new { @Class = "form-control", @id = "currency" })

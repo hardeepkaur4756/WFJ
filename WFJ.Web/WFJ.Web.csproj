@@ -162,6 +162,8 @@
     <Content Include="Content\ManageUser.js" />
     <Content Include="Content\style.css" />
     <Content Include="EmailTemplate\BaseTemplate.html" />
+    <Content Include="EmailTemplate\PaymentNotes.html" />
+    <Content Include="EmailTemplate\PaymentNotesList.html" />
     <Content Include="EmailTemplate\RequestNotes.html" />
     <Content Include="EmailTemplate\ForgotEmail.html" />
     <Content Include="EmailTemplate\RequestNotesList.html" />
