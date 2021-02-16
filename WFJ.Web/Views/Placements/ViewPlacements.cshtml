@@ -122,7 +122,7 @@
 
         var editColumn = {
             data: "",
-            title: '<i data-toggle="modal" data-target="#columnPopup" class="fa fa-plus"></i>',
+            title: '<i data-toggle="modal" data-target="#columnPopup" class="fa fa-plus" style="cursor:pointer;"></i>',
             "render": function (row, type, full) {
                 return '<a href="/Placements/AddPlacement?formId=@Model.FormID&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
             }
