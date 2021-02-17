@@ -24,6 +24,7 @@ namespace WFJ.Helper
                 mail.ReplyTo = new MailAddress(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]));
             }
             SmtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"]);
+            SmtpServer.UseDefaultCredentials = false;
             SmtpServer.Credentials = new System.Net.NetworkCredential(Convert.ToString(ConfigurationManager.AppSettings["EmailUserName"]), Convert.ToString(ConfigurationManager.AppSettings["EmailPassword"]));
             SmtpServer.EnableSsl = true;
             SmtpServer.Send(mail);
