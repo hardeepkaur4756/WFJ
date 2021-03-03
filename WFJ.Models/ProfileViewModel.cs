@@ -50,5 +50,8 @@ namespace WFJ.Models
         public Nullable<byte> dashboardUser { get; set; }
         public string Salt { get; set; }
         public String Message { get; set; }
+
+        public Detail Client { get; set; }
+        public string ClientNotes { get; set; }
     }
 }

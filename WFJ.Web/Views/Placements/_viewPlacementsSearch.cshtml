@@ -54,43 +54,6 @@
             </div>
         </div>
 
-        <!--<div class="form-group">
-                                          <label for="inputDate">Sort By: &nbsp; </label>
-                                          <div
-                                            class="custom-control custom-radio custom-control-inline"
-                                          >
-                                            <input
-                                              type="radio"
-                                              name="exampleRadios"
-                                              value="option1"
-                                              class="custom-control-input"
-                                              id="customCheck2"
-                                            />
-                                            <label
-                                              class="custom-control-label"
-                                              for="customCheck2"
-                                              >Status/Name
-                                            </label>
-                                          </div>
-
-                                          <div
-                                            class="custom-control custom-radio custom-control-inline"
-                                          >
-                                            <input
-                                              type="radio"
-                                              name="exampleRadios"
-                                              value="option2"
-                                              class="custom-control-input"
-                                              id="customCheck4"
-                                            />
-                                            <label
-                                              class="custom-control-label"
-                                              for="customCheck4"
-                                              >Name</label
-                                            >
-                                          </div>
-                                        </div>-->
-
         <div class="form-group">
             <div class="custom-control custom-checkbox custom-control-inline">
                 <input type="checkbox"
@@ -100,6 +63,8 @@
                        for="cboxArchived">View Archives</label>
             </div>
         </div>
+        @* This div is used for dynamic dropdowns *@
+        <div id="filterDropdowns"></div>
         <div class="clearfix">
             <a href="@Url.Action("AddPlacement","Placements", new { formId = Model.FormID })"
                class="btn btn-primary float-right ml-2 mb-2 document-search-btn">

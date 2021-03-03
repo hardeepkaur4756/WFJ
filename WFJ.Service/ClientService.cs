@@ -23,7 +23,7 @@ namespace WFJ.Service
             var clients=clientRepository.GetAll().ToList();
             return  MappingExtensions.MapList<Client,ClientModel>(clients);
          
-        }
+        }        
         public List<SelectListItem> GetAllClients()
         {
             IClientRepository clientRepo = new ClientRepository();

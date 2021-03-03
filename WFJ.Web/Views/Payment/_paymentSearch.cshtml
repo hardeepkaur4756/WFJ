@@ -1,0 +1,30 @@
+﻿@model WFJ.Models.ManagePaymentsModel
+
+@{
+    int userType = Convert.ToInt32(Session["UserType"]);
+}
+
+<form>
+    <span id="errormessage"></span>
+    @if (Model.clients != null && Model.clients.Count > 1)
+    {
+        <div class="form-group">
+            <label for="ddlClient">Client</label>
+            @Html.DropDownList("ddlClient", new SelectList(Model.clients, "Value", "Text"), new { @Class = "form-control" })
+        </div>
+    }
+        <div class="form-group">
+            <label for="lastName">Begin Date</label>
+            @Html.TextBoxFor(m => m.BeginDate, new { @class = "form-control jdate-picker" })
+            @Html.ValidationMessageFor(m => m.EndDate)
+        </div>
+    <div class="form-group">
+        <label for="lastName">End Date</label>
+            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control jdate-picker" })
+            @Html.ValidationMessageFor(m => m.EndDate)
+        </div>
+
+    <div class="clearfix">
+        <button id="searchBtn" type="button" class="btn btn-primary float-right ml-2 mb-2 document-search-btn">Search</button>
+    </div>
+</form>

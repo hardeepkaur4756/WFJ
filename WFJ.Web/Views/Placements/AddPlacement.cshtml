@@ -425,15 +425,15 @@
                             </li>
                             @if (Model.Request != null && Model.Request.ID > 0)
                             {
+                                // Notes
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link bg-white mr-3" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="false">Notes</a>
                                 </li>
-                            }
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link bg-white mr-3" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payments</a>
-                            </li>
-                            @if (Model.Request != null && Model.Request.ID > 0)
-                            {
+                                // Payments
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link bg-white mr-3" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payments</a>
+                                </li>
+                                // Attached_File
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
                                 </li>
@@ -626,8 +626,7 @@
                                         </div>
 
                                         <div class="table-responsive">
-                                            <table id="requestNotesTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table">
-                                            </table>
+                                            <table id="requestNotesTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table"></table>
                                         </div>
                                     </div>
                                 </div>
@@ -749,8 +748,7 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive">
-                                            <table id="paymentsTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table">
-                                            </table>
+                                            <table id="paymentsTable" style="width:100%;" class="table table-striped layout-primary table-bordered document-center-table"></table>
                                         </div>
                                     </div>
                                 </div>

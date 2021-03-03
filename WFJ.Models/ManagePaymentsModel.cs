@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -38,5 +39,15 @@ namespace WFJ.Models
         public string PaymentAmountStr { get; set; }
         public string WFJFeesStr { get; set; }
         public int FormId { get; set; }
+
+        public List<SelectListItem> clients { get; set; }
+        public DateTime? BeginDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string Client { get; set; }
+        public string Customer { get; set; }
+        public string Acct { get; set; }
+        public string Status { get; set; }
+        public string assignedAttorney { get; set; }
+        public string Collector { get; set; }
     }
 }

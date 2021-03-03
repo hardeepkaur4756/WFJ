@@ -43,14 +43,11 @@
 @section scripts{
     
     <script>
-
         var oTable;
         var isFirstTime = true;
         $(document).ready(function () {
             GetDataTable();
         });
-
-
         $("#searchBtn").click(function () {
             var clientId = $('#ddlClient option:selected').val();
             var formTypeId = $('#ddlFormType option:selected').val();
@@ -66,7 +63,6 @@
 
 
         function GetDataTable() {
-
             if ($.fn.DataTable.isDataTable("#myDataTable")) {
                 oTable.draw();
             }
@@ -112,7 +108,7 @@
                                 "mData": "RequestsCount",
                                 "render": function (row, type, full) {
                                     var redirectPath = full.RequestsCount > 0 ? '/Placements/ViewPlacements/' + full.ID : 'javascript:;';
-                                    return '<a href="' + redirectPath + '" class="btn btn-sm btn-primary button-icon" title="View Placements">' + full.RequestsCount+'</a>';
+                                    return '<a href="' + redirectPath + '" class="btn btn-sm btn-success" title="View Placements">' + full.RequestsCount+'</a>';
                                 }
                             },
                             {

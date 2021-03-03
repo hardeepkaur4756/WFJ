@@ -247,9 +247,19 @@ namespace WFJ.Service
                 profileViewModel.State = user.State;
                 profileViewModel.PostalCode = user.PostalCode;
                 profileViewModel.Email = user.EMail;
+                profileViewModel.Client = new Detail
+                {
+                    Name = user.Client?.ClientName,
+                    Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
+                    Email = user.Client?.EMail,
+                    Phone = user.Client?.Telephone,
+                    Contact = user.Client?.ContactName
+                };
+                profileViewModel.ClientNotes = user.Client?.clientNotes;
             }
             return profileViewModel;
         }
+
         public ProfileViewModel UpdateProfile(ProfileViewModel profileViewModel)
         {
             User user = _userRepo.GetById(profileViewModel.UserId);
@@ -265,6 +275,15 @@ namespace WFJ.Service
                 user.PostalCode = profileViewModel.PostalCode;
                 user.EMail = profileViewModel.Email;
                 _userRepo.Update(user);
+                profileViewModel.Client = new Detail
+                {
+                    Name = user.Client?.ClientName,
+                    Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
+                    Email = user.Client?.EMail,
+                    Phone = user.Client?.Telephone,
+                    Contact = user.Client?.ContactName
+                };
+                profileViewModel.ClientNotes = user.Client?.clientNotes;
             }
             else
             {
@@ -277,6 +296,7 @@ namespace WFJ.Service
         {
             return _userRepo.CheckDuplicateByEmailAndUser(email, userId);
         }
+
         public ManageUserModel GetUsers(int clientid, int active, string name, DataTablesParam param, int pageno, string sortDir, string sortCol)
         {
             ManageUserModel model = new ManageUserModel();
@@ -730,5 +750,51 @@ namespace WFJ.Service
 
         }
 
+        public string GetAddress(string address1, string address2, string city, string state, string postalCode)
+        {
+            string address = string.Empty;
+            if (!string.IsNullOrEmpty(address1))
+            {
+                address += address1;
+            }
+            if (!string.IsNullOrEmpty(address2))
+            {
+                if (!string.IsNullOrEmpty(address1))
+                {
+                    address += ", " + address2;
+                }
+                else
+                {
+                    address += "<br/>" + address2;
+                }
+            }
+            if (!string.IsNullOrEmpty(city))
+            {
+                address += "<br/>" + city;
+            }
+            if (!string.IsNullOrEmpty(state))
+            {
+                if (!string.IsNullOrEmpty(city))
+                {
+                    address += ", " + state;
+                }
+                else
+                {
+                    address += "<br/>" + state;
+                }
+            }
+            if (!string.IsNullOrEmpty(postalCode))
+            {
+                if (!string.IsNullOrEmpty(city) || !string.IsNullOrEmpty(state))
+                {
+                    address += " " + postalCode;
+                }
+                else
+                {
+                    address += "<br/>" + postalCode;
+                }
+            }
+            return address;
+        }
     }
 }

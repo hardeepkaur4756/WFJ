@@ -30,7 +30,7 @@ namespace WFJ.Repository
 
             //if (clientId != -1 ||  formTypeId != -1)// || searchKeyword != "")
             //{
-            documents = _context.Forms.Include(x => x.Client).Include(x => x.FormType).Include(x => x.Requests);
+            documents = _context.Forms.Include(x => x.Client).Include(x => x.FormType).Include(x => x.Requests).Where(a=>(a.active ?? 1) ==1);
             if (ClientUserId != null)
             {
                 IUserClientRepository _UserClientRepo = new UserClientRepository();

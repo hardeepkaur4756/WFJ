@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
@@ -16,7 +15,8 @@ namespace WFJ.Web.Controllers
         private IClientService _clientService = new ClientService();
         private IErrorLogService _errorLogService = new ErrorLogService();
         private IUserClientService _userClientService = new UserClientService();
-
+        private IFormService _formService = new FormService();
+        private ClientService clientService = new ClientService();
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         [HttpGet]
         public ActionResult EditProfile()
@@ -26,8 +26,10 @@ namespace WFJ.Web.Controllers
 
                 if (Session["UserId"] != null)
                 {
-                    ProfileViewModel profileViewModel = new ProfileViewModel();
-                    profileViewModel.UserId = Convert.ToInt32(Session["UserId"]);
+                    ProfileViewModel profileViewModel = new ProfileViewModel
+                    {
+                        UserId = Convert.ToInt32(Session["UserId"])
+                    };
                     profileViewModel = _userService.GetById(profileViewModel.UserId);
                     return View(profileViewModel);
                 }
@@ -87,28 +89,30 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                ManageUserViewModel manageUserViewModel = new ManageUserViewModel();
-                manageUserViewModel.ManagerUserFilterViewModel = new ManagerUserFilterViewModel
+                ManageUserViewModel manageUserViewModel = new ManageUserViewModel
                 {
-                    userViewModel = new UserViewModel(),
-                    //Clients = _clientService.GetClients(),
-                    Clients = DropdownHelpers.PrependALL(_clientService.GetAllClients()),
-                    ManageUsers=new List<SelectListItem>(),
-                    UserType = _userService.GetAllUserTypes(),
-                    Regions = new List<SelectListItem>(),
-                    Forms = new List<SelectListItem>(),
-                    AccessLevels=_userService.GetAllAccessLevels(),
-                   
-                    Active = new List<SelectListItem>
+                    ManagerUserFilterViewModel = new ManagerUserFilterViewModel
+                    {
+                        userViewModel = new UserViewModel(),
+                        //Clients = _clientService.GetClients(),
+                        Clients = DropdownHelpers.PrependALL(_clientService.GetAllClients()),
+                        ManageUsers = new List<SelectListItem>(),
+                        UserType = _userService.GetAllUserTypes(),
+                        Regions = new List<SelectListItem>(),
+                        Forms = new List<SelectListItem>(),
+                        AccessLevels = _userService.GetAllAccessLevels(),
+
+                        Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 },
-                    DashboardUser = new List<SelectListItem>
+                        DashboardUser = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
                 }
+                    }
                 };
                 return View(manageUserViewModel);
             }
@@ -128,7 +132,10 @@ namespace WFJ.Web.Controllers
                 ManageUserModel model = new ManageUserModel();
                 int pageNo = 1;
                 if (param.iDisplayStart >= param.iDisplayLength)
+                {
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+                }
+
                 model = _userService.GetUsers(clientId, active, name, param, pageNo, sortDir, sortCol);
                 return Json(new
                 {
@@ -151,24 +158,25 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                int userId = 0;
-                ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
-                managerUserFilterViewModel.userViewModel = new UserViewModel();
-                managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
-                managerUserFilterViewModel.Clients = _clientService.GetAllClients();
-                managerUserFilterViewModel.AccessLevels = _userService.GetAllAccessLevels();
-                managerUserFilterViewModel.Regions = new List<SelectListItem>();
-                managerUserFilterViewModel.Forms = new List<SelectListItem>();
-                managerUserFilterViewModel.ManageUsers = new List<SelectListItem>();
-                managerUserFilterViewModel.Active = new List<SelectListItem>
+                ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel
+                {
+                    userViewModel = new UserViewModel(),
+                    UserType = _userService.GetAllUserTypes(),
+                    Clients = _clientService.GetAllClients(),
+                    AccessLevels = _userService.GetAllAccessLevels(),
+                    Regions = new List<SelectListItem>(),
+                    Forms = new List<SelectListItem>(),
+                    ManageUsers = new List<SelectListItem>(),
+                    Active = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
-                };
-                managerUserFilterViewModel.DashboardUser = new List<SelectListItem>
+                },
+                    DashboardUser = new List<SelectListItem>
                 {
                     new SelectListItem() { Text="Yes",Value="1"},
                     new SelectListItem(){ Text="No",Value="0" }
+                }
                 };
 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel) }, JsonRequestBehavior.AllowGet);
@@ -186,7 +194,7 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                if ((managerUserFilterViewModel.userViewModel.UserID < 1) && !string.IsNullOrEmpty(managerUserFilterViewModel.userViewModel.Password)) 
+                if ((managerUserFilterViewModel.userViewModel.UserID < 1) && !string.IsNullOrEmpty(managerUserFilterViewModel.userViewModel.Password))
                 {
                     bool isValidPassword = Util.ValidatePassword(managerUserFilterViewModel.userViewModel.Password);
                     if (!isValidPassword)
@@ -227,7 +235,7 @@ namespace WFJ.Web.Controllers
         {
             try
             {
-                
+
                 ManagerUserFilterViewModel managerUserFilterViewModel = id > 0 ? _userService.GetManageUserById(id) : new ManagerUserFilterViewModel();
                 managerUserFilterViewModel.UserType = _userService.GetAllUserTypes();
 
@@ -242,7 +250,11 @@ namespace WFJ.Web.Controllers
                     new SelectListItem(){ Text="No",Value="0" }
                 };
 
-                return Json(new { Success = true, Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel), ClientId = managerUserFilterViewModel.userViewModel.ClientId, 
+                return Json(new
+                {
+                    Success = true,
+                    Html = this.RenderPartialViewToString("_addEditManageLogin", managerUserFilterViewModel),
+                    ClientId = managerUserFilterViewModel.userViewModel.ClientId,
                     RegionId = managerUserFilterViewModel.userViewModel.RegionId,
                     FormId = managerUserFilterViewModel.userViewModel.FormId
                 }, JsonRequestBehavior.AllowGet);
@@ -256,7 +268,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult BindUserDropdownsByClient(string clientIds,int userId)
+        public ActionResult BindUserDropdownsByClient(string clientIds, int userId)
         {
             try
             {
@@ -271,7 +283,7 @@ namespace WFJ.Web.Controllers
                     manageUsers = _userClientService.GetManageUsersByClient(values, userId);
                     manageUsers.Insert(0, new SelectListItem { Text = "Select", Value = "0" });
                 }
-                return Json(new { Success = true, regions = regions, forms = forms, manageUsers= manageUsers }, JsonRequestBehavior.AllowGet);
+                return Json(new { Success = true, regions = regions, forms = forms, manageUsers = manageUsers }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System;
 using WFJ.Models;
+using WFJ.Service.Model;
 
 namespace WFJ.Service.Interfaces
 {
     public interface IPaymentService
     {
         List<PaymentViewModel> GetByRequestId(int requestId);
-        PaymentGrid GetPaymentsGrid(int requestId, DataTablesParam param, int pageNo);
+        PaymentGrid GetPaymentsGrid(UserType user,int requestId, DataTablesParam param, string sortDir, string sortCol, int pageNo,int clientId,DateTime? beginDate,DateTime? endDate, int? ClientUserId);
         ManagePaymentsModel GetEditPayment(int paymentId);
         void DeletePayment(int paymentId);
         void AddUpdatePayment(ManagePaymentsModel model);

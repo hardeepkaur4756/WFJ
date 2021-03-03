@@ -52,7 +52,7 @@ namespace WFJ.Service
                     ClientID = x.ClientID,
                     FormTypeID = x.FormTypeID,
                     ClientName = x.Client != null ? x.Client.ClientName : null,
-                    FormTypeName = x.FormType != null ? x.FormType.FormType1 : null,
+                    FormTypeName = x.FormName,
                     RequestsCount = _requestsRepository.GetFormActiveRequestsCount(x.ID, activeOnly)
                 }).AsEnumerable();
 
@@ -687,6 +687,18 @@ namespace WFJ.Service
 
             sb1.Replace("[NotesList]", html);
             EmailHelper.SendMail(emailto, subject, sb1.ToString());
+        }
+
+        public List<FormModel> GetAll()
+        {
+            var formTypes = _formSearchRepository.GetAll().ToList();
+            return MappingExtensions.MapList<Form, FormModel>(formTypes);
+        }
+
+        public List<SelectListItem> GetFormDropdown()
+        {
+            var formTypes = _formSearchRepository.GetAll().ToList().Where(x => x.FormName != null || x.FormName != "" && x.active==1).Select(x => new SelectListItem { Text = x.FormName, Value = x.FormTypeID.ToString() }).ToList();
+            return DropdownHelpers.PrependALL(formTypes);
         }
     }
 }

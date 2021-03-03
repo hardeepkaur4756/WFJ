@@ -16,7 +16,9 @@ function GetPaymentsDataTable() {
                 "sAjaxSource": "/Payment/GetPaymentsList",
                 "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
                     var requestId = $("#Request_ID").val();
+                    var clientId = 0;
                     aoData.push({ "name": "requestId", "value": requestId });
+                    aoData.push({ "name": "clientId", "value": clientId });
                     $.ajax({
                         type: "get",
                         data: aoData,
@@ -37,7 +39,7 @@ function GetPaymentsDataTable() {
                     {
                         data: "",
                         "render": function (row, type, full) {
-                            
+
                             return '<div class="td-with-inline-icons">' +
                                 '<div class="custom-control custom-checkbox custom-control-inline"><input type="checkbox" class="custom-control-input" id="noteCb' + full.Id + '" value="' + full.Id + '"><label class="custom-control-label" for="noteCb' + full.Id + '"></label></div></div>';
                         }
@@ -65,7 +67,7 @@ function GetPaymentsDataTable() {
                     //"info": "Page _PAGE_ of _PAGES_",
                     "emptyTable": "no records found",
                     "processing": "Processing... Please wait",
-                },
+            }
 
             });
 
@@ -210,7 +212,6 @@ function addPaymentSubmit() {
 }
 
 function deletePayment(paymentId) {
-
     eModal.confirm({
         message: "Are you sure you want to delete this Payment?",
         //title: 'Confirm!',
@@ -219,7 +220,6 @@ function deletePayment(paymentId) {
         label: 'Yes' | 'True' | 'OK'
     })
         .then(function myfunction() {
-
             $.ajax({
                 data: { paymentId: paymentId },
                 url: '/Payment/DeletePayment',
@@ -227,7 +227,9 @@ function deletePayment(paymentId) {
                 dataType: 'json',
                 success: function (resp) {
                     if (resp.success === true) {
-
+                        $(".paymentBalanceDue").text(resp.balanceDue);
+                        $(".paymentTotalPayment").text(resp.totalPayment);
+                        $(".paymentRemainingAmount").text(resp.remainingAmount);
                         GetPaymentsDataTable();
                     }
                     else {

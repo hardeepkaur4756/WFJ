@@ -22,9 +22,9 @@ namespace WFJ.Service
             return statusCodesRepo.GetByFormID(formID).Where(x => x.Description != null).Select(x => new StatusCodesModel() { Description = x.Description, StatusCode = x.StatusCode1,StatusLevel=x.StatusLevel }).ToList();
         }
 
-        public StatusCodesModel GetByStatusCodeAndFormId(int statusCode, int formId)
+        public StatusCodesModel GetByStatusCodeAndFormId(int? statusCode, int formId)
         {
-            var statusCodes = statusCodesRepo.GetByStatusCodeAndFormId(statusCode, formId);
+            var statusCodes = statusCodesRepo.GetByStatusCodeAndFormId((int)statusCode, formId);
             return new StatusCodesModel
             {
                 ID = statusCodes.ID,

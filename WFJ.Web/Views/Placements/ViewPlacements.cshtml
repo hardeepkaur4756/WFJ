@@ -119,6 +119,28 @@
         var oTable;
         var isFirstTime = true;
 
+        var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
+
+        var allColumns = JSON.parse('@Html.Raw(Json.Encode( Model.AllColumnsList))');
+
+        $(document).ready(function () {
+            GetFilterDropdownList();
+            ReloadVisibleColumns(columns);
+            bindMultiselect();
+            GetDataTable();
+        });
+
+        $("#searchBtn").click(function () {
+            var filterString = "";
+            $("#filterDropdowns select > option:selected").each(function () {
+                if ($(this).text() != "All") {
+                    filterString = filterString + $(this).val() + ":" + $(this).text() + ";";
+                }
+            });
+            $('#myDataTable').DataTable().clear().destroy();
+            $('#myDataTable').empty();
+            GetDataTable(filterString);
+        });
 
         var editColumn = {
             data: "",
@@ -127,9 +149,6 @@
                 return '<a href="/Placements/AddPlacement?formId=@Model.FormID&requestId=' + full.RequestID + '" class="btn btn-sm btn-primary" title="Edit Request"><i class="fa fa-eye"></i></a>';
             }
         };
-        var columns = JSON.parse('@Html.Raw(Json.Encode( Model.TableColumns))');
-
-        var allColumns = JSON.parse('@Html.Raw(Json.Encode( Model.AllColumnsList))');
 
         function ReloadVisibleColumns(colArr) {
             colArr.unshift(editColumn);
@@ -146,20 +165,8 @@
                 $('#myDataTable').empty();
             }
             GetDataTable();
-        }
-
-
-        $(document).ready(function () {
-            ReloadVisibleColumns(columns);
-            bindMultiselect();
-            GetDataTable();
-        });
-
-
-        $("#searchBtn").click(function () {
-
-                GetDataTable();
-        });
+            GetFilterDropdownList();
+        }               
 
         var custom_csv = {
             extend: 'csv',
@@ -188,13 +195,44 @@
             },
         };
 
-        function GetDataTable() {
+        function GetFilterDropdownList() {
+            var requestor = $('#ddRequestor option:selected').val();
+            var assignedAttorney = $('#ddAssignedTo option:selected').val();
+            var collector = $('#ddCollector option:selected').val();
+            var statusCode = $('#ddStatus option:selected').val();
+            var region = $('#ddRegion').val();
+            var beginDate = $("#beginDate").val();
+            var endDate = $("#endDate").val();
+            var archived = $("#cboxArchived").is(":checked");
+            var aoData = new Array();
+            
+            aoData.push({ "name": "formId", "value": "@Model.FormID" });                            
+            aoData.push({ "name": "requestor", "value": requestor });
+            aoData.push({ "name": "assignedAttorney", "value": assignedAttorney });
+            aoData.push({ "name": "collector", "value": collector });
+            aoData.push({ "name": "statusCode", "value": statusCode });
+            aoData.push({ "name": "region", "value": region });
+            aoData.push({ "name": "beginDate", "value": beginDate });
+            aoData.push({ "name": "endDate", "value": endDate });
+            aoData.push({ "name": "archived", "value": archived });
 
+            $.ajax({
+                type: "Post",
+                data: aoData,
+                url: '/Placements/GetCustomRequestList',
+                success: function (resp) {
+                    if (resp.Success==true) {
+                        $('#filterDropdowns').html(resp.filterHtml);
+                    }
+                }
+            });
+        }
+
+        function GetDataTable(data) {
             if ($.fn.DataTable.isDataTable("#myDataTable")) {
                 oTable.draw();
             }
             else {
-
                 oTable =
                     $('#myDataTable').DataTable({
                         colReorder: {
@@ -206,8 +244,8 @@
                         "aaSorting": [[1, "asc"]],
                         "bServerSide": true,
                         "sAjaxSource": "/Placements/GetRequestList",
-                        "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
-
+                        "fnServerData": function (sSource, aoData, fnCallback, oSettings)
+                        {
                             var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
                             var sDir = oSettings.aaSorting[0][1];
                             var requestor = $('#ddRequestor option:selected').val();
@@ -218,11 +256,10 @@
                             var beginDate = $("#beginDate").val();
                             var endDate = $("#endDate").val();
                             var archived = $("#cboxArchived").is(":checked");
-
                             aoData.push({ "name": "sortCol", "value": colName });
                             aoData.push({ "name": "sortDir", "value": sDir });
-
-                            aoData.push({ "name": "formId", "value": "@Model.FormID" });
+                            aoData.push({ "name": "formId", "value": "@Model.FormID" });                            
+                            aoData.push({ "name": "filterString", "value": data });
                             aoData.push({ "name": "requestor", "value": requestor });
                             aoData.push({ "name": "assignedAttorney", "value": assignedAttorney });
                             aoData.push({ "name": "collector", "value": collector });
@@ -232,16 +269,15 @@
                             aoData.push({ "name": "endDate", "value": endDate });
                             aoData.push({ "name": "archived", "value": archived });
                             aoData.push({ "name": "isFirstTime", "value": isFirstTime });
-
-
                             $.ajax({
                                 type: "Post",
                                 data: aoData,
                                 url: sSource,
-                                success: fnCallback
+                                success: function (resp) {
+                                    $('#filterDropdowns').html(resp.filterHtml);
+                                    return fnCallback(resp);
+                                }
                             });
-
-
                             isFirstTime = false;
                         },
                         drawCallback: function () {
@@ -286,12 +322,7 @@
             }
 
         }
-
-
-
-
-
-
+        
         function updateFields(selectedIDs) {
             $.ajax({
                 data: { 'fieldIDs': selectedIDs, formId: '@Model.FormID' },
@@ -378,13 +409,8 @@
             updateFields(fields);
         });
 
-
-
-
         $(function () {
-
             oTable.on('column-reorder', function (e, settings, details) {
-
                 if (details.drop === true) {
                     var fields = [];
                     if (columns.length == details.mapping.length) {
@@ -420,9 +446,6 @@
 
             });
         });
-
-
-
     </script>
 
 }

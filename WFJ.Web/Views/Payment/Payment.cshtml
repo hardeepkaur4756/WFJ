@@ -1,0 +1,189 @@
+﻿@using WFJ.Web.Models.Enums;
+
+@{
+    ViewBag.Title = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int userType = Convert.ToInt32(Session["UserType"]);
+}
+@section style{
+    <link href="~/Scripts/plugins/dataTable/colReorder/css/colReorder.bootstrap4.min.css" rel="stylesheet" />
+    <style>
+        .dataTables_wrapper .dt-buttons {
+            float: right;
+        }
+    </style>
+}
+
+<main>
+    <div class="document-center view-requst">
+        <div class="container-fluid site-width">
+            <h4 class="mb-4">Payments Report</h4>
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <div class="card mb-5 mb-md-0">
+                        <div class="card-content">
+                            <div class="card-body">
+                                @Html.Partial("~/Views/Payment/_paymentSearch.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Partial("~/Views/Payment/_paymentReport.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@Html.Partial("~/Views/Payment/_addEditPaymentDocument.cshtml")
+<a href="#" class="scrollup text-center">
+    <i class="icon-arrow-up"></i>
+</a>
+@section scripts{
+    <script src="~/Scripts/plugins/dataTable/colReorder/js/colReorder.bootstrap4.min.js"></script>
+    <script src="~/Scripts/plugins/dataTable/colReorder/js/dataTables.colReorder.min.js"></script>
+
+    <script>
+        $('.jdate-picker').daterangepicker({
+            autoUpdateInput: true,
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            minYear: 2000,
+            maxYear: parseInt(moment().format('YYYY'), 10)
+        });
+
+        $('.jdate-picker').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY'));
+        });
+
+    </script>
+    <script>
+        var oTable;
+        var isFirstTime = true;
+        var clientId=-1;
+        var BeginDate;
+        var EndDate;
+
+        $(document).ready(function () {
+            GetDataTable();
+        });
+
+        $("#searchBtn").click(function () {
+
+            clientId = $('#ddlClient option:selected').val();
+            BeginDate = $('#BeginDate').val();
+            EndDate = $('#EndDate').val();
+
+            if (clientId == -1 && "@userType" != "@((int)UserType.ClientUser)") {
+                $('#errormessage').text('Please select atleast one value for search').css("color", "red");
+            }
+            else {
+                $('#errormessage').text('');
+                GetDataTable();
+            }
+        });
+
+        function GetDataTable() {
+            if ($.fn.DataTable.isDataTable("#paymentreport")) {
+                oTable.draw();
+            }
+            else {
+                oTable =
+                    $('#paymentreport').DataTable({
+                    colReorder: {
+                        fixedColumnsLeft: 1,
+                        realtime: false
+                    },
+                    dom: 'lBfrtip',
+                    buttons: [custom_csv, wide_pdf],
+                        "aaSorting": [[1, "asc"]],
+                        "bServerSide": true,
+                        "sAjaxSource": "/Payment/GetPaymentsList",
+                    "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                        var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
+                        var sDir = oSettings.aaSorting[0][1];
+                        aoData.push({ "name": "requestId", "value": 0 });
+                        aoData.push({ "name": "clientID", "value": clientId });
+                        aoData.push({ "name": "beginDate", "value": BeginDate });
+                        aoData.push({ "name": "endDate", "value": EndDate });
+                        aoData.push({ "name": "sortCol", "value": colName });
+                        aoData.push({ "name": "sortDir", "value": sDir });
+                        aoData.push({ "name": "isFirstTime", "value": isFirstTime });
+                        $.ajax({
+                            type: "get",
+                            data: aoData,
+                            url: sSource,
+                            success: function (resp) {
+                                return fnCallback(resp);
+                            }
+                        });
+                        isFirstTime = false;
+                    },
+                    "aoColumns": [
+                        { "mData": "Client" },
+                        { "mData": "Customer" },
+                        { "mData": "Acct" },
+                        { "mData": "Status" },
+                        { "mData": "assignedAttorney" },
+                        { "mData": "Collector" },
+                        { "mData": "PaymentDate" },
+                        { "mData": "CheckNumber" },
+                        { "mData": "PaymentAmountStr" },
+                        { "mData": "PaymentType" }
+                    ],
+                        drawCallback: function () {
+                            var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                        },
+                        "columnDefs": [
+                            { "orderable": false, "targets": 0 }
+                    ],
+                    "bFilter": false,
+                    "paging": true,
+                    bProcessing: true,
+                    pageLength: 10,
+                    bLengthChange: true,
+                    lengthMenu: [10, 25, 50],
+                    "bInfo": true,
+                    "language": {
+                        "zeroRecords": "no search results (too much data)",
+                        "emptyTable": "no records found",
+                        "processing": "Processing... Please wait",
+                        }
+                    });
+            }
+        }
+
+        var custom_csv = {
+            extend: 'csv',
+            text: 'CSV',
+            exportOptions: {
+                format: {
+                    body: function (data, row, column, node) {
+                        if (typeof data === 'string' || data instanceof String)
+                            return data.replace(/&nbsp;/g, '');
+                        else
+                            return data;
+                    }
+                },
+                columns: 'th'
+            },
+        }
+
+        var wide_pdf = {
+            extend: 'pdfHtml5',
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            exportOptions: {
+                columns: 'th'
+            },
+        };
+    </script>
+
+}

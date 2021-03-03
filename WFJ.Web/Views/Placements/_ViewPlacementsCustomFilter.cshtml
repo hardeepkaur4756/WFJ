@@ -1,0 +1,13 @@
+﻿@using WFJ.Models;
+@model List<PlacementRequestCustomFilter>
+
+@{
+    var filterDropdownList = Model;
+    foreach (var option in filterDropdownList)
+    {
+        <div class="form-group">
+            <label for="dd+@option.Title">@option.Title</label>
+            @Html.DropDownList("dd" + option.Title, new SelectList(option.list, "Value", "Text"), new { @Class = "form-control" })
+        </div>
+    }
+}

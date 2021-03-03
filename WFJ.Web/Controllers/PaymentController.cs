@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
+using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
@@ -20,7 +22,17 @@ namespace WFJ.Web.Controllers
         private IPaymentService _paymentService = new PaymentService();
         private ICurrenciesService _currencyService = new CurrenciesService();
         private IPaymentTypeService _paymentTypeService = new PaymentTypesService();
-        public JsonResult GetPaymentsList(DataTablesParam param, string sortDir, string sortCol, int requestId)
+        private IUserClientService _userClientService = new UserClientService();
+        private IClientService _clientService = new ClientService();
+
+        public ActionResult Payment()
+        {
+            GetSessionUser(out UserId, out UserType, out UserAccess);
+            ManagePaymentsModel model = new ManagePaymentsModel();
+            model.clients = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId, 1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType));
+            return View(model);
+        }
+        public JsonResult GetPaymentsList(DataTablesParam param, string sortDir, string sortCol, bool? isFirstTime, int requestId,int clientId,DateTime? beginDate,DateTime? endDate)
         {
             try
             {
@@ -31,9 +43,7 @@ namespace WFJ.Web.Controllers
                 if (param.iDisplayStart >= param.iDisplayLength)
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
 
-
-                model = _paymentService.GetPaymentsGrid(requestId, param, pageNo);
-
+                model = _paymentService.GetPaymentsGrid((UserType)((byte)UserType), requestId, param, sortDir, sortCol, pageNo, clientId, beginDate, endDate, 0);
 
                 return Json(new
                 {
@@ -49,6 +59,42 @@ namespace WFJ.Web.Controllers
                 _errorLogService.Add(new ErrorLogModel() { Page = "Payment/GetPaymentsList?requestId=" + requestId, CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
             }
+        }
+                
+        [HttpPost]
+        public ActionResult AddPayment(ManagePaymentsModel model)
+        {
+            bool isSuccess = false;
+            string balanceDue = "", totalPayment = "", remainingAmount = "";
+            string errorMessage = "";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    GetSessionUser(out UserId, out UserType, out UserAccess);
+                    _paymentService.AddUpdatePayment(model);
+
+                    var detail = _paymentService.GetPaymentDetail(model.FormId, model.RequestId);
+                    isSuccess = true;
+                    if (detail.BalanceDue > 0)
+                    {
+                        balanceDue = detail.BalanceDueCurrency == "USD" ? "$" + detail.BalanceDue : detail.BalanceDue + " " + detail.BalanceDueCurrency;
+                        totalPayment = detail.TotalPaymentCurrency == "USD" ? "$" + detail.TotalPayment : detail.TotalPayment + " " + detail.TotalPaymentCurrency;
+                        remainingAmount = detail.RemainingAmountCurrency == "USD" ? "$" + detail.RemainingAmount : detail.RemainingAmount + " " + detail.RemainingAmountCurrency;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _errorLogService.Add(new ErrorLogModel() { Page = "Payment/AddPayment", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                }
+            }
+            else
+            {
+                errorMessage = "Form is not valid. Please add mandatory fields";
+            }
+
+
+            return Json(new { success = isSuccess, errorMessage = errorMessage, balanceDue = balanceDue, totalPayment = totalPayment, remainingAmount  = remainingAmount });
         }
 
         public ActionResult AddEditPayment(int? paymentId, int? clientId)
@@ -74,7 +120,7 @@ namespace WFJ.Web.Controllers
                 model.PaymentTypes = _paymentTypeService.GetPaymentTypeDropdown();
                 model.Currencies = _currencyService.GetCurrencyDropdown();
                 model.Currency = _currencyService.GetDefaultCurrencyId("USD");
-                
+
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddPayment", model) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -85,58 +131,32 @@ namespace WFJ.Web.Controllers
 
         }
 
-
-        [HttpPost]
-        public ActionResult AddPayment(ManagePaymentsModel model)
-        {
-            bool isSuccess = false;
-            string balanceDue = "", totalPayment = "", remainingAmount = "";
-            string errorMessage = "";
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    GetSessionUser(out UserId, out UserType, out UserAccess);
-                    _paymentService.AddUpdatePayment(model);
-                  var detail = _paymentService.GetPaymentDetail(model.FormId, model.RequestId);
-                    isSuccess = true;
-                    if (detail.BalanceDue > 0) {
-                        balanceDue = detail.BalanceDueCurrency == "USD" ? "$"+ detail.BalanceDue : detail.BalanceDue + " " + detail.BalanceDueCurrency;
-                        totalPayment = detail.TotalPaymentCurrency == "USD" ? "$" + detail.TotalPayment :  detail.TotalPayment + " " + detail.TotalPaymentCurrency;
-                        remainingAmount = detail.RemainingAmountCurrency == "USD" ? "$" + detail.RemainingAmount : detail.RemainingAmount + " " + detail.RemainingAmountCurrency;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _errorLogService.Add(new ErrorLogModel() { Page = "Payment/AddPayment", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
-                }
-            }
-            else
-            {
-                errorMessage = "Form is not valid. Please add mandatory fields";
-            }
-
-
-            return Json(new { success = isSuccess, errorMessage = errorMessage, balanceDue = balanceDue, totalPayment = totalPayment, remainingAmount  = remainingAmount });
-        }
-
         [HttpPost]
         public ActionResult DeletePayment(int paymentId)
         {
             bool isSuccess = false;
+            string balanceDue = "", totalPayment = "", remainingAmount = "";
             try
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                _paymentService.DeletePayment(paymentId);
-
                 isSuccess = true;
+                int FormId = Convert.ToInt32(HttpUtility.ParseQueryString(Request.UrlReferrer.Query).Get("formId"));
+                int? RequestId = Convert.ToInt32(HttpUtility.ParseQueryString(Request.UrlReferrer.Query).Get("requestId"));
+                var detail = _paymentService.GetPaymentDetail(FormId, RequestId);
+                if (detail.BalanceDue > 0)
+                {
+                    balanceDue = detail.BalanceDueCurrency == "USD" ? "$" + detail.BalanceDue : detail.BalanceDue + " " + detail.BalanceDueCurrency;
+                    totalPayment = detail.TotalPaymentCurrency == "USD" ? "$" + detail.TotalPayment : detail.TotalPayment + " " + detail.TotalPaymentCurrency;
+                    remainingAmount = detail.RemainingAmountCurrency == "USD" ? "$" + detail.RemainingAmount : detail.RemainingAmount + " " + detail.RemainingAmountCurrency;
+                }
             }
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Payment/DeletePayment", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
 
-            return Json(new { success = isSuccess });
+            return Json(new { success = isSuccess, balanceDue = balanceDue, totalPayment = totalPayment, remainingAmount = remainingAmount });
         }
 
         [HttpPost]

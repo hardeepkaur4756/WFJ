@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace WFJ.Models
@@ -16,6 +13,7 @@ namespace WFJ.Models
         public PlacementReuestsFilterViewModel placementReuestsFilterViewModel { get; set; }
 
         public IEnumerable<DatatableDynamicColumn> TableColumns { get; set; }
+        public IEnumerable<DatatableDynamicColumn> FilterTableColumns { get; set; }
         public IEnumerable<DatatableDynamicColumn> AllColumnsList { get; set; }
     }
 
@@ -59,14 +57,17 @@ namespace WFJ.Models
         public int DaysOpen { get; set; }
         public string LevelID { get; set; }
         public int? LevelIDVal { get; set; }
-
         public Dictionary<string, string> FormFields { get; set; }
-
     }
 
-
-    //public class 
-
-
-
+    public class PlacementRequestCustomFilter
+    {
+        public string Title { get; set; }
+        public List<SelectListItem> list { get; set; }
+    }
+    public class FilterDataList
+    {
+        public string FormFieldId { get; set; }
+        public string Value { get; set; }
+    }
 }

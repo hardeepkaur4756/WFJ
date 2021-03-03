@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -11,34 +12,41 @@ using WFJ.Repository;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
+using WFJ.Service.Model;
 
 namespace WFJ.Service
 {
     public class PaymentService : IPaymentService
     {
-        IPaymentsRepository _paymentsRepo = new PaymentsRepository();
-        IRequestNotesRepository _notesRepo = new RequestNotesRepository();
-        IRequestsService _requestsService = new RequestsService();
-        ICurrenciesRepository _currencyRepo = new CurrenciesRepository();
-        IPaymentTypesRepository _paymentTypeRepo = new PaymentTypesRepository();
-        IRequestsRepository _requestsRepo = new RequestsRepository();
-        IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
-        IUserRepository _userRepo = new UserRepository();
+         IPaymentsRepository _paymentsRepo = new PaymentsRepository();
+         IRequestNotesRepository _notesRepo = new RequestNotesRepository();
+         IRequestsService _requestsService = new RequestsService();
+         ICurrenciesRepository _currencyRepo = new CurrenciesRepository();
+         IPaymentTypesRepository _paymentTypeRepo = new PaymentTypesRepository();
+         IRequestsRepository _requestsRepo = new RequestsRepository();
+         IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
+         IUserRepository _userRepo = new UserRepository();
+         IPersonnelsRepository _personalRepo = new PersonnelsRepository();
+         IFormFieldsRepository _formfieldRepo = new FormFieldsRepository();
+         IFormDataRepository _formDataRepo = new FormDataRepository();
+
         private IFormService _formService = new FormService();
         public List<PaymentViewModel> GetByRequestId(int requestId)
         {
-            return _paymentsRepo.GetByReqestId(requestId).Select(x => new PaymentViewModel { 
-            PaymentDate = x.PaymentDate,
-            Amount = x.Amount
+            return _paymentsRepo.GetByReqestId(requestId).Select(x => new PaymentViewModel
+            {
+                PaymentDate = x.PaymentDate,
+                Amount = x.Amount
             }).ToList();
         }
 
-        public PaymentGrid GetPaymentsGrid(int requestId, DataTablesParam param, int pageNo)
+        public PaymentGrid GetPaymentsGrid(UserType userType, int requestId, DataTablesParam param, string sortDir, string sortCol, int pageNo, int clientId, DateTime? beginDate, DateTime? endDate, int? ClientUserId)
         {
             PaymentGrid model = new PaymentGrid();
-            var requests = _paymentsRepo.GetByReqestId(requestId);
-            model.totalCount = requests?.Count();
 
+            var requests = requestId > 0 ? _paymentsRepo.GetByReqestId(requestId) : _paymentsRepo.GetByClientId(clientId, beginDate, endDate, ClientUserId);
+
+            model.totalCount = requests?.Count();
             if (requests != null)
             {
                 var list1 = requests.OrderByDescending(x => x.PaymentDate).Select(x => new ManagePaymentsModel
@@ -59,7 +67,129 @@ namespace WFJ.Service
                     WFJReferenceNumber = x.WFJReferenceNumber,
                     WFJReferenceDate = x.WFJReferenceDate != null ? x.WFJReferenceDate.Value.ToString("MM/dd/yyyy") : null,
                     WFJInvoiceDatePaid = x.WFJInvoiceDatePaid != null ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy") : null,
+                    Client = x.User.Client.ClientName,
+
+                    Customer = _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    .FirstOrDefault(y => y.FieldName.ToLower().Trim() == "customer name")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)
+                    .FirstOrDefault(z => z.FormFieldID == (_formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer name")?.ID)).FieldValue : "",
+
+                    Acct = _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    .FirstOrDefault(y => y.FieldName.ToLower().Trim() == "customer account #")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)
+                    .FirstOrDefault(z => z.FormFieldID == (_formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer account #")?.ID)).FieldValue : "",
+
+                    Status = _statusCodesRepo.GetByStatusCodeAndFormId((x.Request.StatusCode == null) ? 0 : x.Request.StatusCode.Value, (x.Request.FormID == null) ? 0 : x.Request.FormID.Value).Description,
+                    assignedAttorney = x.Request.Personnel.ID == ((x.Request.AssignedAttorney == null) ? 0 : x.Request.AssignedAttorney.Value) ? x.Request.Personnel.FirstName + " " + x.Request.Personnel.LastName : "",
+                    Collector = x.Request.User.UserID == ((x.Request.AssignedCollectorID == null) ? 0 : x.Request.AssignedCollectorID.Value) ? x.Request.User.FirstName + " " + x.Request.User.LastName : ""
                 });
+
+                switch (sortCol)
+                {
+                    case "Client":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.Client).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.Client).ToList();
+                        }
+                        break;
+                    case "Customer":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.Customer).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.Customer).ToList();
+                        }
+                        break;
+                    case "Acct":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.Acct).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.Acct).ToList();
+                        }
+                        break;
+                    case "Status":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.Status).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.Status).ToList();
+                        }
+                        break;
+                    case "assignedAttorney":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.assignedAttorney).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.assignedAttorney).ToList();
+                        }
+                        break;
+                    case "Collector":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.Collector).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.Collector).ToList();
+                        }
+                        break;
+                    case "PaymentDate":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.PaymentDate).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.PaymentDate).ToList();
+                        }
+                        break;
+                    case "CheckNumber":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.CheckNumber).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.CheckNumber).ToList();
+                        }
+                        break;
+                    case "PaymentAmountStr":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.PaymentAmountStr).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.PaymentAmountStr).ToList();
+                        }
+                        break;
+                    case "PaymentType":
+                        if (sortDir == "asc")
+                        {
+                            list1 = list1.OrderBy(x => x.PaymentType).ToList();
+                        }
+                        if (sortDir == "desc")
+                        {
+                            list1 = list1.OrderByDescending(x => x.PaymentType).ToList();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
                 model.Payments = list1.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList();
             }
             else
@@ -100,11 +230,12 @@ namespace WFJ.Service
 
         public void AddUpdatePayment(ManagePaymentsModel model)
         {
+            var paymentId = 0;
             DateTime? paymentDate = string.IsNullOrEmpty(model.PaymentDate) ? (DateTime?)null : Convert.ToDateTime(model.PaymentDate);
             DateTime? remitDate = string.IsNullOrEmpty(model.RemitDate) ? (DateTime?)null : Convert.ToDateTime(model.RemitDate);
             DateTime? WFJReferenceDate = string.IsNullOrEmpty(model.WFJReferenceDate) ? (DateTime?)null : Convert.ToDateTime(model.WFJReferenceDate);
             DateTime? WFJInvoiceDatePaid = string.IsNullOrEmpty(model.WFJInvoiceDatePaid) ? (DateTime?)null : Convert.ToDateTime(model.WFJInvoiceDatePaid);
-            
+
             if (model.Id == 0)
             {
 
@@ -124,6 +255,7 @@ namespace WFJ.Service
                     WFJInvoiceDatePaid = WFJInvoiceDatePaid
                 };
                 _paymentsRepo.Add(payment);
+                paymentId = payment.ID;
             }
             else
             {
@@ -161,7 +293,37 @@ namespace WFJ.Service
 
             //Update Request last note date
             if(model.RequestId.HasValue)
-            _requestsService.UpdateRequestLastNoteDate(model.RequestId.Value);
+            {
+                _requestsService.UpdateRequestLastNoteDate(model.RequestId.Value);
+            }
+
+            // send a note at add payment time.
+            try
+            {
+                var request = _requestsRepo.GetRequestWithDetail(model.RequestId.Value);
+                var attorneyId = request.AssignedAttorney;
+                if (attorneyId == null)
+                {
+                    attorneyId = Convert.ToInt32(ConfigurationManager.AppSettings["DefaultAttorneyIDForAddNote"]);
+                }
+
+                var attorneyUser = _personalRepo.GetById(attorneyId);
+
+                List<int> singlePayment = new List<int>
+                {
+                    paymentId
+                };
+                List<string> singleEmail = new List<string>
+                {
+                    attorneyUser.EMail
+                };
+
+                SendPayments(request.ID, singlePayment, singleEmail);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public void SendPayments(int requestId, List<int> payments, List<string> users)
@@ -206,7 +368,7 @@ namespace WFJ.Service
                 var payment = _paymentsRepo.GetById(id);
                 var currency = _currencyRepo.GetById(payment.currencyID);
                 var paymentType = _paymentTypeRepo.GetById(payment.PaymentTypeID);
-                string note = currency?.currencyCode == "USD" ? $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of ${payment.Amount}" 
+                string note = currency?.currencyCode == "USD" ? $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of ${payment.Amount}"
                     : $"A {paymentType?.PaymentTypeDesc} payment was entered in the amount of {payment.Amount} {currency?.currencyCode}";
                 string noteHtml = File.ReadAllText(xlsTemplatePath2);
                 noteHtml = noteHtml.Replace("[NoteDate]", payment.PaymentDate != null ? payment.PaymentDate.Value.ToString("MM/dd/yyyy") : "")
@@ -239,7 +401,7 @@ namespace WFJ.Service
                 balanceDue = Convert.ToDecimal(formField.FormData?.FieldValue);
                 balanceDueCurrency = (formField.FormData.currencyID ?? 0) > 0 && balanceDue > 0 ? _currencyRepo.GetById((int)formField.FormData.currencyID)?.currencyCode : balanceDue > 0 ? "USD" : "";
             }
-           
+
             if (balanceDue > 0 && requestId.HasValue)
             {
                 model.BalanceDue = balanceDue;

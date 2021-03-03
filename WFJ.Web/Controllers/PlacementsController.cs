@@ -38,11 +38,13 @@ namespace WFJ.Web.Controllers
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
 
-                PlacementsViewModel model = new PlacementsViewModel();
-                model.placementsFilterViewModel = new PlacementsFilterViewModel()
+                PlacementsViewModel model = new PlacementsViewModel
                 {
-                    client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId, 1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
-                    placementTypeModels = _formTypeService.GetFormTypesDropdown(),
+                    placementsFilterViewModel = new PlacementsFilterViewModel()
+                    {
+                        client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId, 1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
+                        placementTypeModels = _formTypeService.GetFormTypesDropdown(),
+                    }
                 };
 
                 return View(model);
@@ -65,15 +67,20 @@ namespace WFJ.Web.Controllers
                 ManagePlacementsModel model = new ManagePlacementsModel();
                 int pageNo = 1;
                 if (param.iDisplayStart >= param.iDisplayLength)
+                {
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
-
+                }
 
                 int? userSpecific = UserType == (int)Web.Models.Enums.UserType.ClientUser ? UserId : (Nullable<int>)null;
 
                 if ((int)WFJ.Web.Models.Enums.UserType.SystemAdministrator != UserType || isFirstTime == false)
+                {
                     model = _formService.GetPlacements((UserType)((byte)UserType), clientId, formTypeId, searchKeyword, param, sortDir, sortCol, pageNo, userSpecific);
+                }
                 else
+                {
                     model.placements = new List<PlacementsModel>();
+                }
 
                 return Json(new
                 {
@@ -165,7 +172,7 @@ namespace WFJ.Web.Controllers
                 {
                     userDetail = null;
                 }
-                
+
                 var documentType = _codeService.GetAllByType("REQUESTDOCTYPE");
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
@@ -175,7 +182,7 @@ namespace WFJ.Web.Controllers
                     FormSections = _formService.GetFormSections(),
                     FormFieldsList = _formService.GetFormFieldsByForm(Convert.ToInt32(formId), requestId),
                     Collectors = _formService.GetCollectorsDropdown(),
-                    Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId), requestorId,(UserType)((byte)UserType)),
+                    Requestors = _formService.GetRequestorsDropdown(Convert.ToInt32(formId), requestorId, (UserType)((byte)UserType)),
                     StatusList = _statusCodesService.GetModelByFormID(Convert.ToInt32(formId)),
                     AssignedAtorneys = _formService.GetPersonnelsDropdown(Convert.ToInt32(formId)),
                     RegionList = form.ClientID == null ? new List<SelectListItem>() : _levelService.GetRegionsByClientID(form.ClientID.Value),
@@ -251,9 +258,11 @@ namespace WFJ.Web.Controllers
                         model.summaryInformation.Payments.isPaymentFieldShow = false;
                     }
 
-                    RequestDocumentViewModel requestDocumentViewModel = new RequestDocumentViewModel();
-                    requestDocumentViewModel.RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId.Value);
-                    requestDocumentViewModel.DocumentType = documentType;
+                    RequestDocumentViewModel requestDocumentViewModel = new RequestDocumentViewModel
+                    {
+                        RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId.Value),
+                        DocumentType = documentType
+                    };
                     model.requestDocumentViewModel = requestDocumentViewModel;
 
                     if (copy == 1)
@@ -332,7 +341,25 @@ namespace WFJ.Web.Controllers
             }
         }
 
-        public ActionResult GetStatusLongDescription(int statusCode, int formId)
+        public List<FilterDataList> GetListofFilterData(string filterString)
+        {
+            List<FilterDataList> query = new List<FilterDataList>();
+
+            var data = filterString.Split(';');
+            foreach (var item in data)
+            {
+                FilterDataList fdl = new FilterDataList();
+                if (!string.IsNullOrEmpty(item))
+                {
+                    fdl.FormFieldId = item.Split(':')[0];
+                    fdl.Value = item.Split(':')[1];
+                    query.Add(fdl);
+                }
+
+            }
+            return query.ToList();
+        }
+        public ActionResult GetStatusLongDescription(int? statusCode, int formId)
         {
             IStatusCodesService _statusCodesService = new StatusCodesService();
             bool isSuccess = false;
@@ -352,10 +379,12 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public JsonResult GetRequestList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime,
                                            string beginDate, string endDate, int region, bool archived,
-                                           int formId,
+                                           int formId, string filterString,
                                            int requestor = -1, int assignedAttorney = -1, int collector = -1,
                                            int statusCode = -1)
         {
+            string filterHtml = string.Empty;
+
             try
             {
                 if (sortCol.Contains("."))
@@ -366,21 +395,27 @@ namespace WFJ.Web.Controllers
                 GetSessionUser(out UserId, out UserType, out UserAccess);
 
                 PlacementRequestsListViewModel model = new PlacementRequestsListViewModel();
+                PlacementReuestsViewModel filtermodel = new PlacementReuestsViewModel();
+                List<FilterDataList> filterDatas = new List<FilterDataList>();
                 int pageNo = 1;
                 if (param.iDisplayStart >= param.iDisplayLength)
+                {
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
+                }
 
-
-                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, archived, param, sortDir, sortCol, pageNo);
-
-
+                if (filterString != "")
+                {
+                    filterDatas = GetListofFilterData(filterString);
+                }
+                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, archived, param, sortDir, sortCol, pageNo, filterDatas);
+                
                 return Json(new
                 {
                     aaData = model.Requests,
                     param.sEcho,
                     iTotalDisplayRecords = model.TotalRequestsCount,
                     iTotalRecords = model.TotalRequestsCount,
-                    Success = true
+                    Success = true,
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -389,6 +424,78 @@ namespace WFJ.Web.Controllers
                 return Json(new { Message = "Sorry, An error occurred!", Success = false });
             }
         }
+
+
+        [HttpPost]
+        public JsonResult GetCustomRequestList(string beginDate, string endDate, int region, bool archived,
+                                           int formId, int requestor = -1, int assignedAttorney = -1, int collector = -1,
+                                           int statusCode = -1)
+        {
+            string filterPartialHtml = string.Empty;
+            try
+            {
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+
+                PlacementRequestsListViewModel model = new PlacementRequestsListViewModel();
+                PlacementReuestsViewModel filtermodel = new PlacementReuestsViewModel();
+
+                model = _requestsService.GetPlacementRequests(UserId, formId, (UserType)((byte)UserType), requestor, assignedAttorney, collector, statusCode, region, beginDate, endDate, archived, null, "", "", 0, null);
+                
+                filtermodel.TableColumns = _requestsService.GetDatatableColumns(UserId, formId, (UserType)((byte)UserType));
+                filtermodel.FilterTableColumns = _requestsService.GetSearchFilterDatatableColumns(UserId, formId, (UserType)((byte)UserType));
+
+                var visibleColumnList = filtermodel.TableColumns.Select(x => x.title).ToList();
+                filtermodel.FilterTableColumns = filtermodel.FilterTableColumns.Where(x => visibleColumnList.Contains(x.title)).ToList();
+
+                List<PlacementRequestCustomFilter> customFiltersList = new List<PlacementRequestCustomFilter>();
+
+                if (model.Requests.Count() > 0)
+                {
+                    foreach (var filterItem in filtermodel.FilterTableColumns)
+                    {
+                        PlacementRequestCustomFilter customFilter = new PlacementRequestCustomFilter();
+                        var filterItemId = "field_" + filterItem.fieldID;
+                        var formfields = model.Requests.FirstOrDefault().FormFields;
+                        if (formfields.ContainsKey(filterItemId))
+                        {
+                            customFilter.Title = filterItem.title;
+                            customFilter.list = new List<SelectListItem>
+                            {
+                                new SelectListItem
+                                {
+                                    Text = "All",
+                                    Value = "All",
+                                    Selected = true
+                                }
+                            };
+                            foreach (var item in model.Requests)
+                            {
+                                var itemValue = item.FormFields.Where(x => x.Key == filterItemId).FirstOrDefault();
+                                if (itemValue.Value != null)
+                                {
+                                    customFilter.list.Add(new SelectListItem() { Text = itemValue.Value.ToString(), Value = filterItem.fieldID.ToString() });
+                                }
+                            }
+                            customFilter.list = customFilter.list.GroupBy(x => x.Text).Select(x => x.First()).ToList();
+                            customFiltersList.Add(customFilter);
+                        }
+                    }
+                    filterPartialHtml = this.RenderPartialViewToString("_ViewPlacementsCustomFilter", customFiltersList);
+                }
+
+                return Json(new
+                {
+                    Success = true,
+                    filterHtml = filterPartialHtml
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Placements/GetPlacementList", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+            }
+        }
+
 
         [HttpPost]
         public ActionResult UpdateUserColumns(List<int> fieldIDs, int formId)
@@ -515,7 +622,7 @@ namespace WFJ.Web.Controllers
                     /// send mail to assigned attorney and requestor
                     if (sendNote && isSuccess)
                     {
-                        _formService.sendDocumentMail(requestId, Models.Enums.RequestDocumentType.add.ToString(),fname);
+                        _formService.sendDocumentMail(requestId, Models.Enums.RequestDocumentType.add.ToString(), fname);
                     }
 
                     string requestDocumentHtml = string.Empty;
@@ -523,7 +630,7 @@ namespace WFJ.Web.Controllers
                     {
                         requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
                     }
-                    return Json(new { success = isSuccess, html = requestDocumentHtml, message= message }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = isSuccess, html = requestDocumentHtml, message = message }, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception ex)
                 {
@@ -533,12 +640,12 @@ namespace WFJ.Web.Controllers
             }
             else
             {
-                return Json(new { success = false,html= "No files selected." }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, html = "No files selected." }, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpPost]
-        public ActionResult RemoveRequestDocument(int requestDocumentId,int requestId,string physicalFileName,bool sendNotice,string fileName)
+        public ActionResult RemoveRequestDocument(int requestDocumentId, int requestId, string physicalFileName, bool sendNotice, string fileName)
         {
             string message = string.Empty;
             bool success = false;
@@ -567,9 +674,11 @@ namespace WFJ.Web.Controllers
 
         public string GetRequestDocumentGridHtml(int requestId)
         {
-            RequestDocumentViewModel requestDocumentViewModels = new RequestDocumentViewModel();
-            requestDocumentViewModels.RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId);
-            requestDocumentViewModels.DocumentType = _codeService.GetAllByType("REQUESTDOCTYPE");
+            RequestDocumentViewModel requestDocumentViewModels = new RequestDocumentViewModel
+            {
+                RequestDocumentDetails = _requestDocumentService.GetbyRequestId(requestId),
+                DocumentType = _codeService.GetAllByType("REQUESTDOCTYPE")
+            };
             return this.RenderPartialViewToString("_requestDocumentGrid", requestDocumentViewModels);
         }
     }

@@ -4,16 +4,19 @@ using System.Linq;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
+using WFJ.Repository.EntityModel;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
+using WFJ.Service.Model;
 using WFJ.Web.CustomAttribute;
 namespace WFJ.Web.Controllers
 {
     public class HomeController : Controller
     {
         private IUserService _userService = new UserService();
-        private IClientService _clientService = new ClientService();
+
         private IErrorLogService _errorLogService = new ErrorLogService();
+        private IFormService _formService = new FormService();
 
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult Index()
@@ -40,12 +43,6 @@ namespace WFJ.Web.Controllers
         }
 
         [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
-        public ActionResult Payment()
-        {
-            return View();
-        }
-
-        [AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
         public ActionResult ViewRequest()
         {
             return View();
@@ -57,6 +54,6 @@ namespace WFJ.Web.Controllers
             return View();
         }
 
-        
+
     }
 }

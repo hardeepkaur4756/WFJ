@@ -3504,7 +3504,7 @@
     <Content Include="Views\Home\_addEditDocument.cshtml" />
     <Content Include="Views\Home\RequestServices.cshtml" />
     <Content Include="Views\User\ManageUsers.cshtml" />
-    <Content Include="Views\Home\Payment.cshtml" />
+    <Content Include="Views\Payment\Payment.cshtml" />
     <Content Include="Views\Placements\_placementSearch.cshtml" />
     <Content Include="Views\Placements\_placementGrid.cshtml" />
     <Content Include="Views\Placements\ViewRequest.cshtml" />
@@ -3513,9 +3513,9 @@
     <Content Include="Views\User\_manageLogin.cshtml" />
     <Content Include="Views\User\_manageLoginGrid.cshtml" />
     <Content Include="Views\User\_addEditManageLogin.cshtml" />
-    <Content Include="Views\Home\_paymentSearch.cshtml" />
-    <Content Include="Views\Home\_paymentReport.cshtml" />
-    <Content Include="Views\Home\_addEditPaymentDocument.cshtml" />
+    <Content Include="Views\Payment\_paymentSearch.cshtml" />
+    <Content Include="Views\Payment\_paymentReport.cshtml" />
+    <Content Include="Views\Payment\_addEditPaymentDocument.cshtml" />
     <Content Include="Views\Home\ViewRequestPayment.cshtml" />
     <Content Include="Views\Home\RequestPayment\_addDeleteRequestPayment.cshtml" />
     <Content Include="Views\Home\RequestPayment\_summary.cshtml" />
@@ -3549,6 +3549,7 @@
     <Content Include="Views\Placements\_requestDocumentGrid.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Payment\_AddPayment.cshtml" />
+    <Content Include="Views\Placements\_ViewPlacementsCustomFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -3561,6 +3562,10 @@
     <ProjectReference Include="..\WFJ.Models\WFJ.Models.csproj">
       <Project>{DC6FAE3B-6093-458E-9940-47DE6C84F123}</Project>
       <Name>WFJ.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WFJ.Repository\WFJ.Repository.csproj">
+      <Project>{567C7FE0-1887-4863-A5CF-8212C0E16EE8}</Project>
+      <Name>WFJ.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\WFJ.Service\WFJ.Service.csproj">
       <Project>{A70DD14B-52D1-4DCB-A99D-A15AD042501A}</Project>

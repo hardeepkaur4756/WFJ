@@ -49,10 +49,10 @@
     //    lengthChange: false,
     //});
 
-    $("#paymentreport").DataTable({
-        responsive: true,
-        searching: false,
-        lengthChange: false,
-    });
+    //$("#paymentreport").DataTable({
+    //    responsive: true,
+    //    searching: false,
+    //    lengthChange: false
+    //});
    
 })(jQuery);

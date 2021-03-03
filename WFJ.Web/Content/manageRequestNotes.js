@@ -1,6 +1,6 @@
 ﻿$("#NotesSendTo").multiselect({
     includeSelectAllOption: true,
-    enableFiltering: true,
+    enableFiltering: true
 });
 
 function SetNotes() {
@@ -16,6 +16,7 @@ function GetRequestNotesDataTable() {
 
     if ($.fn.DataTable.isDataTable("#requestNotesTable")) {
         oTable.draw();
+        $('#requestNotesTable').DataTable().ajax.reload();
     }
     else {
 
@@ -26,7 +27,7 @@ function GetRequestNotesDataTable() {
                 "aaSorting": [],
                 "bServerSide": true,
                 "sAjaxSource": "/RequestNotes/GetRequestNotesList",
-                "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+            "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
 
                     //var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
                     //var sDir = oSettings.aaSorting[0][1];
@@ -70,13 +71,12 @@ function GetRequestNotesDataTable() {
                                 deletebtn = ' <a class="note-edit" data-id="' + full.ID + '" href="javascript: deleteNote(' + full.ID +');" class="anchor-design" title="Edit"><u>Delete</u></a>'
 
                             return '<a class="note-delete" data-id="' + full.ID + '" href="javascript: addNotes(' + full.ID +');" class="anchor-design" title="Edit"><u>Edit</u></a>' +
-                                deletebtn;  
+                                deletebtn;
                         }
                     },
                     {
                         data: "",
                         "render": function (row, type, full) {
-
                             var icns = '';
                             if (full.flaggedNote === 1)
                                 icns = icns + '<i class="fa fa-flag text-primary"></i>';
@@ -84,9 +84,9 @@ function GetRequestNotesDataTable() {
                                 icns = icns + '<i class="fa fa-eye text-danger"></i>';
 
                             return '<div class="td-with-inline-icons">' +
-                                    '<div class="custom-control custom-checkbox custom-control-inline"><input type="checkbox" class="custom-control-input" id="noteCb' + full.ID + '" value="'+full.ID+'"><label class="custom-control-label" for="noteCb' + full.ID + '"></label></div>' +
-                                        icns +
-                                    '</div>';
+                                '<div class="custom-control custom-checkbox custom-control-inline"><input type="checkbox" class="custom-control-input" id="noteCb' + full.ID + '" value="'+full.ID+'"><label class="custom-control-label" for="noteCb' + full.ID + '"></label></div>' +
+                                icns +
+                                '</div>';
                         }
                     },
                     { "data": "NotesDate", "title": "Note Date" },
@@ -109,13 +109,15 @@ function GetRequestNotesDataTable() {
                     //"zeroRecords": "no search results",
                     //"info": "Page _PAGE_ of _PAGES_",
                     "emptyTable": "no records found",
-                    "processing": "Processing... Please wait",
+                    "processing": "Processing... Please wait"
                 },
-
+                "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    if (aData['flaggedNote'] === 1) {
+                        $('td', nRow).css('background-color', '#ffffed');
+                    }
+                }
             });
-
     }
-
 }
 
 function getSelectedNotes() {
@@ -145,7 +147,6 @@ function deleteNote(noteid) {
                 dataType: 'json',
                 success: function (resp) {
                     if (resp.success === true) {
-
                         GetRequestNotesDataTable();
                     }
                     else {
@@ -156,7 +157,6 @@ function deleteNote(noteid) {
 
         }, function myfunction() { });
 }
-
 
 function addNotes(noteId) {
     $(".se-pre-con").fadeIn();
@@ -232,7 +232,7 @@ function addNotesSubmit() {
     }
 
     if ($.trim(followupDate).length && $.trim(followupTime).length > 0) {
-        followupDate = followupDate + " " + followupTime; 
+        followupDate = followupDate + " " + followupTime;
     }
     //var sendToUsers = $("#NotesSendTo").val();
 
@@ -279,9 +279,7 @@ function addNotesSubmit() {
 
 }
 
-
 function flagNotes() {
-
     var selectedNotes = getSelectedNotes();
     //$("#requestNotesTable td").find("input:checked").each(function () {
     //    selectedNotes.push($(this).val());
@@ -313,9 +311,7 @@ function flagNotes() {
 }
 
 function hideNotes() {
-
     var selectedNotes = getSelectedNotes();
-
     if (selectedNotes.length === 0) {
         $.notify("Please select some notes", "danger");
     }
@@ -350,7 +346,6 @@ function showNotes() {
         dataType: 'json',
         success: function (resp) {
             if (resp.success === true) {
-
                 GetRequestNotesDataTable();
             }
             else {
@@ -373,16 +368,14 @@ function sendNotes() {
     else {
         var requestId = $("#Request_ID").val();
         $.ajax({
-            data: { notes: selectedNotes, requestId: requestId, users:sendToUsers },
+            data: { notes: selectedNotes, requestId: requestId, users: sendToUsers },
             traditional: true,
             url: '/RequestNotes/SendNotes',
             type: 'post',
             dataType: 'json',
             success: function (resp) {
                 if (resp.success === true) {
-
                     $.notify("Notes sent to selected users.", "success");
-
                     //GetRequestNotesDataTable();
                 }
                 else {
