@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Web;
+using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository;
 using WFJ.Repository.EntityModel;
 using WFJ.Repository.Interfaces;
 using WFJ.Service.Interfaces;
-using System.Linq.Dynamic;
-using System.Threading;
-
-using System.Web.Mvc;
 namespace WFJ.Service
 {
     public class UserService : IUserService
@@ -22,10 +20,10 @@ namespace WFJ.Service
         private IUserClientRepository _userClientRepo = new UserClientRepository();
         private IUserLevelsRepository _userLevelsRepo = new UserLevelsRepository();
         private IFormUsersRepository _formUsersRepo = new FormUsersRepository();
-        private ILevelService _levelService = new LevelService();
-        private IFormService _formService = new FormService();
-        private ILevelRepository _levelRepo = new LevelRepository();
-        private IFormsRepository _formRepo = new FormsRepository();
+        private readonly ILevelService _levelService = new LevelService();
+        private readonly IFormService _formService = new FormService();
+        private readonly ILevelRepository _levelRepo = new LevelRepository();
+        private readonly IFormsRepository _formRepo = new FormsRepository();
         private IErrorLogService _errorLogService = new ErrorLogService();
         private IUserClientService _userClientService = new UserClientService();
 
@@ -141,7 +139,7 @@ namespace WFJ.Service
                     var ph = new Microsoft.AspNet.Identity.PasswordHasher();
                     if (ph.VerifyHashedPassword(user.Password, currentPassword).ToString() == "Success")
                     {
-                        if (user.Active ==1)
+                        if (user.Active == 1)
                         {
                             var hash = ph.HashPassword(newPassword);
                             user.Password = hash;
@@ -155,7 +153,7 @@ namespace WFJ.Service
                             resultModel.IsSuccess = false;
                             resultModel.Message = "Your account is inactive, please contact your WFJ Administrator";
                         }
-                       
+
                     }
                     else
                     {
@@ -190,7 +188,7 @@ namespace WFJ.Service
                 {
                     if (ph.VerifyHashedPassword(user.Password, loginViewModel.Password).ToString() == "Success")
                     {
-                        if (user.Active ==1)
+                        if (user.Active == 1)
                         {
                             HttpContext.Current.Session["UserType"] = user.UserType;
                             HttpContext.Current.Session["UserId"] = Convert.ToString(user.UserID);
@@ -210,7 +208,7 @@ namespace WFJ.Service
                             resultModel.IsSuccess = false;
                             resultModel.Message = "Your account is inactive, please contact your WFJ Administrator";
                         }
-                        
+
                     }
                     else
                     {
@@ -247,15 +245,18 @@ namespace WFJ.Service
                 profileViewModel.State = user.State;
                 profileViewModel.PostalCode = user.PostalCode;
                 profileViewModel.Email = user.EMail;
-                profileViewModel.Client = new Detail
+                if (user.Client != null)
                 {
-                    Name = user.Client?.ClientName,
-                    Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
-                    Email = user.Client?.EMail,
-                    Phone = user.Client?.Telephone,
-                    Contact = user.Client?.ContactName
-                };
-                profileViewModel.ClientNotes = user.Client?.clientNotes;
+                    profileViewModel.Client = new Detail
+                    {
+                        Name = user.Client?.ClientName,
+                        Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
+                        Email = user.Client?.EMail,
+                        Phone = user.Client?.Telephone,
+                        Contact = user.Client?.ContactName
+                    };
+                    profileViewModel.ClientNotes = user.Client?.clientNotes;
+                }
             }
             return profileViewModel;
         }
@@ -275,15 +276,18 @@ namespace WFJ.Service
                 user.PostalCode = profileViewModel.PostalCode;
                 user.EMail = profileViewModel.Email;
                 _userRepo.Update(user);
-                profileViewModel.Client = new Detail
+                if (user.Client != null)
                 {
-                    Name = user.Client?.ClientName,
-                    Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
-                    Email = user.Client?.EMail,
-                    Phone = user.Client?.Telephone,
-                    Contact = user.Client?.ContactName
-                };
-                profileViewModel.ClientNotes = user.Client?.clientNotes;
+                    profileViewModel.Client = new Detail
+                    {
+                        Name = user.Client?.ClientName,
+                        Address = GetAddress(user.Client?.Address1, user.Client?.Address2, user.Client.City, user.Client.State, user.Client.PostalCode),
+                        Email = user.Client?.EMail,
+                        Phone = user.Client?.Telephone,
+                        Contact = user.Client?.ContactName
+                    };
+                    profileViewModel.ClientNotes = user.Client?.clientNotes;
+                }
             }
             else
             {
@@ -336,7 +340,7 @@ namespace WFJ.Service
                         }
                         if (sortDir == "desc")
                         {
-                            users = users.OrderByDescending(x => x.User1?.FirstName).ThenByDescending(x => x.User1?.LastName).ToList();           
+                            users = users.OrderByDescending(x => x.User1?.FirstName).ThenByDescending(x => x.User1?.LastName).ToList();
                         }
                         break;
                     case "LevelName":
@@ -434,7 +438,7 @@ namespace WFJ.Service
         {
             IRegionsRepository regionsRepo = new RegionsRepository();
             List<SelectListItem> regionList = new List<SelectListItem>();
-            regionList = regionsRepo.GetAll().Where(x=>!string.IsNullOrEmpty(x.RegionName)).Select(x => new SelectListItem() { Text = x.RegionName, Value = x.ID.ToString() }
+            regionList = regionsRepo.GetAll().Where(x => !string.IsNullOrEmpty(x.RegionName)).Select(x => new SelectListItem() { Text = x.RegionName, Value = x.ID.ToString() }
                 ).ToList();
             return regionList;
         }
@@ -454,7 +458,7 @@ namespace WFJ.Service
 
             try
             {
-                
+
                 if (managerUserFilterViewModel.userViewModel.UserID > 0)
                 {
                     if (!CheckDuplicateByEmailAndUser(managerUserFilterViewModel.userViewModel.Email, managerUserFilterViewModel.userViewModel.UserID))
@@ -473,7 +477,7 @@ namespace WFJ.Service
                         user.UserType = managerUserFilterViewModel.userViewModel.UserType;
                         user.dashboardUser = managerUserFilterViewModel.userViewModel.IsDashboardUser;
                         user.Active = managerUserFilterViewModel.userViewModel.IsActive;
-                        user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId>0 ? managerUserFilterViewModel.userViewModel.ManagerUserId : null;
+                        user.ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId > 0 ? managerUserFilterViewModel.userViewModel.ManagerUserId : null;
                         user.UserAccess = managerUserFilterViewModel.userViewModel.AccessLevelId;
                         _userRepo.Update(user);
                         _userClientRepo.DeleteByUserId(managerUserFilterViewModel.userViewModel.UserID);
@@ -523,7 +527,7 @@ namespace WFJ.Service
                         managerUserFilterViewModel.IsSuccess = false;
                         managerUserFilterViewModel.Message = "Email address already exist.";
                     }
-                   
+
                 }
                 else
                 {
@@ -531,7 +535,7 @@ namespace WFJ.Service
                     {
                         User user = new User()
                         {
-                            UserName = managerUserFilterViewModel.userViewModel.FirstName  + managerUserFilterViewModel.userViewModel.LastName,
+                            UserName = managerUserFilterViewModel.userViewModel.FirstName + managerUserFilterViewModel.userViewModel.LastName,
                             Password = ph.HashPassword(managerUserFilterViewModel.userViewModel.Password),
                             FirstName = managerUserFilterViewModel.userViewModel.FirstName,
                             LastName = managerUserFilterViewModel.userViewModel.LastName,
@@ -548,8 +552,8 @@ namespace WFJ.Service
                             DateAdded = DateTime.Now,
                             PasswordExpirationDate = DateTime.Now.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])),
                             IsPasswordHashed = false,
-                            ManagerUserID= managerUserFilterViewModel.userViewModel.ManagerUserId>0? managerUserFilterViewModel.userViewModel.ManagerUserId:null,
-                            UserAccess=managerUserFilterViewModel.userViewModel.AccessLevelId
+                            ManagerUserID = managerUserFilterViewModel.userViewModel.ManagerUserId > 0 ? managerUserFilterViewModel.userViewModel.ManagerUserId : null,
+                            UserAccess = managerUserFilterViewModel.userViewModel.AccessLevelId
                         };
                         _userRepo.Add(user);
                         if (user.UserID > 0 && (managerUserFilterViewModel.userViewModel.ClientId != null))
@@ -602,24 +606,26 @@ namespace WFJ.Service
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 managerUserFilterViewModel.IsSuccess = false;
                 managerUserFilterViewModel.Message = "Sorry, An error occurred!";
-                
+
             }
-            
+
         }
 
         public ManagerUserFilterViewModel GetManageUserById(int userId)
         {
-           
-            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel();
-            managerUserFilterViewModel.userViewModel = new UserViewModel();
+
+            ManagerUserFilterViewModel managerUserFilterViewModel = new ManagerUserFilterViewModel
+            {
+                userViewModel = new UserViewModel()
+            };
             IClientService _clientService = new ClientService();
             managerUserFilterViewModel.Clients = _clientService.GetAllClients();
             managerUserFilterViewModel.AccessLevels = GetAllAccessLevels();
-          
+
 
             User user = _userRepo.GetById(userId);
             if (user != null)
@@ -639,12 +645,12 @@ namespace WFJ.Service
                 managerUserFilterViewModel.userViewModel.IsDashboardUser = user.dashboardUser;
                 managerUserFilterViewModel.userViewModel.Password = user.Password;
                 managerUserFilterViewModel.userViewModel.ClientId = _userClientRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.ClientID)).ToArray();
-                managerUserFilterViewModel.Regions = GetRegionsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x=>(int?)x).ToList());
+                managerUserFilterViewModel.Regions = GetRegionsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList());
                 managerUserFilterViewModel.Forms = GetFormsByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList());
                 managerUserFilterViewModel.userViewModel.RegionId = _userLevelsRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.LevelID)).ToArray();
                 managerUserFilterViewModel.userViewModel.FormId = _formUsersRepo.GetByUserId(userId).Select(x => Convert.ToInt32(x.FormID)).ToArray();
                 managerUserFilterViewModel.userViewModel.AccessLevelId = user.UserAccess;
-                managerUserFilterViewModel.ManageUsers =  _userClientService.GetManageUsersByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList(), userId);
+                managerUserFilterViewModel.ManageUsers = _userClientService.GetManageUsersByClient(managerUserFilterViewModel.userViewModel.ClientId.Select(x => (int?)x).ToList(), userId);
                 managerUserFilterViewModel.userViewModel.ManagerUserId = user.ManagerUserID;
             }
 
@@ -672,7 +678,7 @@ namespace WFJ.Service
             return managerUserFilterViewModel;
         }
 
-       
+
         public bool CheckDuplicateByEmail(string email)
         {
             User user = _userRepo.GetByEmail(email);
@@ -725,7 +731,7 @@ namespace WFJ.Service
             {
                 Text = x.FirstName + " " + x.LastName,
                 Value = x.UserID.ToString()
-            }).Where(x =>x .Text.Trim() != "").OrderBy(x => x.Text).ToList();            
+            }).Where(x => x.Text.Trim() != "").OrderBy(x => x.Text).ToList();
         }
 
         public List<SelectListItem> GetUsersByClientId(int clientId)
@@ -740,7 +746,7 @@ namespace WFJ.Service
 
         public List<SelectListItem> GetAdminStaffDropdown()
         {
-            var users =  _userRepo.GetAll().Where(x => x.Active == 1 && x.IsAdminStaff == 1);
+            var users = _userRepo.GetAll().Where(x => x.Active == 1 && x.IsAdminStaff == 1);
 
             return users.Select(x => new SelectListItem
             {
