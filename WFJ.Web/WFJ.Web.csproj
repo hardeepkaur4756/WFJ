@@ -3498,10 +3498,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
-    <Content Include="Views\Home\DocumentCenter.cshtml" />
-    <Content Include="Views\Home\_documentSearch.cshtml" />
-    <Content Include="Views\Home\_documentGrid.cshtml" />
-    <Content Include="Views\Home\_addEditDocument.cshtml" />
     <Content Include="Views\Home\RequestServices.cshtml" />
     <Content Include="Views\User\ManageUsers.cshtml" />
     <Content Include="Views\Payment\Payment.cshtml" />
@@ -3539,8 +3535,6 @@
     <Content Include="Views\DocumentCenter\_addEditDocument.cshtml" />
     <Content Include="Views\DocumentCenter\_documentGrid.cshtml" />
     <Content Include="Views\DocumentCenter\_documentSearch.cshtml" />
-    <Content Include="Views\DocumentCenter\DocumentCenter.cshtml" />
-    <Content Include="Views\DocumentCenter\GetList.cshtml" />
     <Content Include="Views\Placements\Index.cshtml" />
     <Content Include="Views\Placements\ViewPlacements.cshtml" />
     <Content Include="Views\Placements\AddPlacement.cshtml" />

@@ -113,7 +113,7 @@ function GetRequestNotesDataTable() {
                 },
                 "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                     if (aData['flaggedNote'] === 1) {
-                        $('td', nRow).css('background-color', '#ffffed');
+                        $('td', nRow).css('background-color', '#FFE4B5');
                     }
                 }
             });
