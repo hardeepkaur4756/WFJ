@@ -20,11 +20,11 @@ namespace WFJ.Repository.EntityModel
             this.UserClients = new HashSet<UserClient>();
             this.UserLevels = new HashSet<UserLevel>();
             this.Users1 = new HashSet<User>();
+            this.FormNotesUsers = new HashSet<FormNotesUser>();
+            this.Payments = new HashSet<Payment>();
+            this.RequestNotes = new HashSet<RequestNote>();
             this.Requests = new HashSet<Request>();
             this.Requests1 = new HashSet<Request>();
-            this.FormNotesUsers = new HashSet<FormNotesUser>();
-            this.RequestNotes = new HashSet<RequestNote>();
-            this.Payments = new HashSet<Payment>();
         }
     
         public int UserID { get; set; }
@@ -74,14 +74,14 @@ namespace WFJ.Repository.EntityModel
         public virtual ICollection<User> Users1 { get; set; }
         public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Request> Requests { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Request> Requests1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormNotesUser> FormNotesUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestNote> RequestNotes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Request> Requests1 { get; set; }
     }
 }

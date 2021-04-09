@@ -117,6 +117,9 @@
     <Compile Include="EntityModel\Code.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\collectorStatusCode.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\columnInfo.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>

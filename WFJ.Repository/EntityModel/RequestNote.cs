@@ -34,13 +34,13 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> flaggedNote { get; set; }
         public Nullable<byte> deadlineCalendar { get; set; }
         public Nullable<byte> internalNote { get; set; }
-        public Nullable<System.DateTime> LastSent { get; set; }
-        public string LastSentTo { get; set; }
+        public Nullable<System.DateTime> lastSent { get; set; }
+        public string lastSentTo { get; set; }
         public Nullable<System.DateTime> paymentDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<hiddenRequestNote> hiddenRequestNotes { get; set; }
-        public virtual Request Request { get; set; }
         public virtual User User { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

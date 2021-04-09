@@ -38,6 +38,7 @@ namespace WFJ.Repository.EntityModel
         public string ProjectTypeID { get; set; }
         public string FormTypeID { get; set; }
         public Nullable<int> SeqNo { get; set; }
+        public string StateCode { get; set; }
     
         public virtual Client Client { get; set; }
         public virtual Code Code { get; set; }
