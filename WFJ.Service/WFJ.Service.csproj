@@ -105,6 +105,7 @@
     <Compile Include="ErrorLogService.cs" />
     <Compile Include="FormService.cs" />
     <Compile Include="FormTypeService.cs" />
+    <Compile Include="Interfaces\ILocalCounselService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\IClientService.cs" />
     <Compile Include="Interfaces\ICodesService.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Interfaces\IUserClientService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\IPaymentService.cs" />
+    <Compile Include="Interfaces\LocalCounselService.cs" />
     <Compile Include="LevelService.cs" />
     <Compile Include="MappingExtensions.cs" />
     <Compile Include="Model\Enums.cs" />

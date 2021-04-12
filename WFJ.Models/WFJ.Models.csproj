@@ -80,9 +80,12 @@
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="FormModel.cs" />
     <Compile Include="FormTypeModel.cs" />
+    <Compile Include="LocalCounselModel.cs" />
+    <Compile Include="LocalCounselViewModel.cs" />
     <Compile Include="LoginViewModel.cs" />
     <Compile Include="ManageDocumentModel.cs" />
     <Compile Include="ManageDocumentViewModel.cs" />
+    <Compile Include="ManageLocalCounselModel.cs" />
     <Compile Include="ManagePaymentsModel.cs" />
     <Compile Include="ManageRequestNotes.cs" />
     <Compile Include="ManageUserModel.cs" />

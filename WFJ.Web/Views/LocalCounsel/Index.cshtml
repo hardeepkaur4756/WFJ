@@ -1,0 +1,140 @@
+﻿@using WFJ.Web.Models.Enums;
+@model WFJ.Models.LocalCounselViewModel
+
+@{
+    ViewBag.Title = "Local Counsel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int userType = Convert.ToInt32(Session["UserType"]);
+
+}
+
+<main>
+    <span id="requestError"> </span>
+    @Html.DisplayFor(m => m.ErrorMessage)
+
+    <div class="document-center">
+        <div class="container-fluid site-width">
+            <h4 class="mb-4">LABEL</h4>
+            <div class="row">
+                <div class="col-md-4 col-xl-3">
+                    <div class="card mb-5 mb-md-0">
+                        <div class="card-content">
+                            <div class="card-body">
+                                @Html.Partial("_localCounselSearch", Model.localCounselFilterViewModel)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xl-9">
+                    <div class="card">
+                        <div class="card-body" style="min-height:215px;">
+                            @Html.Partial("_localCounselGrid")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+@section scripts{
+
+    <script>
+        var oTable;
+        var isFirstTime = true;
+        $(document).ready(function () {
+            GetDataTable();
+        });
+        $("#searchBtn").click(function () {
+            var clientId = $('#ddlClient option:selected').val();
+            var formTypeId = $('#ddlFormType option:selected').val();
+            //var searchKeyword = $('#txtSearchKeyword').val();
+            if (clientId == -1 && formTypeId == -1 && "@userType" != "@((int)UserType.ClientUser)") {// && searchKeyword == "") {
+                $('#errormessage').text('Please select atleast one value for search').css("color", "red");
+            }
+            else {
+                $('#errormessage').text('');
+                GetDataTable();
+            }
+        });
+
+
+        function GetDataTable() {
+            if ($.fn.DataTable.isDataTable("#myDataTable")) {
+                oTable.draw();
+            }
+            else {
+
+                oTable =
+                    $('#myDataTable').DataTable({
+                        "bServerSide": true,
+                        "sAjaxSource": "/LocalCounsel/GetLocalCounselList",
+                        "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                            var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
+                            var sDir = oSettings.aaSorting[0][1];
+
+                            var firmName = $('#counselFirmName').val();;
+                            var attorneyName = $('#counselAttorneyName').val();;
+                            var city = $('#counselCity').val();;
+                            var stateId = $('#ddlLocalCounselState option:selected').val();
+                            var countryId = $('#ddlLocalCounselCountry option:selected').val();
+
+                            aoData.push({ "name": "sortCol", "value": colName });
+                            aoData.push({ "name": "sortDir", "value": sDir });
+                            aoData.push({ "name": "firmName", "value": firmName });
+                            aoData.push({ "name": "attorneyName", "value": attorneyName });
+                            aoData.push({ "name": "city", "value": city });
+                            aoData.push({ "name": "stateId", "value": stateId });
+                            aoData.push({ "name": "countryId", "value": countryId });
+                            aoData.push({ "name": "isFirstTime", "value": isFirstTime });
+
+                            $.ajax({
+                                type: "Get",
+                                data: aoData,
+                                url: sSource,
+                                success: fnCallback
+                            });
+
+
+                            isFirstTime = false;
+                        },
+                        drawCallback: function () {
+                            var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                            pagination.toggle(this.api().page.info().pages > 1);
+                        },
+                        "aoColumns": [
+                            { "mData": "FirmName" },
+                            { "mData": "ContactName" },
+                            { "mData": "AttorneyName" },
+                            { "mData": "City" },
+                            { "mData": "State" },
+                            { "mData": "Country" }
+                        ],
+                        "order": [[0, "asc"]],
+                        bProcessing: true,
+                        pageLength: 10,
+                        "bFilter": false,
+                        "paging": true,
+                        //bSearching: false,
+                        bLengthChange: true,
+                        lengthMenu: [10, 25, 50],
+                        "bInfo": true,
+                        "language": {
+                            "zeroRecords": "no search results (too much data)",
+                            //"info": "Page _PAGE_ of _PAGES_",
+                            "emptyTable": "no records found",
+                            "processing": "Processing... Please wait",
+                        }
+                    });
+            }
+
+        }
+
+
+
+    </script>
+
+}

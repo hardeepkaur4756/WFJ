@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessLevelsRepository.cs" />
+    <Compile Include="AssociateCounselRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
     <Compile Include="ClientRepository.cs" />
     <Compile Include="CodesRepository.cs" />
@@ -429,6 +430,7 @@
     <Compile Include="GenericRepository.cs" />
     <Compile Include="HiddenRequestNotesRepository.cs" />
     <Compile Include="Interfaces\IAccessLevelsRepository.cs" />
+    <Compile Include="Interfaces\IAssociateCounselRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
     <Compile Include="Interfaces\ICodesRepository.cs" />
