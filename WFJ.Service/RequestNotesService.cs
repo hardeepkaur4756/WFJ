@@ -380,8 +380,8 @@ namespace WFJ.Service
             foreach (var id in notes)
             {
                 var note = notesFromDb.First(x => x.ID == id);
-                note.LastSent = DateTime.Now;
-                note.LastSentTo = userEmails;
+                note.lastSent = DateTime.Now;
+                note.lastSentTo = userEmails;
                 _notesRepo.Update(note);
             }
 

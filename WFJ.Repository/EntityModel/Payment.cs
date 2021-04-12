@@ -30,7 +30,7 @@ namespace WFJ.Repository.EntityModel
     
         public virtual currency currency { get; set; }
         public virtual PaymentType PaymentType { get; set; }
-        public virtual Request Request { get; set; }
         public virtual User User { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

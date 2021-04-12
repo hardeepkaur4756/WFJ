@@ -35,6 +35,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<byte> hasAdmin { get; set; }
         public Nullable<byte> active { get; set; }
         public Nullable<int> ClientNumber { get; set; }
+        public Nullable<byte> testIt { get; set; }
     
         public virtual Client Client { get; set; }
         public virtual Client Client1 { get; set; }

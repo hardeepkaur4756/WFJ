@@ -17,8 +17,8 @@ namespace WFJ.Repository.EntityModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Request()
         {
-            this.RequestNotes = new HashSet<RequestNote>();
             this.Payments = new HashSet<Payment>();
+            this.RequestNotes = new HashSet<RequestNote>();
         }
     
         public int ID { get; set; }
@@ -26,7 +26,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<int> Requestor { get; set; }
         public Nullable<int> AssignedAttorney { get; set; }
         public Nullable<int> AssignedCollectorID { get; set; }
-        public string CollectorStatusCode { get; set; }
+        public Nullable<int> collectorStatusCodeID { get; set; }
         public Nullable<System.DateTime> CollectorStatusCodeChangeDate { get; set; }
         public Nullable<int> AssignedAdminStaffID { get; set; }
         public Nullable<int> LegalAssistantID { get; set; }
@@ -57,13 +57,13 @@ namespace WFJ.Repository.EntityModel
         public string Value10 { get; set; }
     
         public virtual Form Form { get; set; }
-        public virtual Personnel Personnel { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
         public virtual Level Level { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequestNote> RequestNotes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual Personnel Personnel { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RequestNote> RequestNotes { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

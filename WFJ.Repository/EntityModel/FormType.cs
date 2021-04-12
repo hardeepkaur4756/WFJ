@@ -24,6 +24,7 @@ namespace WFJ.Repository.EntityModel
         public string FormType1 { get; set; }
         public Nullable<byte> displayInSearch { get; set; }
         public Nullable<int> sequenceID { get; set; }
+        public string localCounselTabLabel { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Form> Forms { get; set; }

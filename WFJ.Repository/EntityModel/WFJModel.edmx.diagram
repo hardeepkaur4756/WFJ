@@ -72,7 +72,6 @@
         <EntityTypeShape EntityType="WFJDBModel.Region" Width="1.5" PointX="24.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.RequestDocument" Width="1.5" PointX="12.75" PointY="24.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.RequestNotice" Width="1.5" PointX="14.75" PointY="24.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.Request" Width="1.5" PointX="16.75" PointY="24.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Resource" Width="1.5" PointX="24.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.SearchResult" Width="1.5" PointX="24.75" PointY="22.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.StatusCode" Width="1.5" PointX="8.75" PointY="25.75" IsExpanded="true" />
@@ -123,7 +122,6 @@
         <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__63C3BFDC" />
         <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__64B7E415" />
         <AssociationConnector Association="WFJDBModel.FK__Forms__FormTypeI__65AC084E" />
-        <AssociationConnector Association="WFJDBModel.FK__Requests__FormID__66A02C87" />
         <AssociationConnector Association="WFJDBModel.FK__Personnel__Perso__688874F9" />
         <AssociationConnector Association="WFJDBModel.FK__FormSelec__FormF__6A70BD6B" />
         <EntityTypeShape EntityType="WFJDBModel.fieldSize" Width="1.5" PointX="14.5" PointY="31.25" />
@@ -131,21 +129,24 @@
         <AssociationConnector Association="WFJDBModel.FK__FormAddre__FormF__7C8F6DA6" />
         <AssociationConnector Association="WFJDBModel.FK__FormData__FormFi__7AA72534" />
         <AssociationConnector Association="WFJDBModel.FK__FormData__FormFi__7B9B496D" />
-        <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__08F5448B" />
-        <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__08012052" />
-        <AssociationConnector Association="WFJDBModel.FK__Requests__Reques__070CFC19" />
         <AssociationConnector Association="WFJDBModel.FK__Levels__ParentID__2E26C93A" />
-        <AssociationConnector Association="WFJDBModel.FK__Requests__LevelI__300F11AC" />
         <EntityTypeShape EntityType="WFJDBModel.hiddenRequestNote" Width="1.5" PointX="33.625" PointY="2" />
-        <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="31.375" PointY="1" />
-        <AssociationConnector Association="WFJDBModel.FK__hiddenReq__noteI__53584DE9" />
         <AssociationConnector Association="WFJDBModel.FK__FormNotes__UserI__544C7222" />
-        <AssociationConnector Association="WFJDBModel.FK__RequestNo__Reque__6D181FEC" />
-        <AssociationConnector Association="WFJDBModel.FK__RequestNo__UserI__6C23FBB3" />
         <AssociationConnector Association="WFJDBModel.FK_Payment_Currency" />
         <AssociationConnector Association="WFJDBModel.FK_Payment_PaymentType" />
-        <AssociationConnector Association="WFJDBModel.FK_Payment_Request" />
         <AssociationConnector Association="WFJDBModel.FK_Payment_User" />
+        <EntityTypeShape EntityType="WFJDBModel.collectorStatusCode" Width="1.5" PointX="19.375" PointY="30.75" />
+        <EntityTypeShape EntityType="WFJDBModel.RequestNote" Width="1.5" PointX="33.875" PointY="21.75" />
+        <AssociationConnector Association="WFJDBModel.FK__hiddenReq__noteI__3BB5CE82" />
+        <AssociationConnector Association="WFJDBModel.FK__RequestNo__UserI__3D9E16F4" />
+        <EntityTypeShape EntityType="WFJDBModel.Request" Width="1.5" PointX="36.875" PointY="9.75" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__FormID__2F4FF79D" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__LevelI__3AC1AA49" />
+        <AssociationConnector Association="WFJDBModel.FK_Payment_Request" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__36F11965" />
+        <AssociationConnector Association="WFJDBModel.FK__RequestNo__Reque__3E923B2D" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__35FCF52C" />
+        <AssociationConnector Association="WFJDBModel.FK__Requests__Reques__3508D0F3" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
