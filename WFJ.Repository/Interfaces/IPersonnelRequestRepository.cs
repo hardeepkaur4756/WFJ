@@ -7,10 +7,8 @@ using WFJ.Repository.EntityModel;
 
 namespace WFJ.Repository.Interfaces
 {
-    public interface ICodesRepository : IRepository<Code>
+    public interface IPersonnelRequestRepository  : IRepository<PersonnelRequest>
     {
-        List<Code> GetAllByType(string type);
-        string GetStateByCode(string code);
-        Code GetById(int id);
+        List<PersonnelRequest> GetPersonnelByRequestId(int RequestId);
     }
 }

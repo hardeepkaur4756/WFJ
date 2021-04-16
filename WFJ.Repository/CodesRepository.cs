@@ -24,6 +24,9 @@ namespace WFJ.Repository
         {
             return context.Codes?.FirstOrDefault(x => x.Code1 == code && x.Type == "STATE")?.Value;
         }
-
+        public Code GetById(int id)
+        {
+            return context.Codes?.FirstOrDefault(x => x.ID == id);
+        }
     }
 }

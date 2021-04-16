@@ -15,6 +15,10 @@
         <input id="counselAttorneyName" type="text" class="form-control" />
     </div>
     <div class="form-group">
+        <label for="counselContactName">Contact Name</label>
+        <input id="counselContactName" type="text" class="form-control" />
+    </div>
+    <div class="form-group">
         <label for="counselCity">City</label>
         <input id="counselCity" type="text" class="form-control" />
     </div>
@@ -27,11 +31,15 @@
         @Html.DropDownList("ddlLocalCounselCountry", new SelectList(Model.countries, "Value", "Text"), new { @Class = "form-control" })
     </div>
     <div class="clearfix">
-        <a href="@Url.Action("AddLocalCounsel","LocalCounsel")"
+        @*<a href="@Url.Action("AddLocalCounsel","LocalCounsel")"
            class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
             New
-        </a>
-        <button id="searchBtn" type="button"
+        </a>*@
+        <button onclick="GetViewAddNewLocalConsel()" type="button"
+                class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
+            New
+        </button>
+        <button onclick="GetLocalCounselData();" type="button"
                 class="btn btn-primary float-right ml-2 mb-2 document-search-btn">
             Search
         </button>

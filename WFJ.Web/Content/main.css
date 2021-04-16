@@ -6421,3 +6421,6 @@ td .td-with-inline-icons {
     .div-client-payment-notes::-webkit-scrollbar-thumb:hover {
         background: #1e3d73;
     }
+    .hide{
+        display:none
+    }

@@ -7,9 +7,9 @@ using WFJ.Repository.EntityModel;
 
 namespace WFJ.Repository.Interfaces
 {
-   public interface IAssociateCounselRepository
+   public interface IAssociateCounselRepository : IRepository<AssociateCounsel>
     {
-        IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName, string city, string state, string country);
+        IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName,string contactName, string city, string state, string country);
         AssociateCounsel GetAssociateCounselDetailByID(int associateCounselId);
     }
 }

@@ -158,6 +158,7 @@
     <Content Include="Content\images\button-icon.jpg" />
     <Content Include="Content\main.css" />
     <Content Include="Content\manageDocument.js" />
+    <Content Include="Content\manageLocalCounsel.js" />
     <Content Include="Content\managePayments.js" />
     <Content Include="Content\manageRequestNotes.js" />
     <Content Include="Content\ManageUser.js" />
@@ -3549,6 +3550,9 @@
     <Content Include="Views\LocalCounsel\_localCounselGrid.cshtml" />
     <Content Include="Views\LocalCounsel\_localCounselRequestGrid.cshtml" />
     <Content Include="Views\LocalCounsel\Index.cshtml" />
+    <Content Include="Views\LocalCounsel\_addLocalCounsel.cshtml" />
+    <Content Include="Views\LocalCounsel\_associateCounselGrid.cshtml" />
+    <Content Include="Views\LocalCounsel\_assignedFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

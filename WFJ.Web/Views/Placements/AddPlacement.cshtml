@@ -864,51 +864,25 @@
                                 <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                <button type="submit" class="btn btn-primary w-100" data-toggle="modal" data-target="#updateAssociateInfoModal">
-                                                                    Update Associate Info
-                                                                </button>
-
-                                                                <button type="submit" class="btn btn-primary w-100 mt-3" data-toggle="modal" data-target="#manageInvoiceModal">
-                                                                    Manage Invoices
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-8">
-                                                            <ul class="update-associate mt-0">
-                                                                <li>Total Invoices:<span>$0.00</span></li>
-                                                                <li>
-                                                                    Total Amount Paid:<span>$0.00</span>
-                                                                </li>
-                                                                <li>Balance Due:<span>$0.00</span></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
+                                            <div id="divAssignedFile" class="hide">
+                                                @Html.Partial("~/Views/LocalCounsel/_assignedFile.cshtml", Model.associateCounselModel);
+                                            </div>
+                                            <div id="divLocalCounselSearch" class="hide">
+                                                <div id="divShowLocalCounsel">
+                                                    @Html.Partial("~/Views/LocalCounsel/Index.cshtml", Model.localCounselViewModel)
                                                 </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label> Associate Counsel Name </label>
-                                                        <input type="text" class="form-control" placeholder="Intl Code">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label> Associate Counsel File # </label>
-                                                        <input type="text" class="form-control" placeholder="Intl Code">
+                                                <div id="divAddLocalCounsel" class="hide">
+                                                    <div id="divhtmlAddLocalCount">
+                                                        @Html.Partial("~/Views/LocalCounsel/_addLocalCounsel.cshtml", Model.addLocalCounselViewModel)
                                                     </div>
                                                 </div>
                                             </div>
+
+                                           
                                         </div>
-                                    </div>
+                                            </div>
                                 </div>
-                            }
+                                }
                         </div>
                     </div>
                 </div>
@@ -977,15 +951,20 @@
 @section scripts{
     <script src="~/Content/manageRequestNotes.js"></script>
     <script src="~/Content/managePayments.js"></script>
+    <script src="~/Content/manageLocalCounsel.js"></script>
     <script>
 
         $(document).ready(function () {
-
+           
             if ("@Model.isEditMode" == "True") {
                 GetRequestNotesDataTable();
                 GetPaymentsDataTable();
             }
-
+            if ("@Model.IsAssignedFile" == "True") {
+                $('#divAssignedFile').removeClass("hide");
+            } else {
+                $('#divLocalCounselSearch').removeClass("hide");
+            }
 
             GetStatusDescription($("#Request_StatusCode").val());
             $("#Request_StatusCode").change(function () {
@@ -1284,7 +1263,7 @@
                     error: function (result) {
                     }
                 });
-        }
+        }       
     </script>
 }
 

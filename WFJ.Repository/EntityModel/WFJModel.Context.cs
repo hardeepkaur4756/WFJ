@@ -132,6 +132,7 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<collectorStatusCode> collectorStatusCodes { get; set; }
         public virtual DbSet<RequestNote> RequestNotes { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<ClientsLive> ClientsLives { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

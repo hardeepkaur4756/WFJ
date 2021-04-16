@@ -22,7 +22,7 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
         }
 
-        public IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName, string city, string state, string country)
+        public IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName, string contactName, string city, string state, string country)
         {
             IEnumerable<AssociateCounsel> counsels;
 
@@ -32,10 +32,14 @@ namespace WFJ.Repository
                 counsels = counsels.Where(x => x.FirmName == firmName);
             }
             //this column is not in local DB need to check live DB
-            //if (!string.IsNullOrEmpty(attorneyName))
-            //{
-            //    counsels = counsels.Where(x => x.att == firmName);
-            //}
+            if (!string.IsNullOrEmpty(attorneyName))
+            {
+                counsels = counsels.Where(x => x?.PersonnelRequests?.FirstOrDefault()?.AssociateName ==  attorneyName);
+            }
+            if (!string.IsNullOrEmpty(contactName))
+            {
+                counsels = counsels.Where(x => x.Name == contactName);
+            }
             if (!string.IsNullOrEmpty(city))
             {
                 counsels = counsels.Where(x => x.City == city);

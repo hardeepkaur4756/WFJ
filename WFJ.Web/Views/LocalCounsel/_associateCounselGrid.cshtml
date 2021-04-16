@@ -1,0 +1,17 @@
+﻿@model List<WFJ.Models.FileInformation>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+<tr>
+    <td>@item.Client </td>
+    <td>@item.CustomerName </td>
+    <td>@item.WfjFile </td>
+    <td>@item.AttorneyName </td>
+    <td>@item.LienCollection </td>
+    <td>@item.Status </td>
+    <td><a href="@item.Path" class="btn btn-sm btn-success" title="View">View</a></td>
+</tr>
+    }
+}

@@ -28,5 +28,13 @@ namespace WFJ.Repository
                 return null;
             }
         }
+        public IEnumerable<PersonnelRequest> GetPersonnelByFirmId(int firmId)
+        {
+           return _context.PersonnelRequests.Where(x => x.FirmID == firmId && x.RequestID != null).ToList();
+        }
+        public IEnumerable<PersonnelRequest> GetPersonnelRequestsByFirmId(int firmId)
+        {
+            return _context.PersonnelRequests.Where(x => x.FirmID == firmId).ToList();
+        }
     }
 }

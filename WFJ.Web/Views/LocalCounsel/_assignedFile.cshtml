@@ -1,0 +1,28 @@
+﻿@model WFJ.Models.AssociateCounselModel
+<div class="row">
+    <div class="col-md-6">
+        <ul class="update-associate">
+            
+            <li>FirmName:<span>@Model.FirmName</span></li>
+                 
+                <li>
+                    Name:<span class="paymentTotalPayment"><span>@Model.Name</span><br /></span>
+                </li>
+                    <li>
+                        Address: <span>@Model.AddressLine1</span><br />
+                        <span>@Model.AddressLine2</span><br />
+                        <span>@Model.City, @Model.State @Model.ZipCode</span><br />
+                    </li>
+                    <li>
+                        Email:<span>@Model.Email</span><br />
+                    </li>
+             
+                    <li>
+                        Phone:<span>@Model.Telephone1</span><br />
+                    </li>
+            <li><button type="button" class="btn btn-secondary mb-3" onclick="deletePersonnelRequests()">DeSelect</button></li>
+           
+        </ul>
+    </div>
+
+</div>

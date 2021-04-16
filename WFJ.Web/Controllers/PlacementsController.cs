@@ -26,6 +26,8 @@ namespace WFJ.Web.Controllers
         private IUserClientService _userClientService = new UserClientService();
         private ILevelService _levelService = new LevelService();
         private IRequestDocumentService _requestDocumentService = new RequestDocumentService();
+        private IPersonnelRequestService _personnelRequestService = new PersonnelRequestService();
+        private ILocalCounselService _localCounselService = new LocalCounselService();
 
         private int UserType = 0;
         private int UserId = 0;
@@ -176,6 +178,24 @@ namespace WFJ.Web.Controllers
                 var documentType = _codeService.GetAllByType("REQUESTDOCTYPE");
                 IStatusCodesService _statusCodesService = new StatusCodesService();
                 ICurrenciesService _currenciesService = new CurrenciesService();
+                //get code for counsel tab
+                ICodesService _codesService = new CodesService();
+                LocalCounselViewModel localCounselVM = new LocalCounselViewModel
+                {
+                    localCounselFilterViewModel = new LocalCounselFilterViewModel()
+                    {
+                        states = _codesService.GetAllStateByType("STATE"),
+                        countries = _codesService.GetAllStateByType("COUNTRY"),
+                        FormType = form.FormTypeName
+                    }
+                };
+                var associateCounsel = new AssociateCounselModel();
+                var personalRequest = _personnelRequestService.GetByRequestId(Convert.ToInt32(requestId)).ToList();
+                if (personalRequest.Count>0)
+                {
+                    associateCounsel = _localCounselService.GetByFirmId(Convert.ToInt32(personalRequest.FirstOrDefault().FirmID));
+                }
+                
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
@@ -195,7 +215,11 @@ namespace WFJ.Web.Controllers
                     FormDetail = form,
                     NotesSendToDropdown = new List<SelectListItem>(),
                     summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail),
-                    DocumentType = documentType
+                    DocumentType = documentType,
+                    localCounselViewModel = localCounselVM,
+                    addLocalCounselViewModel = new AddLocalCounselViewModel(),
+                    IsAssignedFile = personalRequest.Count>0 ? true : false,
+                    associateCounselModel = associateCounsel
                 };
 
                 #region Bind PaymentInformation in Summary
@@ -297,6 +321,8 @@ namespace WFJ.Web.Controllers
 
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
                 }
+
+                
 
                 return View(model);
             }

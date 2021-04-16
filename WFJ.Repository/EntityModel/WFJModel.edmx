@@ -195,6 +195,40 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
           <Property Name="showWFJFees" Type="tinyint" />
           <Property Name="Active" Type="tinyint" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'wfj_testdb.dbo.ClientsLive' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ClientsLive">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ClientName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactName" Type="nvarchar" MaxLength="50" />
+          <Property Name="defaultUserID" Type="int" />
+          <Property Name="Image" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="30" />
+          <Property Name="City" Type="nvarchar" MaxLength="30" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="18" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="18" />
+          <Property Name="LevelName" Type="varchar" MaxLength="50" />
+          <Property Name="ParentLevelID" Type="int" />
+          <Property Name="ClientNumberx" Type="int" />
+          <Property Name="BusinessSummary" Type="text" />
+          <Property Name="clientNotes" Type="varchar" MaxLength="8000" />
+          <Property Name="RequestorTitle" Type="varchar" MaxLength="30" />
+          <Property Name="RequestDateField" Type="varchar" MaxLength="30" />
+          <Property Name="autoShowFiles" Type="tinyint" />
+          <Property Name="hasAccountSummary" Type="tinyint" />
+          <Property Name="hasCollectionSummary" Type="tinyint" />
+          <Property Name="hasClientReport" Type="tinyint" />
+          <Property Name="hasExportFiles" Type="tinyint" />
+          <Property Name="showWFJFees" Type="tinyint" />
+          <Property Name="Active" Type="tinyint" />
+        </EntityType>
         <EntityType Name="Clientsx">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -229,7 +263,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
             <PropertyRef Name="collectorStatusCodeID" />
           </Key>
           <Property Name="collectorStatusCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="collectorStatus" Type="varchar" MaxLength="30" />
+          <Property Name="collectorStatus" Type="varchar" MaxLength="40" />
           <Property Name="sequenceID" Type="int" />
         </EntityType>
         <EntityType Name="columnInfos">
@@ -1750,6 +1784,33 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="PageName" Type="nvarchar" MaxLength="50" />
           <Property Name="PageText" Type="ntext" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="WFJ_Users">
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="Image" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateAdded" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserAccess" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogonCount" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClientID" Type="nvarchar" MaxLength="50" />
+          <Property Name="AttorneyID" Type="nvarchar" MaxLength="50" />
+          <Property Name="PasswordExpirationDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsCollector" Type="nvarchar" MaxLength="50" />
+          <Property Name="HireDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthdate" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessClientExtranet" Type="nvarchar" MaxLength="50" />
+          <Property Name="profileText" Type="nvarchar" MaxLength="50" />
+        </EntityType>-->
         <Association Name="FK__FormAddre__FormF__3414ACBA">
           <End Role="FormFields" Type="Self.FormFields" Multiplicity="0..1" />
           <End Role="FormAddressData" Type="Self.FormAddressData" Multiplicity="*" />
@@ -2140,6 +2201,30 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PersonnelRequest_AssociateCounsel">
+          <End Role="AssociateCounsel" Type="Self.AssociateCounsel" Multiplicity="0..1" />
+          <End Role="PersonnelRequests" Type="Self.PersonnelRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssociateCounsel">
+              <PropertyRef Name="FirmID" />
+            </Principal>
+            <Dependent Role="PersonnelRequests">
+              <PropertyRef Name="FirmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonnelRequest_Request">
+          <End Role="Requests" Type="Self.Requests" Multiplicity="0..1" />
+          <End Role="PersonnelRequests" Type="Self.PersonnelRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonnelRequests">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PracticeAreasID">
           <End Role="PracticeAreas" Type="Self.PracticeAreas" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2499,6 +2584,37 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
     [areas].[showOnAddElements] AS [showOnAddElements]
     FROM [dbo].[areas] AS [areas]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="ClientsLive" EntityType="Self.ClientsLive" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ClientsLive].[ID] AS [ID], 
+    [ClientsLive].[ClientName] AS [ClientName], 
+    [ClientsLive].[ContactName] AS [ContactName], 
+    [ClientsLive].[defaultUserID] AS [defaultUserID], 
+    [ClientsLive].[Image] AS [Image], 
+    [ClientsLive].[Address1] AS [Address1], 
+    [ClientsLive].[Address2] AS [Address2], 
+    [ClientsLive].[City] AS [City], 
+    [ClientsLive].[State] AS [State], 
+    [ClientsLive].[PostalCode] AS [PostalCode], 
+    [ClientsLive].[EMail] AS [EMail], 
+    [ClientsLive].[Telephone] AS [Telephone], 
+    [ClientsLive].[Fax] AS [Fax], 
+    [ClientsLive].[LevelName] AS [LevelName], 
+    [ClientsLive].[ParentLevelID] AS [ParentLevelID], 
+    [ClientsLive].[ClientNumberx] AS [ClientNumberx], 
+    [ClientsLive].[BusinessSummary] AS [BusinessSummary], 
+    [ClientsLive].[clientNotes] AS [clientNotes], 
+    [ClientsLive].[RequestorTitle] AS [RequestorTitle], 
+    [ClientsLive].[RequestDateField] AS [RequestDateField], 
+    [ClientsLive].[autoShowFiles] AS [autoShowFiles], 
+    [ClientsLive].[hasAccountSummary] AS [hasAccountSummary], 
+    [ClientsLive].[hasCollectionSummary] AS [hasCollectionSummary], 
+    [ClientsLive].[hasClientReport] AS [hasClientReport], 
+    [ClientsLive].[hasExportFiles] AS [hasExportFiles], 
+    [ClientsLive].[showWFJFees] AS [showWFJFees], 
+    [ClientsLive].[Active] AS [Active]
+    FROM [dbo].[ClientsLive] AS [ClientsLive]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="distributionLists" EntityType="Self.distributionLists" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [distributionLists].[distributionListID] AS [distributionListID], 
@@ -2754,6 +2870,14 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="Users" EntitySet="Users" />
             <End Role="Payments" EntitySet="Payments" />
           </AssociationSet>
+          <AssociationSet Name="FK_PersonnelRequest_AssociateCounsel" Association="Self.FK_PersonnelRequest_AssociateCounsel">
+            <End Role="AssociateCounsel" EntitySet="AssociateCounsel" />
+            <End Role="PersonnelRequests" EntitySet="PersonnelRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonnelRequest_Request" Association="Self.FK_PersonnelRequest_Request">
+            <End Role="Requests" EntitySet="Requests" />
+            <End Role="PersonnelRequests" EntitySet="PersonnelRequests" />
+          </AssociationSet>
           <AssociationSet Name="FK_PracticeAreasID" Association="Self.FK_PracticeAreasID">
             <End Role="PracticeAreas" EntitySet="PracticeAreas" />
             <End Role="Documents" EntitySet="Documents" />
@@ -2815,6 +2939,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="Email" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="DoNotUse" Type="Byte" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PersonnelRequests" Relationship="WFJDBModel.FK_PersonnelRequest_AssociateCounsel" FromRole="AssociateCounsel" ToRole="PersonnelRequest" />
         </EntityType>
         <EntityType Name="author">
           <Key>
@@ -3916,6 +4041,8 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="AssociateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Telephone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PersonnelID" Type="Int32" />
+          <NavigationProperty Name="AssociateCounsel" Relationship="WFJDBModel.FK_PersonnelRequest_AssociateCounsel" FromRole="PersonnelRequest" ToRole="AssociateCounsel" />
+          <NavigationProperty Name="Request" Relationship="WFJDBModel.FK_PersonnelRequest_Request" FromRole="PersonnelRequest" ToRole="Request" />
         </EntityType>
         <EntityType Name="picture">
           <Key>
@@ -4752,6 +4879,15 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <End Role="User" EntitySet="Users" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
+          <EntitySet Name="ClientsLives" EntityType="WFJDBModel.ClientsLive" />
+          <AssociationSet Name="FK_PersonnelRequest_AssociateCounsel" Association="WFJDBModel.FK_PersonnelRequest_AssociateCounsel">
+            <End Role="AssociateCounsel" EntitySet="AssociateCounsels" />
+            <End Role="PersonnelRequest" EntitySet="PersonnelRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonnelRequest_Request" Association="WFJDBModel.FK_PersonnelRequest_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="PersonnelRequest" EntitySet="PersonnelRequests" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -5295,7 +5431,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             <PropertyRef Name="collectorStatusCodeID" />
           </Key>
           <Property Name="collectorStatusCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="collectorStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="collectorStatus" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="sequenceID" Type="Int32" />
         </EntityType>
         <EntityType Name="RequestNote">
@@ -5392,6 +5528,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="RequestNotes" Relationship="WFJDBModel.FK__RequestNo__Reque__3E923B2D" FromRole="Request" ToRole="RequestNote" />
           <NavigationProperty Name="User" Relationship="WFJDBModel.FK__Requests__Assign__35FCF52C" FromRole="Request" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WFJDBModel.FK__Requests__Reques__3508D0F3" FromRole="Request" ToRole="User" />
+          <NavigationProperty Name="PersonnelRequests" Relationship="WFJDBModel.FK_PersonnelRequest_Request" FromRole="Request" ToRole="PersonnelRequest" />
         </EntityType>
         <Association Name="FK__Requests__FormID__2F4FF79D">
           <End Type="WFJDBModel.Form" Role="Form" Multiplicity="0..1" />
@@ -5474,6 +5611,62 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
             </Principal>
             <Dependent Role="Request">
               <PropertyRef Name="Requestor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClientsLive">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ClientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="defaultUserID" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="LevelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentLevelID" Type="Int32" />
+          <Property Name="ClientNumberx" Type="Int32" />
+          <Property Name="BusinessSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="clientNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="RequestorTitle" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="RequestDateField" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="autoShowFiles" Type="Byte" />
+          <Property Name="hasAccountSummary" Type="Byte" />
+          <Property Name="hasCollectionSummary" Type="Byte" />
+          <Property Name="hasClientReport" Type="Byte" />
+          <Property Name="hasExportFiles" Type="Byte" />
+          <Property Name="showWFJFees" Type="Byte" />
+          <Property Name="Active" Type="Byte" />
+        </EntityType>
+        <Association Name="FK_PersonnelRequest_AssociateCounsel">
+          <End Type="WFJDBModel.AssociateCounsel" Role="AssociateCounsel" Multiplicity="0..1" />
+          <End Type="WFJDBModel.PersonnelRequest" Role="PersonnelRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssociateCounsel">
+              <PropertyRef Name="FirmID" />
+            </Principal>
+            <Dependent Role="PersonnelRequest">
+              <PropertyRef Name="FirmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonnelRequest_Request">
+          <End Type="WFJDBModel.Request" Role="Request" Multiplicity="0..1" />
+          <End Type="WFJDBModel.PersonnelRequest" Role="PersonnelRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PersonnelRequest">
+              <PropertyRef Name="RequestID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7342,6 +7535,39 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
                 <ScalarProperty Name="AssignedAttorney" ColumnName="AssignedAttorney" />
                 <ScalarProperty Name="Requestor" ColumnName="Requestor" />
                 <ScalarProperty Name="FormID" ColumnName="FormID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientsLives">
+            <EntityTypeMapping TypeName="WFJDBModel.ClientsLive">
+              <MappingFragment StoreEntitySet="ClientsLive">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="showWFJFees" ColumnName="showWFJFees" />
+                <ScalarProperty Name="hasExportFiles" ColumnName="hasExportFiles" />
+                <ScalarProperty Name="hasClientReport" ColumnName="hasClientReport" />
+                <ScalarProperty Name="hasCollectionSummary" ColumnName="hasCollectionSummary" />
+                <ScalarProperty Name="hasAccountSummary" ColumnName="hasAccountSummary" />
+                <ScalarProperty Name="autoShowFiles" ColumnName="autoShowFiles" />
+                <ScalarProperty Name="RequestDateField" ColumnName="RequestDateField" />
+                <ScalarProperty Name="RequestorTitle" ColumnName="RequestorTitle" />
+                <ScalarProperty Name="clientNotes" ColumnName="clientNotes" />
+                <ScalarProperty Name="BusinessSummary" ColumnName="BusinessSummary" />
+                <ScalarProperty Name="ClientNumberx" ColumnName="ClientNumberx" />
+                <ScalarProperty Name="ParentLevelID" ColumnName="ParentLevelID" />
+                <ScalarProperty Name="LevelName" ColumnName="LevelName" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="defaultUserID" ColumnName="defaultUserID" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

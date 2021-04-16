@@ -147,6 +147,9 @@
         <AssociationConnector Association="WFJDBModel.FK__RequestNo__Reque__3E923B2D" />
         <AssociationConnector Association="WFJDBModel.FK__Requests__Assign__35FCF52C" />
         <AssociationConnector Association="WFJDBModel.FK__Requests__Reques__3508D0F3" />
+        <EntityTypeShape EntityType="WFJDBModel.ClientsLive" Width="1.5" PointX="11.375" PointY="31.75" />
+        <AssociationConnector Association="WFJDBModel.FK_PersonnelRequest_AssociateCounsel" />
+        <AssociationConnector Association="WFJDBModel.FK_PersonnelRequest_Request" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

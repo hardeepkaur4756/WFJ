@@ -20,6 +20,7 @@ namespace WFJ.Web.Controllers
         private ILocalCounselService _localCounselService = new LocalCounselService();
         public IClientService _clientService = new ClientService();
         private ICodesService _codesService = new CodesService();
+        private IPersonnelRequestService _personnelRequestService = new PersonnelRequestService();
 
         private int UserType = 0;
         private int UserId = 0;
@@ -52,7 +53,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLocalCounselList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime, string firmName, string attorneyName, string city, int stateId, int countryId)
+        public JsonResult GetLocalCounselList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime, string firmName, string attorneyName, string contactName, string city, int stateId, int countryId)
         {
             try
             {
@@ -65,10 +66,11 @@ namespace WFJ.Web.Controllers
                     pageNo = (param.iDisplayStart / param.iDisplayLength) + 1;
                 }
                 string state = "", country = "";
-
+                state = _codesService.GetById(stateId)?.Code1;
+                country = _codesService.GetById(stateId)?.Code1;
                 if (isFirstTime == false)
                 {
-                    model = _localCounselService.GetLocalCounsels(firmName,attorneyName, city, state, country, param, sortDir, sortCol, pageNo);
+                    model = _localCounselService.GetLocalCounsels(firmName, attorneyName, contactName, city, state, country, param, sortDir, sortCol, pageNo);
                 }
                 else
                 {
@@ -108,5 +110,87 @@ namespace WFJ.Web.Controllers
                 userAccess = 0;
             }
         }
+
+        [HttpPost]
+        public ActionResult AddLocalCounsel(AddLocalCounselViewModel addLocalCounselViewModel)
+        {
+            bool isSuccess = false;
+            try
+            {
+                _localCounselService.SaveLocalCounsel(addLocalCounselViewModel);
+                 isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "LocalCounsel/AddLocalCounsel", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess, firmId = addLocalCounselViewModel.FirmId }, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetLocalCounselDetail(int firmId)
+        {
+            AddLocalCounselViewModel addLocalCounselViewModel = _localCounselService.GetById(firmId);
+            addLocalCounselViewModel.fileInformation = _localCounselService.GetFileInformation(firmId);
+            var result = PartialView("_addLocalCounsel", addLocalCounselViewModel);
+            return result;
+        }
+
+        [HttpPost]
+        public ActionResult DeleteAssociateCounsel(int firmId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+
+                if (UserType == (byte)WFJ.Service.Model.UserType.SystemAdministrator)
+                    _localCounselService.DeleteAssociateCounse(firmId);
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "LocalCounsel/DeleteAssociateCounsel", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+
+            return Json(new { success = isSuccess });
+        }
+        [HttpPost]
+        public ActionResult AddPersonnelRequests(PersonnelRequestModel personnelRequestModel)
+        {
+            bool isSuccess = false;
+            int firmId = 0;
+            try
+            {
+                _personnelRequestService.Add(personnelRequestModel);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "LocalCounsel/AddPersonnelRequests", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+            return Json(new { success = isSuccess, firmId = firmId }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult DeletePersonnelRequests(int requestId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                GetSessionUser(out UserId, out UserType, out UserAccess);
+
+                if (UserType == (byte)WFJ.Service.Model.UserType.SystemAdministrator)
+                    _personnelRequestService.DeletePersonnelRequest(requestId);
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "LocalCounsel/DeleteAssociateCounsel", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+
+            return Json(new { success = isSuccess });
+        }
+        
+
     }
 }

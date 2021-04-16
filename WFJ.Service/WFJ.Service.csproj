@@ -116,6 +116,7 @@
     <Compile Include="Interfaces\IFormTypeService.cs" />
     <Compile Include="Interfaces\ILevelService.cs" />
     <Compile Include="Interfaces\IPaymentTypeService.cs" />
+    <Compile Include="Interfaces\IPersonnelRequestService.cs" />
     <Compile Include="Interfaces\IPersonnelService.cs" />
     <Compile Include="Interfaces\IPersonnelsService.cs" />
     <Compile Include="Interfaces\IPracticeAreaService.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Model\Enums.cs" />
     <Compile Include="PaymentService.cs" />
     <Compile Include="PaymentTypeService.cs" />
+    <Compile Include="PersonnelRequestService.cs" />
     <Compile Include="PersonnelService.cs" />
     <Compile Include="PracticeAreaService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

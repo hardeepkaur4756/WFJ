@@ -43,6 +43,10 @@ namespace WFJ.Models
         public RequestDocumentViewModel requestDocumentViewModel { get; set; }
         public List<SelectListItem> DocumentType { get; set; }
         public int DocumentId { get; set; }
+        public LocalCounselViewModel localCounselViewModel { get; set; }
+        public AddLocalCounselViewModel addLocalCounselViewModel { get; set; }
+        public AssociateCounselModel associateCounselModel { get; set; }
+        public bool IsAssignedFile { get; set; }
     }
 
 
@@ -83,6 +87,7 @@ namespace WFJ.Models
 
 
         public IEnumerable<FormSelectionListViewModel> FormSelectionLists { get; set; }
+        
     }
 
     public class FieldSizeViewModel
