@@ -47,7 +47,7 @@ namespace WFJ.Service
             var requests = requestId > 0 ? _paymentsRepo.GetByReqestId(requestId) : _paymentsRepo.GetByClientId(clientId, beginDate, endDate, ClientUserId);
 
             model.totalCount = requests?.Count();
-            if (requests != null)
+            if (requests.Count > 0)
             {
                 var list1 = requests.OrderByDescending(x => x.PaymentDate).Select(x => new ManagePaymentsModel
                 {
