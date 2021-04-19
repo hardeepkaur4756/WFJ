@@ -2,9 +2,9 @@
 var isFirstTime = true;
 $(document).ready(function () {
     GetDataTable();
-    //$('#associateCounselTable').dataTable({
-    //    "paging": false,
-    //});
+    $('#associateCounselTable').dataTable({
+        "paging": false,
+    });
 });
 function GetLocalCounselData() {
     
@@ -157,12 +157,14 @@ function addAssociateCounsel() {
             success: function (response) {
                 if (response.success) {
                     $("#FirmId").val(response.firmId);
-                    if ($("#FirmId").val() > 0) {
-                        $.notify("Local Counsel Updated Succesfully.", "success");
-                    }
-                    else {
-                        $.notify("Local Counsel Added Succesfully.", "success");
-                    }
+                    $('#divAddLocalCounsel').removeClass("hide");
+                    $('#divShowLocalCounsel').addClass("hide");
+                    //if ($("#FirmId").val() > 0) {
+                        
+                    //}
+                    //else {
+                    //    $.notify("Local Counsel Added Succesfully.", "success");
+                    //}
 
                     $('#divShowLocalCounsel').removeClass("hide");
                     $('#divAddLocalCounsel').addClass("hide");
@@ -185,11 +187,11 @@ function editAssociateCounsel(id) {
             dataType: "html",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-
-                $('#divhtmlAddLocalCount').replaceWith(response);
-                $('#associateCounselTable').dataTable({
-                    "paging": false,
-                });
+                $('#divhtmlAddLocalCount').empty();
+                $('#divhtmlAddLocalCount').html(response);
+                //$('#associateCounselTable').dataTable({
+                //    "paging": false,
+                //});
                 $('#divAddLocalCounsel').removeClass("hide");
                 $('#divShowLocalCounsel').addClass("hide");
                 $('#gridAssociateCounsilFileInfo').removeClass("hide");
@@ -267,8 +269,9 @@ function deletePersonnelRequests() {
             dataType: "json",
             success: function (response) {
                 if (response.success) {
+                    $("#requestDocumentGrid").empty();
                     $("#requestDocumentGrid").html(response.html);
-                    $.notify("PersonnelRequests Deleted Succesfully.", "success");
+                   /* $.notify("PersonnelRequests Deleted Succesfully.", "success");*/
                     if ($('#divLocalCounselSearch').hasClass("hide")) {
                         $('#divLocalCounselSearch').removeClass("hide")
                         $('#divAssignedFile').addClass("hide")

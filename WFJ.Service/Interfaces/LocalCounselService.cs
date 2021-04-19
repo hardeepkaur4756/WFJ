@@ -255,7 +255,7 @@ namespace WFJ.Service.Interfaces
                     }
                     if (Convert.ToInt32(wfjFileNoFieldId) > 0)
                     {
-                        wfjFileNo = formdata.FirstOrDefault(x => x.FormFieldID == wfjFileNoFieldId).FieldValue;
+                        wfjFileNo = formdata?.FirstOrDefault(x => x.FormFieldID == wfjFileNoFieldId)?.FieldValue;
                     }
                     string clientName = _clientRepo.GetById(Convert.ToInt32(request?.Form?.Client.ID)).ClientName;
                     var statuscode = _statusCodesRepo.GetByStatusCodeAndFormId(request.StatusCode.Value, request.FormID.Value);

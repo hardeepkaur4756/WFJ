@@ -6424,3 +6424,12 @@ td .td-with-inline-icons {
     .hide{
         display:none
     }
+.margilefSpan {
+    margin-left:auto!important
+}
+.textAlignRight {
+    text-align: right!important
+}
+.maginTopCheckbox {
+    margin-top: 32px;
+}

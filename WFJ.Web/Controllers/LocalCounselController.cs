@@ -67,7 +67,7 @@ namespace WFJ.Web.Controllers
                 }
                 string state = "", country = "";
                 state = _codesService.GetById(stateId)?.Code1;
-                country = _codesService.GetById(stateId)?.Code1;
+                country = _codesService.GetById(countryId)?.Code1;
                 if (isFirstTime == false)
                 {
                     model = _localCounselService.GetLocalCounsels(firmName, attorneyName, contactName, city, state, country, param, sortDir, sortCol, pageNo);

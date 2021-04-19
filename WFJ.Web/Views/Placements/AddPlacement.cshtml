@@ -438,12 +438,12 @@
                                     <a class="nav-link bg-white mr-3" id="attached-tab" data-toggle="pill" href="#attached-file" role="tab" aria-controls="attached-file" aria-selected="false">Attached File</a>
                                 </li>
                             }
-                            @if (AssociateCounselVisible == true)
-                            {
+                            @*@if (AssociateCounselVisible == true)
+                            {*@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
                                 </li>
-                            }
+                            @*}*@
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <!--------Summary section------->
@@ -859,8 +859,8 @@
                             </div>
 
                             <!-------- Associate counsel section------->
-                            @if (AssociateCounselVisible == true)
-                            {
+                            @*@if (AssociateCounselVisible == true)
+                            {*@
                                 <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
                                     <div class="card">
                                         <div class="card-body">
@@ -882,7 +882,7 @@
                                         </div>
                                             </div>
                                 </div>
-                                }
+                                @*}*@
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,7 @@ namespace WFJ.Repository
             counsels = _context.AssociateCounsels.Where(a => (a.DoNotUse ?? 0) == 0);
             if (!string.IsNullOrEmpty(firmName))
             {
-                counsels = counsels.Where(x => x.FirmName == firmName);
+                counsels = counsels.Where(x => x.FirmName.Contains(firmName));
             }
             //this column is not in local DB need to check live DB
             if (!string.IsNullOrEmpty(attorneyName))
@@ -38,11 +38,11 @@ namespace WFJ.Repository
             }
             if (!string.IsNullOrEmpty(contactName))
             {
-                counsels = counsels.Where(x => x.Name == contactName);
+                counsels = counsels.Where(x => x.Name.Contains(contactName));
             }
             if (!string.IsNullOrEmpty(city))
             {
-                counsels = counsels.Where(x => x.City == city);
+                counsels = counsels.Where(x => x.City.Contains(city));
             }
             if (!string.IsNullOrEmpty(state))
             {
