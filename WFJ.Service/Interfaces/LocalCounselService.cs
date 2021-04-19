@@ -40,7 +40,7 @@ namespace WFJ.Service.Interfaces
                     FirmName = x.FirmName,
                     //no column in local DB need to check live DB
                     ContactName = x.Name,
-                    //AttorneyName = x?.PersonnelRequests?.FirstOrDefault()?.AssociateName,
+                    AttorneyName = x?.Name,
                     City = x.City,
                     State = x.State,
                     Country = x.Country
@@ -138,7 +138,7 @@ namespace WFJ.Service.Interfaces
                     {
                         FirmName = addLocalCounselViewModel.FirmName,
                         Telephone1 = addLocalCounselViewModel.PhoneNumber,
-                        //Name = addLocalCounselViewModel.AttorneyName,
+                        Name = addLocalCounselViewModel.AttorneyName,
                         Telephone2 = addLocalCounselViewModel.DirectLine,
                         AddressLine1 = addLocalCounselViewModel.Address,
                         Fax = addLocalCounselViewModel.Fax,
@@ -165,10 +165,11 @@ namespace WFJ.Service.Interfaces
                     /// update counsel
                     var associateCounsel = associateCounselRepo.GetById(addLocalCounselViewModel.FirmId);
                     associateCounsel.FirmName = addLocalCounselViewModel.FirmName;
+                    associateCounsel.Name = addLocalCounselViewModel.AttorneyName;
                     associateCounsel.Telephone1 = addLocalCounselViewModel.PhoneNumber;
                     associateCounsel.Telephone2 = addLocalCounselViewModel.DirectLine;
                     associateCounsel.AddressLine1 = addLocalCounselViewModel.Address;
-                    associateCounsel.AddressLine1 = addLocalCounselViewModel.Suite;
+                    associateCounsel.AddressLine2 = addLocalCounselViewModel.Suite;
                     associateCounsel.Fax = addLocalCounselViewModel.Fax;
                     associateCounsel.Email = addLocalCounselViewModel.Email;
                     associateCounsel.City = addLocalCounselViewModel.City;
@@ -296,7 +297,9 @@ namespace WFJ.Service.Interfaces
             else
             {
                 var associateCounselModel = new AssociateCounselModel();
-                associateCounselModel.FirmName = associateCounsel.Telephone1;
+                associateCounselModel.FirmName = associateCounsel.FirmName;
+                associateCounselModel.Name = associateCounsel.Name;
+                associateCounselModel.Telephone1 = associateCounsel.Telephone1;
                 associateCounselModel.Telephone2 = associateCounsel.Telephone2;
                 associateCounselModel.AddressLine1 = associateCounsel.AddressLine1;
                 associateCounselModel.AddressLine1 = associateCounsel.AddressLine1;

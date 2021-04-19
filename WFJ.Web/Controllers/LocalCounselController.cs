@@ -157,18 +157,11 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public ActionResult AddPersonnelRequests(PersonnelRequestModel personnelRequestModel)
         {
-            bool isSuccess = false;
-            int firmId = 0;
-            try
-            {
-                _personnelRequestService.Add(personnelRequestModel);
-                isSuccess = true;
-            }
-            catch (Exception ex)
-            {
-                _errorLogService.Add(new ErrorLogModel() { Page = "LocalCounsel/AddPersonnelRequests", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
-            }
-            return Json(new { success = isSuccess, firmId = firmId }, JsonRequestBehavior.AllowGet);
+            int firmId = Convert.ToInt32( personnelRequestModel.FirmID);
+            _personnelRequestService.Add(personnelRequestModel);
+            var associateCounsel = new AssociateCounselModel();
+            associateCounsel = _localCounselService.GetByFirmId(firmId);
+            return PartialView("_assignedFile", associateCounsel);
         }
         [HttpPost]
         public ActionResult DeletePersonnelRequests(int requestId)

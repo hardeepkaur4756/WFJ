@@ -1,4 +1,6 @@
-﻿    var oTable;
+﻿
+
+    var oTable;
 var isFirstTime = true;
 $(document).ready(function () {
     GetDataTable();
@@ -75,7 +77,7 @@ function GetLocalCounselData() {
                 { "mData": "Country" },
                 {
                     "render": function (row, type, full) {
-                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-success" title="View Detail">View Detail</a>';
+                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a>';
                     },
                     orderable: false
                 }
@@ -146,8 +148,11 @@ function addAssociateCounsel() {
         saveAddCounselViewModel.W9 = $("#W9").val();
         saveAddCounselViewModel.ALQ = $("#ALQ").val();
         saveAddCounselViewModel.GeneralBar = $("#GeneralBar").val();
-        saveAddCounselViewModel.DoNot = $("#DoNot").val();
-        saveAddCounselViewModel.Notes = $("#Notes").val();
+        saveAddCounselViewModel.DoNotUse = $("#DoNotUse").val();
+    saveAddCounselViewModel.Notes = $("#Notes").val();
+    if ($("#FirmName").val() == "") {
+        isValid = false;
+    }
         if (isValid) {
         $.ajax({
             type: "Post",
@@ -168,6 +173,7 @@ function addAssociateCounsel() {
 
                     $('#divShowLocalCounsel').removeClass("hide");
                     $('#divAddLocalCounsel').addClass("hide");
+                    GetDataTable();
                 }
                 else {
                 }
@@ -176,6 +182,7 @@ function addAssociateCounsel() {
             }
         });
         } else {
+            $.notify("Please enter firmname.", "danger");
         scrollUp();
         }
     }
@@ -195,6 +202,7 @@ function editAssociateCounsel(id) {
                 $('#divAddLocalCounsel').removeClass("hide");
                 $('#divShowLocalCounsel').addClass("hide");
                 $('#gridAssociateCounsilFileInfo').removeClass("hide");
+                GetDataTable();
             },
             error: function (result) {
             }
@@ -202,29 +210,35 @@ function editAssociateCounsel(id) {
         }
     }
 function deleteAssociateCounsel() {
-        var id = $('#FirmId').val()
-        if (confirm("Are you sure you want delete this?")) {
-        $.ajax({
-            type: "Post",
-            url: "/LocalCounsel/DeleteAssociateCounsel",
-            data: { 'FirmId': id },
-            dataType: "json",
-            success: function (response) {
-                if (response.success) {
-                    $("#requestDocumentGrid").html(response.html);
-                    $.notify("Associate Counsel Deleted Succesfully.", "success");
-                    showLocalCounselGrid();
-                }
-                else {
+    var id = $('#FirmId').val()
+    eModal.confirm({
+        message: "Are you sure you want delete this?",
+        //title: 'Confirm!',
+        size: eModal.size.sm,
+        subtitle: 'smaller text header',
+        label: 'Yes' | 'True' | 'OK'
+    })
+        .then(function myfunction() {
+            $.ajax({
+                type: "Post",
+                url: "/LocalCounsel/DeleteAssociateCounsel",
+                data: { 'FirmId': id },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        $("#requestDocumentGrid").html(response.html);
+                        $.notify("Associate Counsel Deleted Succesfully.", "success");
+                        showLocalCounselGrid();
+                    }
+                    else {
 
+                    }
+                },
+                error: function (result) {
                 }
-            },
-            error: function (result) {
-            }
-        });
-        }
-        return false;
+            });
 
+        }, function myfunction() { });
     }
 function showLocalCounselGrid() {
         $('#divShowLocalCounsel').removeClass("hide");
@@ -244,13 +258,12 @@ function addPersonnelRequests() {
             type: "Post",
             url: "/LocalCounsel/AddPersonnelRequests",
             data: { 'personnelRequestModel': savePersonnelRequests },
-            dataType: "json",
+            dataType: "html",
             success: function (response) {
-                if (response.success) {
-                    $.notify("Local Counsel Added Succesfully.", "success");
-                }
-                else {
-                }
+                $('#divAssignedFileHtml').empty();
+                $('#divAssignedFileHtml').html(response);
+                $('#divAssignedFile').removeClass("hide");
+                $('#divLocalCounselSearch').addClass("hide");
             },
             error: function (result) {
             }
@@ -260,31 +273,37 @@ function addPersonnelRequests() {
         }
     }
 function deletePersonnelRequests() {
-        var id = parseInt($("#Request_ID").val());
-        if (confirm("Are you sure you want delete this?")) {
-        $.ajax({
-            type: "Post",
-            url: "/LocalCounsel/DeletePersonnelRequests",
-            data: { 'requestId': id },
-            dataType: "json",
-            success: function (response) {
-                if (response.success) {
-                    $("#requestDocumentGrid").empty();
-                    $("#requestDocumentGrid").html(response.html);
-                   /* $.notify("PersonnelRequests Deleted Succesfully.", "success");*/
-                    if ($('#divLocalCounselSearch').hasClass("hide")) {
-                        $('#divLocalCounselSearch').removeClass("hide")
-                        $('#divAssignedFile').addClass("hide")
+    var id = parseInt($("#Request_ID").val());
+    eModal.confirm({
+        message: "Are you sure you want to delete this Personnel Request?",
+        //title: 'Confirm!',
+        size: eModal.size.sm,
+        subtitle: 'smaller text header',
+        label: 'Yes' | 'True' | 'OK'
+    })
+        .then(function myfunction() {
+            $.ajax({
+                type: "Post",
+                url: "/LocalCounsel/DeletePersonnelRequests",
+                data: { 'requestId': id },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        $("#requestDocumentGrid").empty();
+                        $("#requestDocumentGrid").html(response.html);
+                        /* $.notify("PersonnelRequests Deleted Succesfully.", "success");*/
+                        if ($('#divLocalCounselSearch').hasClass("hide")) {
+                            $('#divLocalCounselSearch').removeClass("hide")
+                            $('#divAssignedFile').addClass("hide")
+                        }
                     }
-                }
-                else {
+                    else {
 
+                    }
+                },
+                error: function (result) {
                 }
-            },
-            error: function (result) {
-            }
-        });
-        }
-        return false;
+            });
 
+        }, function myfunction() { });
     }

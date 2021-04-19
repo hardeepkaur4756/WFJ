@@ -859,13 +859,16 @@
                             </div>
 
                             <!-------- Associate counsel section------->
-                            @*@if (AssociateCounselVisible == true)
-                            {*@
+                            @if (AssociateCounselVisible == true)
+                            {
                                 <div class="tab-pane fade" id="counsel" role="tabpanel" aria-labelledby="counsel-tab">
                                     <div class="card">
                                         <div class="card-body">
                                             <div id="divAssignedFile" class="hide">
-                                                @Html.Partial("~/Views/LocalCounsel/_assignedFile.cshtml", Model.associateCounselModel);
+                                                <div id="divAssignedFileHtml">
+                                                    @Html.Partial("~/Views/LocalCounsel/_assignedFile.cshtml", Model.associateCounselModel);
+                                                </div>
+                                                
                                             </div>
                                             <div id="divLocalCounselSearch" class="hide">
                                                 <div id="divShowLocalCounsel">
@@ -882,7 +885,7 @@
                                         </div>
                                             </div>
                                 </div>
-                                @*}*@
+                                }
                         </div>
                     </div>
                 </div>

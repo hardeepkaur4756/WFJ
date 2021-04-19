@@ -78,31 +78,31 @@ namespace WFJ.Service
                 var formData = _formFieldRepo.GetFormFieldsByFormID(formId).SelectMany(x => x.FormDatas).ToList();
                 var formAddressData = _formFieldRepo.GetFormFieldsByFormID(formId).SelectMany(x => x.FormAddressDatas).ToList();
                 var selectionColumns = GetSelectionColumnsByUserType(UserType);
-                var list1 = requests.Select(x => new PlacementRequestModel
-                {
-                    RequestID = x.ID,
-                    AssignedAttorney = x.Personnel != null ? x.Personnel.FirstName + " " + x.Personnel.LastName : null,
-                    Requestor = x.User1 != null ? x.User1.FirstName + " " + x.User1.LastName : null,
-                    AssignedCollectorID = x.User != null ? x.User.FirstName + " " + x.User.LastName : null,
-                    CompletionDateVal = x.CompletionDate,
-                    RequestDateVal = x.RequestDate,
-                    CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
-                    RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("MM/dd/yyyy") : null,
-                    TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
-                    //TotalPayments = (float)(accountBalanceFields > 0 ? _formDataRepo.GetBalanceDueByRequestId(accountBalanceFields,x.ID) : 0),
-                    LastViewedVal = x.LastViewed,
-                    LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("MM/dd/yyyy") : null,
-                    DaysOpen = x.RequestDate == null ? 0 :
+                    var list1 = requests.Select(x => new PlacementRequestModel
+                    {
+                        RequestID = x.ID,
+                        AssignedAttorney = x.Personnel != null ? x.Personnel.FirstName + " " + x.Personnel.LastName : null,
+                        Requestor = x.User1 != null ? x.User1.FirstName + " " + x.User1.LastName : null,
+                        AssignedCollectorID = x.User != null ? x.User.FirstName + " " + x.User.LastName : null,
+                        CompletionDateVal = x.CompletionDate,
+                        RequestDateVal = x.RequestDate,
+                        CompletionDate = x.CompletionDate != null ? x.CompletionDate.Value.ToString("MM/dd/yyyy") : null,
+                        RequestDate = x.RequestDate != null ? x.RequestDate.Value.ToString("MM/dd/yyyy") : null,
+                        TotalPayments = (float)(x.TotalPayments != null ? x.TotalPayments : 0),
+                        //TotalPayments = (float)(accountBalanceFields > 0 ? _formDataRepo.GetBalanceDueByRequestId(accountBalanceFields,x.ID) : 0),
+                        LastViewedVal = x.LastViewed,
+                        LastViewed = x.LastViewed != null ? x.LastViewed.Value.ToString("MM/dd/yyyy") : null,
+                        DaysOpen = x.RequestDate == null ? 0 :
                                x.CompletionDate == null ? (NowDate - x.RequestDate.Value).Days : (x.CompletionDate.Value - x.RequestDate.Value).Days,
-                    StatusCode = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
-                    LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : null,
-                    LastNoteDateVal = x.LastNoteDate,
+                        StatusCode = x.StatusCode != null && StatusList.Any(s => s.StatusCode1 == x.StatusCode) ? StatusList.FirstOrDefault(s => s.StatusCode1 == x.StatusCode).Description : null,
+                        LastNoteDate = x.LastNoteDate != null ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : null,
+                        LastNoteDateVal = x.LastNoteDate,
 
-                    LevelIDVal = x.LevelID,
-                    LevelID = x.Level != null ? x.Level.Name : null,
+                        LevelIDVal = x.LevelID,
+                        LevelID = x?.Level?.Name,
 
-                    FormFields = formData.Where(f => f.RequestID == x.ID && f.FormField != null &&
-                                                     (f.FormField.ListSeqNo != null && f.FormField.ListSeqNo != 0 && selectionColumns.Contains(f.FormField.SelectionColumn))
+                        FormFields = formData.Where(f => f.RequestID == x.ID && f.FormField != null &&
+                                                         (f.FormField.ListSeqNo != null && f.FormField.ListSeqNo != 0 && selectionColumns.Contains(f.FormField.SelectionColumn))
                                 ).ToDictionary(d => "field_" + d.FormField.ID,
 
                                     // dropdown
@@ -111,7 +111,7 @@ namespace WFJ.Service
                                     d.FormField.FormSelectionLists.FirstOrDefault(s => s.Code == d.FieldValue).TextValue :
 
                                     // multi select checkbox
-                                    d.FormField.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes && d.FieldValue != null?
+                                    d.FormField.FieldTypeID == (byte)FieldTypes.MultiSelectCheckboxes && d.FieldValue != null ?
                                     string.Join(",", d.FormField.FormSelectionLists.Where(c => d.FieldValue.Split(',').Contains(c.Code)).Select(c => c.TextValue).ToArray())
 
                                     :
@@ -125,142 +125,142 @@ namespace WFJ.Service
                                 ).ToDictionary(d => "field_" + d.FormField.ID,
                                     d => (d.AddressLine1 + "<br>" + d.AddressLine2 + "<br>" + d.City + "," + d.State + "," + d.ZipCode + "," + d.Country).TrimEnd(',')
                                 )).ToDictionary(d => d.Key, d=> d.Value)
-                }).ToList();
+                    }).ToList();
 
 
-                switch (sortCol)
-                {
-                    case "AssignedAttorney":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.AssignedAttorney).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.AssignedAttorney).ToList();
-                        }
-                        break;
-                    case "Requestor":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.Requestor).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.Requestor).ToList();
-                        }
-                        break;
-                    case "AssignedCollectorID":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.AssignedCollectorID).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.AssignedCollectorID).ToList();
-                        }
-                        break;
-                    case "DaysOpen":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.DaysOpen).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.DaysOpen).ToList();
-                        }
-                        break;
-                    case "StatusCode":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.StatusCode).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.StatusCode).ToList();
-                        }
-                        break;
-                    case "RequestDate":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.RequestDateVal).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.RequestDateVal).ToList();
-                        }
-                        break;
-                    case "CompletionDate":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.CompletionDateVal).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.CompletionDateVal).ToList();
-                        }
-                        break;
-                    case "LastViewed":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.LastViewedVal).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.LastViewedVal).ToList();
-                        }
-                        break;
-                    case "LastNoteDate":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.LastNoteDateVal).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.LastNoteDateVal).ToList();
-                        }
-                        break;
-                    case "LevelID":
-                        if (sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.LevelIDVal).ToList();
-                        }
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.LevelIDVal).ToList();
-                        }
-                        break;
-                    default:
-
-                        if(sortDir == "asc")
-                        {
-                            list1 = list1.OrderBy(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
-                        }
-
-                        if (sortDir == "desc")
-                        {
-                            list1 = list1.OrderByDescending(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
-                        }
-
-                        break;
-                }
-
-                if (filterList != null && filterList.Count > 0)
-                {
-                    foreach (var item in filterList)
+                    switch (sortCol)
                     {
-                        list1 = list1.Where(x => x.FormFields.ContainsKey("field_" + item.FormFieldId) && x.FormFields.ContainsValue(item.Value)).ToList();
+                        case "AssignedAttorney":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.AssignedAttorney).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.AssignedAttorney).ToList();
+                            }
+                            break;
+                        case "Requestor":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.Requestor).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.Requestor).ToList();
+                            }
+                            break;
+                        case "AssignedCollectorID":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.AssignedCollectorID).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.AssignedCollectorID).ToList();
+                            }
+                            break;
+                        case "DaysOpen":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.DaysOpen).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.DaysOpen).ToList();
+                            }
+                            break;
+                        case "StatusCode":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.StatusCode).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.StatusCode).ToList();
+                            }
+                            break;
+                        case "RequestDate":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.RequestDateVal).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.RequestDateVal).ToList();
+                            }
+                            break;
+                        case "CompletionDate":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.CompletionDateVal).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.CompletionDateVal).ToList();
+                            }
+                            break;
+                        case "LastViewed":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.LastViewedVal).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.LastViewedVal).ToList();
+                            }
+                            break;
+                        case "LastNoteDate":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.LastNoteDateVal).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.LastNoteDateVal).ToList();
+                            }
+                            break;
+                        case "LevelID":
+                            if (sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.LevelIDVal).ToList();
+                            }
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.LevelIDVal).ToList();
+                            }
+                            break;
+                        default:
+
+                            if(sortDir == "asc")
+                            {
+                                list1 = list1.OrderBy(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
+                            }
+
+                            if (sortDir == "desc")
+                            {
+                                list1 = list1.OrderByDescending(x => x.FormFields.ContainsKey(sortCol) && x.FormFields[sortCol] != null ? x.FormFields[sortCol] : null).ToList();
+                            }
+
+                            break;
+                    }
+
+                    if (filterList != null && filterList.Count > 0)
+                    {
+                        foreach (var item in filterList)
+                        {
+                            list1 = list1.Where(x => x.FormFields.ContainsKey("field_" + item.FormFieldId) && x.FormFields.ContainsValue(item.Value)).ToList();
+                        }
+                    }
+                    if (param != null)
+                    {
+                        model.Requests = list1.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList();
+                    }
+                    else
+                    {
+                        model.Requests = list1.ToList();
                     }
                 }
-                if (param != null)
-                {
-                    model.Requests = list1.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList();
-                }
-                else
-                {
-                    model.Requests = list1.ToList();
-                }
-            }
             else
             {
                 model.Requests = new List<PlacementRequestModel>();
