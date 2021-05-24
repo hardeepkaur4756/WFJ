@@ -32,6 +32,8 @@
     int clientId = Model.ClientId;
     int userType = Model.UserType;
     bool AssociateCounselVisible = Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
+    string localCounselTabLabel = Model.FormDetail.LocalCounselTabLabel;
+
 }
 @*<script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>*@
 
@@ -441,7 +443,7 @@
                             @if (AssociateCounselVisible == true)
                             {
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">Counsel</a>
+                                    <a class="nav-link bg-white mr-3" id="counsel-tab" data-toggle="pill" href="#counsel" role="tab" aria-controls="counsel" aria-selected="false">@localCounselTabLabel</a>
                                 </li>
                             }
                         </ul>

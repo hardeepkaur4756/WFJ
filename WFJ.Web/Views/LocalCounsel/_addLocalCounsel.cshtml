@@ -130,9 +130,15 @@
 
 <div class="col-md-12">
     <button type="button" class="btn btn-primary" id="btnAddLocalCounsel" onclick="addAssociateCounsel();">Submit</button>
-    <button type="button" class="btn btn-primary" onclick="deleteAssociateCounsel()">Delete</button>
+    @if (Model.FirmId > 0)
+    {
+        <button type="button" class="btn btn-primary" onclick="deleteAssociateCounsel()">Delete</button>
+}
     <button type="button" class="btn btn-primary" onclick="showLocalCounselGrid()">New Search</button>
-    <button type="button" class="btn btn-primary" onclick="addPersonnelRequests()">Select Firm</button>
+    @if (Model.FirmId > 0)
+    {
+        <button type="button" class="btn btn-primary" onclick="addPersonnelRequests()">Select Firm</button>
+    }
 </div>
 <div id="gridAssociateCounsilFileInfo" class="hide">
     <div class="table-responsive">

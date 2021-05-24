@@ -239,9 +239,10 @@ namespace WFJ.Service.Interfaces
         {
             List<FileInformation> list = new List<FileInformation>();
             var fileInformation = new FileInformation();
-            var entities = _personalRepo.GetPersonnelByFirmId(firmId);
+            var entities = _personalRepo.GetPersonnelByFirmId(firmId).Where(x=>x.Request != null).ToList();
             if(entities!=null)
-            { foreach(var item in entities)
+            {
+                foreach(var item in entities)
                 {
                     var request = _requestsRepo.GetRequestWithDetail(Convert.ToInt32(item.RequestID));
                     var formFields = _formfieldRepo.GetFormFieldsByFormID(Convert.ToInt32(request.FormID));
@@ -260,20 +261,19 @@ namespace WFJ.Service.Interfaces
                     }
                     string clientName = _clientRepo.GetById(Convert.ToInt32(request?.Form?.Client.ID)).ClientName;
                     var statuscode = _statusCodesRepo.GetByStatusCodeAndFormId(request.StatusCode.Value, request.FormID.Value);
-                    fileInformation = new FileInformation()
-                    {
-                        Client = clientName,
-                        CustomerName = customerName,
-                        WfjFile = wfjFileNo,
-                        AttorneyName = item.AssociateName,
-                        LienCollection = request?.Form?.FormName,
-                        Status = statuscode?.Description,
-                    Path = $"/Placements/AddPlacement?formId={request.FormID}&requestId={item.RequestID}"
-                    };
+                        fileInformation = new FileInformation()
+                        {
+                            Client = clientName,
+                            CustomerName = customerName,
+                            WfjFile = wfjFileNo,
+                            AttorneyName = item.AssociateName,
+                            LienCollection = request?.Form?.FormName,
+                            Status = statuscode?.Description,
+                            Path = $"/Placements/AddPlacement?formId={request.FormID}&requestId={item.RequestID}"
+                        };
                     list.Add(fileInformation);
-                }
             }
-            
+            }
             return list.OrderBy(x=>x.WfjFile).ToList();
         }
 

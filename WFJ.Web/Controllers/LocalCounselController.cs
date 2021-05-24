@@ -130,6 +130,7 @@ namespace WFJ.Web.Controllers
         {
             AddLocalCounselViewModel addLocalCounselViewModel = _localCounselService.GetById(firmId);
             addLocalCounselViewModel.fileInformation = _localCounselService.GetFileInformation(firmId);
+            addLocalCounselViewModel.FirmId = firmId;
             var result = PartialView("_addLocalCounsel", addLocalCounselViewModel);
             return result;
         }

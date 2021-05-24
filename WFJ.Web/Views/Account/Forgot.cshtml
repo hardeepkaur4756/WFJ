@@ -108,6 +108,9 @@
                     if (data.success) {
                         $('#txtErrorMsg').text("");
                         jQuery('#txtErrorMsg').text(data.message).css("color", "green").show().delay(3000).fadeOut();
+                        window.setTimeout(function () {
+                            window.location.href = '/';
+                        }, 5000);
                     }
                     else {
                         $('#errorMessage').text("");

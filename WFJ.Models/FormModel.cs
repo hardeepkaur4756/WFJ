@@ -28,5 +28,7 @@ namespace WFJ.Models
         public Nullable<int> ClientNumber { get; set; }
 
         public ClientModel Client { get; set; }
+
+        public string LocalCounselTabLabel { get; set; }
     }
 }

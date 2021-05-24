@@ -209,6 +209,7 @@ namespace WFJ.Service
                 DefaultRequestorID = form.DefaultRequestorID,
                 FormName = form.FormName,
                 FormTypeID = form.FormTypeID,
+                LocalCounselTabLabel = form.FormType != null ? form.FormType.localCounselTabLabel : null,
                 FormTypeName = form.FormType != null ? form.FormType.FormType1 : null,
                 hasCollector = form.hasCollector,
                 ID = form.ID,
