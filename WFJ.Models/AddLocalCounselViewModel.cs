@@ -27,6 +27,7 @@ namespace WFJ.Models
         public bool Check { get; set; }
         public bool W9 { get; set; }
         public bool ALQ { get; set; }
+        public bool GB { get; set; }
         public bool GeneralBar { get; set; }
         public bool WrightHolmess { get; set; }
         public bool DoNotUse { get; set; }

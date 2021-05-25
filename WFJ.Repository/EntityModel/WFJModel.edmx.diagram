@@ -60,7 +60,7 @@
         <EntityTypeShape EntityType="WFJDBModel.PaymentType" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Personnel" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PersonnelClient" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.PersonnelRequest" Width="1.5" PointX="22.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WFJDBModel.PersonnelRequest" Width="2.25" PointX="22.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.picture" Width="1.5" PointX="22.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PracticeAreaPersonnel" Width="1.5" PointX="22.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PracticeArea" Width="1.5" PointX="22.75" PointY="22.75" IsExpanded="true" />
@@ -150,6 +150,7 @@
         <EntityTypeShape EntityType="WFJDBModel.ClientsLive" Width="1.5" PointX="11.375" PointY="31.75" />
         <AssociationConnector Association="WFJDBModel.FK_PersonnelRequest_AssociateCounsel" />
         <AssociationConnector Association="WFJDBModel.FK_PersonnelRequest_Request" />
+        <EntityTypeShape EntityType="WFJDBModel.localCounselStatus" Width="1.5" PointX="15.375" PointY="27.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

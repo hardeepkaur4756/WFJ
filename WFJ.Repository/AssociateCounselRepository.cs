@@ -26,7 +26,8 @@ namespace WFJ.Repository
         {
             IEnumerable<AssociateCounsel> counsels;
 
-            counsels = _context.AssociateCounsels.Where(a => (a.DoNotUse ?? 0) == 0);
+            //counsels = _context.AssociateCounsels.Where(a => (a.DoNotUse ?? 0) == 0);
+            counsels = _context.AssociateCounsels;
             if (!string.IsNullOrEmpty(firmName))
             {
                 counsels = counsels.Where(x => x.FirmName != null && x.FirmName.Contains(firmName));
@@ -52,6 +53,7 @@ namespace WFJ.Repository
             {
                 counsels = counsels.Where(x => x.Country!=null && x.Country == country);
             }
+           
             return counsels;
         }
 

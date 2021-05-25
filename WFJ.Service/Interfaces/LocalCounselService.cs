@@ -33,17 +33,17 @@ namespace WFJ.Service.Interfaces
             if (counsels != null)
             {
 
-
                 var list1 = counsels.Select(x => new LocalCounselModel
                 {
                     Id = x.FirmID,
-                    FirmName = x.FirmName,
+                    FirmName = x.FirmName + " (" + (_personalRepo.GetPersonnelByFirmId(x.FirmID).Where(y => y.Request != null).ToList()).Count + ")",
                     //no column in local DB need to check live DB
                     ContactName = x.Name,
                     AttorneyName = x?.Name,
                     City = x.City,
                     State = x.State,
-                    Country = x.Country
+                    Country = x.Country,
+                    DoNotUse = Convert.ToInt32(x.DoNotUse)
                 }).AsEnumerable();
 
                 switch (sortCol)
@@ -111,8 +111,8 @@ namespace WFJ.Service.Interfaces
                     default:
                         break;
                 }
-
-                model.localCounsels = list1.Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList();
+                
+                model.localCounsels = list1.OrderBy(x =>x.DoNotUse).Skip((pageNo - 1) * param.iDisplayLength).Take(param.iDisplayLength).ToList();
             }
             else
             {
@@ -154,7 +154,7 @@ namespace WFJ.Service.Interfaces
                         W9 = addLocalCounselViewModel.W9,
                         ALQ = addLocalCounselViewModel.ALQ,
                         GB = addLocalCounselViewModel.GeneralBar,
-                       WH = addLocalCounselViewModel.WrightHolmess,
+                        WH = addLocalCounselViewModel.WrightHolmess,
                        DoNotUse = Convert.ToByte(addLocalCounselViewModel.DoNotUse),
                        Notes = addLocalCounselViewModel.Notes
                     };
@@ -317,6 +317,8 @@ namespace WFJ.Service.Interfaces
                 associateCounselModel.GB = associateCounsel.GB;
                 associateCounselModel.DoNotUse = associateCounsel.DoNotUse;
                 associateCounselModel.Notes = associateCounsel.Notes;
+                associateCounselModel.localCounselStatus = associateCounsel.localCounselStatus;
+                associateCounselModel.localCounselRate = associateCounsel.localCounselRate;
                 return associateCounselModel;
             }
             

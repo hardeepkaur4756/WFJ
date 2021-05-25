@@ -51,7 +51,9 @@ namespace WFJ.Service
                 return new PersonnelRequestModel
                 {
                     FirmID = personnelRequest.FirmID,
-                    RequestID = personnelRequest.RequestID
+                    RequestID = personnelRequest.RequestID,
+                    localCounselRate = personnelRequest.localCounselRate,
+                    localCounselStatus = personnelRequest.localCounselStatus
                 };
             }
         }

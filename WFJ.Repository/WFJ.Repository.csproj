@@ -259,6 +259,9 @@
     <Compile Include="EntityModel\localCounselInvoice.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\localCounselStatus.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\mailform.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>

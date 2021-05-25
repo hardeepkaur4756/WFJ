@@ -32,5 +32,8 @@ namespace WFJ.Models
         public string Email { get; set; }
         public Nullable<byte> DoNotUse { get; set; }
         public string Notes { get; set; }
+        public string fileNumber { get; set; }
+        public Nullable<int> localCounselStatus { get; set; }
+        public Nullable<double> localCounselRate { get; set; }
     }
 }

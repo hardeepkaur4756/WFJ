@@ -75,14 +75,22 @@
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            <label>ZipCode</label>
+            <label>Postal Code</label>
             @Html.TextBoxFor(x => x.ZipCode, new { @Class = "form-control", id = "ZipCode" })
         </div>
     </div>
     <div class="col-md-6">
-        <div class="form-group">
+        <div class="col-md-3" style="display: inline-block;">
             <label>Check</label>
             @Html.CheckBoxFor(x => x.Check, new { @Class = "maginTopCheckbox", id = "Check" })
+        </div>
+        <div class="col-md-3" style="display: inline-block;">
+            <label>W9</label>
+            @Html.CheckBoxFor(x => x.W9, new { @Class = "maginTopCheckbox", id = "W9" })
+        </div>
+        <div class="col-md-3" style="display: inline-block;">
+            <label>Do Not Use</label>
+            @Html.CheckBoxFor(x => x.DoNotUse, new { @Class = "", id = "DoNotUse" })
         </div>
     </div>
     <div class="col-md-6">
@@ -91,38 +99,24 @@
             @Html.TextBoxFor(x => x.Country, new { @Class = "form-control", id = "Country" })
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>W9</label>
-            @Html.CheckBoxFor(x => x.W9, new { @Class = "maginTopCheckbox", id = "W9" })
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label>ALQ</label>
-            @Html.CheckBoxFor(x => x.ALQ, new { @Class = "", id = "ALQ" })
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label>GeneralBar</label>
-            @Html.CheckBoxFor(x => x.GeneralBar, new { @Class = "", id = "GeneralBar" })
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label>Do Not Use</label>
-            @Html.CheckBoxFor(x => x.DoNotUse, new { @Class = "", id = "DoNotUse" })
-        </div>
+    <div class="col-md-6" style="margin-top: 35px;">
+         @*<div class="col-md-3" style="display: inline-block;">
+             <label>GB</label>
+             @Html.CheckBoxFor(x => x.GB, new { @Class = "", id = "GB" })
+         </div>*@
+         <div class="col-md-3" style="display: inline-block;">
+             <label>ALQ</label>
+             @Html.CheckBoxFor(x => x.ALQ, new { @Class = "", id = "ALQ" })
+         </div>
+         <div class="col-md-3" style="display: inline-block;">
+             <label>GeneralBar</label>
+             @Html.CheckBoxFor(x => x.GeneralBar, new { @Class = "", id = "GeneralBar" })
+         </div>
     </div>
     <div class="col-md-12">
         <div class="form-group">
             <label>Notes</label>
-            @Html.TextAreaFor(x => x.Notes, new { @Class = "form-control", cols = "100", id = "Notes" })
+            @Html.TextAreaFor(x => x.Notes, new { @Class = "form-control", cols = "100", id = "Notes", rows = "8" })
         </div>
     </div>
 </div>
@@ -133,7 +127,7 @@
     @if (Model.FirmId > 0)
     {
         <button type="button" class="btn btn-primary" onclick="deleteAssociateCounsel()">Delete</button>
-}
+    }
     <button type="button" class="btn btn-primary" onclick="showLocalCounselGrid()">New Search</button>
     @if (Model.FirmId > 0)
     {
@@ -162,7 +156,7 @@
             </tbody>
         </table>
     </div>
-  
+
 </div>
 
 

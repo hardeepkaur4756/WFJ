@@ -77,11 +77,18 @@ function GetLocalCounselData() {
                 { "mData": "Country" },
                 {
                     "render": function (row, type, full) {
-                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a>';
+
+                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a><a href="javascript:void(0)" onclick="addPersonnelRequests()" class="btn btn-sm btn-primary" '+ (full.DoNotUse === 1 ?'style="Display:none;"':"")+' title="Select Firm"><i class="fa fa-plus"></i></i></a>';
+                        
                     },
                     orderable: false
                 }
             ],
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                if (aData.DoNotUse === 1) {
+                    $('td', nRow).css('color', 'var(--sidebarcolor)');
+                } 
+            },
             "order": [[0, "asc"]],
             bProcessing: true,
             pageLength: 10,
@@ -121,6 +128,7 @@ function GetViewAddNewLocalConsel() {
     $("#W9").prop('checked', false);
     $("#ALQ").prop('checked', false);
     $("#GeneralBar").prop('checked', false);
+    //$("#GB").prop('checked', false);
     $("#DoNot").prop('checked', false);
     $('#divShowLocalCounsel').addClass("hide");
     $('#divAddLocalCounsel').removeClass("hide");
@@ -146,7 +154,8 @@ function addAssociateCounsel() {
         saveAddCounselViewModel.Check = $("#Check").val();
         saveAddCounselViewModel.Country = $("#Country").val();
         saveAddCounselViewModel.W9 = $("#W9").val();
-        saveAddCounselViewModel.ALQ = $("#ALQ").val();
+    saveAddCounselViewModel.ALQ = $("#ALQ").val();
+    //saveAddCounselViewModel.GB = $("#GB").val();
         saveAddCounselViewModel.GeneralBar = $("#GeneralBar").val();
         saveAddCounselViewModel.DoNotUse = $("#DoNotUse").val();
     saveAddCounselViewModel.Notes = $("#Notes").val();

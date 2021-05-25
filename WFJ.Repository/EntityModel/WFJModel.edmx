@@ -809,6 +809,14 @@ warning 6002: The table/view 'wfj_testdb.dbo.enews_clients' does not have a prim
           <Property Name="paymentDate" Type="smalldatetime" />
           <Property Name="filename" Type="varchar" MaxLength="120" />
         </EntityType>
+        <EntityType Name="localCounselStatuses">
+          <Key>
+            <PropertyRef Name="localCounselStatusID" />
+          </Key>
+          <Property Name="localCounselStatusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="localCounselStatus" Type="varchar" MaxLength="50" />
+          <Property Name="seqNo" Type="int" />
+        </EntityType>
         <EntityType Name="mailformResults">
           <Key>
             <PropertyRef Name="mailformResultID" />
@@ -1359,6 +1367,9 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="AssociateName" Type="varchar" MaxLength="50" />
           <Property Name="Telephone" Type="varchar" MaxLength="20" />
           <Property Name="PersonnelID" Type="int" />
+          <Property Name="fileNumber" Type="varchar" MaxLength="20" />
+          <Property Name="localCounselStatus" Type="int" />
+          <Property Name="localCounselRate" Type="float" />
         </EntityType>
         <EntityType Name="pictures">
           <Key>
@@ -1784,33 +1795,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="PageName" Type="nvarchar" MaxLength="50" />
           <Property Name="PageText" Type="ntext" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="WFJ_Users">
-          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Telephone" Type="nvarchar" MaxLength="50" />
-          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
-          <Property Name="Image" Type="nvarchar" MaxLength="50" />
-          <Property Name="DateAdded" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserType" Type="nvarchar" MaxLength="50" />
-          <Property Name="UserAccess" Type="nvarchar" MaxLength="50" />
-          <Property Name="LogonCount" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="nvarchar" MaxLength="50" />
-          <Property Name="ClientID" Type="nvarchar" MaxLength="50" />
-          <Property Name="AttorneyID" Type="nvarchar" MaxLength="50" />
-          <Property Name="PasswordExpirationDate" Type="nvarchar" MaxLength="50" />
-          <Property Name="Active" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsCollector" Type="nvarchar" MaxLength="50" />
-          <Property Name="HireDate" Type="nvarchar" MaxLength="50" />
-          <Property Name="Birthdate" Type="nvarchar" MaxLength="50" />
-          <Property Name="AccessClientExtranet" Type="nvarchar" MaxLength="50" />
-          <Property Name="profileText" Type="nvarchar" MaxLength="50" />
-        </EntityType>-->
         <Association Name="FK__FormAddre__FormF__3414ACBA">
           <End Role="FormFields" Type="Self.FormFields" Multiplicity="0..1" />
           <End Role="FormAddressData" Type="Self.FormAddressData" Multiplicity="*" />
@@ -2201,30 +2185,6 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PersonnelRequest_AssociateCounsel">
-          <End Role="AssociateCounsel" Type="Self.AssociateCounsel" Multiplicity="0..1" />
-          <End Role="PersonnelRequests" Type="Self.PersonnelRequests" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AssociateCounsel">
-              <PropertyRef Name="FirmID" />
-            </Principal>
-            <Dependent Role="PersonnelRequests">
-              <PropertyRef Name="FirmID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PersonnelRequest_Request">
-          <End Role="Requests" Type="Self.Requests" Multiplicity="0..1" />
-          <End Role="PersonnelRequests" Type="Self.PersonnelRequests" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requests">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PersonnelRequests">
-              <PropertyRef Name="RequestID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PracticeAreasID">
           <End Role="PracticeAreas" Type="Self.PracticeAreas" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2521,6 +2481,7 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
           <EntitySet Name="Levels" EntityType="Self.Levels" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ListFields" EntityType="Self.ListFields" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="localCounselInvoices" EntityType="Self.localCounselInvoices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="localCounselStatuses" EntityType="Self.localCounselStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mailformResults" EntityType="Self.mailformResults" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mailforms" EntityType="Self.mailforms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mailingAds" EntityType="Self.mailingAds" Schema="dbo" store:Type="Tables" />
@@ -2869,14 +2830,6 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
           <AssociationSet Name="FK_Payment_User" Association="Self.FK_Payment_User">
             <End Role="Users" EntitySet="Users" />
             <End Role="Payments" EntitySet="Payments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PersonnelRequest_AssociateCounsel" Association="Self.FK_PersonnelRequest_AssociateCounsel">
-            <End Role="AssociateCounsel" EntitySet="AssociateCounsel" />
-            <End Role="PersonnelRequests" EntitySet="PersonnelRequests" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PersonnelRequest_Request" Association="Self.FK_PersonnelRequest_Request">
-            <End Role="Requests" EntitySet="Requests" />
-            <End Role="PersonnelRequests" EntitySet="PersonnelRequests" />
           </AssociationSet>
           <AssociationSet Name="FK_PracticeAreasID" Association="Self.FK_PracticeAreasID">
             <End Role="PracticeAreas" EntitySet="PracticeAreas" />
@@ -4043,6 +3996,9 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
           <Property Name="PersonnelID" Type="Int32" />
           <NavigationProperty Name="AssociateCounsel" Relationship="WFJDBModel.FK_PersonnelRequest_AssociateCounsel" FromRole="PersonnelRequest" ToRole="AssociateCounsel" />
           <NavigationProperty Name="Request" Relationship="WFJDBModel.FK_PersonnelRequest_Request" FromRole="PersonnelRequest" ToRole="Request" />
+          <Property Name="fileNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="localCounselStatus" Type="Int32" />
+          <Property Name="localCounselRate" Type="Double" />
         </EntityType>
         <EntityType Name="picture">
           <Key>
@@ -4888,6 +4844,7 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
             <End Role="Request" EntitySet="Requests" />
             <End Role="PersonnelRequest" EntitySet="PersonnelRequests" />
           </AssociationSet>
+          <EntitySet Name="localCounselStatuses" EntityType="WFJDBModel.localCounselStatus" />
           </EntityContainer>
         <ComplexType Name="dt_getpropertiesbyid_Result">
           <Property Type="String" Name="property" Nullable="false" MaxLength="64" />
@@ -5670,6 +5627,14 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="localCounselStatus">
+          <Key>
+            <PropertyRef Name="localCounselStatusID" />
+          </Key>
+          <Property Name="localCounselStatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="localCounselStatus1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="seqNo" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6813,6 +6778,9 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
           <EntitySetMapping Name="PersonnelRequests">
             <EntityTypeMapping TypeName="WFJDBModel.PersonnelRequest">
               <MappingFragment StoreEntitySet="PersonnelRequests">
+                <ScalarProperty Name="localCounselRate" ColumnName="localCounselRate" />
+                <ScalarProperty Name="localCounselStatus" ColumnName="localCounselStatus" />
+                <ScalarProperty Name="fileNumber" ColumnName="fileNumber" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
                 <ScalarProperty Name="FirmID" ColumnName="FirmID" />
@@ -7569,6 +7537,15 @@ warning 6013: The table/view 'wfj_testdb.dbo.WFJ_Users' does not have a primary 
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="localCounselStatuses">
+            <EntityTypeMapping TypeName="WFJDBModel.localCounselStatus">
+              <MappingFragment StoreEntitySet="localCounselStatuses">
+                <ScalarProperty Name="seqNo" ColumnName="seqNo" />
+                <ScalarProperty Name="localCounselStatus1" ColumnName="localCounselStatus" />
+                <ScalarProperty Name="localCounselStatusID" ColumnName="localCounselStatusID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

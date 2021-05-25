@@ -20,6 +20,9 @@ namespace WFJ.Repository.EntityModel
         public string AssociateName { get; set; }
         public string Telephone { get; set; }
         public Nullable<int> PersonnelID { get; set; }
+        public string fileNumber { get; set; }
+        public Nullable<int> localCounselStatus { get; set; }
+        public Nullable<double> localCounselRate { get; set; }
     
         public virtual AssociateCounsel AssociateCounsel { get; set; }
         public virtual Request Request { get; set; }

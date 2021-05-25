@@ -11,5 +11,7 @@ namespace WFJ.Models
         public int ID { get; set; }
         public Nullable<int> RequestID { get; set; }
         public Nullable<int> FirmID { get; set; }
+        public Nullable<int> localCounselStatus { get; set; }
+        public Nullable<double> localCounselRate { get; set; }
     }
 }
