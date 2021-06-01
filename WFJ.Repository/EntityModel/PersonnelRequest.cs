@@ -26,5 +26,6 @@ namespace WFJ.Repository.EntityModel
     
         public virtual AssociateCounsel AssociateCounsel { get; set; }
         public virtual Request Request { get; set; }
+        public virtual localCounselStatus localCounselStatus1 { get; set; }
     }
 }

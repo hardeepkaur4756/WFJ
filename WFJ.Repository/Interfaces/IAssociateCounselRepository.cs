@@ -9,7 +9,7 @@ namespace WFJ.Repository.Interfaces
 {
    public interface IAssociateCounselRepository : IRepository<AssociateCounsel>
     {
-        IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName,string contactName, string city, string state, string country);
+        IEnumerable<AssociateCounsel> GetAssociateCounselList(string firmName, string attorneyName,string contactName, string city, string state, string country,int wfjAttorneyId);
         AssociateCounsel GetAssociateCounselDetailByID(int associateCounselId);
     }
 }

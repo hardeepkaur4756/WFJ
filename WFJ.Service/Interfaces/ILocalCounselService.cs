@@ -9,7 +9,7 @@ namespace WFJ.Service.Interfaces
 {
     public interface ILocalCounselService
     {
-        ManageLocalCounselModel GetLocalCounsels(string firmName, string attorneyName, string contactName, string city, string state, string country, DataTablesParam param, string sortDir, string sortCol, int pageNo);
+        ManageLocalCounselModel GetLocalCounsels(string firmName, string attorneyName, string contactName, string city, string state, string country, DataTablesParam param, string sortDir, string sortCol, int pageNo,int wfjAttorneyId);
         int SaveLocalCounsel(AddLocalCounselViewModel addLocalCounselViewModel);
         AddLocalCounselViewModel GetById(int firmId);
         List<FileInformation> GetFileInformation(int firmId);

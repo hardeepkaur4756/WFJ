@@ -13,5 +13,6 @@ namespace WFJ.Service.Interfaces
         List<SelectListItem> GetAllByType(string type);
         List<SelectListItem> GetAllStateByType(string type);
         CodeModel GetById(int id);
+        List<SelectListItem> GetAllStateandProvince();
     }
 }

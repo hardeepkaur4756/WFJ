@@ -44,10 +44,6 @@ namespace WFJ.Repository.EntityModel
         public string Email { get; set; }
         public Nullable<byte> DoNotUse { get; set; }
         public string Notes { get; set; }
-
-        public string fileNumber { get; set; }
-        public Nullable<int> localCounselStatus { get; set; }
-        public Nullable<double> localCounselRate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonnelRequest> PersonnelRequests { get; set; }

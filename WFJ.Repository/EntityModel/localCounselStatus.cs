@@ -14,8 +14,17 @@ namespace WFJ.Repository.EntityModel
     
     public partial class localCounselStatus
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public localCounselStatus()
+        {
+            this.PersonnelRequests = new HashSet<PersonnelRequest>();
+        }
+    
         public int localCounselStatusID { get; set; }
         public string localCounselStatus1 { get; set; }
         public Nullable<int> seqNo { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PersonnelRequest> PersonnelRequests { get; set; }
     }
 }

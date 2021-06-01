@@ -64,7 +64,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label>State/Province</label>
-            @Html.TextBoxFor(x => x.State, new { @Class = "form-control", id = "State" })
+            @Html.DropDownListFor(x => x.State, new SelectList(Model.StateandProvinceList, "Value", "Text"), "Select", new { @Class = "form-control" })
         </div>
     </div>
     <div class="col-md-6">

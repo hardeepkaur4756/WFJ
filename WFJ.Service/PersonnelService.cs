@@ -18,7 +18,7 @@ namespace WFJ.Service
             return _personnelsRepository.GetAll().Where(x => x.FirstName != null).Select(x => new SelectListItem { 
             Text = x.FirstName + " " + x.LastName,
             Value = x.ID.ToString()
-            }).OrderBy(x => x.Text).ToList();
+            }).OrderBy(x => x.Text).Prepend(new SelectListItem { Text = "Select", Value = "-1" }).ToList();
         }
     }
 }

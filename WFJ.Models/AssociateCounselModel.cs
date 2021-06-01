@@ -33,7 +33,7 @@ namespace WFJ.Models
         public Nullable<byte> DoNotUse { get; set; }
         public string Notes { get; set; }
         public string fileNumber { get; set; }
-        public Nullable<int> localCounselStatus { get; set; }
+        public string localCounselStatus { get; set; }
         public Nullable<double> localCounselRate { get; set; }
     }
 }

@@ -14,7 +14,11 @@
 
 @*<div class="document-center">
     <div class="container-fluid site-width">*@
-<h4 class="mb-4">@Model.localCounselFilterViewModel.FormType</h4>
+<h4 class="mb-4">@Model.localCounselFilterViewModel.FormType
+    <div class="divInHouseCounsel" style="display: inline-block;">
+        @Html.CheckBoxFor(x => x.localCounselFilterViewModel.inHouseCounsel, new { @Class = "", id = "inHouseCounsel" })
+        <label>In House Counsel</label>
+    </div></h4>
 <div class="row">
     
     <div class="col-md-12 col-xl-12">
@@ -33,3 +37,4 @@
     
 
 }
+

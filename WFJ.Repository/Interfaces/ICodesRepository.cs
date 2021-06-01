@@ -12,5 +12,6 @@ namespace WFJ.Repository.Interfaces
         List<Code> GetAllByType(string type);
         string GetStateByCode(string code);
         Code GetById(int id);
+        List<Code> GetStateandProvince();
     }
 }

@@ -7,7 +7,39 @@ $(document).ready(function () {
     $('#associateCounselTable').dataTable({
         "paging": false,
     });
+        var isChecked = $("#inHouseCounsel").is(':checked');
+    if (isChecked) {
+        $(".divhouseCounselOther").css("display", "none");
+        $(".divhouseCounsel").css("display", "block");
+       
+    }
+    else {
+        $(".divhouseCounselOther").css("display", "block");
+        $(".divhouseCounsel").css("display", "none");
+    }
 });
+
+$(function () {
+    $('#inHouseCounsel').change(function () {
+        var isChecked = $(this).is(':checked');
+        if (isChecked) {
+            $(".divhouseCounselOther").css("display", "none");
+            $(".divhouseCounsel").css("display", "block");
+            $('#counselFirmName').val("");
+            $('#counselAttorneyName').val("");
+            $('#counselContactName').val("");
+            $('#counselCity').val();
+            $('#ddlLocalCounselState').val("-1");
+            $('#ddlLocalCounselCountry').val("-1");
+        }
+        else {
+            $(".divhouseCounselOther").css("display", "block");
+            $(".divhouseCounsel").css("display", "none");
+            $('#ddlLocalCounselWFJAttorneys').val("-1");
+        }
+    });
+});
+
 function GetLocalCounselData() {
     
     //var clientId = $('#ddlClient option:selected').val();
@@ -37,12 +69,13 @@ function GetLocalCounselData() {
                 var colName = oSettings.aoColumns[oSettings.aaSorting[0][0]].mData;
                 var sDir = oSettings.aaSorting[0][1];
 
-                var firmName = $('#counselFirmName').val();;
-                var attorneyName = $('#counselAttorneyName').val();;
-                var contactName = $('#counselContactName').val();;
-                var city = $('#counselCity').val();;
+                var firmName = $('#counselFirmName').val();
+                var attorneyName = $('#counselAttorneyName').val();
+                var contactName = $('#counselContactName').val();
+                var city = $('#counselCity').val();
                 var stateId = $('#ddlLocalCounselState option:selected').val();
                 var countryId = $('#ddlLocalCounselCountry option:selected').val();
+                var wfjAttorneyId = $('#ddlLocalCounselWFJAttorneys option:selected').val();
 
                 aoData.push({ "name": "sortCol", "value": colName });
                 aoData.push({ "name": "sortDir", "value": sDir });
@@ -53,7 +86,7 @@ function GetLocalCounselData() {
                 aoData.push({ "name": "stateId", "value": stateId });
                 aoData.push({ "name": "countryId", "value": countryId });
                 aoData.push({ "name": "isFirstTime", "value": isFirstTime });
-
+                aoData.push({ "name": "wfjAttorneyId", "value": wfjAttorneyId });
                 $.ajax({
                     type: "Get",
                     data: aoData,
@@ -67,6 +100,10 @@ function GetLocalCounselData() {
             drawCallback: function () {
                 var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                 pagination.toggle(this.api().page.info().pages > 1);
+                var rowCount = this.fnSettings().fnRecordsDisplay();
+                if (rowCount <= 10 || isNaN(rowCount)) {
+                    $('.dataTables_length').hide();
+                }
             },
             "aoColumns": [
                 { "mData": "FirmName" },
@@ -78,12 +115,14 @@ function GetLocalCounselData() {
                 {
                     "render": function (row, type, full) {
 
-                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a><a href="javascript:void(0)" onclick="addPersonnelRequests()" class="btn btn-sm btn-primary" '+ (full.DoNotUse === 1 ?'style="Display:none;"':"")+' title="Select Firm"><i class="fa fa-plus"></i></i></a>';
+                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a><a href="javascript:void(0)" onclick="addPersonnelRequests(' + full.Id + ')" class="btn btn-sm btn-primary" ' + (full.DoNotUse === 1 ? 'style="Display:none;margin-left:2px;"' :'style="margin-left: 2px;"')+' title="Select Firm"><i class="fa fa-plus"></i></i></a>';
                         
                     },
                     orderable: false
                 }
             ],
+            "autoWidth": false,
+            "columnDefs": [{width:'125px',targets:0}],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 if (aData.DoNotUse === 1) {
                     $('td', nRow).css('color', 'var(--sidebarcolor)');
@@ -151,14 +190,14 @@ function addAssociateCounsel() {
         saveAddCounselViewModel.State = $("#State").val();
         saveAddCounselViewModel.FederalTaxId = $("#FederalTaxId").val();
         saveAddCounselViewModel.ZipCode = $("#ZipCode").val();
-        saveAddCounselViewModel.Check = $("#Check").val();
         saveAddCounselViewModel.Country = $("#Country").val();
-        saveAddCounselViewModel.W9 = $("#W9").val();
-    saveAddCounselViewModel.ALQ = $("#ALQ").val();
-    //saveAddCounselViewModel.GB = $("#GB").val();
-        saveAddCounselViewModel.GeneralBar = $("#GeneralBar").val();
-        saveAddCounselViewModel.DoNotUse = $("#DoNotUse").val();
-    saveAddCounselViewModel.Notes = $("#Notes").val();
+        saveAddCounselViewModel.Check = $("#Check").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.W9 = $("#W9").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.ALQ = $("#ALQ").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.GB = $("#GB").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.GeneralBar = $("#GeneralBar").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.DoNotUse = $("#DoNotUse").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.Notes = $("#Notes").val();
     if ($("#FirmName").val() == "") {
         isValid = false;
     }
@@ -212,6 +251,7 @@ function editAssociateCounsel(id) {
                 $('#divShowLocalCounsel').addClass("hide");
                 $('#gridAssociateCounsilFileInfo').removeClass("hide");
                 GetDataTable();
+                window.scrollTo(0, 0);
             },
             error: function (result) {
             }
@@ -253,12 +293,17 @@ function showLocalCounselGrid() {
         $('#divShowLocalCounsel').removeClass("hide");
         $('#divAddLocalCounsel').addClass("hide");
     }
-function addPersonnelRequests() {
+function addPersonnelRequests(id) {
         var isValid = true;
         var reqId = parseInt($("#Request_ID").val());
         if (isNaN(reqId)) {reqId = 0; }
-        var savePersonnelRequests = { };
+    var savePersonnelRequests = {};
+    if (id > 0) {
+        savePersonnelRequests.FirmId = id
+    } else {
         savePersonnelRequests.FirmId = $("#FirmId").val();
+    }
+        //savePersonnelRequests.FirmId = $("#FirmId").val();
         savePersonnelRequests.RequestID = reqId;
 
 
@@ -273,6 +318,7 @@ function addPersonnelRequests() {
                 $('#divAssignedFileHtml').html(response);
                 $('#divAssignedFile').removeClass("hide");
                 $('#divLocalCounselSearch').addClass("hide");
+                window.scrollTo(0, 0);
             },
             error: function (result) {
             }
@@ -303,7 +349,11 @@ function deletePersonnelRequests() {
                         /* $.notify("PersonnelRequests Deleted Succesfully.", "success");*/
                         if ($('#divLocalCounselSearch').hasClass("hide")) {
                             $('#divLocalCounselSearch').removeClass("hide")
-                            $('#divAssignedFile').addClass("hide")
+                            $('#divAssignedFile').addClass("hide");
+                            $('#divAddLocalCounsel').addClass("hide")
+                        }
+                        if ($('#divShowLocalCounsel').hasClass("hide")) {
+                            $('#divShowLocalCounsel').removeClass("hide")
                         }
                     }
                     else {

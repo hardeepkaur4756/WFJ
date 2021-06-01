@@ -12,6 +12,8 @@ namespace WFJ.Models
         public List<SelectListItem> states { get; set; }
         public List<SelectListItem> countries { get; set; }
         public string FormType { get; set; }
+        public List<SelectListItem> wfjAttorneys { get; set; }
+        public bool inHouseCounsel { get; set; }
     }
 
     public class LocalCounselViewModel : ExceptionModel

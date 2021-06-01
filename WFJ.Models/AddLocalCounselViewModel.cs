@@ -33,6 +33,7 @@ namespace WFJ.Models
         public bool DoNotUse { get; set; }
         public string Notes { get; set; }
         public List<FileInformation> fileInformation {get;set;}
+        public List<SelectListItem> StateandProvinceList { get; set; }
     }
     public class FileInformation
     {

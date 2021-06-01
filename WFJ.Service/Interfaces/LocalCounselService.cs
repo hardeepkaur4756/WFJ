@@ -22,10 +22,10 @@ namespace WFJ.Service.Interfaces
         IRequestsRepository _requestsRepo = new RequestsRepository();
         IPersonnelRequestRepository _personnelRequestRepo  = new PersonnelRequestRepository();
         IStatusCodesRepository _statusCodesRepo = new StatusCodesRepository();
-        public ManageLocalCounselModel GetLocalCounsels(string firmName, string attorneyName, string contactName, string city, string state, string country, DataTablesParam param, string sortDir, string sortCol, int pageNo)
+        public ManageLocalCounselModel GetLocalCounsels(string firmName, string attorneyName, string contactName, string city, string state, string country, DataTablesParam param, string sortDir, string sortCol, int pageNo,int wfjAttorneyId)
         {
             ManageLocalCounselModel model = new ManageLocalCounselModel();
-            var counsels = _associateCouncelRepo.GetAssociateCounselList(firmName, attorneyName,contactName, city, state, country);
+            var counsels = _associateCouncelRepo.GetAssociateCounselList(firmName, attorneyName,contactName, city, state, country, wfjAttorneyId);
 
             model.totalLocalCounselsCount = counsels?.Count();
 
@@ -36,7 +36,9 @@ namespace WFJ.Service.Interfaces
                 var list1 = counsels.Select(x => new LocalCounselModel
                 {
                     Id = x.FirmID,
-                    FirmName = x.FirmName + " (" + (_personalRepo.GetPersonnelByFirmId(x.FirmID).Where(y => y.Request != null).ToList()).Count + ")",
+                    FirmName = (_personalRepo.GetPersonnelByFirmId(x.FirmID).Where(y => y.Request != null).ToList()).Count > 0 
+                    ? x.FirmName + " (" + (_personalRepo.GetPersonnelByFirmId(x.FirmID).Where(y => y.Request != null).ToList()).Count + ")"
+                    : x.FirmName,
                     //no column in local DB need to check live DB
                     ContactName = x.Name,
                     AttorneyName = x?.Name,
@@ -317,8 +319,9 @@ namespace WFJ.Service.Interfaces
                 associateCounselModel.GB = associateCounsel.GB;
                 associateCounselModel.DoNotUse = associateCounsel.DoNotUse;
                 associateCounselModel.Notes = associateCounsel.Notes;
-                associateCounselModel.localCounselStatus = associateCounsel.localCounselStatus;
-                associateCounselModel.localCounselRate = associateCounsel.localCounselRate;
+                associateCounselModel.fileNumber = associateCounsel.PersonnelRequests?.FirstOrDefault()?.fileNumber;
+                associateCounselModel.localCounselStatus = associateCounsel.PersonnelRequests?.FirstOrDefault()?.localCounselStatus1?.localCounselStatus1;
+                associateCounselModel.localCounselRate = associateCounsel.PersonnelRequests?.FirstOrDefault()?.localCounselRate;
                 return associateCounselModel;
             }
             

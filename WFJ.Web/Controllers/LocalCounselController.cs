@@ -21,6 +21,7 @@ namespace WFJ.Web.Controllers
         public IClientService _clientService = new ClientService();
         private ICodesService _codesService = new CodesService();
         private IPersonnelRequestService _personnelRequestService = new PersonnelRequestService();
+        private PersonnelService _personnelService = new PersonnelService();
 
         private int UserType = 0;
         private int UserId = 0;
@@ -32,12 +33,13 @@ namespace WFJ.Web.Controllers
             try
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
-
+                var states = _codesService.GetAllStateByType("STATE");
+                var province = _codesService.GetAllStateByType("PROVINCE");
                 LocalCounselViewModel model = new LocalCounselViewModel
                 {
                     localCounselFilterViewModel = new LocalCounselFilterViewModel()
                     {
-                        states = _codesService.GetAllStateByType("STATE"),
+                        states = states.Union(province).ToList(),
                         countries = _codesService.GetAllStateByType("COUNTRY")
                     }
                 };
@@ -53,7 +55,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLocalCounselList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime, string firmName, string attorneyName, string contactName, string city, int stateId, int countryId)
+        public JsonResult GetLocalCounselList(DataTablesParam param, string sortDir, string sortCol, bool isFirstTime, string firmName, string attorneyName, string contactName, string city, int stateId, int countryId,int wfjAttorneyId)
         {
             try
             {
@@ -70,7 +72,7 @@ namespace WFJ.Web.Controllers
                 country = _codesService.GetById(countryId)?.Code1;
                 if (isFirstTime == false)
                 {
-                    model = _localCounselService.GetLocalCounsels(firmName, attorneyName, contactName, city, state, country, param, sortDir, sortCol, pageNo);
+                    model = _localCounselService.GetLocalCounsels(firmName, attorneyName, contactName, city, state, country, param, sortDir, sortCol, pageNo, wfjAttorneyId);
                 }
                 else
                 {
@@ -130,6 +132,7 @@ namespace WFJ.Web.Controllers
         {
             AddLocalCounselViewModel addLocalCounselViewModel = _localCounselService.GetById(firmId);
             addLocalCounselViewModel.fileInformation = _localCounselService.GetFileInformation(firmId);
+            addLocalCounselViewModel.StateandProvinceList = _codesService.GetAllStateandProvince();
             addLocalCounselViewModel.FirmId = firmId;
             var result = PartialView("_addLocalCounsel", addLocalCounselViewModel);
             return result;

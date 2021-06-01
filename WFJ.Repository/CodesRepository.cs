@@ -28,5 +28,10 @@ namespace WFJ.Repository
         {
             return context.Codes?.FirstOrDefault(x => x.ID == id);
         }
+
+        public List<Code> GetStateandProvince()
+        {
+            return context.Codes?.Where(x => x.Type == "PROVINCE" || x.Type == "STATE")?.OrderByDescending(x=>x.Type).ThenBy(x=>x.Code1).ToList();
+        }
     }
 }

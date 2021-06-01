@@ -7,29 +7,33 @@
 <form>
     <span id="errormessage"></span>
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="counselFirmName">Firm Name</label>
-            <input id="counselFirmName" type="text" class="form-control" />
+            <input id="counselFirmName" type="text" class="form-control houseCounselOther" />
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="counselAttorneyName">Attorney Name</label>
-            <input id="counselAttorneyName" type="text" class="form-control" />
+            <input id="counselAttorneyName" type="text" class="form-control houseCounselOther" />
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="counselContactName">Contact Name</label>
-            <input id="counselContactName" type="text" class="form-control" />
+            <input id="counselContactName" type="text" class="form-control houseCounselOther" />
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="counselCity">City</label>
-            <input id="counselCity" type="text" class="form-control" />
+            <input id="counselCity" type="text" class="form-control houseCounselOther" />
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="ddlClient">State/Province</label>
-            @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.states, "Value", "Text"), new { @Class = "form-control" })
+            @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.states, "Value", "Text"), new { @Class = "form-control houseCounselOther" })
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-6 divhouseCounselOther">
             <label for="ddlFormType">Country</label>
-            @Html.DropDownList("ddlLocalCounselCountry", new SelectList(Model.countries, "Value", "Text"), new { @Class = "form-control" })
+            @Html.DropDownList("ddlLocalCounselCountry", new SelectList(Model.countries, "Value", "Text"), new { @Class = "form-control houseCounselOther" })
+        </div>
+        <div class="form-group col-md-6 divhouseCounsel">
+            <label for="ddlFormType">WFJ Attorneys</label>
+            @Html.DropDownList("ddlLocalCounselWFJAttorneys", new SelectList(Model.wfjAttorneys, "Value", "Text"), new { @Class = "form-control houseCounsel" })
         </div>
     </div>
    

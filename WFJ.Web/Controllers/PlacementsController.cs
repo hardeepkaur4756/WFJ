@@ -180,13 +180,16 @@ namespace WFJ.Web.Controllers
                 ICurrenciesService _currenciesService = new CurrenciesService();
                 //get code for counsel tab
                 ICodesService _codesService = new CodesService();
+                PersonnelService _personnelService = new PersonnelService();
                 LocalCounselViewModel localCounselVM = new LocalCounselViewModel
                 {
                     localCounselFilterViewModel = new LocalCounselFilterViewModel()
                     {
                         states = _codesService.GetAllStateByType("STATE"),
                         countries = _codesService.GetAllStateByType("COUNTRY"),
-                        FormType = form.FormTypeName
+                        FormType = form.FormTypeName,
+                        wfjAttorneys=_personnelService.GetPersonnelsDropdown(),
+                        inHouseCounsel=false
                     }
                 };
                 var associateCounsel = new AssociateCounselModel();
@@ -195,7 +198,10 @@ namespace WFJ.Web.Controllers
                 {
                     associateCounsel = _localCounselService.GetByFirmId(Convert.ToInt32(personalRequest.FirstOrDefault().FirmID));
                 }
-                
+
+                AddLocalCounselViewModel addLocalCounselViewModel = new AddLocalCounselViewModel();
+                addLocalCounselViewModel.StateandProvinceList = _codesService.GetAllStateandProvince();
+
                 AddEditPlacementsViewModel model = new AddEditPlacementsViewModel
                 {
                     CurrencyDropdown = _currenciesService.GetCurrencyDropdown(),
@@ -217,7 +223,7 @@ namespace WFJ.Web.Controllers
                     summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail),
                     DocumentType = documentType,
                     localCounselViewModel = localCounselVM,
-                    addLocalCounselViewModel = new AddLocalCounselViewModel(),
+                    addLocalCounselViewModel = addLocalCounselViewModel,
                     IsAssignedFile = personalRequest.Count>0 ? true : false,
                     associateCounselModel = associateCounsel
                 };

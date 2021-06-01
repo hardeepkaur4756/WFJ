@@ -28,6 +28,15 @@ namespace WFJ.Service
             itemList = codesRepo.GetAllByType(type).Select(x => new SelectListItem() { Text = x.Value, Value = x.ID.ToString() }).Prepend(new SelectListItem { Text = "Select", Value = "-1" }).ToList();
             return itemList;
         }
+
+        public List<SelectListItem> GetAllStateandProvince()
+        {
+            ICodesRepository codesRepo = new CodesRepository();
+            List<SelectListItem> itemList = new List<SelectListItem>();
+            itemList = codesRepo.GetStateandProvince().Select(x => new SelectListItem() { Text = x.Value, Value = x.Code1 }).ToList();
+            return itemList;
+        }
+
         public CodeModel GetById(int id)
         {
             ICodesRepository codesRepo = new CodesRepository();

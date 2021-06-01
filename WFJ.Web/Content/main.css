@@ -6433,3 +6433,9 @@ td .td-with-inline-icons {
 .maginTopCheckbox {
     margin-top: 32px;
 }
+
+/* Handle checkbox size and margin InHouseCounsel */
+.divInHouseCounsel {
+    font-size: 16px;
+    margin-left: 340px;
+}

@@ -295,3 +295,7 @@ ADD FOREIGN KEY (AssignedCollectorID) REFERENCES [Users](UserID);
 
 ALTER TABLE Requests
 ADD FOREIGN KEY (AssignedAttorney) REFERENCES [Personnel](ID);
+
+ALTER TABLE [dbo].[PersonnelRequests]
+ADD CONSTRAINT FK_PersonnelRequests_localCounselStatus
+FOREIGN KEY (localCounselStatus) REFERENCES localCounselStatuses(localCounselStatusID);
