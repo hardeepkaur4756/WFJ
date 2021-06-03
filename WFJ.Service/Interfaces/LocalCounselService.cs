@@ -184,6 +184,7 @@ namespace WFJ.Service.Interfaces
                     associateCounsel.W9 = addLocalCounselViewModel.W9;
                     associateCounsel.ALQ = addLocalCounselViewModel.ALQ;
                     associateCounsel.GB = addLocalCounselViewModel.GeneralBar;
+                    associateCounsel.WH = addLocalCounselViewModel.WrightHolmess;
                     associateCounsel.DoNotUse = Convert.ToByte(addLocalCounselViewModel.DoNotUse);
                     associateCounsel.Notes = addLocalCounselViewModel.Notes;
                     associateResult = associateCounselRepo.Update(associateCounsel);

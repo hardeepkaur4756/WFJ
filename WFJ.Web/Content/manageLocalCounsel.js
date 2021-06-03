@@ -167,6 +167,7 @@ function GetViewAddNewLocalConsel() {
     $("#W9").prop('checked', false);
     $("#ALQ").prop('checked', false);
     $("#GeneralBar").prop('checked', false);
+    $("#WrightHolmess").prop('checked', false);
     //$("#GB").prop('checked', false);
     $("#DoNot").prop('checked', false);
     $('#divShowLocalCounsel').addClass("hide");
@@ -196,6 +197,7 @@ function addAssociateCounsel() {
         saveAddCounselViewModel.ALQ = $("#ALQ").is(":checked") ? "true" : "false";
         saveAddCounselViewModel.GB = $("#GB").is(":checked") ? "true" : "false";
         saveAddCounselViewModel.GeneralBar = $("#GeneralBar").is(":checked") ? "true" : "false";
+        saveAddCounselViewModel.WrightHolmess = $("#WrightHolmess").is(":checked") ? "true" : "false";
         saveAddCounselViewModel.DoNotUse = $("#DoNotUse").is(":checked") ? "true" : "false";
         saveAddCounselViewModel.Notes = $("#Notes").val();
     if ($("#FirmName").val() == "") {
