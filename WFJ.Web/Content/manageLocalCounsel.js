@@ -115,7 +115,7 @@ function GetLocalCounselData() {
                 {
                     "render": function (row, type, full) {
 
-                        return '<a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a><a href="javascript:void(0)" onclick="addPersonnelRequests(' + full.Id + ')" class="btn btn-sm btn-primary" ' + (full.DoNotUse === 1 ? 'style="Display:none;margin-left:2px;"' :'style="margin-left: 2px;"')+' title="Select Firm"><i class="fa fa-plus"></i></i></a>';
+                        return '<div class="d-flex"><a href="javascript:void(0)" onclick="editAssociateCounsel(' + full.Id + ')" class="btn btn-sm btn-primary" title="View Detail"><i class="fa fa-eye"></i></i></a><a href="javascript:void(0)" onclick="addPersonnelRequests(' + full.Id + ')" class="btn btn-sm btn-primary" ' + (full.DoNotUse === 1 ? 'style="Display:none;margin-left:2px;"' :'style="margin-left: 2px;"')+' title="Select Firm"><i class="fa fa-plus"></i></i></a></div>';
                         
                     },
                     orderable: false

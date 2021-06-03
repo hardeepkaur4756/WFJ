@@ -80,17 +80,19 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="col-md-3" style="display: inline-block;">
-            <label>Check</label>
-            @Html.CheckBoxFor(x => x.Check, new { @Class = "maginTopCheckbox", id = "Check" })
-        </div>
-        <div class="col-md-3" style="display: inline-block;">
-            <label>W9</label>
-            @Html.CheckBoxFor(x => x.W9, new { @Class = "maginTopCheckbox", id = "W9" })
-        </div>
-        <div class="col-md-3" style="display: inline-block;">
-            <label>Do Not Use</label>
-            @Html.CheckBoxFor(x => x.DoNotUse, new { @Class = "", id = "DoNotUse" })
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <label>Check</label>
+                @Html.CheckBoxFor(x => x.Check, new { @Class = "maginTopCheckbox", id = "Check" })
+            </div>
+            <div class="col-md-4">
+                <label>W9</label>
+                @Html.CheckBoxFor(x => x.W9, new { @Class = "maginTopCheckbox", id = "W9" })
+            </div>
+            <div class="col-md-4">
+                <label>Do Not Use</label>
+                @Html.CheckBoxFor(x => x.DoNotUse, new { @Class = "maginTopCheckbox", id = "DoNotUse" })
+            </div>
         </div>
     </div>
     <div class="col-md-6">
@@ -104,17 +106,19 @@
             <label>GB</label>
             @Html.CheckBoxFor(x => x.GB, new { @Class = "", id = "GB" })
         </div>*@
-        <div class="col-md-3" style="display: inline-block;">
-            <label>GB</label>
-            @Html.CheckBoxFor(x => x.GeneralBar, new { @Class = "", id = "GeneralBar" })
-        </div>
-        <div class="col-md-3" style="display: inline-block;">
-            <label>ALQ</label>
-            @Html.CheckBoxFor(x => x.ALQ, new { @Class = "", id = "ALQ" })
-        </div>
-        <div class="col-md-3" style="display: inline-block;">
-            <label>WH</label>
-            @Html.CheckBoxFor(x => x.WrightHolmess, new { @Class = "", id = "WrightHolmess" })
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <label>GB</label>
+                @Html.CheckBoxFor(x => x.GeneralBar, new { @Class = "", id = "GeneralBar" })
+            </div>
+            <div class="col-md-4">
+                <label>ALQ</label>
+                @Html.CheckBoxFor(x => x.ALQ, new { @Class = "", id = "ALQ" })
+            </div>
+            <div class="col-md-4">
+                <label>WH</label>
+                @Html.CheckBoxFor(x => x.WrightHolmess, new { @Class = "", id = "WrightHolmess" })
+            </div>
         </div>
     </div>
     <div class="col-md-12">
