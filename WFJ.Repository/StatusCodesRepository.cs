@@ -29,5 +29,18 @@ namespace WFJ.Repository
         {
             return _context.StatusCodes.FirstOrDefault(x => x.StatusCode1 == statusCode && x.FormID == formId);
         }
+
+        public IEnumerable<int?> GetNewAndActiveStatusCode()
+        {
+            List<int> codes = new List<int>();
+            codes.Add(0);
+            codes.Add(1);
+            return _context.StatusCodes.Where(x => codes.Contains((Int32)x.StatusLevel)).Select(x => x.StatusCode1).Distinct();
+        }
+
+        public IEnumerable<int?> GetCodesByStatusName(string statusName)
+        {
+            return _context.StatusCodes.Where(x => x.Description.ToLower().Contains(statusName.ToLower())).Select(x => x.StatusCode1).Distinct();
+        }
     }
 }

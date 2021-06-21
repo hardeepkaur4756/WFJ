@@ -49,5 +49,11 @@ namespace WFJ.Repository
                 return paymentList.ToList();
             }
         }
+
+        public IEnumerable<Payment> GetPaymentByApprovedAndXDays(int approved,int days)
+        {
+            DateTime date = DateTime.Now.AddDays(days);
+            return _context.Payments.Where(x => x.approved == approved && x.Request.RequestDate >= date);
+        }
     }
 }

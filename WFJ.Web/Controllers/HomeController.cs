@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web.Mvc;
+
 using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository.EntityModel;
@@ -52,8 +54,6 @@ namespace WFJ.Web.Controllers
         public ActionResult ViewRequestPayment()
         {
             return View();
-        }
-
-
+        }       
     }
 }

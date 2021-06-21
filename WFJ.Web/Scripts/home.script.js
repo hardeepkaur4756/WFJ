@@ -1563,7 +1563,7 @@
             },
             series: [{
                     data: [41, 9, 36, 12, 44, 25, 59, 41, 66, 25]
-                }],
+            }],
             stroke: {
                 curve: 'smooth',
                 width: 2,
@@ -1815,45 +1815,62 @@
             }], flotChartOption);
     }
 
-    var config = {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                    data: [3, 28, 67],
-                    backgroundColor: [
-                        '#1e3d73',
-                        '#17a2b8',
-                        '#ffc107'
-                    ],
-                    label: 'Dataset 1'
-                }],
-            labels: [
-                'Mobile',
-                'Desktop',
-                'Laptop'
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    fontColor: bodycolor
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/GetActiveAccounts",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            var config = {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [data.Active, data.LocalCounsel, data.InSuit, data.PaymentPlan],
+                        backgroundColor: [
+                            '#1e3d73',
+                            '#17a2b8',
+                            '#ffc107',
+                            'Brown'
+                        ],
+                        label: 'Dataset 1'
+                    }],
+                    labels: [
+                        'Active',
+                        'Local Counsel',
+                        'In Suit',
+                        'Payment Plan'
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            fontColor: bodycolor
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
                 }
-            },
-            animation: {
-                animateScale: true,
-                animateRotate: true
-            },
+            };
+
+            var chartjs_other_pie = document.getElementById("chartjs-other-pie");
+            if (chartjs_other_pie) {
+                var ctx = document.getElementById('chartjs-other-pie').getContext('2d');
+                window.myDoughnut = new Chart(ctx, config);
+            }
+        },
+        "error": function (data) {
+            console.log("Some Error Occured!");
         }
-    };
-    var chartjs_other_pie = document.getElementById("chartjs-other-pie");
-    if (chartjs_other_pie) {
-        var ctx = document.getElementById('chartjs-other-pie').getContext('2d');
-        window.myDoughnut = new Chart(ctx, config);
-    }
+    });  
+
+   
 
 
 /////////////////////////////////// Analytic Chart /////////////////////

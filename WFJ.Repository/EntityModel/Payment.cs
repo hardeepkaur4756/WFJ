@@ -27,6 +27,7 @@ namespace WFJ.Repository.EntityModel
         public string WFJReferenceNumber { get; set; }
         public Nullable<System.DateTime> WFJReferenceDate { get; set; }
         public Nullable<System.DateTime> WFJInvoiceDatePaid { get; set; }
+        public Nullable<byte> approved { get; set; }
     
         public virtual currency currency { get; set; }
         public virtual PaymentType PaymentType { get; set; }

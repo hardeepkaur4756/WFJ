@@ -12,5 +12,7 @@ namespace WFJ.Repository.Interfaces
         IEnumerable<StatusCode> GetByFormID(int FormID);
         IEnumerable<int?> GetActiveStatusCode(int FormID);
         StatusCode GetByStatusCodeAndFormId(int statusCode, int formId);
+        IEnumerable<int?> GetNewAndActiveStatusCode();
+        IEnumerable<int?> GetCodesByStatusName(string statusName);
     }
 }

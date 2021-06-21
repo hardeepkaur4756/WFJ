@@ -69,17 +69,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionRequiredViewModel.cs" />
+    <Compile Include="ActiveAccountChartViewModel.cs" />
     <Compile Include="AddLocalCounselViewModel.cs" />
     <Compile Include="AddEditPlacementsViewModel.cs" />
+    <Compile Include="AdminDashboardViewModel.cs" />
+    <Compile Include="ApprovedRecentPayementViewModel.cs" />
     <Compile Include="CategoryModel.cs" />
+    <Compile Include="ClientDashboardViewModel.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="CodeModel.cs" />
+    <Compile Include="DashboardViewModel.cs" />
     <Compile Include="DatatableModels.cs" />
     <Compile Include="DataTableParam.cs" />
     <Compile Include="DocumentsModel.cs" />
     <Compile Include="ErrorLogModel.cs" />
     <Compile Include="ExceptionModel.cs" />
     <Compile Include="DocumentViewModel.cs" />
+    <Compile Include="FinalDemandViewModel.cs" />
     <Compile Include="FormModel.cs" />
     <Compile Include="FormTypeModel.cs" />
     <Compile Include="LocalCounselModel.cs" />
@@ -99,6 +106,8 @@
     <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />
+    <Compile Include="RecentlyOpenedAccountViewModel.cs" />
+    <Compile Include="RecentlyOpenedClientViewModel.cs" />
     <Compile Include="RequestDocumentViewModel.cs" />
     <Compile Include="SavePlacementViewModel.cs" />
     <Compile Include="PracticeAreaModel.cs" />
@@ -107,6 +116,7 @@
     <Compile Include="ResultModel.cs" />
     <Compile Include="ProfileViewModel.cs" />
     <Compile Include="StatusCodesModel.cs" />
+    <Compile Include="UserDashboardViewModel.cs" />
     <Compile Include="UserModel.cs" />
     <Compile Include="UserViewModel.cs" />
     <Compile Include="AssociateCounselModel.cs" />

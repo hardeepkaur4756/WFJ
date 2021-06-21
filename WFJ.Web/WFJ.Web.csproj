@@ -137,6 +137,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DocumentCenterController.cs" />
     <Compile Include="Controllers\EncryptPasswordController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -3553,6 +3554,10 @@
     <Content Include="Views\LocalCounsel\_addLocalCounsel.cshtml" />
     <Content Include="Views\LocalCounsel\_associateCounselGrid.cshtml" />
     <Content Include="Views\LocalCounsel\_assignedFile.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Dashboard\_adminDashboard.cshtml" />
+    <Content Include="Views\Dashboard\_userDashboard.cshtml" />
+    <Content Include="Views\Dashboard\_clientDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

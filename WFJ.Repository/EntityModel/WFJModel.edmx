@@ -194,6 +194,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.areas' does not have a primary key 
           <Property Name="hasExportFiles" Type="tinyint" />
           <Property Name="showWFJFees" Type="tinyint" />
           <Property Name="Active" Type="tinyint" />
+          <Property Name="dtCreated" Type="smalldatetime" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'wfj_testdb.dbo.ClientsLive' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1309,6 +1310,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="WFJReferenceNumber" Type="varchar" MaxLength="20" />
           <Property Name="WFJReferenceDate" Type="smalldatetime" />
           <Property Name="WFJInvoiceDatePaid" Type="smalldatetime" />
+          <Property Name="approved" Type="tinyint" />
         </EntityType>
         <EntityType Name="PaymentTypes">
           <Key>
@@ -3034,6 +3036,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Forms1" Relationship="WFJDBModel.FK__Forms__ClientID__64B7E415" FromRole="Client" ToRole="Form" />
           <Property Name="clientNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <Property Name="clientPaymentNotes" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="dtCreated" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Clientsx">
           <Key>
@@ -3948,6 +3951,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="PaymentType" Relationship="WFJDBModel.FK_Payment_PaymentType" FromRole="Payment" ToRole="PaymentType" />
           <NavigationProperty Name="User" Relationship="WFJDBModel.FK_Payment_User" FromRole="Payment" ToRole="User" />
           <NavigationProperty Name="Request" Relationship="WFJDBModel.FK_Payment_Request" FromRole="Payment" ToRole="Request" />
+          <Property Name="approved" Type="Byte" />
         </EntityType>
         <EntityType Name="PaymentType">
           <Key>
@@ -5797,6 +5801,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="WFJDBModel.Client">
               <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="dtCreated" ColumnName="dtCreated" />
                 <ScalarProperty Name="clientPaymentNotes" ColumnName="clientPaymentNotes" />
                 <ScalarProperty Name="clientNotes" ColumnName="clientNotes" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -6743,6 +6748,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="WFJDBModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="approved" ColumnName="approved" />
                 <ScalarProperty Name="WFJInvoiceDatePaid" ColumnName="WFJInvoiceDatePaid" />
                 <ScalarProperty Name="WFJReferenceDate" ColumnName="WFJReferenceDate" />
                 <ScalarProperty Name="WFJReferenceNumber" ColumnName="WFJReferenceNumber" />

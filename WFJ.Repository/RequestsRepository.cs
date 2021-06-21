@@ -89,6 +89,17 @@ namespace WFJ.Repository
                 .Include(x => x.User1) // Requestor
                 .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
         }
-      
+
+        public IEnumerable<Request> GetRequestByXDays(int days)
+        {
+            DateTime date = DateTime.Now.AddDays(days);
+            return _context.Requests.Where(x => x.RequestDate >= date && x.StatusCode != null && x.FormID != null);
+        }
+
+        public IEnumerable<Request> GetRequestByStatusName(string statusCodeName)
+        {
+            var statuscodes = _statusCodesRepo.GetCodesByStatusName(statusCodeName).ToList();
+            return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode));
+        }
     }
 }

@@ -15,5 +15,11 @@ namespace WFJ.Repository
         {
             context = new WFJEntities();
         }
+
+        public List<Client> GetAllClientsByXDays(int days)
+        {
+            DateTime date = DateTime.Now.AddDays(days);
+            return context.Clients.Where(x=> x.dtCreated != null && x.dtCreated.Value >= date).ToList();
+        }
     }
 }

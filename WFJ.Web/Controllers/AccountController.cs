@@ -163,7 +163,7 @@ namespace WFJ.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Dashboard");
                     }
                     
                 }

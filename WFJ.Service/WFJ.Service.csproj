@@ -101,10 +101,12 @@
     <Compile Include="ClientService.cs" />
     <Compile Include="CodesService.cs" />
     <Compile Include="CurrenciesService.cs" />
+    <Compile Include="DashboardService.cs" />
     <Compile Include="DocumentSearchService.cs" />
     <Compile Include="ErrorLogService.cs" />
     <Compile Include="FormService.cs" />
     <Compile Include="FormTypeService.cs" />
+    <Compile Include="Interfaces\IDashboardService.cs" />
     <Compile Include="Interfaces\ILocalCounselService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\IClientService.cs" />
