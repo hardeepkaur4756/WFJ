@@ -24,6 +24,7 @@ namespace WFJ.Service
             //Bind Data
             adminDashboardViewModel.RecentlyOpenedClients = GetRecentlyOpenedClient();
             adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount();
+            adminDashboardViewModel.FinalDemands = GetFinalDemand();
             return adminDashboardViewModel;
         }
 
@@ -75,6 +76,25 @@ namespace WFJ.Service
                 }
             }
             return recentlyOpenedAccountViewModels;
+        }
+
+        /// <summary>
+        /// Get Final Demand
+        /// </summary>
+        /// <returns></returns>
+        public List<FinalDemandViewModel> GetFinalDemand()
+        {
+            List<FinalDemandViewModel> finalDemandViewModels = new List<FinalDemandViewModel>();
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            finalDemandViewModels = _requestsRepository.GetRequestByStatusName("Final Demand Request")
+                .Select(x => new FinalDemandViewModel
+                {
+                    CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
+                    ClientName = x.Form.Client.ClientName,
+                    Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID))
+                }).ToList();
+
+            return finalDemandViewModels;
         }
 
         /// <summary>
