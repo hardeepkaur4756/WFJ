@@ -8,5 +8,8 @@ namespace WFJ.Models
 {
     public class UserDashboardViewModel
     {
+        public List<RecentlyOpenedAccountViewModel> RecentlyOpenedAccounts { get; set; }
+        public List<ActionRequiredViewModel> ActionRequireds { get; set; }
+        public List<ApprovedRecentPayementViewModel> ApprovedPayements { get; set; }
     }
 }

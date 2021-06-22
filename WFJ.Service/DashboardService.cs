@@ -23,11 +23,25 @@ namespace WFJ.Service
 
             //Bind Data
             adminDashboardViewModel.RecentlyOpenedClients = GetRecentlyOpenedClient();
-            adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount();
+            adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(0);
             adminDashboardViewModel.FinalDemands = GetFinalDemand();
-            adminDashboardViewModel.ActionRequireds = GetActionRequired();
-            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment();
+            adminDashboardViewModel.ActionRequireds = GetActionRequired(0);
+            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment(1,0);
             return adminDashboardViewModel;
+        }
+
+        public UserDashboardViewModel GetUserDashboardData(int userId)
+        {
+            UserDashboardViewModel userDashboardViewModel = new UserDashboardViewModel();
+            userDashboardViewModel.RecentlyOpenedAccounts = new List<RecentlyOpenedAccountViewModel>();
+            userDashboardViewModel.ActionRequireds = new List<ActionRequiredViewModel>();
+            userDashboardViewModel.ApprovedPayements = new List<ApprovedRecentPayementViewModel>();
+
+            //Bind Data
+            userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(userId);
+            userDashboardViewModel.ActionRequireds = GetActionRequired(userId);
+            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, userId);
+            return userDashboardViewModel;
         }
 
         /// <summary>
@@ -49,12 +63,12 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        public List<RecentlyOpenedAccountViewModel> GetRecentlyOpenedAccount()
+        public List<RecentlyOpenedAccountViewModel> GetRecentlyOpenedAccount(int userId)
         {
             List<RecentlyOpenedAccountViewModel> recentlyOpenedAccountViewModels = new List<RecentlyOpenedAccountViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
-            var requests = _requestsRepository.GetRequestByXDays(-7).GroupBy(x => x.Requestor)
+            var requests = _requestsRepository.GetRequestByXDays(-7,userId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
                     FormId = x.Max(z=>z.FormID),
@@ -99,11 +113,11 @@ namespace WFJ.Service
             return finalDemandViewModels;
         }
 
-        public List<ActionRequiredViewModel> GetActionRequired()
+        public List<ActionRequiredViewModel> GetActionRequired(int userId)
         {
             List<ActionRequiredViewModel> actionRequiredViewModels = new List<ActionRequiredViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            actionRequiredViewModels = _requestsRepository.GetRequestOutOfCompliance()
+            actionRequiredViewModels = _requestsRepository.GetRequestOutOfCompliance(userId)
                 .Select(x => new ActionRequiredViewModel
                 {
                     AttorneyName = x.Personnel?.FullName,
@@ -166,13 +180,13 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        public List<ApprovedRecentPayementViewModel> GetApprovedPayment()
+        public List<ApprovedRecentPayementViewModel> GetApprovedPayment(int approved, int userId)
         {
             List<ApprovedRecentPayementViewModel> approvedPayements = new List<ApprovedRecentPayementViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             IPaymentsRepository _paymentRepository = new PaymentsRepository();
-            approvedPayements = _paymentRepository.GetPaymentByApprovedAndXDays(1)
+            approvedPayements = _paymentRepository.GetPaymentByApprovedAndXDays(approved, userId)
                 .Select(x => new ApprovedRecentPayementViewModel
                 {
                     FormName = x.Request?.Form?.FormName,

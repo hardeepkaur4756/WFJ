@@ -90,10 +90,18 @@ namespace WFJ.Repository
                 .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
         }
 
-        public IEnumerable<Request> GetRequestByXDays(int days)
+        public IEnumerable<Request> GetRequestByXDays(int days, int userId)
         {
             DateTime date = DateTime.Now.AddDays(days);
-            return _context.Requests.Where(x => x.RequestDate >= date && x.StatusCode != null && x.FormID != null);
+            if (userId > 0)
+            {
+                return _context.Requests.Where(x => x.Requestor!=null && x.Requestor.Value == userId && x.RequestDate >= date && x.StatusCode != null && x.FormID != null);
+
+            }
+            else
+            {
+                return _context.Requests.Where(x => x.RequestDate >= date && x.StatusCode != null && x.FormID != null);
+            }
         }
 
         public IEnumerable<Request> GetRequestByStatusName(string statusCodeName)
@@ -102,11 +110,21 @@ namespace WFJ.Repository
             return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode)).OrderByDescending(x=>x.RequestDate).Take(7).ToList();
         }
 
-        public IEnumerable<Request> GetRequestOutOfCompliance()
+        public IEnumerable<Request> GetRequestOutOfCompliance(int userId)
         {
             var statusCodes = _context.StatusCodes.Where(x => x.OnCollectorComplianceReport == 1 && x.StatusLevel == 1).Select(x => x.StatusCode1).Distinct();
-            return _context.Requests.Where(x => statusCodes.Contains(x.StatusCode) && (x.Form != null &&
-            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x=>x.RequestDate).Take(7);
+
+            if (userId > 0)
+            {
+                return _context.Requests.Where(x => x.Requestor != null && x.Requestor.Value == userId && statusCodes.Contains(x.StatusCode) && (x.Form != null &&
+            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x => x.RequestDate).Take(7);
+            }
+
+            else
+            {
+                return _context.Requests.Where(x => statusCodes.Contains(x.StatusCode) && (x.Form != null &&
+            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x => x.RequestDate).Take(7);
+            }
         }
     }
 }
