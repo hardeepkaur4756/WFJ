@@ -114,7 +114,7 @@ namespace WFJ.Service
                     .FirstOrDefault().NotesDate.Value.ToString("MM/dd/yyyy") : "",
                     LastNote = x.RequestNotes.Any()?x.RequestNotes.OrderByDescending(y => y.NotesDate)?
                     .FirstOrDefault()?.Notes : ""
-                }).ToList();
+                }).OrderBy(x=>x.AttorneyName).ThenBy(x=>x.ClientName).ThenBy(x=>x.Status).ThenBy(x=>x.CustomerName).ToList();
 
             return actionRequiredViewModels;
         }
