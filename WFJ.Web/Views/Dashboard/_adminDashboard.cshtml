@@ -160,18 +160,23 @@
                         </thead>
                         <tbody>
                             <tr class="zoom">
-                                <td>France</td>
-                                <td class="text-success">ssss</td>
-                                <td>ss</td>
-                                <td>France</td>
-                                <td class="text-success">ssss</td>
-                                <td>ss</td>
-                                <td>France</td>
-                                <td class="text-success">ssss</td>
-                                <td>ss</td>
-                                <td>ss</td>
+                                @foreach (var request in Model.ApprovedPayements)
+                                {
+                            <tr class="zoom">
+                                <td>@request.ClientName</td>
+                                <td>@request.CustomerName</td>
+                                <td>@request.FormName</td>
+                                <td>@request.Status</td>
+                                <td>@request.PaymentDate</td>
+                                <td>@request.PaymentAmount</td>
+                                <td>@request.WFJFees</td>
+                                <td>@request.PaymentType</td>
+                                <td>@request.InvoicDate</td>
+                                <td>@request.InvoiceNumber</td>
                             </tr>
-                        </tbody>
+                            }
+                                </tr>
+                            </tbody>
                     </table>
                 </div>
             </div>

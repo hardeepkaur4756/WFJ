@@ -13,8 +13,8 @@ namespace WFJ.Models
         public string FormName { get; set; }
         public string Status { get; set; }
         public string PaymentDate { get; set; }
-        public string PaymentAmount { get; set; }
-        public string WFJFees { get; set; }
+        public double? PaymentAmount { get; set; }
+        public double? WFJFees { get; set; }
         public string PaymentType { get; set; }
         public string InvoicDate { get; set; }
         public string InvoiceNumber { get; set; }

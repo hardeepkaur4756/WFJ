@@ -26,6 +26,7 @@ namespace WFJ.Service
             adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount();
             adminDashboardViewModel.FinalDemands = GetFinalDemand();
             adminDashboardViewModel.ActionRequireds = GetActionRequired();
+            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment();
             return adminDashboardViewModel;
         }
 
@@ -110,11 +111,10 @@ namespace WFJ.Service
                     ClientName = x.Form.Client.ClientName,
                     Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
                     ComplianceDuration = ComplianceDuration(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
-                    LastNoteDate = x.RequestNotes.Any()? x.RequestNotes.OrderByDescending(y => y.NotesDate)?
-                    .FirstOrDefault().NotesDate.Value.ToString("MM/dd/yyyy") : "",
-                    LastNote = x.RequestNotes.Any()?x.RequestNotes.OrderByDescending(y => y.NotesDate)?
+                    LastNoteDate = x.LastNoteDate.HasValue ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : "",
+                    LastNote = x.RequestNotes.Any() ? x.RequestNotes.OrderByDescending(y => y.NotesDate)?
                     .FirstOrDefault()?.Notes : ""
-                }).OrderBy(x=>x.AttorneyName).ThenBy(x=>x.ClientName).ThenBy(x=>x.Status).ThenBy(x=>x.CustomerName).ToList();
+                }).OrderBy(x => x.AttorneyName).ThenBy(x => x.ClientName).ThenBy(x => x.Status).ThenBy(x => x.CustomerName).ToList();
 
             return actionRequiredViewModels;
         }
@@ -172,30 +172,22 @@ namespace WFJ.Service
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             IPaymentsRepository _paymentRepository = new PaymentsRepository();
-            var requests = _paymentRepository.GetPaymentByApprovedAndXDays(1,7);
-                //.GroupBy(x => x.Requestor)
-                //.Select(x => new RequestModel
-                //{
-                //    FormId = x.Max(z => z.FormID),
-                //    RequestId = x.Max(z => z.ID),
-                //    StatusCode = x.Max(z => z.StatusCode),
-                //    RequestDate = x.Max(z => z.RequestDate),
-                //    ClientName = x.Max(z => z.Form.Client.ClientName),
-                //})
-                //.OrderByDescending(x => x.RequestDate)
-                //.ToList();
-
-            //if (requests != null && requests.Any())
-            //{
-            //    foreach (var request in requests)
-            //    {
-            //        ApprovedRecentPayementViewModel approvedRecentPayementViewModel = new ApprovedRecentPayementViewModel();
-            //        approvedRecentPayementViewModel.ClientName = request.ClientName;
-            //        approvedRecentPayementViewModel.Status = GetStatus(Convert.ToInt32(request.StatusCode), Convert.ToInt32(request.FormId));
-            //        approvedRecentPayementViewModel.CustomerName = GetCustomerName(request.RequestId, Convert.ToInt32(request.FormId));
-            //        approvedPayements.Add(approvedRecentPayementViewModel);
-            //    }
-            //}
+            approvedPayements = _paymentRepository.GetPaymentByApprovedAndXDays(1)
+                .Select(x => new ApprovedRecentPayementViewModel
+                {
+                    FormName = x.Request?.Form?.FormName,
+                    PaymentAmount = x.Amount,
+                    PaymentDate = x.PaymentDate.HasValue? x.PaymentDate.Value.ToString("MM/dd/yyyy"): "",
+                    PaymentType = x.PaymentType?.PaymentTypeDesc,
+                    WFJFees = x.WFJFees,
+                    InvoicDate = x.WFJInvoiceDatePaid.HasValue ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy"):"",
+                    CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.Request?.FormID)),
+                    ClientName = x.Request?.Form.Client.ClientName,
+                    Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.Form.ID)),
+                    InvoiceNumber = x.CheckNumber
+                })
+                .OrderBy(x => x.ClientName).ThenBy(x => x.CustomerName).ThenBy(x => x.FormName).ThenBy(x => x.PaymentDate)
+                .ToList();
             return approvedPayements;
         }
 
