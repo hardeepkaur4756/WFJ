@@ -25,6 +25,7 @@ namespace WFJ.Service
             adminDashboardViewModel.RecentlyOpenedClients = GetRecentlyOpenedClient();
             adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount();
             adminDashboardViewModel.FinalDemands = GetFinalDemand();
+            adminDashboardViewModel.ActionRequireds = GetActionRequired();
             return adminDashboardViewModel;
         }
 
@@ -97,6 +98,25 @@ namespace WFJ.Service
             return finalDemandViewModels;
         }
 
+        public List<ActionRequiredViewModel> GetActionRequired()
+        {
+            List<ActionRequiredViewModel> actionRequiredViewModels = new List<ActionRequiredViewModel>();
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            actionRequiredViewModels = _requestsRepository.GetRequestOutOfCompliance()
+                .Select(x => new ActionRequiredViewModel
+                {
+                    AttorneyName = x.Personnel?.FullName,
+                    CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
+                    ClientName = x.Form.Client.ClientName,
+                    Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
+                    ComplianceDuration = ComplianceDuration(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
+                    LastNoteDate = x.RequestNotes?.OrderByDescending(y=>y.NotesDate)?.FirstOrDefault().NotesDate.Value.ToString("MM/dd/yyyy"),
+                    LastNote = x.RequestNotes?.OrderByDescending(y => y.NotesDate)?.FirstOrDefault()?.Notes
+                }).ToList();
+
+            return actionRequiredViewModels;
+        }
+
         /// <summary>
         /// get customer name
         /// </summary>
@@ -124,6 +144,12 @@ namespace WFJ.Service
             IStatusCodesRepository _statusCodeRepository = new StatusCodesRepository();
             var statusDescription = _statusCodeRepository.GetByStatusCodeAndFormId(statusCode, formId)?.Description;
             return statusDescription;
+        }
+        public int? ComplianceDuration(int statusCode, int formId)
+        {
+            IStatusCodesRepository _statusCodeRepository = new StatusCodesRepository();
+            var complianceDuration = _statusCodeRepository.GetByStatusCodeAndFormId(statusCode, formId)?.complianceDuration;
+            return complianceDuration;
         }
 
         /// <summary>

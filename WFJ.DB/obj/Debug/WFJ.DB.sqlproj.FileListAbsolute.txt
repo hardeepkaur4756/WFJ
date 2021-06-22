@@ -6,3 +6,9 @@ F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\postdeploy.sql
 F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\predeploy.sql
 F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\WFJ.DB.dll
 F:\WFJProject\WFJ.Web\WFJ.DB\obj\Debug\WFJ.DB.pdb
+E:\Projects\WFJ\WFJ\WFJ.DB\bin\Debug\WFJ.DB.dacpac
+E:\Projects\WFJ\WFJ\WFJ.DB\bin\Debug\WFJ.DB.dll
+E:\Projects\WFJ\WFJ\WFJ.DB\bin\Debug\WFJ.DB.pdb
+E:\Projects\WFJ\WFJ\WFJ.DB\obj\Debug\WFJ.DB.dll
+E:\Projects\WFJ\WFJ\WFJ.DB\obj\Debug\WFJ.DB.pdb
+E:\Projects\WFJ\WFJ\WFJ.DB\obj\Debug\WFJ.DB.sqlprojAssemblyReference.cache
