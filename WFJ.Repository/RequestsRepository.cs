@@ -99,7 +99,16 @@ namespace WFJ.Repository
         public IEnumerable<Request> GetRequestByStatusName(string statusCodeName)
         {
             var statuscodes = _statusCodesRepo.GetCodesByStatusName(statusCodeName).ToList();
-            return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode));
+            return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode)).OrderByDescending(x=>x.RequestDate).Take(7).ToList();
         }
+
+        public IEnumerable<Request> GetRequestOutOfCompliance()
+        {
+            var statusCodes = _context.StatusCodes.Where(x => x.OnCollectorComplianceReport == 1 && x.StatusLevel == 1).Select(x => x.StatusCode1).Distinct();
+            return _context.Requests.Where(x => statusCodes.Contains(x.StatusCode) && (x.Form != null &&
+            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x=>x.RequestDate).Take(7);
+
+        }
+
     }
 }

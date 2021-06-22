@@ -12,5 +12,6 @@ namespace WFJ.Repository.Interfaces
         Request GetRequestWithDetail(int requestId);
         IEnumerable<Request> GetRequestByXDays(int days);
         IEnumerable<Request> GetRequestByStatusName(string statusCodeName);
+        IEnumerable<Request> GetRequestOutOfCompliance();
     }
 }
