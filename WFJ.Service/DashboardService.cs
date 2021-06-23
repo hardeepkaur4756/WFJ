@@ -48,7 +48,7 @@ namespace WFJ.Service
             //Bind Data
             userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(userId);
             userDashboardViewModel.ActionRequireds = GetActionRequired(userId);
-            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, 1416);
+            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, userId);
             userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(selectedForm?.Client?.ID ?? 0, selectedForm.ID);
             return userDashboardViewModel;
         }
