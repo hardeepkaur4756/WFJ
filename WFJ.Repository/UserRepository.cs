@@ -23,7 +23,10 @@ namespace WFJ.Repository
             _context.Configuration.LazyLoadingEnabled = true;
             _context.Configuration.ProxyCreationEnabled = true;
         }
-        
+        public User GetById(int id)
+        {
+            return _context.Users.FirstOrDefault(x => x.UserID == id);
+        }
 
         public User GetByEmail(string email)
         {

@@ -21,5 +21,9 @@ namespace WFJ.Repository
             DateTime date = DateTime.Now.AddDays(days);
             return context.Clients.Where(x=> x.dtCreated != null && x.dtCreated.Value >= date).ToList();
         }
+        public Client GetClientByDefaultUserId(int userId)
+        {
+            return context.Clients.FirstOrDefault(x => x.defaultUserID == userId);
+        }
     }
 }

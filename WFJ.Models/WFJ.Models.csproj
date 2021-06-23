@@ -79,6 +79,7 @@
     <Compile Include="ClientDashboardViewModel.cs" />
     <Compile Include="ClientModel.cs" />
     <Compile Include="CodeModel.cs" />
+    <Compile Include="DashboardBaseModel.cs" />
     <Compile Include="DashboardViewModel.cs" />
     <Compile Include="DatatableModels.cs" />
     <Compile Include="DataTableParam.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />
-    <Compile Include="RecentlyOpenedAccountViewModel.cs" />
     <Compile Include="RecentlyOpenedClientViewModel.cs" />
     <Compile Include="RequestDocumentViewModel.cs" />
     <Compile Include="SavePlacementViewModel.cs" />

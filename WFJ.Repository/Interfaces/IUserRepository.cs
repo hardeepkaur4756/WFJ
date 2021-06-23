@@ -11,6 +11,7 @@ namespace WFJ.Repository.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         //IEnumerable<User> GetAll();
+        User GetById(int id);
         User GetByEmail(string email);
         User GetByEmailOrUserName(string email);
         User GetByEmailAndPassword(string email, string password);

@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class FinalDemandViewModel
+    public class FinalDemandViewModel : DashboardBaseModel
     {
-        public string ClientName { get; set; }
-        public string CustomerName { get; set; }
-        public string Status { get; set; }
     }
 }

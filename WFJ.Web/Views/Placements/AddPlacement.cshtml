@@ -15,7 +15,7 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var FieldsGrouped = Model.FormFieldsList.GroupBy(x => x.formSectionID)
+    var FieldsGrouped = Model.FormFieldsList?.GroupBy(x => x.formSectionID)
                         .Select(x => new
                         {
                             sectionId = x.Key,
@@ -31,8 +31,8 @@
     int? userAccess = Model.UserAccess;
     int clientId = Model.ClientId;
     int userType = Model.UserType;
-    bool AssociateCounselVisible = Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
-    string localCounselTabLabel = Model.FormDetail.LocalCounselTabLabel;
+    bool AssociateCounselVisible = true;//Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
+    string localCounselTabLabel = Model.FormDetail?.LocalCounselTabLabel;
 
 }
 @*<script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>*@
@@ -47,7 +47,7 @@
                     <h4 class="mb-4">@(Model.isEditMode ? "Edit" : "Add") Placement</h4>
                 </div>
                 <div class="col-md-7">
-                    <h4 class="mb-4">@Html.Raw(Model.FormDetail.ClientName ?? "&nbsp;")</h4>
+                    <h4 class="mb-4">@Html.Raw(Model.FormDetail?.ClientName ?? "&nbsp;")</h4>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
 
                     <div class="form-group">
                         <button type="button" class="btn btn-secondary">PDF</button>
-                        <a href="@Url.Action("ViewPlacements", "Placements", new { id = Model.FormDetail.ID })" class="btn btn-primary pull-right">Return to List</a>
+                        <a href="@Url.Action("ViewPlacements", "Placements", new { id = Model.FormDetail?.ID })" class="btn btn-primary pull-right">Return to List</a>
                     </div>
 
                     <div class="card mb-4">
@@ -120,14 +120,14 @@
                                 <div class="row">
 
                                     @*If the value in clients.regionName = "NONE" (case insensitive), then the Region field can be omitted.  You can save a "0" in the database (requests.levelID) for the Region.*@
-                                    <div class="col-lg-6 col-xl-4" style="@(Model.FormDetail.ClientLevelName != null && Model.FormDetail.ClientLevelName.ToLower() == "none" ? "display:none;" : "")">
+                                    <div class="col-lg-6 col-xl-4" style="@(Model.FormDetail?.ClientLevelName != null && Model.FormDetail?.ClientLevelName.ToLower() == "none" ? "display:none;" : "")">
                                         <div class="form-group">
                                             <label>Region</label>
                                             @Html.DropDownListFor(x => x.Request.LevelID, new SelectList(Model.RegionList, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
 
-                                    @if (Model.FormDetail.hasAdmin == 1)
+                                    @if (Model.FormDetail?.hasAdmin == 1)
                                     {
                                         <div class="col-lg-6 col-xl-4">
                                             <div class="form-group">
