@@ -176,6 +176,7 @@
                     <table class="table font-w-600 mb-0">
                         <thead>
                             <tr>
+                                <th>Approve Payment</th>
                                 <th>Client Name</th>
                                 <th>Customer Name</th>
                                 <th>Form Name</th>
@@ -192,6 +193,7 @@
                             @foreach (var request in Model.ApprovedPayements)
                             {
                                 <tr class="zoom">
+                                    <td><input type="checkbox" /></td>
                                     <td>@request.ClientName</td>
                                     <td>@request.CustomerName</td>
                                     <td>@request.FormName</td>

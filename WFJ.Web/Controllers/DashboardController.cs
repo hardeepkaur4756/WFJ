@@ -18,7 +18,12 @@ namespace WFJ.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            int userId = Convert.ToInt32(Session["UserId"].ToString());
+            int userId = 0;
+            if (Session["UserId"] != null)
+            {
+                userId = Convert.ToInt32(Session["UserId"].ToString());
+            }
+            
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
             dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData();
             dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId);
