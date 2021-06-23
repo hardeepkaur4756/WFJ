@@ -37,6 +37,7 @@ namespace WFJ.Repository.EntityModel
         public Nullable<System.DateTime> lastSent { get; set; }
         public string lastSentTo { get; set; }
         public Nullable<System.DateTime> paymentDate { get; set; }
+        public Nullable<bool> AlreadySeen { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<hiddenRequestNote> hiddenRequestNotes { get; set; }

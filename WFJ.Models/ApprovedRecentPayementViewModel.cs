@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class ApprovedRecentPayementViewModel
+    public class ApprovedRecentPayementViewModel: DashboardBaseModel
     {
-        public string ClientName { get; set; }
-        public string CustomerName { get; set; }
         public string FormName { get; set; }
-        public string Status { get; set; }
         public string PaymentDate { get; set; }
         public double? PaymentAmount { get; set; }
         public double? WFJFees { get; set; }

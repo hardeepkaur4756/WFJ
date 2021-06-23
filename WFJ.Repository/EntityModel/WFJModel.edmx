@@ -1506,6 +1506,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.pages' does not have a primary key 
           <Property Name="lastSent" Type="datetime" />
           <Property Name="lastSentTo" Type="varchar" MaxLength="500" />
           <Property Name="paymentDate" Type="smalldatetime" />
+          <Property Name="AlreadySeen" Type="bit" />
         </EntityType>
         <EntityType Name="RequestNotices">
           <Key>
@@ -5440,6 +5441,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="hiddenRequestNotes" Relationship="WFJDBModel.FK__hiddenReq__noteI__3BB5CE82" FromRole="RequestNote" ToRole="hiddenRequestNote" />
           <NavigationProperty Name="User" Relationship="WFJDBModel.FK__RequestNo__UserI__3D9E16F4" FromRole="RequestNote" ToRole="User" />
           <NavigationProperty Name="Request" Relationship="WFJDBModel.FK__RequestNo__Reque__3E923B2D" FromRole="RequestNote" ToRole="Request" />
+          <Property Name="AlreadySeen" Type="Boolean" />
         </EntityType>
         <Association Name="FK__hiddenReq__noteI__3BB5CE82">
           <End Type="WFJDBModel.RequestNote" Role="RequestNote" Multiplicity="0..1" />
@@ -7487,6 +7489,7 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <EntitySetMapping Name="RequestNotes">
             <EntityTypeMapping TypeName="WFJDBModel.RequestNote">
               <MappingFragment StoreEntitySet="RequestNotes">
+                <ScalarProperty Name="AlreadySeen" ColumnName="AlreadySeen" />
                 <ScalarProperty Name="paymentDate" ColumnName="paymentDate" />
                 <ScalarProperty Name="lastSentTo" ColumnName="lastSentTo" />
                 <ScalarProperty Name="lastSent" ColumnName="lastSent" />

@@ -7,6 +7,7 @@ using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
 using WFJ.Models;
+using WFJ.Repository.EntityModel;
 
 namespace WFJ.Web.Controllers
 {
@@ -18,15 +19,14 @@ namespace WFJ.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            int userId = 0;
-            if (Session["UserId"] != null)
-            {
-                userId = Convert.ToInt32(Session["UserId"].ToString());
-            }
-            
+            int userId = Convert.ToInt32(Session["UserId"].ToString());
+            int userType = Convert.ToInt32(Session["UserType"]);
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
+            var selectedForm = new Form();
+            (selectedForm, dashboardViewModel.DashbaordFilter) = _dashboardService.GetDashboardFilters(userType, userId);
             dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData();
-            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId);
+            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId, selectedForm);
+           
             dashboardViewModel.ClientDashboard = new ClientDashboardViewModel();
             return View(dashboardViewModel);
         }

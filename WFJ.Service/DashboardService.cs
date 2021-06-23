@@ -7,17 +7,24 @@ using WFJ.Service.Interfaces;
 using WFJ.Repository;
 using WFJ.Repository.Interfaces;
 using WFJ.Models;
+using System.Web.Mvc;
+using WFJ.Service.Model;
+using WFJ.Repository.EntityModel;
 
 namespace WFJ.Service
 {
     public class DashboardService : IDashboardService
     {
+        private IFormsRepository _formSearchRepository = new FormsRepository();
+        private IUserRepository _userRepo = new UserRepository();
+        IClientRepository _clientRepository = new ClientRepository();
+        IRequestsRepository _requestsRepository = new RequestsRepository();
         public AdminDashboardViewModel GetAdminDashboardData()
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
             adminDashboardViewModel.RecentlyOpenedClients = new List<RecentlyOpenedClientViewModel>();
-            adminDashboardViewModel.RecentlyOpenedAccounts = new List<RecentlyOpenedAccountViewModel>();
-            adminDashboardViewModel.FinalDemands = new List<FinalDemandViewModel>();
+            adminDashboardViewModel.RecentlyOpenedAccounts = new List<DashboardBaseModel>();
+            adminDashboardViewModel.FinalDemands = new List<DashboardBaseModel>();
             adminDashboardViewModel.ActionRequireds = new List<ActionRequiredViewModel>();
             adminDashboardViewModel.ApprovedPayements = new List<ApprovedRecentPayementViewModel>();
 
@@ -30,25 +37,49 @@ namespace WFJ.Service
             return adminDashboardViewModel;
         }
 
-        public UserDashboardViewModel GetUserDashboardData(int userId)
+        public UserDashboardViewModel GetUserDashboardData(int userId, Form selectedForm)
         {
             UserDashboardViewModel userDashboardViewModel = new UserDashboardViewModel();
-            userDashboardViewModel.RecentlyOpenedAccounts = new List<RecentlyOpenedAccountViewModel>();
+            userDashboardViewModel.RecentlyOpenedAccounts = new List<DashboardBaseModel>();
             userDashboardViewModel.ActionRequireds = new List<ActionRequiredViewModel>();
             userDashboardViewModel.ApprovedPayements = new List<ApprovedRecentPayementViewModel>();
+            userDashboardViewModel.FollowUpAccounts = new List<DashboardBaseModel>();
 
             //Bind Data
             userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(userId);
             userDashboardViewModel.ActionRequireds = GetActionRequired(userId);
             userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, userId);
+            userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(selectedForm?.Client?.ID ?? 0, selectedForm.ID);
             return userDashboardViewModel;
+        }
+
+        public (Form form, List<SelectListItem>) GetDashboardFilters(int userType, int userId)
+        {
+            List<SelectListItem> itemList = new List<SelectListItem>();
+            User user = _userRepo.GetById(userId);
+            var documents = new List<Form>();
+            if (userType == (int)UserType.SystemAdministrator)
+            {
+                documents = _formSearchRepository.GetFormList(-1, -1, null).ToList();
+            }
+            if (userType == (int)UserType.ClientUser)
+            {
+                var client = _clientRepository.GetClientByDefaultUserId(userId);
+                documents = _formSearchRepository.GetFormList(client?.ID ?? -1, -1, null).ToList();
+            }
+            if (userType == (int)UserType.WFJUser)
+            {
+                documents = _formSearchRepository.GetFormList(-1, -1, userId).ToList();
+            }
+            return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0)
+              ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.Client.ID + "-" + x.ID }).ToList());
         }
 
         /// <summary>
         /// get last 30 days recently joined client
         /// </summary>
         /// <returns></returns>
-        public List<RecentlyOpenedClientViewModel> GetRecentlyOpenedClient()
+        private List<RecentlyOpenedClientViewModel> GetRecentlyOpenedClient()
         {
             IClientRepository _clientRepository = new ClientRepository();
             var clients = _clientRepository.GetAllClientsByXDays(-30).Select(x => new RecentlyOpenedClientViewModel
@@ -63,9 +94,9 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        public List<RecentlyOpenedAccountViewModel> GetRecentlyOpenedAccount(int userId)
+        private List<DashboardBaseModel> GetRecentlyOpenedAccount(int userId)
         {
-            List<RecentlyOpenedAccountViewModel> recentlyOpenedAccountViewModels = new List<RecentlyOpenedAccountViewModel>();
+            List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             var requests = _requestsRepository.GetRequestByXDays(-7,userId).GroupBy(x => x.Requestor)
@@ -84,7 +115,7 @@ namespace WFJ.Service
             {
                 foreach (var request in requests)
                 {
-                    RecentlyOpenedAccountViewModel recentlyOpenedAccountViewModel = new RecentlyOpenedAccountViewModel();
+                    DashboardBaseModel recentlyOpenedAccountViewModel = new DashboardBaseModel();
                     recentlyOpenedAccountViewModel.ClientName = request.ClientName;
                     recentlyOpenedAccountViewModel.Status = GetStatus(Convert.ToInt32(request.StatusCode), Convert.ToInt32(request.FormId));
                     recentlyOpenedAccountViewModel.CustomerName = GetCustomerName(request.RequestId, Convert.ToInt32(request.FormId));
@@ -98,12 +129,11 @@ namespace WFJ.Service
         /// Get Final Demand
         /// </summary>
         /// <returns></returns>
-        public List<FinalDemandViewModel> GetFinalDemand()
+        private List<DashboardBaseModel> GetFinalDemand()
         {
-            List<FinalDemandViewModel> finalDemandViewModels = new List<FinalDemandViewModel>();
-            IRequestsRepository _requestsRepository = new RequestsRepository();
+            List<DashboardBaseModel> finalDemandViewModels = new List<DashboardBaseModel>();
             finalDemandViewModels = _requestsRepository.GetRequestByStatusName("Final Demand Request")
-                .Select(x => new FinalDemandViewModel
+                .Select(x => new DashboardBaseModel
                 {
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
                     ClientName = x.Form.Client.ClientName,
@@ -113,7 +143,7 @@ namespace WFJ.Service
             return finalDemandViewModels;
         }
 
-        public List<ActionRequiredViewModel> GetActionRequired(int userId)
+        private List<ActionRequiredViewModel> GetActionRequired(int userId)
         {
             List<ActionRequiredViewModel> actionRequiredViewModels = new List<ActionRequiredViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
@@ -139,7 +169,7 @@ namespace WFJ.Service
         /// <param name="statusCode"></param>
         /// <param name="formId"></param>
         /// <returns></returns>
-        public int? ComplianceDuration(int statusCode, int formId)
+        private int? ComplianceDuration(int statusCode, int formId)
         {
             IStatusCodesRepository _statusCodeRepository = new StatusCodesRepository();
             var complianceDuration = _statusCodeRepository.GetByStatusCodeAndFormId(statusCode, formId)?.complianceDuration;
@@ -153,7 +183,7 @@ namespace WFJ.Service
         /// <param name="requestId"></param>
         /// <param name="formId"></param>
         /// <returns></returns>
-        public string GetCustomerName(int requestId, int formId)
+        private string GetCustomerName(int requestId, int formId)
         {
             IFormDataRepository _formDataRepository = new FormDataRepository();
             IFormFieldsRepository _formFieldRepository = new FormFieldsRepository();
@@ -169,7 +199,7 @@ namespace WFJ.Service
         /// <param name="statusCode"></param>
         /// <param name="formId"></param>
         /// <returns></returns>
-        public string GetStatus(int statusCode, int formId)
+        private string GetStatus(int statusCode, int formId)
         {
             IStatusCodesRepository _statusCodeRepository = new StatusCodesRepository();
             var statusDescription = _statusCodeRepository.GetByStatusCodeAndFormId(statusCode, formId)?.Description;
@@ -180,7 +210,7 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        public List<ApprovedRecentPayementViewModel> GetApprovedPayment(int approved, int userId)
+        private List<ApprovedRecentPayementViewModel> GetApprovedPayment(int approved, int userId)
         {
             List<ApprovedRecentPayementViewModel> approvedPayements = new List<ApprovedRecentPayementViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
@@ -203,6 +233,17 @@ namespace WFJ.Service
                 .OrderBy(x => x.ClientName).ThenBy(x => x.CustomerName).ThenBy(x => x.FormName).ThenBy(x => x.PaymentDate)
                 .ToList();
             return approvedPayements;
+        }
+
+        private List<DashboardBaseModel> GetFollowUpAccounts(int clientId, int formId) {
+            List<DashboardBaseModel> followUpAccounts = new List<DashboardBaseModel>();
+            return _requestsRepository.FollowUpAccounts(clientId, formId)
+                .Select(x => new DashboardBaseModel
+                {
+                    CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
+                    ClientName = x.Form?.Client?.ClientName,
+                    Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID))
+                }).ToList();
         }
 
         public class RequestModel

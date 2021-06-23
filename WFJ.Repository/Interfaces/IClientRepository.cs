@@ -9,5 +9,6 @@ namespace WFJ.Repository.Interfaces
     public interface IClientRepository: IRepository<Client>
     {
         List<Client> GetAllClientsByXDays(int days);
+        Client GetClientByDefaultUserId(int userId);
     }
 }

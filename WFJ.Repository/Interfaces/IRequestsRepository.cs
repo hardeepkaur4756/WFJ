@@ -13,5 +13,6 @@ namespace WFJ.Repository.Interfaces
         IEnumerable<Request> GetRequestByXDays(int days, int userId);
         IEnumerable<Request> GetRequestByStatusName(string statusCodeName);
         IEnumerable<Request> GetRequestOutOfCompliance(int userId);
+        IEnumerable<Request> FollowUpAccounts(int clientId, int formId);
     }
 }

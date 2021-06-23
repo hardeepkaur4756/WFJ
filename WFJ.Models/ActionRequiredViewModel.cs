@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class ActionRequiredViewModel
+    public class ActionRequiredViewModel : DashboardBaseModel
     {
-        public string ClientName { get; set; }
-        public string CustomerName { get; set; }
-        public string Status { get; set; }
         public string Reason { get; set; }
         public string AttorneyName { get; set; }
         public int? ComplianceDuration { get; set; }
