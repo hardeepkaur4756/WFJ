@@ -196,7 +196,7 @@
                             @foreach (var request in Model.ApprovedPayements)
                             {
                                 <tr class="zoom">
-                                    <td><input type="checkbox" onclick="approvePayment('@request.PaymentId')" /></td>
+                                    <td><input id="@request.PaymentId" type="checkbox" onclick="approvePayment('@request.PaymentId',this)" /></td>
                                     <td>@request.ClientName</td>
                                     <td>@request.CustomerName</td>
                                     <td>@request.FormName</td>
@@ -351,26 +351,34 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    function approvePayment(paymentId,obj) {
+        eModal.confirm({
+            message: "Are you sure you want approve this payment?",
+            size: eModal.size.sm,
+            subtitle: 'smaller text header',
+            label: 'Yes' | 'True' | 'OK'
+        })
+            .then(function myfunction() {
+                $.ajax({
+                    type: "Post",
+                    url: "/Dashboard/UpdatePaymentStatus",
+                    data: { 'paymentId': paymentId },
+                    dataType: "json",
+                    success: function (resp) {
+                        if (resp.success === true) {
+                            $.notify("Payments approve successfully.", "success");
+                            $(obj).parent().parent().remove();
+                        }
+                        else {
+                            $.notify("There was an error", "danger");
+                        }
+                    },
+                    error: function (result) {
+                    }
+                });
 
-
-    });
-
-    function approvePayment(paymentId) {
-        $.ajax({
-            data: { paymentId: paymentId},
-            traditional: true,
-            url: '/Dashboard/UpdatePaymentStatus',
-            type: 'post',
-            dataType: 'json',
-            success: function (resp) {
-                if (resp.success === true) {
-                    $.notify("Payments sent to selected users.", "success");
-                }
-                else {
-                    $.notify("There was an error", "danger");
-                }
-            }
-        });
+            }, function myfunction() {
+                    $("#" + paymentId).prop("checked",false);
+            });
     }
 </script>
