@@ -48,7 +48,7 @@ namespace WFJ.Service
             //Bind Data
             userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(userId);
             userDashboardViewModel.ActionRequireds = GetActionRequired(userId);
-            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, userId);
+            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, 1416);
             userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(selectedForm?.Client?.ID ?? 0, selectedForm.ID);
             return userDashboardViewModel;
         }
@@ -228,7 +228,8 @@ namespace WFJ.Service
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.Request?.FormID)),
                     ClientName = x.Request?.Form.Client.ClientName,
                     Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.Form.ID)),
-                    InvoiceNumber = x.CheckNumber
+                    InvoiceNumber = x.CheckNumber,
+                    PaymentId = x.ID
                 })
                 .OrderBy(x => x.ClientName).ThenBy(x => x.CustomerName).ThenBy(x => x.FormName).ThenBy(x => x.PaymentDate)
                 .ToList();

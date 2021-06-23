@@ -421,5 +421,13 @@ namespace WFJ.Service
             }
             return model;
         }
+
+        public void UpdatePaymentStatus(int id)
+        {
+            IPaymentsRepository _paymentsRepo = new PaymentsRepository();
+            var payment = _paymentsRepo.GetById(id);
+            payment.approved = 1;
+            _paymentsRepo.Update(payment);
+        }
     }
 }

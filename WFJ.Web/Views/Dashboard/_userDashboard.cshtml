@@ -17,11 +17,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="zoom">
-                                <td>France</td>
-                                <td class="text-success">ssss</td>
-                                <td>ss</td>
-                            </tr>
+                            @foreach (var account in Model.FollowUpAccounts)
+                            {
+                                <tr class="zoom">
+                                    <td>@account.ClientName</td>
+                                    <td>@account.CustomerName</td>
+                                    <td>@account.Status</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -193,7 +196,7 @@
                             @foreach (var request in Model.ApprovedPayements)
                             {
                                 <tr class="zoom">
-                                    <td><input type="checkbox" /></td>
+                                    <td><input type="checkbox" onclick="approvePayment('@request.PaymentId')" /></td>
                                     <td>@request.ClientName</td>
                                     <td>@request.CustomerName</td>
                                     <td>@request.FormName</td>
@@ -346,3 +349,28 @@
         </div>*@
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+    });
+
+    function approvePayment(paymentId) {
+        $.ajax({
+            data: { paymentId: paymentId},
+            traditional: true,
+            url: '/Dashboard/UpdatePaymentStatus',
+            type: 'post',
+            dataType: 'json',
+            success: function (resp) {
+                if (resp.success === true) {
+                    $.notify("Payments sent to selected users.", "success");
+                }
+                else {
+                    $.notify("There was an error", "danger");
+                }
+            }
+        });
+    }
+</script>

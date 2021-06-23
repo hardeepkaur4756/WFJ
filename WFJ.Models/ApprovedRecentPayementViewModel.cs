@@ -15,5 +15,6 @@ namespace WFJ.Models
         public string PaymentType { get; set; }
         public string InvoicDate { get; set; }
         public string InvoiceNumber { get; set; }
+        public int PaymentId { get; set; }
     }
 }
