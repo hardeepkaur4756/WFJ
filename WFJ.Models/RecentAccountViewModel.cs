@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class ClientDashboardViewModel
+    public class RecentAccountViewModel
     {
-        public List<RecentAccountViewModel> RecentAccountView { get; set; }
+        public string CustomerName { get; set; }
+        public string Status { get; set; }
     }
 }

@@ -103,112 +103,31 @@
     </div>
 
     <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
-        <div class="card overflow-hidden">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="card-title">Todo List</h6>
+        <div class="card">
+            <div class="card-header justify-content-between align-items-center">
+                <h6 class="card-title">
+                    Top 20 Accounts (Recent View?)
+                </h6>
             </div>
-            <div class="card-content">
-                <div class="card-body p-0">
-                    <div class="row">
-                        <div class="col-12">
-                            <ul class="tasks">
-                                <li class="outline-badge-success border-0 d-flex py-3 px-2 zoom">
-                                    <label class="chkbox d-flex">
-                                        <input type="checkbox" checked="checked" />
-                                        <img src="~/Images/author.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <img src="~/Images/author2.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <span class="mb-0 ml-2 my-auto font-w-600">
-                                            Aenean ligula porttitor consequat vitae
-                                            eleifend enim.
-                                        </span>
-                                        <span class="checkmark mt-1"></span>
-                                    </label>
-                                    <div class="ml-auto d-flex my-auto">
-                                        <a href="#"><i class="ion ion-edit"></i></a>
-                                        <a href="#" class="ml-2">
-                                            <i class="ion ion-trash-a"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="outline-badge-warning border-0 d-flex py-3 px-2 zoom">
-                                    <label class="chkbox d-flex">
-                                        <input type="checkbox" />
-                                        <img src="~/Images/author2.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <img src="~/Images/author3.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <span class="mb-0 ml-2 my-auto font-w-600">
-                                            In enim justo, rhoncus ut imperdiet a,
-                                            venenatis vitae justo.
-                                        </span>
-                                        <span class="checkmark mt-1"></span>
-                                    </label>
-                                    <div class="ml-auto d-flex my-auto">
-                                        <a href="#"><i class="ion ion-edit"></i></a>
-                                        <a href="#" class="ml-2">
-                                            <i class="ion ion-trash-a"></i>
-                                        </a>
-                                    </div>
-                                </li>
+            <div class="card-body table-responsive p-0">
+                <table class="table font-w-600 mb-0" id="final-demand-required">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                                <li class="outline-badge-info border-0 d-flex py-3 px-2 zoom">
-                                    <label class="chkbox d-flex">
-                                        <input type="checkbox" />
-                                        <img src="~/Images/author3.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <img src="~/Images/author7.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <span class="mb-0 ml-2 my-auto font-w-600">
-                                            Cras dapibus vivamus elementum semper
-                                            nisi.
-                                        </span>
-                                        <span class="checkmark mt-1"></span>
-                                    </label>
-                                    <div class="ml-auto d-flex my-auto">
-                                        <a href="#"><i class="ion ion-edit"></i></a>
-                                        <a href="#" class="ml-2">
-                                            <i class="ion ion-trash-a"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="outline-badge-secondary border-0 d-flex py-3 px-2 zoom">
-                                    <label class="chkbox d-flex">
-                                        <input type="checkbox" />
-                                        <img src="~/Images/author6.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <img src="~/Images/author8.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <span class="mb-0 ml-2 my-auto font-w-600">
-                                            Donec quam felis ultricies nec, pellentesque eu
-                                            pretium quis.
-                                        </span>
-
-                                        <span class="checkmark mt-1"></span>
-                                    </label>
-                                    <div class="ml-auto d-flex my-auto">
-                                        <a href="#"><i class="ion ion-edit"></i></a>
-                                        <a href="#" class="ml-2">
-                                            <i class="ion ion-trash-a"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                <li class="outline-badge-primary border-0 d-flex py-3 px-2 zoom">
-                                    <label class="chkbox d-flex">
-                                        <input type="checkbox" />
-                                        <img src="~/Images/author.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <img src="~/Images/author8.jpg" alt="author" width="30" height="30" class="rounded-circle" />
-                                        <span class="mb-0 ml-2 my-auto font-w-600">
-                                            Donec quam felis ultricies nec, pellentesque eu
-                                            pretium quis.
-                                        </span>
-
-                                        <span class="checkmark mt-1"></span>
-                                    </label>
-                                    <div class="ml-auto d-flex my-auto">
-                                        <a href="#"><i class="ion ion-edit"></i></a>
-                                        <a href="#" class="ml-2">
-                                            <i class="ion ion-trash-a"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                        @foreach (var request in Model.RecentAccountView)
+                        {
+                            <tr class="zoom">
+                                <td>@request.CustomerName</td>
+                                <td>@request.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

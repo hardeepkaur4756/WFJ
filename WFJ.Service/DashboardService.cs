@@ -53,6 +53,35 @@ namespace WFJ.Service
             return userDashboardViewModel;
         }
 
+
+        #region Client DashBoard Methods
+
+        public ClientDashboardViewModel GetClientDashboardData(int userId)
+        {
+            ClientDashboardViewModel clientDashboardViewModel = new ClientDashboardViewModel();
+            clientDashboardViewModel.RecentAccountView = new List<RecentAccountViewModel>();
+
+            //Bind Data
+            clientDashboardViewModel.RecentAccountView = GetRecentAccountView(userId);
+            return clientDashboardViewModel;
+        }
+
+
+        public List<RecentAccountViewModel> GetRecentAccountView(int userId)
+        {
+            List<RecentAccountViewModel> recentAccountViewModels = new List<RecentAccountViewModel>();
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            recentAccountViewModels = _requestsRepository.GetRecnetRequestByDays(10).Select(x => new RecentAccountViewModel
+            {
+                CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
+                Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID))
+            }).ToList();
+
+            return recentAccountViewModels;
+        }
+
+        #endregion
+
         public (Form form, List<SelectListItem>) GetDashboardFilters(int userType, int userId)
         {
             List<SelectListItem> itemList = new List<SelectListItem>();

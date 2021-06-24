@@ -132,5 +132,10 @@ namespace WFJ.Repository
                 return _context.Requests.Where(x => x.Form != null && x.Form.Client != null && x.Form.Client.ID == clientId && x.Form.ID == formId
                 && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
         }
+
+        public IEnumerable<Request> GetRecnetRequestByDays(int days)
+        {
+            return _context.Requests.OrderByDescending(x => x.RequestDate).Take(days);
+        }
     }
 }

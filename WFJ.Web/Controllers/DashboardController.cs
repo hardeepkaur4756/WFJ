@@ -32,8 +32,8 @@ namespace WFJ.Web.Controllers
             (selectedForm, dashboardViewModel.DashbaordFilter) = _dashboardService.GetDashboardFilters(userType, userId);
             dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData();
             dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId, selectedForm);
-           
-            dashboardViewModel.ClientDashboard = new ClientDashboardViewModel();
+
+            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(0);
             return View(dashboardViewModel);
         }
 
