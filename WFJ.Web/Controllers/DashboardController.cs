@@ -17,6 +17,7 @@ namespace WFJ.Web.Controllers
         public IErrorLogService _errorLogService = new ErrorLogService();
         public IDashboardService _dashboardService = new DashboardService();
         private IPaymentService _paymentService = new PaymentService();
+        private IRequestNotesService _requestNotes = new RequestNotesService();
         private int UserType = 0;
         private int UserId = 0;
         private int? UserAccess;
@@ -75,6 +76,24 @@ namespace WFJ.Web.Controllers
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "Dashboard/UpdatePaymentStatus", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
+            }
+
+            return Json(new { success = isSuccess });
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdateAlreadySeenStatus(int requestId)
+        {
+            bool isSuccess = false;
+            try
+            {
+                _requestNotes.UpdateAlreadySeenStatus(requestId);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _errorLogService.Add(new ErrorLogModel() { Page = "Dashboard/UpdateAlreadySeenStatus", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
             }
 
             return Json(new { success = isSuccess });

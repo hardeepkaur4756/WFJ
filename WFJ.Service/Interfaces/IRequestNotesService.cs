@@ -24,6 +24,8 @@ namespace WFJ.Service.Interfaces
         void SendNotes(int requestId, List<int> notes, List<string> users);
         List<SelectListItem> GetFollowUpTime();
         List<SelectListItem> GetStandardNotes();
+
+        void UpdateAlreadySeenStatus(int requestId);
     }
 
 }

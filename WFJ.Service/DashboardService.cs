@@ -128,7 +128,7 @@ namespace WFJ.Service
             List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
-            var requests = _requestsRepository.GetRequestByXDays(-7,userId).GroupBy(x => x.Requestor)
+            var requests = _requestsRepository.GetRequestByXDays(-700,userId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
                     FormId = x.Max(z=>z.FormID),
@@ -267,12 +267,14 @@ namespace WFJ.Service
 
         private List<DashboardBaseModel> GetFollowUpAccounts(int clientId, int formId) {
             List<DashboardBaseModel> followUpAccounts = new List<DashboardBaseModel>();
+            var test = _requestsRepository.FollowUpAccounts(clientId, formId);
             return _requestsRepository.FollowUpAccounts(clientId, formId)
                 .Select(x => new DashboardBaseModel
                 {
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
                     ClientName = x.Form?.Client?.ClientName,
-                    Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID))
+                    Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
+                    RequestId = x.ID
                 }).ToList();
         }
 

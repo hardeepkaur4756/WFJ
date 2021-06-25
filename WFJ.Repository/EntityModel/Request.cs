@@ -20,6 +20,7 @@ namespace WFJ.Repository.EntityModel
             this.Payments = new HashSet<Payment>();
             this.RequestNotes = new HashSet<RequestNote>();
             this.PersonnelRequests = new HashSet<PersonnelRequest>();
+            this.RecentAccountActivities = new HashSet<RecentAccountActivity>();
         }
     
         public int ID { get; set; }
@@ -68,5 +69,7 @@ namespace WFJ.Repository.EntityModel
         public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonnelRequest> PersonnelRequests { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RecentAccountActivity> RecentAccountActivities { get; set; }
     }
 }

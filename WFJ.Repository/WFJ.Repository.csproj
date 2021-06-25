@@ -340,6 +340,9 @@
     <Compile Include="EntityModel\QuestionnaireSection.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\RecentAccountActivity.cs">
+      <DependentUpon>WFJModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\Region.cs">
       <DependentUpon>WFJModel.tt</DependentUpon>
     </Compile>
@@ -466,6 +469,7 @@
     <Compile Include="Interfaces\IPersonnelRequestRepository.cs" />
     <Compile Include="Interfaces\IPersonnelsRepository.cs" />
     <Compile Include="Interfaces\IPracticeAreaRepository.cs" />
+    <Compile Include="Interfaces\IRecentAccountActivitiesRepository.cs" />
     <Compile Include="Interfaces\IRegionsRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRequestDocumentRepository.cs" />
@@ -485,6 +489,7 @@
     <Compile Include="PersonnelsRepository.cs" />
     <Compile Include="PracticeAreaRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecentAccountActivitiesRepository.cs" />
     <Compile Include="RegionsRepository.cs" />
     <Compile Include="RequestDocumentRepository.cs" />
     <Compile Include="RequestNotesRepository.cs" />

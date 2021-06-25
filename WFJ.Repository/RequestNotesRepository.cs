@@ -34,5 +34,16 @@ namespace WFJ.Repository
             return requests;
         }
 
+        public IEnumerable<RequestNote> GetRequestNotesByRequestId(int requestId)
+        {
+           return _context.RequestNotes.Where(x => x.RequestID == requestId);
+        }
+
+        public void Update(List<RequestNote> requestNotes)
+        {
+            _context.SaveChanges();
+        }
+
+
     }
 }

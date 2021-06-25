@@ -19,11 +19,12 @@
                         <tbody>
                             @foreach (var account in Model.FollowUpAccounts)
                             {
-                                <tr class="zoom">
-                                    <td>@account.ClientName</td>
-                                    <td>@account.CustomerName</td>
-                                    <td>@account.Status</td>
-                                </tr>
+                            <tr class="zoom">
+                                <td><input id="@account.RequestId" type="checkbox" onclick="RequestNoteAlreadySeen('@account.RequestId',this)" /></td>
+                                <td>@account.ClientName</td>
+                                <td>@account.CustomerName</td>
+                                <td>@account.Status</td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -379,6 +380,37 @@
 
             }, function myfunction() {
                     $("#" + paymentId).prop("checked",false);
+            });
+    }
+
+    function RequestNoteAlreadySeen(requestId, obj) {
+        eModal.confirm({
+            message: "Are you sure you have already seen this Request Note?",
+            size: eModal.size.sm,
+            subtitle: 'smaller text header',
+            label: 'Yes' | 'True' | 'OK'
+        })
+            .then(function myfunction() {
+                $.ajax({
+                    type: "Post",
+                    url: "/Dashboard/UpdateAlreadySeenStatus",
+                    data: { 'requestId': requestId },
+                    dataType: "json",
+                    success: function (resp) {
+                        if (resp.success === true) {
+                            $.notify("Request notes already seen updated successfully.", "success");
+                            $(obj).parent().parent().remove();
+                        }
+                        else {
+                            $.notify("There was an error", "danger");
+                        }
+                    },
+                    error: function (result) {
+                    }
+                });
+
+            }, function myfunction() {
+                $("#" + paymentId).prop("checked", false);
             });
     }
 </script>

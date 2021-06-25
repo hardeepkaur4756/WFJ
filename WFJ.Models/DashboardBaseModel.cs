@@ -11,5 +11,6 @@ namespace WFJ.Models
         public string ClientName { get; set; }
         public string CustomerName { get; set; }
         public string Status { get; set; }
+        public int RequestId { get; set; }   
     }
 }

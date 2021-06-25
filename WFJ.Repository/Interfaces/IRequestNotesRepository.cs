@@ -10,5 +10,8 @@ namespace WFJ.Repository.Interfaces
     public interface IRequestNotesRepository : IRepository<RequestNote>
     {
         IEnumerable<RequestNote> GetRequestNotes(int requestID, bool includeInternalNotes);
+        IEnumerable<RequestNote> GetRequestNotesByRequestId(int requestId);
+
+        void Update(List<RequestNote> requestNotes);
     }
 }

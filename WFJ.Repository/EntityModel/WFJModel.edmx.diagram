@@ -152,6 +152,9 @@
         <AssociationConnector Association="WFJDBModel.FK_PersonnelRequest_Request" />
         <EntityTypeShape EntityType="WFJDBModel.localCounselStatus" Width="1.5" PointX="15.375" PointY="27.75" />
         <AssociationConnector Association="WFJDBModel.FK_PersonnelRequests_localCounselStatus" />
+        <EntityTypeShape EntityType="WFJDBModel.RecentAccountActivity" Width="1.5" PointX="39.125" PointY="16.125" />
+        <AssociationConnector Association="WFJDBModel.FK_RecentAccountActivities_Requests" />
+        <AssociationConnector Association="WFJDBModel.FK_RecentAccountActivities_Users" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

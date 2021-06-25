@@ -413,5 +413,14 @@ namespace WFJ.Service
             }
             return standardCodes;
         }
+
+        public void UpdateAlreadySeenStatus(int requestId)
+        {
+            IRequestNotesRepository _requestNotesRepo = new RequestNotesRepository();
+            var requestNotes = _requestNotesRepo.GetRequestNotesByRequestId(requestId).ToList();
+            requestNotes.ToList().ForEach(x => { x.AlreadySeen = true; });
+            _requestNotesRepo.Update(requestNotes);
+        }
+
     }
 }

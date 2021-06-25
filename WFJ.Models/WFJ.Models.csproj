@@ -107,6 +107,7 @@
     <Compile Include="PlacementReuestsViewModel.cs" />
     <Compile Include="PlacementsModel.cs" />
     <Compile Include="PlacementsViewModel.cs" />
+    <Compile Include="RecentAccountActivitiesViewModel.cs" />
     <Compile Include="RecentAccountViewModel.cs" />
     <Compile Include="RecentlyOpenedClientViewModel.cs" />
     <Compile Include="RequestDocumentViewModel.cs" />
