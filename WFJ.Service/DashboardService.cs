@@ -59,29 +59,74 @@ namespace WFJ.Service
 
         #region Client DashBoard Methods
 
-        public ClientDashboardViewModel GetClientDashboardData(int userId)
+        public ClientDashboardViewModel GetClientDashboardData(int userId, Form selectedForm)
         {
             ClientDashboardViewModel clientDashboardViewModel = new ClientDashboardViewModel();
-            clientDashboardViewModel.RecentAccountView = new List<RecentAccountViewModel>();
+            clientDashboardViewModel.RecentAccountView = new List<RecentAccountActivityViewModel>();
+            clientDashboardViewModel.RecentActivityView = new List<RecentAccountActivityViewModel>();
+
 
             //Bind Data
-            clientDashboardViewModel.RecentAccountView = GetRecentAccountView(userId);
+            clientDashboardViewModel.RecentAccountView = GetRecentAccountView(10);
+            clientDashboardViewModel.RecentAccountView = GetRecentActivityView(10);
+            //clientDashboardViewModel.GetActiveStatusPieChartData = GetActiveStatusPieChartData(30);
             return clientDashboardViewModel;
         }
 
-
-        public List<RecentAccountViewModel> GetRecentAccountView(int userId)
+        public List<ChartBaseModel> GetActiveStatusPieChartData(int formId)
         {
-            List<RecentAccountViewModel> recentAccountViewModels = new List<RecentAccountViewModel>();
+            List<ChartBaseModel> activeStatusPieChartData = new List<ChartBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            recentAccountViewModels = _requestsRepository.GetRecnetRequestByDays(10).Select(x => new RecentAccountViewModel
+            IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
+            var request = _requestsRepository.GetByFormId(formId);
+            activeStatusPieChartData = request.GroupBy(x => x.StatusCode).ToList()
+                .Select(x => new ChartBaseModel
             {
-                CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
-                Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID))
+                Name = GetStatus(Convert.ToInt32(x.Key), formId),
+                Value = x.Count().ToString()
+            }).ToList();
+
+            return activeStatusPieChartData;
+        }
+
+        /// <summary>
+        /// Get Recent Account View
+        /// </summary>
+        /// <param name="days"></param>
+        /// <returns></returns>
+        public List<RecentAccountActivityViewModel> GetRecentAccountView(int days)
+        {
+            List<RecentAccountActivityViewModel> recentAccountViewModels = new List<RecentAccountActivityViewModel>();
+            IRecentAccountActivitiesRepository _recentAccActRepo = new RecentAccountActivitiesRepository();
+            
+            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days).Select(x => new RecentAccountActivityViewModel
+            {
+                CustomerName = GetCustomerName(Convert.ToInt32(x.RequestID), Convert.ToInt32(x.Request?.FormID)),
+                Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.FormID))
             }).ToList();
 
             return recentAccountViewModels;
         }
+
+        /// <summary>
+        /// Get Recent Activity View
+        /// </summary>
+        /// <param name="days"></param>
+        /// <returns></returns>
+        public List<RecentAccountActivityViewModel> GetRecentActivityView(int days)
+        {
+            List<RecentAccountActivityViewModel> recentAccountViewModels = new List<RecentAccountActivityViewModel>();
+            IRecentAccountActivitiesRepository _recentAccActRepo = new RecentAccountActivitiesRepository();
+
+            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days).Select(x => new RecentAccountActivityViewModel
+            {
+                CustomerName = GetCustomerName(Convert.ToInt32(x.RequestID), Convert.ToInt32(x.Request?.FormID)),
+                Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.FormID))
+            }).ToList();
+
+            return recentAccountViewModels;
+        }
+
 
         #endregion
 
@@ -158,7 +203,8 @@ namespace WFJ.Service
         {
             List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            var requests = _requestsRepository.GetRequestByXDays(-700,userId).GroupBy(x => x.Requestor)
+            IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
+            var requests = _requestsRepository.GetRequestByXDays(-7,userId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
                     FormId = x.Max(z=>z.FormID),

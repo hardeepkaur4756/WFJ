@@ -8,6 +8,16 @@ namespace WFJ.Models
 {
     public class ClientDashboardViewModel
     {
-        public List<RecentAccountViewModel> RecentAccountView { get; set; }
+        public List<RecentAccountActivityViewModel> RecentAccountView { get; set; }
+        public List<RecentAccountActivityViewModel> RecentActivityView { get; set; }
+
+        public List<ChartBaseModel> GetActiveStatusPieChartData { get; set; }
+        
+    }
+
+    public class ChartBaseModel
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

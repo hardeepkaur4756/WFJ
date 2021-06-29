@@ -34,19 +34,25 @@ namespace WFJ.Web.Controllers
             dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData();
             dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId, selectedForm);
 
-            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(0);
+            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(userId, selectedForm);
             return View(dashboardViewModel);
         }
 
         [HttpPost]
         public JsonResult GetActiveAccounts()
         {
-            ActiveAccountChartViewModel activeAccountChartViewModel = new ActiveAccountChartViewModel();
-            activeAccountChartViewModel.Active = 20;
-            activeAccountChartViewModel.LocalCounsel = 30;
-            activeAccountChartViewModel.InSuit = 25;
-            activeAccountChartViewModel.PaymentPlan = 25;
-            return Json(activeAccountChartViewModel, JsonRequestBehavior.AllowGet);
+
+            IDashboardService _dashboardService = new DashboardService();
+            var chartBaseModel = _dashboardService.GetActiveStatusPieChartData(30);
+
+            //ActiveAccountChartViewModel activeAccountChartViewModel = new ActiveAccountChartViewModel();
+
+
+            //activeAccountChartViewModel.Active = 20;
+            //activeAccountChartViewModel.LocalCounsel = 30;
+            //activeAccountChartViewModel.InSuit = 25;
+            //activeAccountChartViewModel.PaymentPlan = 25;
+            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
         private void GetSessionUser(out int userId, out int userType, out int? userAccess)
         {

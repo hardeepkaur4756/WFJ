@@ -16,17 +16,43 @@ namespace WFJ.Service
     {
         IRecentAccountActivitiesRepository _recentAccountActivitiesRepo = new RecentAccountActivitiesRepository();
 
-        public void Insert(RecentAccountActivity recentAccountActivity)
+        public List<RecentAccountActivity> GetRecentAccounts(int days)
         {
-            recentAccountActivity.CreatedDate = DateTime.Now;
-            recentAccountActivity = _recentAccountActivitiesRepo.Add(recentAccountActivity);
+            return _recentAccountActivitiesRepo.GetRecentAccounts(days);
         }
 
-        public void Update(RecentAccountActivity recentAccountActivity)
+        public List<RecentAccountActivity> GetRecentActivities(int days)
         {
-            recentAccountActivity = _recentAccountActivitiesRepo.GetRecentAccountActivity(recentAccountActivity);
-            recentAccountActivity.CreatedDate = DateTime.Now;
-            _recentAccountActivitiesRepo.Update(recentAccountActivity);
+            return _recentAccountActivitiesRepo.GetRecentActivities(days);
         }
+
+
+        /// <summary>
+        /// Add or Update the RecentAccountActivity table.
+        /// </summary>
+        /// <param name="recentAccountActivity"></param>
+        public void AddEdit(int requestID, int UserID, string type)
+        {
+            RecentAccountActivity recentAccountActivity = new RecentAccountActivity();
+            recentAccountActivity.RequestID = requestID;
+            recentAccountActivity.UserID = UserID;
+            recentAccountActivity.Type = type;
+
+            recentAccountActivity = _recentAccountActivitiesRepo.GetRecentAccountActivity(recentAccountActivity);
+            if(recentAccountActivity!=null)
+            {
+                recentAccountActivity.CreatedDate = DateTime.Now;
+                _recentAccountActivitiesRepo.Update(recentAccountActivity);
+            }
+           
+            else
+            {
+                _recentAccountActivitiesRepo.Add(recentAccountActivity);
+            }
+
+        }
+
+
     }
+
 }

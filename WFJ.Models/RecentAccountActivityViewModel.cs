@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WFJ.Models
 {
-    public class RecentAccountViewModel
+    public class RecentAccountActivityViewModel
     {
         public string CustomerName { get; set; }
         public string Status { get; set; }

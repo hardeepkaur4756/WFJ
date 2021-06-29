@@ -133,9 +133,9 @@ namespace WFJ.Repository
                 && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
         }
 
-        public IEnumerable<Request> GetRecnetRequestByDays(int days)
+        public IEnumerable<Request> GetByFormId(int formId)
         {
-            return _context.Requests.OrderByDescending(x => x.RequestDate).Take(days);
+            return _context.Requests.Where(x => x.FormID == formId);
         }
     }
 }

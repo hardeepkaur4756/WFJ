@@ -10,7 +10,8 @@ namespace WFJ.Service.Interfaces
         AdminDashboardViewModel GetAdminDashboardData();
         UserDashboardViewModel GetUserDashboardData(int userId, Form selectedForm);
         (Form form, List<SelectListItem>) GetDashboardFilters(int userType, int userId);
-        ClientDashboardViewModel GetClientDashboardData(int userId);
+        ClientDashboardViewModel GetClientDashboardData(int userId, Form selectedForm);
+        List<ChartBaseModel> GetActiveStatusPieChartData(int formId);
 
     }
 }

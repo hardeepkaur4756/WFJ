@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
+using WFJ.Repository.EntityModel;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
@@ -16,7 +17,8 @@ namespace WFJ.Web.Controllers
     {
         private IErrorLogService _errorLogService = new ErrorLogService();
         IRequestNotesService _notesService = new RequestNotesService();
-        
+        private IRecentAccountActivitiesService _recentAcctActService = new RecentAccountActivitiesService();
+
 
         private int UserType = 0;
         private int UserId = 0;
@@ -67,6 +69,9 @@ namespace WFJ.Web.Controllers
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 _notesService.AddHiddenNotes(UserId, requestId, notes);
 
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -84,6 +89,9 @@ namespace WFJ.Web.Controllers
             try
             {
                 _notesService.FlagUnflagNotes(requestId, notes);
+                 GetSessionUser(out UserId, out UserType, out UserAccess);
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
 
                 isSuccess = true;
             }
@@ -103,6 +111,10 @@ namespace WFJ.Web.Controllers
             {
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 _notesService.RemoveUserHiddenNotes(UserId, requestId);
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+
+
 
                 isSuccess = true;
             }
@@ -115,7 +127,7 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteNote(int noteId)
+        public ActionResult DeleteNote(int noteId,int requestId)
         {
             bool isSuccess = false;
             try
@@ -124,6 +136,9 @@ namespace WFJ.Web.Controllers
 
                 if (UserType == (byte)WFJ.Service.Model.UserType.SystemAdministrator)
                 _notesService.DeleteRequestNote(noteId);
+
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
 
                 isSuccess = true;
             }
@@ -136,7 +151,7 @@ namespace WFJ.Web.Controllers
         }
 
 
-        public ActionResult AddEditNote(int? noteId,int? clientId)
+        public ActionResult AddEditNote(int? noteId,int? clientId, int requestId)
         {
             try
             {
@@ -158,6 +173,9 @@ namespace WFJ.Web.Controllers
                 model.Authors = _userService.GetUsersByClientId(Convert.ToInt32(clientId));
                 model.FollowUpTimes = _notesService.GetFollowUpTime();
                 model.StandardNotes = _notesService.GetStandardNotes();
+
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddRequestNotes", model) }, JsonRequestBehavior.AllowGet);
             }
@@ -183,6 +201,9 @@ namespace WFJ.Web.Controllers
                     _notesService.AddUpdateRequestNote(model);
                     //_notesService.RemoveUserHiddenNotes(UserId, requestId);
 
+                    // Inserting and updating the data into RecentAccountActivity
+                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestID), UserId, "Activity");
+
                     isSuccess = true;
                 }
                 catch (Exception ex)
@@ -207,6 +228,8 @@ namespace WFJ.Web.Controllers
             {
                 _notesService.SendNotes(requestId, notes, users);
 
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -216,9 +239,6 @@ namespace WFJ.Web.Controllers
 
             return Json(new { success = isSuccess });
         }
-
-
-
 
 
         public void GetSessionUser(out int userId, out int userType, out int? userAccess)
