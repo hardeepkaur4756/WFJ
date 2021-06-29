@@ -14,6 +14,7 @@ namespace WFJ.Repository.EntityModel
     
     public partial class UserAttorney
     {
+        public int ID { get; set; }
         public int UserID { get; set; }
         public int PersonnelID { get; set; }
     }

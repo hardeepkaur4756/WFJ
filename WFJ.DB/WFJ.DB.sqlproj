@@ -175,6 +175,7 @@
     <None Include="DataScripts\V1.0.1.sql" />
     <None Include="DataScripts\V1.0.2.sql" />
     <None Include="DataScripts\V1.0.4.sql" />
+    <None Include="DataScripts\V1_1.0.5.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataScripts\V1.0.0.sql" />

@@ -80,7 +80,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentType> PaymentTypes { get; set; }
         public virtual DbSet<Personnel> Personnels { get; set; }
-        public virtual DbSet<PersonnelClient> PersonnelClients { get; set; }
         public virtual DbSet<PersonnelRequest> PersonnelRequests { get; set; }
         public virtual DbSet<picture> pictures { get; set; }
         public virtual DbSet<PracticeAreaPersonnel> PracticeAreaPersonnels { get; set; }
@@ -101,7 +100,6 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<TableRow> TableRows { get; set; }
         public virtual DbSet<User_Function> User_Functions { get; set; }
         public virtual DbSet<User_Type> User_Types { get; set; }
-        public virtual DbSet<UserAttorney> UserAttorneys { get; set; }
         public virtual DbSet<UserLoginsTable> UserLoginsTables { get; set; }
         public virtual DbSet<UserRegion> UserRegions { get; set; }
         public virtual DbSet<UserStatusCodePermission> UserStatusCodePermissions { get; set; }
@@ -135,6 +133,8 @@ namespace WFJ.Repository.EntityModel
         public virtual DbSet<ClientsLive> ClientsLives { get; set; }
         public virtual DbSet<localCounselStatus> localCounselStatuses { get; set; }
         public virtual DbSet<RecentAccountActivity> RecentAccountActivities { get; set; }
+        public virtual DbSet<PersonnelClient> PersonnelClients { get; set; }
+        public virtual DbSet<UserAttorney> UserAttorneys { get; set; }
     
         public virtual int dt_addtosourcecontrol(string vchSourceSafeINI, string vchProjectName, string vchComment, string vchLoginName, string vchPassword)
         {

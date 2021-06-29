@@ -10,5 +10,6 @@ namespace WFJ.Repository.Interfaces
     public interface IPersonnelClientsRepository: IRepository<PersonnelClient>
     {
         IEnumerable<Personnel> GetPersonnelsByClientID(int ClientID);
+        List<int?> GetClientsByPersonnelID(int PersonnelId);
     }
 }

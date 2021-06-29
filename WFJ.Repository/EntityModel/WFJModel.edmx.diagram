@@ -59,7 +59,6 @@
         <EntityTypeShape EntityType="WFJDBModel.Payment" Width="1.5" PointX="20.75" PointY="21.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PaymentType" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.Personnel" Width="1.5" PointX="22.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.PersonnelClient" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PersonnelRequest" Width="2.25" PointX="22.75" PointY="13.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.picture" Width="1.5" PointX="22.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.PracticeAreaPersonnel" Width="1.5" PointX="22.75" PointY="19.75" IsExpanded="true" />
@@ -80,7 +79,6 @@
         <EntityTypeShape EntityType="WFJDBModel.TableRow" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.User_Function" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.User_Type" Width="1.5" PointX="26.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WFJDBModel.UserAttorney" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserLoginsTable" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserRegion" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WFJDBModel.UserStatusCodePermission" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
@@ -122,7 +120,6 @@
         <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__63C3BFDC" />
         <AssociationConnector Association="WFJDBModel.FK__Forms__ClientID__64B7E415" />
         <AssociationConnector Association="WFJDBModel.FK__Forms__FormTypeI__65AC084E" />
-        <AssociationConnector Association="WFJDBModel.FK__Personnel__Perso__688874F9" />
         <AssociationConnector Association="WFJDBModel.FK__FormSelec__FormF__6A70BD6B" />
         <EntityTypeShape EntityType="WFJDBModel.fieldSize" Width="1.5" PointX="14.5" PointY="31.25" />
         <AssociationConnector Association="WFJDBModel.FK__FormField__field__78BEDCC2" />
@@ -155,6 +152,10 @@
         <EntityTypeShape EntityType="WFJDBModel.RecentAccountActivity" Width="1.5" PointX="39.125" PointY="16.125" />
         <AssociationConnector Association="WFJDBModel.FK_RecentAccountActivities_Requests" />
         <AssociationConnector Association="WFJDBModel.FK_RecentAccountActivities_Users" />
+        <AssociationConnector Association="WFJDBModel.UserAttorneys" />
+        <EntityTypeShape EntityType="WFJDBModel.PersonnelClient" Width="1.5" PointX="25" PointY="32.75" />
+        <AssociationConnector Association="WFJDBModel.FK__Personnel__Perso__30441BD6" />
+        <EntityTypeShape EntityType="WFJDBModel.UserAttorney" Width="1.5" PointX="31.375" PointY="4.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

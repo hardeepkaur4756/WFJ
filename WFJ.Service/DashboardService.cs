@@ -19,6 +19,9 @@ namespace WFJ.Service
         private IUserRepository _userRepo = new UserRepository();
         IClientRepository _clientRepository = new ClientRepository();
         IRequestsRepository _requestsRepository = new RequestsRepository();
+        IUserAttorneyRepository _userAttorneyRepository = new UserAttorneyRepository();
+        IPersonnelClientsRepository _personnelClientsRepository = new PersonnelClientsRepository();
+        IClientCollectorsRepository _clientCollectorsRepository = new ClientCollectorsRepository();
         public AdminDashboardViewModel GetAdminDashboardData()
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
@@ -93,13 +96,41 @@ namespace WFJ.Service
             }
             if (userType == (int)UserType.ClientUser)
             {
-                var client = _clientRepository.GetClientByDefaultUserId(userId);
-                documents = _formSearchRepository.GetFormList(client?.ID ?? -1, -1, null).ToList();
+                documents = _formSearchRepository.GetFormList(-1, -1, userId).ToList();
             }
             if (userType == (int)UserType.WFJUser)
             {
-                documents = _formSearchRepository.GetFormList(-1, -1, userId).ToList();
+                var userAttorney = _userAttorneyRepository.GetPersonnelByUserID(userId);
+                //If user is Collector
+                if ((user.IsCollector ?? 0) == 1)
+                {
+                    var clientIds = (_clientCollectorsRepository.GetClientsByUserID(userId));
+                    documents = _formSearchRepository.GetFormListByClientIds(clientIds.Where(x => x.HasValue).Select(x => x.Value).ToList()).ToList();
+                }
+                //If user AdminStaff
+                else if ((user.IsAdminStaff ?? 0) == 1)
+                {
+                    if (userAttorney > 0)
+                    {
+                        var clientIds = (_personnelClientsRepository.GetClientsByPersonnelID(userAttorney.Value)).ToList();
+                        documents = _formSearchRepository.GetFormListByClientIds(clientIds.Where(x => x.HasValue).Select(x => x.Value).ToList()).ToList();
+                    }
+                }
+                //If user WFJ Attorney
+                else if (userAttorney > 0 && (user.IsCollector ?? 0) == 0 && (user.IsAdminStaff ?? 0) == 0)
+                {
+                    if (userAttorney > 0)
+                    {
+                        var clientIds = (_personnelClientsRepository.GetClientsByPersonnelID(userAttorney.Value)).ToList();
+                        documents = _formSearchRepository.GetFormListByClientIds(clientIds.Where(x => x.HasValue).Select(x => x.Value).ToList()).ToList();
+                    }
+                }
+                else
+                {
+                    documents = _formSearchRepository.GetFormList(-1, -1, userId).ToList();
+                }
             }
+
             return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0)
               ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.Client.ID + "-" + x.ID }).ToList());
         }
@@ -127,7 +158,6 @@ namespace WFJ.Service
         {
             List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             var requests = _requestsRepository.GetRequestByXDays(-700,userId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
@@ -135,7 +165,7 @@ namespace WFJ.Service
                     RequestId = x.Max(z => z.ID),
                     StatusCode = x.Max(z => z.StatusCode),
                     RequestDate = x.Max(z => z.RequestDate),
-                    ClientName = x.Max(z => z.Form.Client.ClientName),
+                    ClientName = x.Max(z => z.Form?.Client?.ClientName),
                 })
                 .OrderByDescending(x => x.RequestDate)
                 .ToList();            

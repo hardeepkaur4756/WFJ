@@ -11,5 +11,6 @@ namespace WFJ.Repository.Interfaces
     {
         IEnumerable<Form> GetFormList(int clientId, int formTypeId, int? userId);
         Form GetFormDetailByID(int FormID);
+        IEnumerable<Form> GetFormListByClientIds(List<int> clientIds);
     }
 }

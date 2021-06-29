@@ -64,5 +64,8 @@ namespace WFJ.Repository
             return _context.Forms.Include(x => x.FormType).Include(x => x.Client).FirstOrDefault(x => x.ID == FormID);
         }
 
+        public IEnumerable<Form> GetFormListByClientIds(List<int> clientIds) {
+           return _context.Forms.Include(x => x.FormType).Include(x => x.Client).Where(x => x.Client != null && x.Client.Active == 1 && clientIds.Contains(x.Client.ID));
+        }
     }
 }

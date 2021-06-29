@@ -79,6 +79,7 @@
     <Compile Include="AccessLevelsRepository.cs" />
     <Compile Include="AssociateCounselRepository.cs" />
     <Compile Include="CategoryRepository.cs" />
+    <Compile Include="ClientCollectorsRepository.cs" />
     <Compile Include="ClientRepository.cs" />
     <Compile Include="CodesRepository.cs" />
     <Compile Include="CurrenciesRepository.cs" />
@@ -444,6 +445,7 @@
     <Compile Include="Interfaces\IAccessLevelsRepository.cs" />
     <Compile Include="Interfaces\IAssociateCounselRepository.cs" />
     <Compile Include="Interfaces\ICategoryRepository.cs" />
+    <Compile Include="Interfaces\IClientCollectorsRepository.cs" />
     <Compile Include="Interfaces\IClientRepository.cs" />
     <Compile Include="Interfaces\ICodesRepository.cs" />
     <Compile Include="Interfaces\ICurrenciesRepository.cs" />
@@ -461,6 +463,7 @@
     <Compile Include="Interfaces\IFormTypeRepository.cs" />
     <Compile Include="Interfaces\IFormUsersRepository.cs" />
     <Compile Include="Interfaces\IHiddenRequestNotesRepository.cs" />
+    <Compile Include="Interfaces\IUserAttorneyRepository.cs" />
     <Compile Include="Interfaces\ILevelRepository.cs" />
     <Compile Include="Interfaces\IListFieldRepository.cs" />
     <Compile Include="Interfaces\IPaymentsRepository.cs" />
@@ -495,6 +498,7 @@
     <Compile Include="RequestNotesRepository.cs" />
     <Compile Include="RequestsRepository.cs" />
     <Compile Include="StatusCodesRepository.cs" />
+    <Compile Include="UserAttorneyRepository.cs" />
     <Compile Include="UserClientRepository.cs" />
     <Compile Include="UserLevelsRepository.cs" />
     <Compile Include="UserRepository.cs" />

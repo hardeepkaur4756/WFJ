@@ -15,5 +15,10 @@ namespace WFJ.Repository
         {
             return _context.PersonnelClients.Include(x => x.Personnel).Where(x => x.ClientID == ClientID && x.Personnel !=null).Select(x => x.Personnel).AsEnumerable();
         }
+
+        public List<int?> GetClientsByPersonnelID(int PersonnelId)
+        {
+            return _context.PersonnelClients.Include(x => x.Personnel).Where(x => x.Personnel != null && x.Personnel.ID  == PersonnelId).Select(x => x.ClientID).ToList();
+        }
     }
 }
