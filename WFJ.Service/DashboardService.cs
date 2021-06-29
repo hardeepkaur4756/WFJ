@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,7 @@ namespace WFJ.Service
             adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(0);
             adminDashboardViewModel.FinalDemands = GetFinalDemand();
             adminDashboardViewModel.ActionRequireds = GetActionRequired(0);
-            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment(1,0);
+            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment(1, 0);
             return adminDashboardViewModel;
         }
 
@@ -77,17 +77,146 @@ namespace WFJ.Service
         {
             List<ChartBaseModel> activeStatusPieChartData = new List<ChartBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             var request = _requestsRepository.GetByFormId(formId);
             activeStatusPieChartData = request.GroupBy(x => x.StatusCode).ToList()
                 .Select(x => new ChartBaseModel
-            {
-                Name = GetStatus(Convert.ToInt32(x.Key), formId),
-                Value = x.Count().ToString()
-            }).ToList();
+                {
+                    Name = GetStatus(Convert.ToInt32(x.Key), formId),
+                    Value = x.Count().ToString()
+                }).ToList();
 
             return activeStatusPieChartData;
         }
+
+
+        public ChartBaseModelYearly GetPlacementsLineChartData(int formId)
+        {
+            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
+            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
+            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
+
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            var request = _requestsRepository.GetByFormId(formId);
+            chartBaseModelYearly.ChartBaseModelCurrentYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(x => x.RequestDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.Count().ToString()
+                }).ToList();
+
+            chartBaseModelYearly.ChartBaseModelPreviousYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
+                .GroupBy(x => x.RequestDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.Count().ToString()
+                }).ToList();
+
+            return chartBaseModelYearly;
+        }
+
+        private long GetBalanceDue(List<int> requestids,int formFieldsId)
+        {
+            if(formFieldsId > 0)
+            {
+                IFormDataRepository _formDataRepository = new FormDataRepository();
+                return _formDataRepository.GetAll().Where(x => x.FormFieldID == formFieldsId && requestids.Contains(x.RequestID.Value)).Sum(x => long.Parse(x.FieldValue));
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+        public ChartBaseModelYearly GetDollarsPlacedLineChartData(int formId)
+        {
+            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
+            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
+            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            var requests = _requestsRepository.GetByFormId(formId);
+            var formFieldId = requests?.FirstOrDefault().Form?.AccountBalanceFieldID.Value;
+
+            chartBaseModelYearly.ChartBaseModelCurrentYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(x => x.RequestDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
+                }).ToList();
+
+            chartBaseModelYearly.ChartBaseModelPreviousYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
+               .GroupBy(x => x.RequestDate.Value.Month)
+               .Select(x => new ChartBaseModel
+               {
+                   Name = x.Key.ToString(),
+                   Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
+               }).ToList();
+            return chartBaseModelYearly;
+        }
+
+        public ChartBaseModelYearly GetPlacementCollectedLineChartData(int formId)
+        {
+            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
+            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
+            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
+
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            IPaymentsRepository _paymentsRepository = new PaymentsRepository();
+
+            var request = _requestsRepository.GetByFormId(formId);
+            var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
+
+            chartBaseModelYearly.ChartBaseModelCurrentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(x => x.PaymentDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
+                }).ToList();
+
+            chartBaseModelYearly.ChartBaseModelPreviousYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
+                .GroupBy(x => x.PaymentDate.Value.Month)
+                 .Select(x => new ChartBaseModel
+                 {
+                     Name = x.Key.ToString(),
+                     Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
+                 }).ToList();
+            return chartBaseModelYearly;
+        }
+
+        public ChartBaseModelYearly GetDollarsCollectedLineChartData(int formId)
+        {
+            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
+            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
+            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
+
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            IPaymentsRepository _paymentsRepository = new PaymentsRepository();
+
+            var request = _requestsRepository.GetByFormId(formId);
+            var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
+
+            chartBaseModelYearly.ChartBaseModelCurrentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(x => x.PaymentDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.Sum(y => y.Amount).ToString()
+                }).ToList();
+
+            chartBaseModelYearly.ChartBaseModelPreviousYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
+                .GroupBy(x => x.PaymentDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.Sum(y => y.Amount).ToString()
+                }).ToList();
+            return chartBaseModelYearly;
+        }
+
 
         /// <summary>
         /// Get Recent Account View
@@ -98,7 +227,7 @@ namespace WFJ.Service
         {
             List<RecentAccountActivityViewModel> recentAccountViewModels = new List<RecentAccountActivityViewModel>();
             IRecentAccountActivitiesRepository _recentAccActRepo = new RecentAccountActivitiesRepository();
-            
+
             recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days).Select(x => new RecentAccountActivityViewModel
             {
                 CustomerName = GetCustomerName(Convert.ToInt32(x.RequestID), Convert.ToInt32(x.Request?.FormID)),
@@ -204,17 +333,17 @@ namespace WFJ.Service
             List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
-            var requests = _requestsRepository.GetRequestByXDays(-7,userId).GroupBy(x => x.Requestor)
+            var requests = _requestsRepository.GetRequestByXDays(-7, userId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
-                    FormId = x.Max(z=>z.FormID),
+                    FormId = x.Max(z => z.FormID),
                     RequestId = x.Max(z => z.ID),
                     StatusCode = x.Max(z => z.StatusCode),
                     RequestDate = x.Max(z => z.RequestDate),
                     ClientName = x.Max(z => z.Form?.Client?.ClientName),
                 })
                 .OrderByDescending(x => x.RequestDate)
-                .ToList();            
+                .ToList();
 
             if (requests != null && requests.Any())
             {
@@ -326,10 +455,10 @@ namespace WFJ.Service
                 {
                     FormName = x.Request?.Form?.FormName,
                     PaymentAmount = x.Amount,
-                    PaymentDate = x.PaymentDate.HasValue? x.PaymentDate.Value.ToString("MM/dd/yyyy"): "",
+                    PaymentDate = x.PaymentDate.HasValue ? x.PaymentDate.Value.ToString("MM/dd/yyyy") : "",
                     PaymentType = x.PaymentType?.PaymentTypeDesc,
                     WFJFees = x.WFJFees,
-                    InvoicDate = x.WFJInvoiceDatePaid.HasValue ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy"):"",
+                    InvoicDate = x.WFJInvoiceDatePaid.HasValue ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy") : "",
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.Request?.FormID)),
                     ClientName = x.Request?.Form.Client.ClientName,
                     Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.Form.ID)),
@@ -341,7 +470,8 @@ namespace WFJ.Service
             return approvedPayements;
         }
 
-        private List<DashboardBaseModel> GetFollowUpAccounts(int clientId, int formId) {
+        private List<DashboardBaseModel> GetFollowUpAccounts(int clientId, int formId)
+        {
             List<DashboardBaseModel> followUpAccounts = new List<DashboardBaseModel>();
             var test = _requestsRepository.FollowUpAccounts(clientId, formId);
             return _requestsRepository.FollowUpAccounts(clientId, formId)
@@ -358,7 +488,7 @@ namespace WFJ.Service
         {
             public int? StatusCode { get; set; }
             public int RequestId { get; set; }
-            public int?FormId { get; set; }
+            public int? FormId { get; set; }
             public DateTime? RequestDate { get; set; }
             public string ClientName { get; set; }
             public string CustomerName { get; set; }
@@ -367,4 +497,3 @@ namespace WFJ.Service
 
     }
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

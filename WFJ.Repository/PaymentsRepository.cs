@@ -19,6 +19,14 @@ namespace WFJ.Repository
             _context.Configuration.ProxyCreationEnabled = true;
             return _context.Payments.Where(x => x.RequestID == requestId).Include(x=> x.User).Include(x => x.Request).Include(x => x.PaymentType).Include(x => x.currency).ToList();
         }
+
+        public List<Payment> GetByReqestIds(List<int> requestIds)
+        {
+            _context.Configuration.LazyLoadingEnabled = true;
+            _context.Configuration.ProxyCreationEnabled = true;
+            return _context.Payments.Where(x => x.RequestID != null && requestIds.Contains(x.RequestID.Value)).ToList();
+        }
+
         public List<Payment> GetByClientId(int clientId, DateTime? beginDate, DateTime? endDate,int? ClientUserId)
         {
             _context.Configuration.LazyLoadingEnabled = true;

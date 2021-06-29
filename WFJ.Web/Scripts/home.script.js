@@ -1562,7 +1562,9 @@
                 }
             },
             series: [{
-                    data: [41, 9, 36, 12, 44, 25, 59, 41, 66, 25]
+                data: ['jan'+ 23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+            }, {
+                data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
             }],
             stroke: {
                 curve: 'smooth',
@@ -1779,6 +1781,7 @@
 
     if ($("#flot-report").length > 0)
     {
+        //var formId = parseInt(30);
         var data1 = [[0, 12], [1, 10], [2, 7], [3, 11], [4, 15], [5, 20], [6, 22], [7, 19], [8, 18], [9, 20], [10, 17], [11, 19], [12, 18], [13, 14], [14, 9]];
         var data2 = [[0, 2], [1, 1], [2, 2], [3, 4], [4, 2], [5, 1], [6, 0], [7, 0], [8, 5], [9, 2], [10, 8], [11, 6], [12, 9], [13, 2], [14, 0]];
         var flotChartOption = {
@@ -1828,7 +1831,8 @@
     $.ajax({
         type: "POST",
         url: "/Dashboard/GetActiveAccounts",
-        contentType: "application/json",
+        contentType: 'application/json; charset=utf-8',
+        //data: { "formId": formId },
         dataType: "json",
         success: function (data) {
 

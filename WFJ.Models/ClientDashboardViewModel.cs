@@ -20,4 +20,13 @@ namespace WFJ.Models
         public string Name { get; set; }
         public string Value { get; set; }
     }
+
+    public class ChartBaseModelYearly
+    {
+        public List<ChartBaseModel> ChartBaseModelCurrentYear { get; set; }
+        public List<ChartBaseModel> ChartBaseModelPreviousYear { get; set; }
+    }
+
+
+
 }
