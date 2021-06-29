@@ -11,5 +11,7 @@ namespace WFJ.Repository.Interfaces
     public interface IRecentAccountActivitiesRepository : IRepository<RecentAccountActivity>
     {
         RecentAccountActivity GetRecentAccountActivity(RecentAccountActivity recentAccountActivity);
+        List<RecentAccountActivity> GetRecentAccounts(int days);
+        List<RecentAccountActivity> GetRecentActivities(int days);
     }
 }

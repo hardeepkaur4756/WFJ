@@ -24,6 +24,7 @@ namespace WFJ.Web.Controllers
         private IPaymentTypeService _paymentTypeService = new PaymentTypesService();
         private IUserClientService _userClientService = new UserClientService();
         private IClientService _clientService = new ClientService();
+        private IRecentAccountActivitiesService _recentAcctActService = new RecentAccountActivitiesService();
 
         public ActionResult Payment()
         {
@@ -74,6 +75,9 @@ namespace WFJ.Web.Controllers
                     GetSessionUser(out UserId, out UserType, out UserAccess);
                     _paymentService.AddUpdatePayment(model);
 
+                    // Inserting and updating the data into RecentAccountActivity
+                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, "Activity");
+
                     var detail = _paymentService.GetPaymentDetail(model.FormId, model.RequestId);
                     isSuccess = true;
                     if (detail.BalanceDue > 0)
@@ -121,6 +125,9 @@ namespace WFJ.Web.Controllers
                 model.Currencies = _currencyService.GetCurrencyDropdown();
                 model.Currency = _currencyService.GetDefaultCurrencyId("USD");
 
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, "Activity");
+
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddPayment", model) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -150,6 +157,9 @@ namespace WFJ.Web.Controllers
                     totalPayment = detail.TotalPaymentCurrency == "USD" ? "$" + detail.TotalPayment : detail.TotalPayment + " " + detail.TotalPaymentCurrency;
                     remainingAmount = detail.RemainingAmountCurrency == "USD" ? "$" + detail.RemainingAmount : detail.RemainingAmount + " " + detail.RemainingAmountCurrency;
                 }
+
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(Convert.ToInt32(RequestId), UserId, "Activity");
             }
             catch (Exception ex)
             {
@@ -167,7 +177,11 @@ namespace WFJ.Web.Controllers
             {
                 _paymentService.SendPayments(requestId, payments, users);
 
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+
                 isSuccess = true;
+
             }
             catch (Exception ex)
             {

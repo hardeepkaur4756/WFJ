@@ -130,7 +130,7 @@ function getSelectedNotes() {
 
 
 function deleteNote(noteid) {
-
+    var requestId = $("#Request_ID").val();
     eModal.confirm({
         message: "Are you sure you want to delete this note?",
         //title: 'Confirm!',
@@ -141,7 +141,7 @@ function deleteNote(noteid) {
         .then(function myfunction() {
 
             $.ajax({
-                data: { noteId: noteid },
+                data: { noteId: noteid, requestId: requestId },
                 url: '/RequestNotes/DeleteNote',
                 type: 'post',
                 dataType: 'json',
@@ -159,13 +159,14 @@ function deleteNote(noteid) {
 }
 
 function addNotes(noteId) {
+    var requestId = $("#Request_ID").val();
     $(".se-pre-con").fadeIn();
     var clientId = parseInt($("#ClientId").val());
     if (isNaN(clientId)) { clientId = 0; }
     $.ajax({
         type: "Get",
         url: "/RequestNotes/AddEditNote",
-        data: { noteId: noteId, clientId: clientId },
+        data: { noteId: noteId, clientId: clientId, requestId: requestId },
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {

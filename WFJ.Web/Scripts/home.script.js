@@ -1815,32 +1815,43 @@
             }], flotChartOption);
     }
 
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
     $.ajax({
         type: "POST",
         url: "/Dashboard/GetActiveAccounts",
         contentType: "application/json",
         dataType: "json",
         success: function (data) {
-            console.log(data);
+
+            var datasetLabel = [];
+            var datasetValue = [];
+            var datasetColor = [];
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].Name != null) {
+                    datasetLabel.push(data[i].Name);
+                    datasetValue.push(data[i].Value);
+                    datasetColor.push(getRandomColor());
+                }
+            }
             var config = {
                 type: 'doughnut',
                 data: {
                     datasets: [{
-                        data: [data.Active, data.LocalCounsel, data.InSuit, data.PaymentPlan],
-                        backgroundColor: [
-                            '#1e3d73',
-                            '#17a2b8',
-                            '#ffc107',
-                            'Brown'
-                        ],
+                        data: datasetValue,
+                        backgroundColor: datasetColor,
                         label: 'Dataset 1'
                     }],
-                    labels: [
-                        'Active',
-                        'Local Counsel',
-                        'In Suit',
-                        'Payment Plan'
-                    ]
+                    labels: datasetLabel
                 },
                 options: {
                     responsive: true,

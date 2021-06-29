@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using WFJ.Helper;
 using WFJ.Models;
+using WFJ.Repository.EntityModel;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
 using WFJ.Service.Model;
@@ -22,6 +23,7 @@ namespace WFJ.Web.Controllers
         private IFormTypeService _formTypeService = new FormTypeService();
         private IUserService _userService = new UserService();
         private IRequestsService _requestsService = new RequestsService();
+        private IRecentAccountActivitiesService _recentAcctActService = new RecentAccountActivitiesService();
         private ICodesService _codeService = new CodesService();
         private IUserClientService _userClientService = new UserClientService();
         private ILevelService _levelService = new LevelService();
@@ -326,6 +328,9 @@ namespace WFJ.Web.Controllers
                 {
 
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
+
+                    // Inserting and updating the data into RecentAccountActivity
+                    _recentAcctActService.AddEdit(Convert.ToInt32(requestId), UserId, "Accounts");
                 }
 
                 
@@ -644,8 +649,12 @@ namespace WFJ.Web.Controllers
                             RequestId = requestId,
                             PhysicalPathFileName = physicalPathFileName
                         });
+                        
                         message = "File Uploaded Successfully!";
                         isSuccess = true;
+
+                        // Inserting and updating the data into RecentAccountActivity
+                        _recentAcctActService.AddEdit(requestId, UserId, "Activity");
                     }
                     else
                     {
@@ -690,6 +699,9 @@ namespace WFJ.Web.Controllers
                 System.IO.File.Delete(fName);
                 message = "Deleted Successfully";
                 requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
+
+                // Inserting and updating the data into RecentAccountActivity
+                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
                 /// send mail to assigned attorney and requestor
                 if (sendNotice)
                 {

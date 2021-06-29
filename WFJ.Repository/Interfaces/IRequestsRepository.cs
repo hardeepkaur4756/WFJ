@@ -14,6 +14,6 @@ namespace WFJ.Repository.Interfaces
         IEnumerable<Request> GetRequestByStatusName(string statusCodeName);
         IEnumerable<Request> GetRequestOutOfCompliance(int userId);
         IEnumerable<Request> FollowUpAccounts(int clientId, int formId);
-        IEnumerable<Request> GetRecnetRequestByDays(int days);
+        IEnumerable<Request> GetByFormId(int formId);
     }
 }
