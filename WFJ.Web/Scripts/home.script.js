@@ -119,370 +119,370 @@
         chart.render();
     }
 
-        $.ajax({
-            type: "POST",
-            url: "/Dashboard/GetPlacementsData",
-            contentType: 'application/json; charset=utf-8',
-            //data: { "formId": formId },
-            dataType: "json",
-            success: function (data) {
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Dashboard/GetPlacementsData",
+        //    contentType: 'application/json; charset=utf-8',
+        //    //data: { "formId": formId },
+        //    dataType: "json",
+        //    success: function (data) {
 
-                console.log(data);
+        //        console.log(data);
 
-                var datasetlabelCY = [];
-                var datasetvalueCY = [];
-                var datasetlabelPY = [];
-                var datasetvaluePY = [];
-                //var datasetcolor = [];
+        //        var datasetlabelCY = [];
+        //        var datasetvalueCY = [];
+        //        var datasetlabelPY = [];
+        //        var datasetvaluePY = [];
+        //        //var datasetcolor = [];
 
-                debugger;
+        //        debugger;
 
-                if (data.ChartBaseModelCurrentYear.length > 0) {
+        //        if (data.ChartBaseModelCurrentYear.length > 0) {
 
-                    for (var j = 0; j < data.ChartBaseModelCurrentYear.length; j++) {
+        //            for (var j = 0; j < data.ChartBaseModelCurrentYear.length; j++) {
 
-                        if (data.ChartBaseModelCurrentYear[j].Name != null) {
-                            datasetlabelCY.push(data.ChartBaseModelCurrentYear[j].Name);
-                            datasetvalueCY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
-                            //datasetcolor.push(getrandomcolor());
-                        }
-                    }
-                }
-
-
-                if (data.ChartBaseModelPreviousYear.length > 0) {
-
-                    for (var j = 0; j < data.ChartBaseModelPreviousYear.length; j++) {
-
-                        if (data.ChartBaseModelPreviousYear[j].Name != null) {
-                            datasetlabelPY.push(data.ChartBaseModelCurrentYear[j].Name);
-                            datasetvaluePY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
-                            //datasetcolor.push(getrandomcolor());
-                        }
-                    }
-
-                }
-
-                console.log(datasetvalueCY)
-                console.log(datasetvaluePY)
-                options = {
-                    chart: {
-                        type: 'line',
-                        height: 80,
-                        sparkline: {
-                            enabled: true
-                        },
-                        dropShadow: {
-                            enabled: true,
-                            top: 1,
-                            left: 1,
-                            blur: 2,
-                            color: '#28a745',
-                            opacity: 0.7,
-                        }
-                    },
-                    series: [{
-
-                        data: datasetvalueCY
-                    },
-                    {
-                        data: datasetvaluePY
-                    }],
-                    stroke: {
-                        curve: 'smooth',
-                        width: 2,
-                    },
-                    markers: {
-                        size: 0
-                    },
-                    grid: {
-                        padding: {
-                            top: 0,
-                            bottom: 0,
-                            left: 0
-                        }
-                    },
-                    colors: ['#28a745'],
-                    tooltip: {
-                        x: {
-                            show: false
-                        },
-                        y: {
-                            title: {
-                                formatter: function formatter(val) {
-                                    return '';
-                                }
-                            }
-                        }
-                    },
-                    responsive: [{
-                        breakpoint: 1351,
-                        options: {
-                            chart: {
-                                height: 95,
-                            },
-                            grid: {
-                                padding: {
-                                    top: 35,
-                                    bottom: 0,
-                                    left: 0
-                                }
-                            },
-                        },
-                    },
-                    {
-                        breakpoint: 1200,
-                        options: {
-                            chart: {
-                                height: 80,
-                            },
-                            grid: {
-                                padding: {
-                                    top: 35,
-                                    bottom: 0,
-                                    left: 40
-                                }
-                            },
-                        },
-                    },
-                    {
-                        breakpoint: 576,
-                        options: {
-                            chart: {
-                                height: 95,
-                            },
-                            grid: {
-                                padding: {
-                                    top: 45,
-                                    bottom: 0,
-                                    left: 0
-                                }
-                            },
-                        },
-                    }
-
-                    ]
-                };
-
-                var apex_today_visitors = document.getElementById("apex_today_visitors");
-                if (apex_today_visitors) {
-                    var ctx = document.getElementById('apex_today_visitors')
-                    window.myDoughnut = new Chart(ctx, options);
-                }
-            },
-            "error": function (data) {
-                console.log("Some Error Occured!");
-            }
-        });
-
-    if ($("#apex_today_sale").length > 0)
-    {
-        options = {
-            chart: {
-                type: 'line',
-                height: 80,
-                sparkline: {
-                    enabled: true
-                },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 2,
-                    color: '#17a2b8',
-                    opacity: 0.7,
-                }
-            },
-            series: [{
-                    data: [7, 9, 36, 12, 44, 25, 59, 41, 12, 25]
-                }],
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            markers: {
-                size: 0
-            },
-            grid: {
-                padding: {
-                    top: 0,
-                    bottom: 0,
-                    left: 0
-                }
-            },
-            colors: ['#17a2b8'],
-            tooltip: {
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function formatter(val) {
-                            return '';
-                        }
-                    }
-                }
-            },
-            responsive: [{
-                    breakpoint: 1351,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1200,
-                    options: {
-                        chart: {
-                            height: 80,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 40
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 576,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 45,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                }
-
-            ]
-        }
+        //                if (data.ChartBaseModelCurrentYear[j].Name != null) {
+        //                    datasetlabelCY.push(data.ChartBaseModelCurrentYear[j].Name);
+        //                    datasetvalueCY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
+        //                    //datasetcolor.push(getrandomcolor());
+        //                }
+        //            }
+        //        }
 
 
-        var chart = new ApexCharts(
-                document.querySelector("#apex_today_sale"),
-                options
-                );
-        chart.render();
-    }
-    if ($("#apex_today_profit").length > 0)
-    {
-        options = {
-            chart: {
-                type: 'line',
-                height: 80,
-                sparkline: {
-                    enabled: true
-                },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 2,
-                    color: '#ffc107',
-                    opacity: 0.7,
-                }
-            },
-            series: [{
-                    data: [21, 9, 36, 12, 44, 25, 59, 41, 66, 25]
-                }],
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            markers: {
-                size: 0
-            },
-            grid: {
-                padding: {
-                    top: 0,
-                    bottom: 0,
-                    left: 0
-                }
-            },
-            colors: ['#ffc107'],
-            tooltip: {
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function formatter(val) {
-                            return '';
-                        }
-                    }
-                }
-            },
-            responsive: [{
-                    breakpoint: 1351,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1200,
-                    options: {
-                        chart: {
-                            height: 80,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 40
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 576,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 45,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                }
+        //        if (data.ChartBaseModelPreviousYear.length > 0) {
 
-            ]
-        }
+        //            for (var j = 0; j < data.ChartBaseModelPreviousYear.length; j++) {
+
+        //                if (data.ChartBaseModelPreviousYear[j].Name != null) {
+        //                    datasetlabelPY.push(data.ChartBaseModelCurrentYear[j].Name);
+        //                    datasetvaluePY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
+        //                    //datasetcolor.push(getrandomcolor());
+        //                }
+        //            }
+
+        //        }
+
+        //        console.log(datasetvalueCY)
+        //        console.log(datasetvaluePY)
+        //        options = {
+        //            chart: {
+        //                type: 'line',
+        //                height: 80,
+        //                sparkline: {
+        //                    enabled: true
+        //                },
+        //                dropShadow: {
+        //                    enabled: true,
+        //                    top: 1,
+        //                    left: 1,
+        //                    blur: 2,
+        //                    color: '#28a745',
+        //                    opacity: 0.7,
+        //                }
+        //            },
+        //            series: [{
+
+        //                data: datasetvalueCY
+        //            },
+        //            {
+        //                data: datasetvaluePY
+        //            }],
+        //            stroke: {
+        //                curve: 'smooth',
+        //                width: 2,
+        //            },
+        //            markers: {
+        //                size: 0
+        //            },
+        //            grid: {
+        //                padding: {
+        //                    top: 0,
+        //                    bottom: 0,
+        //                    left: 0
+        //                }
+        //            },
+        //            colors: ['#28a745'],
+        //            tooltip: {
+        //                x: {
+        //                    show: false
+        //                },
+        //                y: {
+        //                    title: {
+        //                        formatter: function formatter(val) {
+        //                            return '';
+        //                        }
+        //                    }
+        //                }
+        //            },
+        //            responsive: [{
+        //                breakpoint: 1351,
+        //                options: {
+        //                    chart: {
+        //                        height: 95,
+        //                    },
+        //                    grid: {
+        //                        padding: {
+        //                            top: 35,
+        //                            bottom: 0,
+        //                            left: 0
+        //                        }
+        //                    },
+        //                },
+        //            },
+        //            {
+        //                breakpoint: 1200,
+        //                options: {
+        //                    chart: {
+        //                        height: 80,
+        //                    },
+        //                    grid: {
+        //                        padding: {
+        //                            top: 35,
+        //                            bottom: 0,
+        //                            left: 40
+        //                        }
+        //                    },
+        //                },
+        //            },
+        //            {
+        //                breakpoint: 576,
+        //                options: {
+        //                    chart: {
+        //                        height: 95,
+        //                    },
+        //                    grid: {
+        //                        padding: {
+        //                            top: 45,
+        //                            bottom: 0,
+        //                            left: 0
+        //                        }
+        //                    },
+        //                },
+        //            }
+
+        //            ]
+        //        };
+
+        //        var apex_today_visitors = document.getElementById("apex_today_visitors");
+        //        if (apex_today_visitors) {
+        //            var ctx = document.getElementById('apex_today_visitors')
+        //            window.myDoughnut = new Chart(ctx, options);
+        //        }
+        //    },
+        //    "error": function (data) {
+        //        console.log("Some Error Occured!");
+        //    }
+        //});
+
+    //if ($("#apex_today_sale").length > 0)
+    //{
+    //    options = {
+    //        chart: {
+    //            type: 'line',
+    //            height: 80,
+    //            sparkline: {
+    //                enabled: true
+    //            },
+    //            dropShadow: {
+    //                enabled: true,
+    //                top: 1,
+    //                left: 1,
+    //                blur: 2,
+    //                color: '#17a2b8',
+    //                opacity: 0.7,
+    //            }
+    //        },
+    //        series: [{
+    //                data: [7, 9, 36, 12, 44, 25, 59, 41, 12, 25]
+    //            }],
+    //        stroke: {
+    //            curve: 'smooth',
+    //            width: 2,
+    //        },
+    //        markers: {
+    //            size: 0
+    //        },
+    //        grid: {
+    //            padding: {
+    //                top: 0,
+    //                bottom: 0,
+    //                left: 0
+    //            }
+    //        },
+    //        colors: ['#17a2b8'],
+    //        tooltip: {
+    //            x: {
+    //                show: false
+    //            },
+    //            y: {
+    //                title: {
+    //                    formatter: function formatter(val) {
+    //                        return '';
+    //                    }
+    //                }
+    //            }
+    //        },
+    //        responsive: [{
+    //                breakpoint: 1351,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 1200,
+    //                options: {
+    //                    chart: {
+    //                        height: 80,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 40
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 576,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 45,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            }
+
+    //        ]
+    //    }
 
 
-        var chart = new ApexCharts(
-                document.querySelector("#apex_today_profit"),
-                options
-                );
-        chart.render();
-    }
+    //    var chart = new ApexCharts(
+    //            document.querySelector("#apex_today_sale"),
+    //            options
+    //            );
+    //    chart.render();
+    //}
+    //if ($("#apex_today_profit").length > 0)
+    //{
+    //    options = {
+    //        chart: {
+    //            type: 'line',
+    //            height: 80,
+    //            sparkline: {
+    //                enabled: true
+    //            },
+    //            dropShadow: {
+    //                enabled: true,
+    //                top: 1,
+    //                left: 1,
+    //                blur: 2,
+    //                color: '#ffc107',
+    //                opacity: 0.7,
+    //            }
+    //        },
+    //        series: [{
+    //                data: [21, 9, 36, 12, 44, 25, 59, 41, 66, 25]
+    //            }],
+    //        stroke: {
+    //            curve: 'smooth',
+    //            width: 2,
+    //        },
+    //        markers: {
+    //            size: 0
+    //        },
+    //        grid: {
+    //            padding: {
+    //                top: 0,
+    //                bottom: 0,
+    //                left: 0
+    //            }
+    //        },
+    //        colors: ['#ffc107'],
+    //        tooltip: {
+    //            x: {
+    //                show: false
+    //            },
+    //            y: {
+    //                title: {
+    //                    formatter: function formatter(val) {
+    //                        return '';
+    //                    }
+    //                }
+    //            }
+    //        },
+    //        responsive: [{
+    //                breakpoint: 1351,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 1200,
+    //                options: {
+    //                    chart: {
+    //                        height: 80,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 40
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 576,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 45,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            }
+
+    //        ]
+    //    }
+
+
+    //    var chart = new ApexCharts(
+    //            document.querySelector("#apex_today_profit"),
+    //            options
+    //            );
+    //    chart.render();
+    //}
 
 /////////////////////////////////// Mixed Chart /////////////////////
     if ($("#apex_mixed_chart").length > 0)
@@ -1595,112 +1595,112 @@
 /////////////////////// Index 4 Script /////////////////////////
 
 
-    if ($("#apex_primary_chart").length > 0)
-    {
-        options = {
-            chart: {
-                type: 'line',
-                height: 80,
-                sparkline: {
-                    enabled: true
-                },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 2,
-                    color: '#000',
-                    opacity: 0.7,
-                }
-            },
-            series: [{
-                data: ['jan'+ 23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
-            }, {
-                data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
-            }],
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            markers: {
-                size: 0
-            },
-            grid: {
-                padding: {
-                    top: 0,
-                    bottom: 0,
-                    left: 0
-                }
-            },
-            colors: ['#1e3d73'],
-            tooltip: {
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function formatter(val) {
-                            return '';
-                        }
-                    }
-                }
-            },
-            responsive: [{
-                    breakpoint: 1351,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1200,
-                    options: {
-                        chart: {
-                            height: 80,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 40
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 576,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 45,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                }
+    //if ($("#apex_primary_chart").length > 0)
+    //{
+    //    options = {
+    //        chart: {
+    //            type: 'line',
+    //            height: 80,
+    //            sparkline: {
+    //                enabled: true
+    //            },
+    //            dropShadow: {
+    //                enabled: true,
+    //                top: 1,
+    //                left: 1,
+    //                blur: 2,
+    //                color: '#000',
+    //                opacity: 0.7,
+    //            }
+    //        },
+    //        series: [{
+    //            data: ['jan'+ 23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+    //        }, {
+    //            data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39]
+    //        }],
+    //        stroke: {
+    //            curve: 'smooth',
+    //            width: 2,
+    //        },
+    //        markers: {
+    //            size: 0
+    //        },
+    //        grid: {
+    //            padding: {
+    //                top: 0,
+    //                bottom: 0,
+    //                left: 0
+    //            }
+    //        },
+    //        colors: ['#1e3d73'],
+    //        tooltip: {
+    //            x: {
+    //                show: false
+    //            },
+    //            y: {
+    //                title: {
+    //                    formatter: function formatter(val) {
+    //                        return '';
+    //                    }
+    //                }
+    //            }
+    //        },
+    //        responsive: [{
+    //                breakpoint: 1351,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 1200,
+    //                options: {
+    //                    chart: {
+    //                        height: 80,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 35,
+    //                            bottom: 0,
+    //                            left: 40
+    //                        }
+    //                    },
+    //                },
+    //            },
+    //            {
+    //                breakpoint: 576,
+    //                options: {
+    //                    chart: {
+    //                        height: 95,
+    //                    },
+    //                    grid: {
+    //                        padding: {
+    //                            top: 45,
+    //                            bottom: 0,
+    //                            left: 0
+    //                        }
+    //                    },
+    //                },
+    //            }
 
-            ]
-        }
+    //        ]
+    //    }
 
 
-        var chart = new ApexCharts(
-                document.querySelector("#apex_primary_chart"),
-                options
-                );
-        chart.render();
-    }
+    //    var chart = new ApexCharts(
+    //            document.querySelector("#apex_primary_chart"),
+    //            options
+    //            );
+    //    chart.render();
+    //}
 
 
     if ($("#apex_main_chart").length > 0)

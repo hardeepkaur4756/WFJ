@@ -61,6 +61,26 @@ namespace WFJ.Web.Controllers
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult GetDollarsPlacedData()
+        {
+            var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(30);
+            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetPlacementCollectedData()
+        {
+            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
+            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetDollarsCollectedData()
+        {
+            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
+            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
+        }
 
         private void GetSessionUser(out int userId, out int userType, out int? userAccess)
         {

@@ -48,7 +48,8 @@
                                         </h6>
                                     </div>
                                 </div>
-                                <div id="apex_primary_chart"></div>apex_primary_chart
+                                @*<div id="apex_primary_chart"></div>apex_primary_chart*@
+                                <canvas id="placement-data-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,8 @@
                                     </div>
                                 </div>
                                 <span class="bg-primary card-liner-absolute-icon text-white card-liner-small-tip">+4.8%</span>
-                                <div id="apex_today_visitors"></div>
+                                <canvas id="dollars-placed-chart"></canvas>
+                                @*<div id="apex_today_visitors"></div>*@
                             </div>
                         </div>
                     </div>
@@ -79,7 +81,8 @@
                                         <h6 class="card-liner-subtitle">Today's Sale</h6>
                                     </div>
                                 </div>
-                                <div id="apex_today_sale"></div>
+                                <canvas id="placement-collected-chart"></canvas>
+                                @*<div id="apex_today_sale"></div>*@
                             </div>
                         </div>
                     </div>
@@ -93,7 +96,8 @@
                                         <h6 class="card-liner-subtitle">Total Profit</h6>
                                     </div>
                                 </div>
-                                <div id="apex_today_profit"></div>
+                                <canvas id="dollars-collected-chart"></canvas>
+                                @*<div id="apex_today_profit"></div>*@
                             </div>
                         </div>
                     </div>
@@ -395,9 +399,6 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                console.log("vikad");
-                console.log(response);
-                console.log(response.ChartBaseModelCurrentYear);
                 var aData = response.ChartBaseModelPreviousYear;
                 var data = [];
                 var label = [];
@@ -434,7 +435,7 @@
                     labels: label
                 };
 
-                var context = document.getElementById("linechart").getContext("2d");
+                var context = document.getElementById("placement-data-chart").getContext("2d");
                 myLineChart = new Chart(context, {
                     type: 'line',
                     data: lineData,
@@ -448,5 +449,185 @@
               //  HideLoader();
             }
         });
+
+         $.ajax({
+             type: "POST",
+             url: "/Dashboard/GetDollarsPlacedData",
+             //"headers": {
+             //    "XSRF-TOKEN": document.querySelector('[name="__RequestVerificationToken"]').value
+             //},
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (response) {
+                 var aData = response.ChartBaseModelPreviousYear;
+                 var data = [];
+                 var label = [];
+                 var dataPrevious = [];
+                 console.log(aData);
+                 $.each(aData, function (inx, val) {
+                     var obj = {};
+                     if (val.Value == null) {
+                         data.push(0);
+                     } else {
+                         data.push(val.Value);
+                     }
+                     label.push(val.Name);
+                 });
+
+                 $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
+                     dataPrevious.push(val.Value);
+                 });
+
+                 var lineData = {
+                     datasets: [{
+                         data: data,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     },
+                     {
+                         data: dataPrevious,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     }
+                     ],
+                     labels: label
+                 };
+
+                 var context = document.getElementById("dollars-placed-chart").getContext("2d");
+                 myLineChart = new Chart(context, {
+                     type: 'line',
+                     data: lineData,
+                     options: {
+                         title: {
+                             display: true,
+                             text: 'Sales Over Time '// + selectionLabel(response.label)
+                         }
+                     }
+                 });
+                 //  HideLoader();
+             }
+         });
+
+         $.ajax({
+             type: "POST",
+             url: "/Dashboard/GetPlacementCollectedData",
+             //"headers": {
+             //    "XSRF-TOKEN": document.querySelector('[name="__RequestVerificationToken"]').value
+             //},
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (response) {
+                 var aData = response.ChartBaseModelPreviousYear;
+                 var data = [];
+                 var label = [];
+                 var dataPrevious = [];
+                 console.log(aData);
+                 $.each(aData, function (inx, val) {
+                     var obj = {};
+                     if (val.Value == null) {
+                         data.push(0);
+                     } else {
+                         data.push(val.Value);
+                     }
+                     label.push(val.Name);
+                 });
+
+                 $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
+                     dataPrevious.push(val.Value);
+                 });
+
+                 var lineData = {
+                     datasets: [{
+                         data: data,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     },
+                     {
+                         data: dataPrevious,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     }
+                     ],
+                     labels: label
+                 };
+
+                 var context = document.getElementById("placement-collected-chart").getContext("2d");
+                 myLineChart = new Chart(context, {
+                     type: 'line',
+                     data: lineData,
+                     options: {
+                         title: {
+                             display: true,
+                             text: 'Sales Over Time '// + selectionLabel(response.label)
+                         }
+                     }
+                 });
+                 //  HideLoader();
+             }
+         });
+
+         $.ajax({
+             type: "POST",
+             url: "/Dashboard/GetDollarsCollectedData",
+             //"headers": {
+             //    "XSRF-TOKEN": document.querySelector('[name="__RequestVerificationToken"]').value
+             //},
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: function (response) {
+                 var aData = response.ChartBaseModelPreviousYear;
+                 var data = [];
+                 var label = [];
+                 var dataPrevious = [];
+                 console.log(aData);
+                 $.each(aData, function (inx, val) {
+                     var obj = {};
+                     if (val.Value == null) {
+                         data.push(0);
+                     } else {
+                         data.push(val.Value);
+                     }
+                     label.push(val.Name);
+                 });
+
+                 $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
+                     dataPrevious.push(val.Value);
+                 });
+
+                 var lineData = {
+                     datasets: [{
+                         data: data,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     },
+                     {
+                         data: dataPrevious,
+                         borderColor: "#3e95cd",
+                         label: "Number of Sales",
+                         fill: false,
+                     }
+                     ],
+                     labels: label
+                 };
+
+                 var context = document.getElementById("dollars-collected-chart").getContext("2d");
+                 myLineChart = new Chart(context, {
+                     type: 'line',
+                     data: lineData,
+                     options: {
+                         title: {
+                             display: true,
+                             text: 'Sales Over Time '// + selectionLabel(response.label)
+                         }
+                     }
+                 });
+                 //  HideLoader();
+             }
+         });
     }
 </script>
