@@ -366,10 +366,87 @@
         </div>
     </div>
     @*<div class="col-12 col-md-12 mt-3">
-        <div class="card h-100">
-            <div class="card-body h-100">
-                <div id="calendar" class="h-100"></div>
+            <div class="card h-100">
+                <div class="card-body h-100">
+                    <div id="calendar" class="h-100"></div>
+                </div>
             </div>
-        </div>
-    </div>*@
+        </div>*@
 </div>
+<canvas id="linechart"></canvas>
+<script  type="text/javascript" src="~/vendors/jquery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
+<script type="text/javascript">
+    var myLineChart;
+    $(document).ready(function () {
+        console.log("111");
+        BindLineChart();
+    });
+     function BindLineChart() {
+        if (myLineChart) {
+            myLineChart.destroy();
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/GetPlacementsData",
+            //"headers": {
+            //    "XSRF-TOKEN": document.querySelector('[name="__RequestVerificationToken"]').value
+            //},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log("vikad");
+                console.log(response);
+                console.log(response.ChartBaseModelCurrentYear);
+                var aData = response.ChartBaseModelPreviousYear;
+                var data = [];
+                var label = [];
+                var dataPrevious = [];
+                console.log(aData);
+                $.each(aData, function (inx, val) {
+                    var obj = {};
+                    if (val.Value == null) {
+                        data.push(0);
+                    } else {
+                        data.push(val.Value);
+                    }
+                    label.push(val.Name);
+                });
+
+                $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
+                    dataPrevious.push(val.Value);
+                });
+
+                var lineData = {
+                    datasets: [{
+                        data: data,
+                        borderColor: "#3e95cd",
+                        label: "Number of Sales",
+                        fill: false,
+                    },
+                        {
+                            data: dataPrevious,
+                            borderColor: "#3e95cd",
+                            label: "Number of Sales",
+                            fill: false,
+                        }
+                    ],
+                    labels: label
+                };
+
+                var context = document.getElementById("linechart").getContext("2d");
+                myLineChart = new Chart(context, {
+                    type: 'line',
+                    data: lineData,
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Sales Over Time '// + selectionLabel(response.label)
+                        }
+                    }
+                });
+              //  HideLoader();
+            }
+        });
+    }
+</script>

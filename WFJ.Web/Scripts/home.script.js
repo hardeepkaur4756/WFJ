@@ -119,110 +119,162 @@
         chart.render();
     }
 
-    if ($("#apex_today_visitors").length > 0)
-    {
-        options = {
-            chart: {
-                type: 'line',
-                height: 80,
-                sparkline: {
-                    enabled: true
-                },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 2,
-                    color: '#28a745',
-                    opacity: 0.7,
-                }
-            },
-            series: [{
-                    data: [41, 9, 36, 12, 44, 25, 59, 41, 66, 25]
-                }],
-            stroke: {
-                curve: 'smooth',
-                width: 2,
-            },
-            markers: {
-                size: 0
-            },
-            grid: {
-                padding: {
-                    top: 0,
-                    bottom: 0,
-                    left: 0
-                }
-            },
-            colors: ['#28a745'],
-            tooltip: {
-                x: {
-                    show: false
-                },
-                y: {
-                    title: {
-                        formatter: function formatter(val) {
-                            return '';
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/GetPlacementsData",
+            contentType: 'application/json; charset=utf-8',
+            //data: { "formId": formId },
+            dataType: "json",
+            success: function (data) {
+
+                console.log(data);
+
+                var datasetlabelCY = [];
+                var datasetvalueCY = [];
+                var datasetlabelPY = [];
+                var datasetvaluePY = [];
+                //var datasetcolor = [];
+
+                debugger;
+
+                if (data.ChartBaseModelCurrentYear.length > 0) {
+
+                    for (var j = 0; j < data.ChartBaseModelCurrentYear.length; j++) {
+
+                        if (data.ChartBaseModelCurrentYear[j].Name != null) {
+                            datasetlabelCY.push(data.ChartBaseModelCurrentYear[j].Name);
+                            datasetvalueCY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
+                            //datasetcolor.push(getrandomcolor());
                         }
                     }
                 }
-            },
-            responsive: [{
-                    breakpoint: 1351,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 1200,
-                    options: {
-                        chart: {
-                            height: 80,
-                        },
-                        grid: {
-                            padding: {
-                                top: 35,
-                                bottom: 0,
-                                left: 40
-                            }
-                        },
-                    },
-                },
-                {
-                    breakpoint: 576,
-                    options: {
-                        chart: {
-                            height: 95,
-                        },
-                        grid: {
-                            padding: {
-                                top: 45,
-                                bottom: 0,
-                                left: 0
-                            }
-                        },
-                    },
+
+
+                if (data.ChartBaseModelPreviousYear.length > 0) {
+
+                    for (var j = 0; j < data.ChartBaseModelPreviousYear.length; j++) {
+
+                        if (data.ChartBaseModelPreviousYear[j].Name != null) {
+                            datasetlabelPY.push(data.ChartBaseModelCurrentYear[j].Name);
+                            datasetvaluePY.push(parseInt(data.ChartBaseModelCurrentYear[j].Value));
+                            //datasetcolor.push(getrandomcolor());
+                        }
+                    }
+
                 }
 
-            ]
-        }
+                console.log(datasetvalueCY)
+                console.log(datasetvaluePY)
+                options = {
+                    chart: {
+                        type: 'line',
+                        height: 80,
+                        sparkline: {
+                            enabled: true
+                        },
+                        dropShadow: {
+                            enabled: true,
+                            top: 1,
+                            left: 1,
+                            blur: 2,
+                            color: '#28a745',
+                            opacity: 0.7,
+                        }
+                    },
+                    series: [{
 
+                        data: datasetvalueCY
+                    },
+                    {
+                        data: datasetvaluePY
+                    }],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2,
+                    },
+                    markers: {
+                        size: 0
+                    },
+                    grid: {
+                        padding: {
+                            top: 0,
+                            bottom: 0,
+                            left: 0
+                        }
+                    },
+                    colors: ['#28a745'],
+                    tooltip: {
+                        x: {
+                            show: false
+                        },
+                        y: {
+                            title: {
+                                formatter: function formatter(val) {
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 1351,
+                        options: {
+                            chart: {
+                                height: 95,
+                            },
+                            grid: {
+                                padding: {
+                                    top: 35,
+                                    bottom: 0,
+                                    left: 0
+                                }
+                            },
+                        },
+                    },
+                    {
+                        breakpoint: 1200,
+                        options: {
+                            chart: {
+                                height: 80,
+                            },
+                            grid: {
+                                padding: {
+                                    top: 35,
+                                    bottom: 0,
+                                    left: 40
+                                }
+                            },
+                        },
+                    },
+                    {
+                        breakpoint: 576,
+                        options: {
+                            chart: {
+                                height: 95,
+                            },
+                            grid: {
+                                padding: {
+                                    top: 45,
+                                    bottom: 0,
+                                    left: 0
+                                }
+                            },
+                        },
+                    }
 
-        var chart = new ApexCharts(
-                document.querySelector("#apex_today_visitors"),
-                options
-                );
-        chart.render();
-    }
+                    ]
+                };
+
+                var apex_today_visitors = document.getElementById("apex_today_visitors");
+                if (apex_today_visitors) {
+                    var ctx = document.getElementById('apex_today_visitors')
+                    window.myDoughnut = new Chart(ctx, options);
+                }
+            },
+            "error": function (data) {
+                console.log("Some Error Occured!");
+            }
+        });
+
     if ($("#apex_today_sale").length > 0)
     {
         options = {
@@ -1781,7 +1833,6 @@
 
     if ($("#flot-report").length > 0)
     {
-        //var formId = parseInt(30);
         var data1 = [[0, 12], [1, 10], [2, 7], [3, 11], [4, 15], [5, 20], [6, 22], [7, 19], [8, 18], [9, 20], [10, 17], [11, 19], [12, 18], [13, 14], [14, 9]];
         var data2 = [[0, 2], [1, 1], [2, 2], [3, 4], [4, 2], [5, 1], [6, 0], [7, 0], [8, 5], [9, 2], [10, 8], [11, 6], [12, 9], [13, 2], [14, 0]];
         var flotChartOption = {

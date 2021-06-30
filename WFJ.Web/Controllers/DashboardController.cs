@@ -42,7 +42,6 @@ namespace WFJ.Web.Controllers
         public JsonResult GetActiveAccounts()
         {
 
-            IDashboardService _dashboardService = new DashboardService();
             var chartBaseModel = _dashboardService.GetActiveStatusPieChartData(30);
 
             //ActiveAccountChartViewModel activeAccountChartViewModel = new ActiveAccountChartViewModel();
@@ -54,6 +53,15 @@ namespace WFJ.Web.Controllers
             //activeAccountChartViewModel.PaymentPlan = 25;
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult GetPlacementsData()
+        {
+            var chartBaseModel = _dashboardService.GetPlacementsLineChartData(30);
+            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
+        }
+
+
         private void GetSessionUser(out int userId, out int userType, out int? userAccess)
         {
             if (Session["UserId"] != null)

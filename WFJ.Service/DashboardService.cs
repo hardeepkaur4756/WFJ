@@ -10,6 +10,7 @@ using WFJ.Models;
 using System.Web.Mvc;
 using WFJ.Service.Model;
 using WFJ.Repository.EntityModel;
+using System.Globalization;
 
 namespace WFJ.Service
 {
@@ -91,28 +92,51 @@ namespace WFJ.Service
 
         public ChartBaseModelYearly GetPlacementsLineChartData(int formId)
         {
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            var request = _requestsRepository.GetByFormId(formId);
+            var currentYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
+                 .GroupBy(x => x.RequestDate.Value.Month)
+                 .Select(x => new ChartBaseModel
+                 {
+                     Name = x.Key.ToString(),
+                     Value = x.Count().ToString()
+                 }).ToList();
+
+            var lastYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
+                .GroupBy(x => x.RequestDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.Count().ToString()
+                }).ToList();
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
+
+            return chartBaseModel;
+        }
+
+        private static ChartBaseModelYearly BindDataMonthly(List<ChartBaseModel> currentYear, List<ChartBaseModel> lastYear)
+        {
             ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
             chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
             chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
 
-            IRequestsRepository _requestsRepository = new RequestsRepository();
-            var request = _requestsRepository.GetByFormId(formId);
-            chartBaseModelYearly.ChartBaseModelCurrentYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
-                .GroupBy(x => x.RequestDate.Value.Month)
-                .Select(x => new ChartBaseModel
-                {
-                    Name = x.Key.ToString(),
-                    Value = x.Count().ToString()
-                }).ToList();
+            IEnumerable<int> months = Enumerable.Range(1, 12);
+            foreach (var month in months)
+            {
+                ChartBaseModel order = new ChartBaseModel();
+                order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                order.Value = currentYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? currentYear.FirstOrDefault(x => int.Parse(x.Name) == month).Value : "0";
+                chartBaseModelYearly.ChartBaseModelCurrentYear.Add(order);
+            }
 
-            chartBaseModelYearly.ChartBaseModelPreviousYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
-                .GroupBy(x => x.RequestDate.Value.Month)
-                .Select(x => new ChartBaseModel
-                {
-                    Name = x.Key.ToString(),
-                    Value = x.Count().ToString()
-                }).ToList();
-
+            foreach (var month in months)
+            {
+                ChartBaseModel order = new ChartBaseModel();
+                order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month).Value : "0";
+                chartBaseModelYearly.ChartBaseModelPreviousYear.Add(order);
+            }
             return chartBaseModelYearly;
         }
 
@@ -132,14 +156,11 @@ namespace WFJ.Service
 
         public ChartBaseModelYearly GetDollarsPlacedLineChartData(int formId)
         {
-            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
-            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
-            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             var requests = _requestsRepository.GetByFormId(formId);
             var formFieldId = requests?.FirstOrDefault().Form?.AccountBalanceFieldID.Value;
 
-            chartBaseModelYearly.ChartBaseModelCurrentYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
+            var currentYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(x => x.RequestDate.Value.Month)
                 .Select(x => new ChartBaseModel
                 {
@@ -147,29 +168,27 @@ namespace WFJ.Service
                     Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
                 }).ToList();
 
-            chartBaseModelYearly.ChartBaseModelPreviousYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
+            var lastYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
                .GroupBy(x => x.RequestDate.Value.Month)
                .Select(x => new ChartBaseModel
                {
                    Name = x.Key.ToString(),
                    Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
                }).ToList();
-            return chartBaseModelYearly;
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
+            return chartBaseModel;
         }
 
         public ChartBaseModelYearly GetPlacementCollectedLineChartData(int formId)
         {
-            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
-            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
-            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
-
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IPaymentsRepository _paymentsRepository = new PaymentsRepository();
 
             var request = _requestsRepository.GetByFormId(formId);
             var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
 
-            chartBaseModelYearly.ChartBaseModelCurrentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
+            var currentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(x => x.PaymentDate.Value.Month)
                 .Select(x => new ChartBaseModel
                 {
@@ -177,29 +196,28 @@ namespace WFJ.Service
                     Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
                 }).ToList();
 
-            chartBaseModelYearly.ChartBaseModelPreviousYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
+           var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
                 .GroupBy(x => x.PaymentDate.Value.Month)
                  .Select(x => new ChartBaseModel
                  {
                      Name = x.Key.ToString(),
                      Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
                  }).ToList();
-            return chartBaseModelYearly;
+
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
+            return chartBaseModel;
         }
 
         public ChartBaseModelYearly GetDollarsCollectedLineChartData(int formId)
         {
-            ChartBaseModelYearly chartBaseModelYearly = new ChartBaseModelYearly();
-            chartBaseModelYearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
-            chartBaseModelYearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
-
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IPaymentsRepository _paymentsRepository = new PaymentsRepository();
 
             var request = _requestsRepository.GetByFormId(formId);
             var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
 
-            chartBaseModelYearly.ChartBaseModelCurrentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
+            var currentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(x => x.PaymentDate.Value.Month)
                 .Select(x => new ChartBaseModel
                 {
@@ -207,14 +225,17 @@ namespace WFJ.Service
                     Value = x.Sum(y => y.Amount).ToString()
                 }).ToList();
 
-            chartBaseModelYearly.ChartBaseModelPreviousYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
+            var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
                 .GroupBy(x => x.PaymentDate.Value.Month)
                 .Select(x => new ChartBaseModel
                 {
                     Name = x.Key.ToString(),
                     Value = x.Sum(y => y.Amount).ToString()
                 }).ToList();
-            return chartBaseModelYearly;
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
+            return chartBaseModel;
+
         }
 
 
