@@ -343,6 +343,7 @@
     <Content Include="Scripts\toastr.script.js" />
     <Content Include="Scripts\todo.js" />
     <Content Include="Scripts\typeahead.script.js" />
+    <Content Include="Scripts\userDashboard.js" />
     <Content Include="Scripts\xeditable.script.js" />
     <Content Include="vendors\apexcharts\apexcharts.amd.js" />
     <Content Include="vendors\apexcharts\apexcharts.common.js" />
