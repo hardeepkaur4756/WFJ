@@ -16,14 +16,14 @@ namespace WFJ.Service
     {
         IRecentAccountActivitiesRepository _recentAccountActivitiesRepo = new RecentAccountActivitiesRepository();
 
-        public List<RecentAccountActivity> GetRecentAccounts(int days)
+        public List<RecentAccountActivity> GetRecentAccounts(int days, int formId, string type)
         {
-            return _recentAccountActivitiesRepo.GetRecentAccounts(days);
+            return _recentAccountActivitiesRepo.GetRecentAccounts(days, formId, type);
         }
 
-        public List<RecentAccountActivity> GetRecentActivities(int days)
+        public List<RecentAccountActivity> GetRecentActivities(int days, int formId, string type)
         {
-            return _recentAccountActivitiesRepo.GetRecentActivities(days);
+            return _recentAccountActivitiesRepo.GetRecentActivities(days, formId, type);
         }
 
 

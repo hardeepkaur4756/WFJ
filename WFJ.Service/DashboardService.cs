@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using WFJ.Service.Model;
 using WFJ.Repository.EntityModel;
 using System.Globalization;
+using System.Configuration;
 
 namespace WFJ.Service
 {
@@ -23,7 +24,7 @@ namespace WFJ.Service
         IUserAttorneyRepository _userAttorneyRepository = new UserAttorneyRepository();
         IPersonnelClientsRepository _personnelClientsRepository = new PersonnelClientsRepository();
         IClientCollectorsRepository _clientCollectorsRepository = new ClientCollectorsRepository();
-        public AdminDashboardViewModel GetAdminDashboardData()
+        public AdminDashboardViewModel GetAdminDashboardData(int formId)
         {
             AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
             adminDashboardViewModel.RecentlyOpenedClients = new List<RecentlyOpenedClientViewModel>();
@@ -34,14 +35,14 @@ namespace WFJ.Service
 
             //Bind Data
             adminDashboardViewModel.RecentlyOpenedClients = GetRecentlyOpenedClient();
-            adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(0);
-            adminDashboardViewModel.FinalDemands = GetFinalDemand();
-            adminDashboardViewModel.ActionRequireds = GetActionRequired(0);
-            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment(1, 0);
+            adminDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(formId);
+            adminDashboardViewModel.FinalDemands = GetFinalDemand(formId);
+            adminDashboardViewModel.ActionRequireds = GetActionRequired(formId);
+            adminDashboardViewModel.ApprovedPayements = GetApprovedPayment((int)ApproveStatus.Approved, formId);
             return adminDashboardViewModel;
         }
 
-        public UserDashboardViewModel GetUserDashboardData(int userId, Form selectedForm)
+        public UserDashboardViewModel GetUserDashboardData(int formId)
         {
             UserDashboardViewModel userDashboardViewModel = new UserDashboardViewModel();
             userDashboardViewModel.RecentlyOpenedAccounts = new List<DashboardBaseModel>();
@@ -50,27 +51,26 @@ namespace WFJ.Service
             userDashboardViewModel.FollowUpAccounts = new List<DashboardBaseModel>();
 
             //Bind Data
-            userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(userId);
-            userDashboardViewModel.ActionRequireds = GetActionRequired(userId);
-            userDashboardViewModel.ApprovedPayements = GetApprovedPayment(0, userId);
-            userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(selectedForm?.Client?.ID ?? 0, selectedForm.ID);
+            userDashboardViewModel.RecentlyOpenedAccounts = GetRecentlyOpenedAccount(formId);
+            userDashboardViewModel.ActionRequireds = GetActionRequired(formId);
+            userDashboardViewModel.ApprovedPayements = GetApprovedPayment((int)ApproveStatus.Unapproved, formId);
+            userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(formId);
             return userDashboardViewModel;
         }
 
 
         #region Client DashBoard Methods
 
-        public ClientDashboardViewModel GetClientDashboardData(int userId, Form selectedForm)
+        public ClientDashboardViewModel GetClientDashboardData(int formId)
         {
             ClientDashboardViewModel clientDashboardViewModel = new ClientDashboardViewModel();
             clientDashboardViewModel.RecentAccountView = new List<RecentAccountActivityViewModel>();
             clientDashboardViewModel.RecentActivityView = new List<RecentAccountActivityViewModel>();
 
-
             //Bind Data
-            clientDashboardViewModel.RecentAccountView = GetRecentAccountView(10);
-            clientDashboardViewModel.RecentAccountView = GetRecentActivityView(10);
-            //clientDashboardViewModel.GetActiveStatusPieChartData = GetActiveStatusPieChartData(30);
+            clientDashboardViewModel.RecentAccountView = GetRecentAccountView(Convert.ToInt32(ConfigurationManager.AppSettings["TenDays"]), formId, AccountActivity.Accounts.ToString());
+            clientDashboardViewModel.RecentActivityView = GetRecentActivityView(Convert.ToInt32(ConfigurationManager.AppSettings["TenDays"]), formId, AccountActivity.Activity.ToString());
+            clientDashboardViewModel.ApprovedPayements =  GetApprovedPayment((int)ApproveStatus.Unapproved, formId);
             return clientDashboardViewModel;
         }
 
@@ -126,7 +126,7 @@ namespace WFJ.Service
             {
                 ChartBaseModel order = new ChartBaseModel();
                 order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
-                order.Value = currentYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? currentYear.FirstOrDefault(x => int.Parse(x.Name) == month).Value : "0";
+                order.Value = currentYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? currentYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
                 chartBaseModelYearly.ChartBaseModelCurrentYear.Add(order);
             }
 
@@ -134,7 +134,7 @@ namespace WFJ.Service
             {
                 ChartBaseModel order = new ChartBaseModel();
                 order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
-                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month).Value : "0";
+                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
                 chartBaseModelYearly.ChartBaseModelPreviousYear.Add(order);
             }
             return chartBaseModelYearly;
@@ -158,14 +158,14 @@ namespace WFJ.Service
         {
             IRequestsRepository _requestsRepository = new RequestsRepository();
             var requests = _requestsRepository.GetByFormId(formId);
-            var formFieldId = requests?.FirstOrDefault().Form?.AccountBalanceFieldID.Value;
+            var formFieldId = Convert.ToInt32(requests?.FirstOrDefault()?.Form?.AccountBalanceFieldID.Value);
 
             var currentYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year)
                 .GroupBy(x => x.RequestDate.Value.Month)
                 .Select(x => new ChartBaseModel
                 {
                     Name = x.Key.ToString(),
-                    Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
+                    Value = GetBalanceDue(x.Select(y => y.ID).ToList(), formFieldId).ToString()
                 }).ToList();
 
             var lastYear = requests.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 1)
@@ -173,7 +173,7 @@ namespace WFJ.Service
                .Select(x => new ChartBaseModel
                {
                    Name = x.Key.ToString(),
-                   Value = GetBalanceDue(x.Select(y => y.ID).ToList(), Convert.ToInt32(formFieldId)).ToString()
+                   Value = GetBalanceDue(x.Select(y => y.ID).ToList(), formFieldId).ToString()
                }).ToList();
 
             var chartBaseModel = BindDataMonthly(currentYear, lastYear);
@@ -193,7 +193,7 @@ namespace WFJ.Service
                 .Select(x => new ChartBaseModel
                 {
                     Name = x.Key.ToString(),
-                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
+                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
                 }).ToList();
 
            var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
@@ -201,7 +201,7 @@ namespace WFJ.Service
                  .Select(x => new ChartBaseModel
                  {
                      Name = x.Key.ToString(),
-                     Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault().Amount.ToString()
+                     Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
                  }).ToList();
 
 
@@ -244,12 +244,12 @@ namespace WFJ.Service
         /// </summary>
         /// <param name="days"></param>
         /// <returns></returns>
-        public List<RecentAccountActivityViewModel> GetRecentAccountView(int days)
+        public List<RecentAccountActivityViewModel> GetRecentAccountView(int days, int formId, string type)
         {
             List<RecentAccountActivityViewModel> recentAccountViewModels = new List<RecentAccountActivityViewModel>();
             IRecentAccountActivitiesRepository _recentAccActRepo = new RecentAccountActivitiesRepository();
 
-            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days).Select(x => new RecentAccountActivityViewModel
+            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days, formId, type).Select(x => new RecentAccountActivityViewModel
             {
                 CustomerName = GetCustomerName(Convert.ToInt32(x.RequestID), Convert.ToInt32(x.Request?.FormID)),
                 Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.FormID))
@@ -263,12 +263,12 @@ namespace WFJ.Service
         /// </summary>
         /// <param name="days"></param>
         /// <returns></returns>
-        public List<RecentAccountActivityViewModel> GetRecentActivityView(int days)
+        public List<RecentAccountActivityViewModel> GetRecentActivityView(int days, int formId, string type)
         {
             List<RecentAccountActivityViewModel> recentAccountViewModels = new List<RecentAccountActivityViewModel>();
             IRecentAccountActivitiesRepository _recentAccActRepo = new RecentAccountActivitiesRepository();
 
-            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days).Select(x => new RecentAccountActivityViewModel
+            recentAccountViewModels = _recentAccActRepo.GetRecentAccounts(days, formId, type).Select(x => new RecentAccountActivityViewModel
             {
                 CustomerName = GetCustomerName(Convert.ToInt32(x.RequestID), Convert.ToInt32(x.Request?.FormID)),
                 Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.FormID))
@@ -326,8 +326,10 @@ namespace WFJ.Service
                 }
             }
 
+            //return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0)
+            //  ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.Client.ID + "-" + x.ID }).ToList());
             return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0)
-              ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.Client.ID + "-" + x.ID }).ToList());
+              ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.ID.ToString() }).ToList());
         }
 
         /// <summary>
@@ -349,12 +351,13 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        private List<DashboardBaseModel> GetRecentlyOpenedAccount(int userId)
+        private List<DashboardBaseModel> GetRecentlyOpenedAccount(int formId)
         {
             List<DashboardBaseModel> recentlyOpenedAccountViewModels = new List<DashboardBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
-            var requests = _requestsRepository.GetRequestByXDays(-7, userId).GroupBy(x => x.Requestor)
+            // Currently we are getting last seven days data.
+            var requests = _requestsRepository.GetRequestByXDays(Convert.ToInt32(ConfigurationManager.AppSettings["LastXDays"]), formId).GroupBy(x => x.Requestor)
                 .Select(x => new RequestModel
                 {
                     FormId = x.Max(z => z.FormID),
@@ -384,10 +387,10 @@ namespace WFJ.Service
         /// Get Final Demand
         /// </summary>
         /// <returns></returns>
-        private List<DashboardBaseModel> GetFinalDemand()
+        private List<DashboardBaseModel> GetFinalDemand(int formId)
         {
             List<DashboardBaseModel> finalDemandViewModels = new List<DashboardBaseModel>();
-            finalDemandViewModels = _requestsRepository.GetRequestByStatusName("Final Demand Request")
+            finalDemandViewModels = _requestsRepository.GetRequestByStatusName("Final Demand Request", formId)
                 .Select(x => new DashboardBaseModel
                 {
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
@@ -398,11 +401,11 @@ namespace WFJ.Service
             return finalDemandViewModels;
         }
 
-        private List<ActionRequiredViewModel> GetActionRequired(int userId)
+        private List<ActionRequiredViewModel> GetActionRequired(int formId)
         {
             List<ActionRequiredViewModel> actionRequiredViewModels = new List<ActionRequiredViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            actionRequiredViewModels = _requestsRepository.GetRequestOutOfCompliance(userId)
+            actionRequiredViewModels = _requestsRepository.GetRequestOutOfCompliance(formId)
                 .Select(x => new ActionRequiredViewModel
                 {
                     AttorneyName = x.Personnel?.FullName,
@@ -465,13 +468,13 @@ namespace WFJ.Service
         /// get last 7 days created request
         /// </summary>
         /// <returns></returns>
-        private List<ApprovedRecentPayementViewModel> GetApprovedPayment(int approved, int userId)
+        private List<ApprovedRecentPayementViewModel> GetApprovedPayment(int approved, int formId)
         {
             List<ApprovedRecentPayementViewModel> approvedPayements = new List<ApprovedRecentPayementViewModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
             IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
             IPaymentsRepository _paymentRepository = new PaymentsRepository();
-            approvedPayements = _paymentRepository.GetPaymentByApprovedAndXDays(approved, userId)
+            approvedPayements = _paymentRepository.GetPaymentByApprovedAndXDays(approved, formId)
                 .Select(x => new ApprovedRecentPayementViewModel
                 {
                     FormName = x.Request?.Form?.FormName,
@@ -491,11 +494,10 @@ namespace WFJ.Service
             return approvedPayements;
         }
 
-        private List<DashboardBaseModel> GetFollowUpAccounts(int clientId, int formId)
+        private List<DashboardBaseModel> GetFollowUpAccounts(int formId)
         {
             List<DashboardBaseModel> followUpAccounts = new List<DashboardBaseModel>();
-            var test = _requestsRepository.FollowUpAccounts(clientId, formId);
-            return _requestsRepository.FollowUpAccounts(clientId, formId)
+            return _requestsRepository.FollowUpAccounts(formId)
                 .Select(x => new DashboardBaseModel
                 {
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),

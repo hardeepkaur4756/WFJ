@@ -10,7 +10,7 @@ namespace WFJ.Models
     {
         public List<RecentAccountActivityViewModel> RecentAccountView { get; set; }
         public List<RecentAccountActivityViewModel> RecentActivityView { get; set; }
-
+        public List<ApprovedRecentPayementViewModel> ApprovedPayements { get; set; }
         public List<ChartBaseModel> GetActiveStatusPieChartData { get; set; }
         
     }

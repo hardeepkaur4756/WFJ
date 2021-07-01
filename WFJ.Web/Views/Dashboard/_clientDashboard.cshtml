@@ -121,22 +121,53 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*@foreach (var request in Model.RecentPayements)
-                        {
-                            <tr class="zoom">
-                                <td>@request.AccountName</td>
-                                <td>@request.PaymentDate</td>
-                                <td>@request.PaymentAmount</td>
-                                <td>@request.WFJFees</td>
-                                <td>@request.InvoicDate</td>
-                                <td>@request.InvoiceNumber</td>
-                            </tr>
-                        }*@
+                        @foreach (var request in Model.ApprovedPayements)
+                            {
+                                <tr class="zoom">
+                                    <td>@request.ClientName</td> 
+                                    <td>@request.PaymentDate</td>
+                                    <td>@request.PaymentAmount</td>
+                                    <td>@request.WFJFees</td>
+                                    <td>@request.InvoicDate</td>
+                                    <td>@request.InvoiceNumber</td>
+                                </tr>
+                            }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
+        <div class="card">
+            <div class="card-header justify-content-between align-items-center">
+                <h6 class="card-title">
+                    Recent Activities (Files with latest notes)
+                </h6>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <table class="table font-w-600 mb-0" id="final-demand-required">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var request in Model.RecentActivityView)
+                        {
+                            <tr class="zoom">
+                                <td>@request.CustomerName</td>
+                                <td>@request.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script type="text/javascript" src="~/vendors/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>

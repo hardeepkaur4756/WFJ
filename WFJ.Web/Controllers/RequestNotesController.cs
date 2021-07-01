@@ -70,7 +70,7 @@ namespace WFJ.Web.Controllers
                 _notesService.AddHiddenNotes(UserId, requestId, notes);
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
                 isSuccess = true;
             }
@@ -91,7 +91,7 @@ namespace WFJ.Web.Controllers
                 _notesService.FlagUnflagNotes(requestId, notes);
                  GetSessionUser(out UserId, out UserType, out UserAccess);
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
                 isSuccess = true;
             }
@@ -112,7 +112,7 @@ namespace WFJ.Web.Controllers
                 GetSessionUser(out UserId, out UserType, out UserAccess);
                 _notesService.RemoveUserHiddenNotes(UserId, requestId);
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
 
 
@@ -138,7 +138,7 @@ namespace WFJ.Web.Controllers
                 _notesService.DeleteRequestNote(noteId);
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
                 isSuccess = true;
             }
@@ -175,7 +175,7 @@ namespace WFJ.Web.Controllers
                 model.StandardNotes = _notesService.GetStandardNotes();
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddRequestNotes", model) }, JsonRequestBehavior.AllowGet);
             }
@@ -202,7 +202,7 @@ namespace WFJ.Web.Controllers
                     //_notesService.RemoveUserHiddenNotes(UserId, requestId);
 
                     // Inserting and updating the data into RecentAccountActivity
-                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestID), UserId, "Activity");
+                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestID), UserId, AccountActivity.Activity.ToString());
 
                     isSuccess = true;
                 }
@@ -229,7 +229,7 @@ namespace WFJ.Web.Controllers
                 _notesService.SendNotes(requestId, notes, users);
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
                 isSuccess = true;
             }
             catch (Exception ex)

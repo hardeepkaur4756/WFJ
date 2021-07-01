@@ -7,10 +7,10 @@ namespace WFJ.Service.Interfaces
 {
     public interface IDashboardService
     {
-        AdminDashboardViewModel GetAdminDashboardData();
-        UserDashboardViewModel GetUserDashboardData(int userId, Form selectedForm);
+        AdminDashboardViewModel GetAdminDashboardData(int formId);
+        UserDashboardViewModel GetUserDashboardData(int formId);
         (Form form, List<SelectListItem>) GetDashboardFilters(int userType, int userId);
-        ClientDashboardViewModel GetClientDashboardData(int userId, Form selectedForm);
+        ClientDashboardViewModel GetClientDashboardData(int formId);
         List<ChartBaseModel> GetActiveStatusPieChartData(int formId);
         ChartBaseModelYearly GetPlacementsLineChartData(int formId);
         ChartBaseModelYearly GetDollarsPlacedLineChartData(int formId);

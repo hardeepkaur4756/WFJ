@@ -90,12 +90,12 @@ namespace WFJ.Repository
                 .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
         }
 
-        public IEnumerable<Request> GetRequestByXDays(int days, int userId)
+        public IEnumerable<Request> GetRequestByXDays(int days, int formId)
         {
             DateTime date = DateTime.Now.AddDays(days);
-            if (userId > 0)
+            if (formId > 0)
             {
-                return _context.Requests.Where(x => x.Requestor!=null && x.Requestor.Value == userId && x.RequestDate >= date && x.StatusCode != null && x.FormID != null);
+                return _context.Requests.Where(x => x.Requestor!=null && x.FormID == formId && x.RequestDate >= date && x.StatusCode != null);
 
             }
             else
@@ -104,34 +104,43 @@ namespace WFJ.Repository
             }
         }
 
-        public IEnumerable<Request> GetRequestByStatusName(string statusCodeName)
+        public IEnumerable<Request> GetRequestByStatusName(string statusCodeName, int formId)
         {
             var statuscodes = _statusCodesRepo.GetCodesByStatusName(statusCodeName).ToList();
-            return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode)).OrderByDescending(x=>x.RequestDate).Take(7).ToList();
+            return _context.Requests.Where(x => statuscodes.Contains(x.StatusCode) && x.FormID == formId).OrderByDescending(x => x.RequestDate);
         }
 
-        public IEnumerable<Request> GetRequestOutOfCompliance(int userId)
+        public IEnumerable<Request> GetRequestOutOfCompliance(int formId)
         {
             var statusCodes = _context.StatusCodes.Where(x => x.OnCollectorComplianceReport == 1 && x.StatusLevel == 1).Select(x => x.StatusCode1).Distinct();
 
-            if (userId > 0)
+            if (formId > 0)
             {
-                return _context.Requests.Where(x => x.Requestor != null && x.Requestor.Value == userId && statusCodes.Contains(x.StatusCode) && (x.Form != null &&
-            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x => x.RequestDate).Take(7);
+                return _context.Requests.Where(x => x.FormID == formId && statusCodes.Contains(x.StatusCode) &&
+                (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10) && x.active == 1).OrderByDescending(x => x.RequestDate);
             }
 
             else
             {
                 return _context.Requests.Where(x => statusCodes.Contains(x.StatusCode) && (x.Form != null &&
-            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x => x.RequestDate).Take(7);
+            (x.Form.FormTypeID == 1 || x.Form.FormTypeID == 10)) && x.active == 1).OrderByDescending(x => x.RequestDate);
             }
         }
 
-        public IEnumerable<Request> FollowUpAccounts(int clientId, int formId)
+        public IEnumerable<Request> FollowUpAccounts(int formId)
         {
-                return _context.Requests.Where(x => x.Form != null && x.Form.Client != null && x.Form.Client.ID == clientId && x.Form.ID == formId
+            if(formId > 0)
+            {
+                return _context.Requests.Where(x => x.Form != null && x.Form.ID == formId
                 && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
-        }
+            }
+            else
+            {
+                return _context.Requests.Where(x => x.Form != null && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
+            }
+                
+        } // is case me kya hoga means all forms ka data wo kis base pe layega
+
 
         public IEnumerable<Request> GetByFormId(int formId)
         {

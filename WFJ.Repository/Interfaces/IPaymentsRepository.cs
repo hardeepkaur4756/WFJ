@@ -10,6 +10,6 @@ namespace WFJ.Repository.Interfaces
         List<Payment> GetByReqestIds(List<int> requestId);
         
         List<Payment> GetByClientId(int clientId, DateTime? beginDate, DateTime? endDate,int? ClientUserId);
-        IEnumerable<Payment> GetPaymentByApprovedAndXDays(int approved, int userId);
+        IEnumerable<Payment> GetPaymentByApprovedAndXDays(int approved, int formId);
     }
 }

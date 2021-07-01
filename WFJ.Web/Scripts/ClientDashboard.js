@@ -6,7 +6,7 @@ function bindLineChart() {
     }
 
     var gData = {};
-    var formId = 10;
+    var formId = $("#ddlLocalCounselState").val();
     gData.formId = parseInt(formId);
     var jsonData = JSON.stringify(gData);
 

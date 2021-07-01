@@ -10,8 +10,8 @@ namespace WFJ.Service.Interfaces
 {
    public interface IRecentAccountActivitiesService
     {
-        List<RecentAccountActivity> GetRecentAccounts(int days);
-        List<RecentAccountActivity> GetRecentActivities(int days);
+        List<RecentAccountActivity> GetRecentAccounts(int days, int formId, string type);
+        List<RecentAccountActivity> GetRecentActivities(int days, int formId, string type);
 
         void AddEdit(int requestID, int UserID, string type);
 

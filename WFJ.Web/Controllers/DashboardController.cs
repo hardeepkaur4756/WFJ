@@ -31,45 +31,45 @@ namespace WFJ.Web.Controllers
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
             var selectedForm = new Form();
             (selectedForm, dashboardViewModel.DashbaordFilter) = _dashboardService.GetDashboardFilters(userType, userId);
-            dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData();
-            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(userId, selectedForm);
-
-            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(userId, selectedForm);
+            int firstFormId = int.Parse(dashboardViewModel.DashbaordFilter.FirstOrDefault().Value);
+            dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(firstFormId);
+            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(firstFormId);
+            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(firstFormId);
             return View(dashboardViewModel);
         }
 
         [HttpPost]
         public JsonResult GetActiveAccounts(int formId)
         {
-            var chartBaseModel = _dashboardService.GetActiveStatusPieChartData(30);
+            var chartBaseModel = _dashboardService.GetActiveStatusPieChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetPlacementsData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetPlacementsLineChartData(30);
+            var chartBaseModel = _dashboardService.GetPlacementsLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetDollarsPlacedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(30);
+            var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetPlacementCollectedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
+            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GetDollarsCollectedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
+            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 

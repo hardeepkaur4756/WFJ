@@ -76,7 +76,7 @@ namespace WFJ.Web.Controllers
                     _paymentService.AddUpdatePayment(model);
 
                     // Inserting and updating the data into RecentAccountActivity
-                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, "Activity");
+                    _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, AccountActivity.Activity.ToString());
 
                     var detail = _paymentService.GetPaymentDetail(model.FormId, model.RequestId);
                     isSuccess = true;
@@ -126,7 +126,7 @@ namespace WFJ.Web.Controllers
                 model.Currency = _currencyService.GetDefaultCurrencyId("USD");
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, "Activity");
+                _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, AccountActivity.Activity.ToString());
 
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddPayment", model) }, JsonRequestBehavior.AllowGet);
             }
@@ -159,7 +159,7 @@ namespace WFJ.Web.Controllers
                 }
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(Convert.ToInt32(RequestId), UserId, "Activity");
+                _recentAcctActService.AddEdit(Convert.ToInt32(RequestId), UserId, AccountActivity.Activity.ToString());
             }
             catch (Exception ex)
             {
@@ -178,7 +178,7 @@ namespace WFJ.Web.Controllers
                 _paymentService.SendPayments(requestId, payments, users);
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
 
                 isSuccess = true;
 

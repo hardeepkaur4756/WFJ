@@ -58,28 +58,28 @@ namespace WFJ.Repository
             }
         }
 
-        public IEnumerable<Payment> GetPaymentByApprovedAndXDays(int approved, int userId)
+        public IEnumerable<Payment> GetPaymentByApprovedAndXDays(int approved, int formId)
         {
             if(approved == 0)
             {
-                if (userId > 0)
+                if (formId > 0)
                 {
-                    return _context.Payments.Where(x => x.approved == 0 || x.approved == null && x.Request != null && x.UserID == userId).OrderByDescending(x => x.Request.RequestDate).Take(7);
+                    return _context.Payments.Where(x => x.approved == 0 || x.approved == null && x.Request != null && x.Request.FormID == formId).OrderByDescending(x => x.Request.RequestDate);
                 }
                 else
                 {
-                    return _context.Payments.Where(x => x.approved == 0 || x.approved == null && x.Request != null).OrderByDescending(x => x.Request.RequestDate).Take(7);
+                    return _context.Payments.Where(x => x.approved == 0 || x.approved == null && x.Request != null).OrderByDescending(x => x.Request.RequestDate);
                 }
             }
             else
             {
-                if (userId > 0)
+                if (formId > 0)
                 {
-                    return _context.Payments.Where(x => x.approved == 1 && x.Request != null && x.UserID == userId).OrderByDescending(x => x.Request.RequestDate).Take(7);
+                    return _context.Payments.Where(x => x.approved == 1 && x.Request != null && x.Request.FormID == formId).OrderByDescending(x => x.Request.RequestDate);
                 }
                 else
                 {
-                    return _context.Payments.Where(x => x.approved == 1 && x.Request != null).OrderByDescending(x => x.Request.RequestDate).Take(7);
+                    return _context.Payments.Where(x => x.approved == 1 && x.Request != null).OrderByDescending(x => x.Request.RequestDate);
                 }
             }
         }

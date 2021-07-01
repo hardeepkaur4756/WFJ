@@ -330,7 +330,7 @@ namespace WFJ.Web.Controllers
                     _requestsService.UpdateRequestLastViewed(requestId.Value);
 
                     // Inserting and updating the data into RecentAccountActivity
-                    _recentAcctActService.AddEdit(Convert.ToInt32(requestId), UserId, "Accounts");
+                    _recentAcctActService.AddEdit(Convert.ToInt32(requestId), UserId, AccountActivity.Accounts.ToString());
                 }
 
                 
@@ -654,7 +654,7 @@ namespace WFJ.Web.Controllers
                         isSuccess = true;
 
                         // Inserting and updating the data into RecentAccountActivity
-                        _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                        _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
                     }
                     else
                     {
@@ -701,7 +701,7 @@ namespace WFJ.Web.Controllers
                 requestDocumentHtml = GetRequestDocumentGridHtml(requestId);
 
                 // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(requestId, UserId, "Activity");
+                _recentAcctActService.AddEdit(requestId, UserId, AccountActivity.Activity.ToString());
                 /// send mail to assigned attorney and requestor
                 if (sendNotice)
                 {

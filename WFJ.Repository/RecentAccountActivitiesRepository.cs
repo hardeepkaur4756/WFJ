@@ -16,13 +16,13 @@ namespace WFJ.Repository
             return _context.RecentAccountActivities.Where(x => x.RequestID == recentAccAct.RequestID && x.UserID == recentAccAct.UserID && x.Type == recentAccAct.Type).FirstOrDefault();
         }
 
-        public List<RecentAccountActivity> GetRecentAccounts(int days)
+        public List<RecentAccountActivity> GetRecentAccounts(int days, int formId, string type)
         {
-            return _context.RecentAccountActivities.Where(x => x.Type == "Accounts").OrderByDescending(x => x.CreatedDate).Take(days).ToList();
+            return _context.RecentAccountActivities.Where(x => x.Type == type && x.Request.FormID == formId).OrderByDescending(x => x.CreatedDate).Take(days).ToList();
         }
-        public List<RecentAccountActivity> GetRecentActivities(int days)
+        public List<RecentAccountActivity> GetRecentActivities(int days, int formId, string type)
         {
-            return _context.RecentAccountActivities.Where(x => x.Type == "Activity").OrderByDescending(x => x.CreatedDate).Take(days).ToList();
+            return _context.RecentAccountActivities.Where(x => x.Type == type && x.Request.FormID == formId).OrderByDescending(x => x.CreatedDate).Take(days).ToList();
         }
 
     }

@@ -59,5 +59,16 @@ namespace WFJ.Service.Model
         //DBSelectionList = 20
     }
 
+    public enum AccountActivity
+    {
+        Accounts,
+        Activity
+    }
 
+    public enum ApproveStatus
+    {
+        Unapproved = 0,
+        Approved = 1
+
+    }
 }
