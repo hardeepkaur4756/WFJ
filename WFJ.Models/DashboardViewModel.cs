@@ -13,5 +13,6 @@ namespace WFJ.Models
         public UserDashboardViewModel UserDashboard { get; set; }
         public AdminDashboardViewModel AdminDashboard { get; set; }
         public List<SelectListItem> DashbaordFilter { get; set; }
+        public int FormId { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace WFJ.Web.Controllers
         private int? UserAccess;
 
         // GET: Dashboard
-        public ActionResult Index()
+        public ActionResult Index(int? formId)
         {
             GetSessionUser(out UserId, out UserType, out UserAccess);
             int userId = Convert.ToInt32(Session["UserId"]);
@@ -31,10 +31,20 @@ namespace WFJ.Web.Controllers
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
             var selectedForm = new Form();
             (selectedForm, dashboardViewModel.DashbaordFilter) = _dashboardService.GetDashboardFilters(userType, userId);
-            int firstFormId = int.Parse(dashboardViewModel.DashbaordFilter.FirstOrDefault().Value);
-            dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(firstFormId);
-            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(firstFormId);
-            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(firstFormId);
+            int selectedFormId = 0;
+            if(Convert.ToInt32(formId) == 0)
+            {
+                selectedFormId  = int.Parse(dashboardViewModel.DashbaordFilter.FirstOrDefault().Value);
+            }
+            else
+            {
+                selectedFormId = Convert.ToInt32(formId);
+            }
+
+            dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
+            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
+            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
+            dashboardViewModel.FormId = selectedFormId;
             return View(dashboardViewModel);
         }
 

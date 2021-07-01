@@ -260,50 +260,54 @@ function bindPieChart() {
             var datasetLabel = [];
             var datasetValue = [];
             var datasetColor = [];
-
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].Name != null) {
-                    datasetLabel.push(data[i].Name);
-                    datasetValue.push(data[i].Value);
-                    datasetColor.push(getRandomColor());
-                }
-            }
-            var config = {
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: datasetValue,
-                        backgroundColor: datasetColor,
-                        label: 'Dataset 1'
-                    }],
-                    labels: datasetLabel                   
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: true,
-                        position: 'bottom',
-                        labels: {
-                            fontColor: bodycolor
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    },
-                    title: {
-                        display: true,
-                        text: 'Active Accounts'
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Name != null) {
+                        datasetLabel.push(data[i].Name);
+                        datasetValue.push(data[i].Value);
+                        datasetColor.push(getRandomColor());
                     }
                 }
-            };
+                var config = {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: datasetValue,
+                            backgroundColor: datasetColor,
+                            label: 'Dataset 1'
+                        }],
+                        labels: datasetLabel
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                fontColor: bodycolor
+                            }
+                        },
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Active Accounts'
+                        }
+                    }
+                };
 
-            var chartjs_other_pie = document.getElementById("chartjs-other-pie");
-            if (chartjs_other_pie) {
-                var ctx = document.getElementById('chartjs-other-pie').getContext('2d');
-                window.myDoughnut = new Chart(ctx, config);
+                var chartjs_other_pie = document.getElementById("chartjs-other-pie");
+                if (chartjs_other_pie) {
+                    var ctx = document.getElementById('chartjs-other-pie').getContext('2d');
+                    window.myDoughnut = new Chart(ctx, config);
+                }
+            } else {
+                $("#noChartData").text("No chart data available");
             }
+            
         },
         "error": function (data) {
         }

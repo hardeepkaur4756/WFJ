@@ -9,7 +9,7 @@
     <main>
         <div>
             <label for="ddlClient">Filter:</label>
-            @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.DashbaordFilter, "Value", "Text"), new { @Class = "form-control houseCounselOther" })
+            @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.DashbaordFilter, "Value", "Text",Model.FormId), new { @Class = "form-control houseCounselOther" })
         </div>
         <div class="container-fluid site-width">
             @{
@@ -31,6 +31,14 @@
 </div>
 @section scripts{
     <script>
+        $(document).ready(function () {
+            $("#ddlLocalCounselState").change(function () {
+                var formId = $(this).val();
+                alert(formId);
+                window.location.href = "/Dashboard/Index?formId=" + formId;
+            });
+            
+        });
         $("#recently-open-account").dataTable({
             "sScrollY": 500,
             "bScrollCollapse": true,
