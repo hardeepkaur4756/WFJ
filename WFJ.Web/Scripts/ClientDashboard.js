@@ -262,7 +262,7 @@ function bindPieChart() {
                         backgroundColor: datasetColor,
                         label: 'Dataset 1'
                     }],
-                    labels: datasetLabel
+                    labels: datasetLabel                   
                 },
                 options: {
                     responsive: true,
@@ -278,6 +278,10 @@ function bindPieChart() {
                         animateScale: true,
                         animateRotate: true
                     },
+                    title: {
+                        display: true,
+                        text: 'Active Accounts'
+                    }
                 }
             };
 
