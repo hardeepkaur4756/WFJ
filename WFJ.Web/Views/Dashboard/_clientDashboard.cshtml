@@ -1,5 +1,11 @@
 ﻿@model WFJ.Models.ClientDashboardViewModel
-
+<style>
+        .fixed-height-chart{
+        height: 200px;
+        width: 400px;
+    }
+ 
+</style>
 
 <div class="row">
     <div class="col-12 align-self-center">
@@ -23,7 +29,7 @@
 <div class="row">
     <div class="col-12 col-lg-12 mt-3">
         <div class="row">
-            <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
@@ -34,32 +40,32 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-12 col-xl-6">
+            <div class="col-12 col-lg-12 col-xl-8">
                 <div class="row">
                     <div class="col-12 col-sm-6 mt-3">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body fixed-height-chart">
                                 <canvas id="placement-data-chart"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 mt-3">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body fixed-height-chart">
                                 <canvas id="dollars-placed-chart"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 mt-3">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body fixed-height-chart">
                                 <canvas id="placement-collected-chart"></canvas>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-sm-6 mt-3">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body fixed-height-chart">
                                 <canvas id="dollars-collected-chart"></canvas>
                             </div>
                         </div>
@@ -98,7 +104,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+    @*<div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
         <div class="card">
             <div class="card-header justify-content-between align-items-center">
                 <h6 class="card-title">Visits by Countries</h6>
@@ -206,9 +212,9 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
-<div class="row row-eq-height">
+<!--<div class="row row-eq-height">
     <div class="col-12 col-md-12 mt-3">
         <div class="card">
             <div class="card-body d-md-flex text-center">
@@ -234,13 +240,13 @@
                 <a href="#"
                    class="btn btn-outline-success font-w-600 my-auto text-nowrap ml-auto add-event"
                    data-toggle="modal"
-                   data-target="#addevent"><i class="icon-calendar"></i> Add Event</a>
+                   data-target="#addevent"><i class="icon-calendar"></i> Add Event</a>-->
 
                 <!-- Modal -->
-                <div id="addevent" class="modal fade" role="dialog">
-                    <div class="modal-dialog text-left">
+                <!--<div id="addevent" class="modal fade" role="dialog">
+                    <div class="modal-dialog text-left">-->
                         <!-- Modal content-->
-                        <div class="modal-content">
+                        <!--<div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="model-header">
                                     Add Event
@@ -332,7 +338,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <script type="text/javascript" src="~/vendors/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
 <script type="text/javascript" src="~/Scripts/ClientDashboard.js"></script>

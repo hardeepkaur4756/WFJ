@@ -32,13 +32,13 @@ function bindLineChart() {
                 datasets: [{
                     data: data,
                     borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    label: "No. of Placements",
                     fill: false,
                 },
                 {
                     data: dataPrevious,
-                    borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    borderColor: "#A30000",
+                    label: "No. of Placements",
                     fill: false,
                 }
                 ],
@@ -52,7 +52,7 @@ function bindLineChart() {
                 options: {
                     title: {
                         display: true,
-                        text: 'Sales Over Time '// + selectionLabel(response.label)
+                        text: 'Placement'// + selectionLabel(response.label)
                     }
                 }
             });
@@ -87,13 +87,13 @@ function bindLineChart() {
                 datasets: [{
                     data: data,
                     borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    label: "1st Payment Collection",
                     fill: false,
                 },
                 {
                     data: dataPrevious,
-                    borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    borderColor: "#A30000",
+                    label: "1st Payment Collection",
                     fill: false,
                 }
                 ],
@@ -107,7 +107,7 @@ function bindLineChart() {
                 options: {
                     title: {
                         display: true,
-                        text: 'Sales Over Time '// + selectionLabel(response.label)
+                        text: 'Collected'
                     }
                 }
             });
@@ -142,13 +142,13 @@ function bindLineChart() {
                 datasets: [{
                     data: data,
                     borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    label: "Dollar Collection",
                     fill: false,
                 },
                 {
                     data: dataPrevious,
-                    borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    borderColor: "#A30000",
+                    label: "Dollar Collection",
                     fill: false,
                 }
                 ],
@@ -162,11 +162,10 @@ function bindLineChart() {
                 options: {
                     title: {
                         display: true,
-                        text: 'Sales Over Time '// + selectionLabel(response.label)
+                        text: 'Placement Dollars'
                     }
                 }
             });
-            //  HideLoader();
         }
     });
 
@@ -198,13 +197,13 @@ function bindLineChart() {
                 datasets: [{
                     data: data,
                     borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    label: "Dollar Collection",
                     fill: false,
                 },
                 {
                     data: dataPrevious,
-                    borderColor: "#3e95cd",
-                    label: "Number of Sales",
+                    borderColor: "#A30000",
+                    label: "Dollar Collection",
                     fill: false,
                 }
                 ],
@@ -218,7 +217,7 @@ function bindLineChart() {
                 options: {
                     title: {
                         display: true,
-                        text: 'Sales Over Time '// + selectionLabel(response.label)
+                        text: 'Collected Dollars'// + selectionLabel(response.label)
                     }
                 }
             });
