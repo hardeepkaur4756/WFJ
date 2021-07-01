@@ -294,6 +294,7 @@
     <Content Include="Scripts\calendar.script.js" />
     <Content Include="Scripts\chartist.script.js" />
     <Content Include="Scripts\chartjs.script.js" />
+    <Content Include="Scripts\ClientDashboard.js" />
     <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\cropper.script.js" />
     <Content Include="Scripts\cryptocurrency.script.js" />
