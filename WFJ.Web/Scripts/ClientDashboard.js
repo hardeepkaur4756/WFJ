@@ -4,11 +4,18 @@ function bindLineChart() {
     if (myLineChart) {
         myLineChart.destroy();
     }
+
+    var gData = {};
+    var formId = 10;
+    gData.formId = parseInt(formId);
+    var jsonData = JSON.stringify(gData);
+
     $.ajax({
         type: "POST",
         url: "/Dashboard/GetPlacementsData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -64,6 +71,7 @@ function bindLineChart() {
         url: "/Dashboard/GetDollarsPlacedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -119,6 +127,7 @@ function bindLineChart() {
         url: "/Dashboard/GetPlacementCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -174,6 +183,7 @@ function bindLineChart() {
         url: "/Dashboard/GetDollarsCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -235,11 +245,15 @@ function getRandomColor() {
 }
 
 function bindPieChart() {
+    var gData = {};
+    var formId = 10;
+    gData.formId = parseInt(formId);
+    var jsonData = JSON.stringify(gData);
     $.ajax({
         type: "POST",
         url: "/Dashboard/GetActiveAccounts",
         contentType: 'application/json; charset=utf-8',
-        //data: { "formId": formId },
+        data: jsonData,
         dataType: "json",
         success: function (data) {
 

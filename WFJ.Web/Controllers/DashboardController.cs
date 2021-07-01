@@ -39,44 +39,35 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetActiveAccounts()
+        public JsonResult GetActiveAccounts(int formId)
         {
-
             var chartBaseModel = _dashboardService.GetActiveStatusPieChartData(30);
-
-            //ActiveAccountChartViewModel activeAccountChartViewModel = new ActiveAccountChartViewModel();
-
-
-            //activeAccountChartViewModel.Active = 20;
-            //activeAccountChartViewModel.LocalCounsel = 30;
-            //activeAccountChartViewModel.InSuit = 25;
-            //activeAccountChartViewModel.PaymentPlan = 25;
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult GetPlacementsData()
+        public JsonResult GetPlacementsData(int formId)
         {
             var chartBaseModel = _dashboardService.GetPlacementsLineChartData(30);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult GetDollarsPlacedData()
+        public JsonResult GetDollarsPlacedData(int formId)
         {
             var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(30);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult GetPlacementCollectedData()
+        public JsonResult GetPlacementCollectedData(int formId)
         {
             var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult GetDollarsCollectedData()
+        public JsonResult GetDollarsCollectedData(int formId)
         {
             var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(30);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);

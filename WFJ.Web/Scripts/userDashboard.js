@@ -3,11 +3,18 @@ function bindLineChartUser() {
     if (myLineChartUser) {
         myLineChartUser.destroy();
     }
+
+    var gData = {};
+    var formId = 10;
+    gData.formId = parseInt(formId);
+    var jsonData = JSON.stringify(gData);
+
     $.ajax({
         type: "POST",
         url: "/Dashboard/GetPlacementsData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -63,6 +70,7 @@ function bindLineChartUser() {
         url: "/Dashboard/GetDollarsPlacedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -118,6 +126,7 @@ function bindLineChartUser() {
         url: "/Dashboard/GetPlacementCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
@@ -173,6 +182,7 @@ function bindLineChartUser() {
         url: "/Dashboard/GetDollarsCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+        data: jsonData,
         success: function (response) {
             var aData = response.ChartBaseModelPreviousYear;
             var data = [];
