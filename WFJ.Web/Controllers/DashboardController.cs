@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using WFJ.Service;
 using WFJ.Service.Interfaces;
-using WFJ.Service.Model;
 using WFJ.Models;
 using WFJ.Repository.EntityModel;
 using WFJ.Helper;
+using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
@@ -41,9 +41,19 @@ namespace WFJ.Web.Controllers
                 selectedFormId = Convert.ToInt32(formId);
             }
 
-            dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
-            dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
-            dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
+            if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+            {
+                dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
+            }
+            if (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser)
+            {
+                dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
+            }
+            if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
+            {
+                dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
+            }
+
             dashboardViewModel.FormId = selectedFormId;
             return View(dashboardViewModel);
         }

@@ -27,17 +27,19 @@ namespace WFJ.Repository
             return _context.Payments.Where(x => x.RequestID != null && requestIds.Contains(x.RequestID.Value)).ToList();
         }
 
-        public List<Payment> GetByClientId(int clientId, DateTime? beginDate, DateTime? endDate,int? ClientUserId)
+        public List<Payment> GetByClientId(int clientId, DateTime? beginDate, DateTime? endDate, int? ClientUserId)
         {
             _context.Configuration.LazyLoadingEnabled = true;
-            _context.Configuration.ProxyCreationEnabled = true;            
-            var paymentList= _context.Payments.Where(x => x.User.ClientID == clientId).Include(y => y.Request).Include(x => x.User).Include(x => x.PaymentType).Include(x => x.currency);
+            _context.Configuration.ProxyCreationEnabled = true;
+            var clientFormIds = _context.Forms.Where(x => x.ClientID == clientId).Select(x => x.ID).ToList();
+            var clientRequestIds = _context.Requests.Where(x => x.FormID != null && clientFormIds.Contains(x.FormID.Value)).Select(x => x.ID).ToList();
+            var paymentList = _context.Payments.Include(x => x.Request).Where(x => x.Request != null && clientRequestIds.Contains(x.Request.ID)).Include(y => y.Request).Include(x => x.User).Include(x => x.PaymentType).Include(x => x.currency).ToList();
 
-            if (ClientUserId != null && ClientUserId!=0)
+            if (ClientUserId != null && ClientUserId != 0)
             {
                 IUserClientRepository _UserClientRepo = new UserClientRepository();
                 var clientList = _UserClientRepo.GetByUserId(ClientUserId.Value).Select(x => x.Client.ID);
-                paymentList = paymentList.Where(x => x.User.ClientID != null && x.User.Client.Active == 1 && clientList.Contains(x.User.Client.ID));
+                paymentList = paymentList.Where(x => x.User.ClientID != null && x.User.Client.Active == 1 && clientList.Contains(x.User.Client.ID)).ToList();
             }
 
             if (beginDate != null && endDate != null)

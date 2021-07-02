@@ -13,18 +13,27 @@
         </div>
         <div class="container-fluid site-width">
             @{
+                if (userType == 3 || userType == 4 || userType == 5)
+                {
                 <h2>WFJ Client</h2>
                 @Html.Partial("_clientDashboard", Model.ClientDashboard)
-            }
+                 }
+             }
             @{
+                if (userType == 6)
+                {
                 <h2>WFJ Users</h2>
                 @Html.Partial("_userDashboard", Model.UserDashboard)
-            }
+                    }
+                }
 
             @{
+                if (userType == 1)
+                {
                 <h2>WFJ Admin</h2>
                 @Html.Partial("_adminDashboard", Model.AdminDashboard)
-            }
+                    }
+                }
 
         </div>
     </main>
@@ -34,7 +43,6 @@
         $(document).ready(function () {
             $("#ddlLocalCounselState").change(function () {
                 var formId = $(this).val();
-                alert(formId);
                 window.location.href = "/Dashboard/Index?formId=" + formId;
             });
             

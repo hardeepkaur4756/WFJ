@@ -67,21 +67,21 @@ namespace WFJ.Service
                     WFJReferenceNumber = x.WFJReferenceNumber,
                     WFJReferenceDate = x.WFJReferenceDate != null ? x.WFJReferenceDate.Value.ToString("MM/dd/yyyy") : null,
                     WFJInvoiceDatePaid = x.WFJInvoiceDatePaid != null ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy") : null,
-                    Client = x.User.Client.ClientName,
+                    Client = x.Request?.Form?.Client?.ClientName,
 
-                    Customer = _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
-                    .FirstOrDefault(y => y.FieldName.ToLower().Trim() == "customer name")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?
+                    Customer = x.Request.FormID.HasValue ? _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    .FirstOrDefault(y => y.FieldName?.ToLower()?.Trim() == "customer name")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?
                     .FirstOrDefault(z => z.FormFieldID == (_formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)?
-                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer name")?.ID)).FieldValue : "",
+                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer name")?.ID)).FieldValue : "" : "",
 
-                    Acct = _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
+                    Acct = x.Request.FormID.HasValue ? _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
                     .FirstOrDefault(y => y.FieldName.ToLower().Trim() == "customer account #")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?
                     .FirstOrDefault(z => z.FormFieldID == (_formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)?
-                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer account #")?.ID)).FieldValue : "",
+                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer account #")?.ID)).FieldValue : "" : "",
 
-                    Status = _statusCodesRepo.GetByStatusCodeAndFormId((x.Request?.StatusCode == null) ? 0 : x.Request.StatusCode.Value, (x.Request.FormID == null) ? 0 : x.Request.FormID.Value).Description,
-                    assignedAttorney = x.Request.Personnel.ID == ((x.Request?.AssignedAttorney == null) ? 0 : x.Request.AssignedAttorney.Value) ? x.Request?.Personnel?.FirstName + " " + x.Request?.Personnel?.LastName : "",
-                    Collector = x.Request.User.UserID == ((x.Request?.AssignedCollectorID == null) ? 0 : x.Request?.AssignedCollectorID.Value) ? x.Request?.User?.FirstName + " " + x.Request?.User?.LastName : ""
+                    Status = _statusCodesRepo.GetByStatusCodeAndFormId((x.Request?.StatusCode == null) ? 0 : x.Request.StatusCode.Value, (x.Request?.FormID == null) ? 0 : x.Request.FormID.Value).Description,
+                    assignedAttorney = x.Request?.Personnel?.ID == ((x.Request?.AssignedAttorney == null) ? 0 : x.Request.AssignedAttorney.Value) ? x.Request?.Personnel?.FirstName + " " + x.Request?.Personnel?.LastName : "",
+                    Collector = x.Request?.User?.UserID == ((x.Request?.AssignedCollectorID == null) ? 0 : x.Request?.AssignedCollectorID.Value) ? x.Request?.User?.FirstName + " " + x.Request?.User?.LastName : ""
                 });
 
                 switch (sortCol)
