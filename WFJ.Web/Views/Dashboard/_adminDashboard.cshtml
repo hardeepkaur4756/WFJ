@@ -3,6 +3,11 @@
 <div>
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
+
+
+
+
+
             <div class="card">
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Recently Opened Account</h6>
@@ -41,7 +46,7 @@
                     <h6 class="card-title">Recently Opened Clients</h6>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    <table class="table font-w-600 mb-0"  id="recently-open-client">
+                    <table class="table font-w-600 mb-0" id="recently-open-client">
                         <thead>
                             <tr>
                                 <th>Client Name</th>
@@ -75,7 +80,7 @@
                     <h6 class="card-title">Action Required</h6>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    <table class="table font-w-600 mb-0"  id="action-required">
+                    <table class="table font-w-600 mb-0" id="action-required">
                         <thead>
                             <tr>
                                 <th>Attorney Name</th>
@@ -90,15 +95,15 @@
                         <tbody>
                             @foreach (var request in Model.ActionRequireds)
                             {
-                            <tr class="zoom">
-                                <td>@request.AttorneyName</td>
-                                <td>@request.ClientName</td>
-                                <td>@request.CustomerName</td>
-                                <td>@request.Status</td>
-                                <td>@request.ComplianceDuration</td>
-                                <td>@request.LastNoteDate</td>
-                                <td>@request.LastNote</td>
-                            </tr>
+                                <tr class="zoom">
+                                    <td>@request.AttorneyName</td>
+                                    <td>@request.ClientName</td>
+                                    <td>@request.CustomerName</td>
+                                    <td>@request.Status</td>
+                                    <td>@request.ComplianceDuration</td>
+                                    <td>@request.LastNoteDate</td>
+                                    <td>@request.LastNote</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -111,7 +116,7 @@
                     <h6 class="card-title">Final Demand Required</h6>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    <table class="table font-w-600 mb-0"  id="final-demand-required">
+                    <table class="table font-w-600 mb-0" id="final-demand-required">
                         <thead>
                             <tr>
                                 <th>Client Name</th>
@@ -120,7 +125,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             @foreach (var request in Model.FinalDemands)
                             {
                                 <tr class="zoom">
@@ -138,82 +143,141 @@
 
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-12 mt-3">
-            <div class="card">
-                <div class="card-header justify-content-between align-items-center">
-                    <h6 class="card-title">Approved Payment/Remittance</h6>
-                </div>
-                <div class="card-body table-responsive p-0">
-                    <table class="table font-w-600 mb-0"  id="approved-payment">
-                        <thead>
-                            <tr>
-                                <th>Client Name</th>
-                                <th>Customer Name</th>
-                                <th>Form Name</th>
-                                <th>Status</th>
-                                <th>Payment Date</th>
-                                <th>Payment Amount</th>
-                                <th>WFJ Fees</th>
-                                <th>Payment Type</th>
-                                <th>Remit/Invoice Date</th>
-                                <th>Check/Invoice Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                @foreach (var request in Model.ApprovedPayements)
-                                {
-                            <tr class="zoom">
-                                <td>@request.ClientName</td>
-                                <td>@request.CustomerName</td>
-                                <td>@request.FormName</td>
-                                <td>@request.Status</td>
-                                <td>@request.PaymentDate</td>
-                                <td>@request.PaymentAmount</td>
-                                <td>@request.WFJFees</td>
-                                <td>@request.PaymentType</td>
-                                <td>@request.InvoicDate</td>
-                                <td>@request.InvoiceNumber</td>
-                            </tr>
-                                }
-                            </tbody>
-                    </table>
+            <div class="custom-tabs">
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active bg-white mr-3" id="recent-payment-tab" data-toggle="pill" href="#recent-payment" role="tab" aria-controls="recent-payment" aria-selected="true">Recent Payment</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link bg-white mr-3" id="remittance-tab" data-toggle="pill" href="#remittance" role="tab" aria-controls="remittance" aria-selected="false">Remittance</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="recent-payment" role="tabpanel" aria-labelledby="recent-payment-tab">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table font-w-600 mb-0" id="approved-payment">
+                                        <thead>
+                                            <tr>
+                                                <th>Client Name</th>
+                                                <th>Customer Name</th>
+                                                <th>Form Name</th>
+                                                <th>Status</th>
+                                                <th>Payment Date</th>
+                                                <th>Payment Amount</th>
+                                                <th>WFJ Fees</th>
+                                                <th>Payment Type</th>
+                                                <th>Remit/Invoice Date</th>
+                                                <th>Check/Invoice Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var request in Model.ApprovedPayements)
+                                            {
+                                                <tr class="zoom">
+                                                    <td>@request.ClientName</td>
+                                                    <td>@request.CustomerName</td>
+                                                    <td>@request.FormName</td>
+                                                    <td>@request.Status</td>
+                                                    <td>@request.PaymentDate</td>
+                                                    <td>@request.PaymentAmount</td>
+                                                    <td>@request.WFJFees</td>
+                                                    <td>@request.PaymentType</td>
+                                                    <td>@request.InvoicDate</td>
+                                                    <td>@request.InvoiceNumber</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="remittance" role="tabpanel" aria-labelledby="remittance-tab">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table font-w-600 mb-0" id="approved-payment">
+                                        <thead>
+                                            <tr>
+                                                <th>Client Name</th>
+                                                <th>Customer Name</th>
+                                                <th>Form Name</th>
+                                                <th>Status</th>
+                                                <th>Payment Date</th>
+                                                <th>Payment Amount</th>
+                                                <th>WFJ Fees</th>
+                                                <th>Payment Type</th>
+                                                <th>Remit/Invoice Date</th>
+                                                <th>Check/Invoice Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var request in Model.ApprovedPayements)
+                                            {
+                                                <tr class="zoom">
+                                                    <td>@request.ClientName</td>
+                                                    <td>@request.CustomerName</td>
+                                                    <td>@request.FormName</td>
+                                                    <td>@request.Status</td>
+                                                    <td>@request.PaymentDate</td>
+                                                    <td>@request.PaymentAmount</td>
+                                                    <td>@request.WFJFees</td>
+                                                    <td>@request.PaymentType</td>
+                                                    <td>@request.InvoicDate</td>
+                                                    <td>@request.InvoiceNumber</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+          
         </div>
     </div>
 
     <!--<div class="row row-eq-height">
-        <div class="col-12 col-md-12 mt-3">
-            <div class="card">
-                <div class="card-body d-md-flex text-center">
-                    <ul class="d-md-flex m-0 pl-0 list-unstyled">
-                        <li class="pill cl-personal py-1 px-2 mr-md-2 text-center my-1">
-                            Personal
-                        </li>
+    <div class="col-12 col-md-12 mt-3">
+        <div class="card">
+            <div class="card-body d-md-flex text-center">
+                <ul class="d-md-flex m-0 pl-0 list-unstyled">
+                    <li class="pill cl-personal py-1 px-2 mr-md-2 text-center my-1">
+                        Personal
+                    </li>
 
-                        <li class="pill cl-professional py-1 px-2 mr-md-2 text-center my-1">
-                            Professional
-                        </li>
-                        <li class="pill cl-work py-1 px-2 mr-md-2 text-center my-1">
-                            Work
-                        </li>
+                    <li class="pill cl-professional py-1 px-2 mr-md-2 text-center my-1">
+                        Professional
+                    </li>
+                    <li class="pill cl-work py-1 px-2 mr-md-2 text-center my-1">
+                        Work
+                    </li>
 
-                        <li class="pill cl-home py-1 px-2 mr-md-2 text-center my-1">
-                            Home
-                        </li>
-                        <li class="pill cl-office py-1 px-2 text-center my-1">
-                            Office
-                        </li>
-                    </ul>
-                    <a href="#"
-                       class="btn btn-outline-success font-w-600 my-auto text-nowrap ml-auto add-event"
-                       data-toggle="modal"
-                       data-target="#addevent"><i class="icon-calendar"></i> Add Event</a>-->
-
-                    <!-- Modal -->
-                    <!--<div id="addevent" class="modal fade" role="dialog">
-                        <div class="modal-dialog text-left">-->
-                            <!-- Modal content-->
-                            <!--<div class="modal-content">
+                    <li class="pill cl-home py-1 px-2 mr-md-2 text-center my-1">
+                        Home
+                    </li>
+                    <li class="pill cl-office py-1 px-2 text-center my-1">
+                        Office
+                    </li>
+                </ul>
+                <a href="#"
+                   class="btn btn-outline-success font-w-600 my-auto text-nowrap ml-auto add-event"
+                   data-toggle="modal"
+                   data-target="#addevent"><i class="icon-calendar"></i> Add Event</a>-->
+    <!-- Modal -->
+    <!--<div id="addevent" class="modal fade" role="dialog">
+    <div class="modal-dialog text-left">-->
+    <!-- Modal content-->
+    <!--<div class="modal-content">
                                 <div class="modal-header">
                                     <h4 class="modal-title" id="model-header">
                                         Add Event
@@ -305,6 +369,6 @@
                 </div>
             </div>
         </div>
-     
+
     </div>-->
 </div>

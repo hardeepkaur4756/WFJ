@@ -110,12 +110,12 @@ File: Main Style
     --logobg: #fff;
     --logocolor: #4c75f2;
     --headerbackground: #fff;
-    --headercolor: #292b3a;
-    --searchcolor: #292b3a;
+    --headercolor: #111218;
+    --searchcolor: #111218;
     --primarycolor: #1e3d73;
-    --bodycolor: #292b3a;
+    --bodycolor: #111218;
     --bodybackground: #f6f6f7;
-    --bordercolor: rgba(72, 94, 144, 0.16);
+    --bordercolor: rgba(72, 94, 144, 0.36);
     --mainbackground: #fff;
     --secondary: #6c757d;
     --success: #1ee0ac;
