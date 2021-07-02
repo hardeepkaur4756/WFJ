@@ -83,5 +83,17 @@ namespace WFJ.Repository
                 }
             }
         }
+
+        public IEnumerable<Payment> GetRemittancePaymentAndXDays(int days, int formId)
+        {
+            if (formId > 0)
+            {
+                return _context.Payments.Where(x => x.WFJInvoiceDatePaid != null && x.Request != null && x.Request.FormID == formId).OrderByDescending(x => x.PaymentDate).Take(days);
+            }
+            else
+            {
+                return _context.Payments.Where(x => x.WFJInvoiceDatePaid != null && x.Request != null).OrderByDescending(x => x.PaymentDate).Take(days);
+            }
+        }
     }
 }

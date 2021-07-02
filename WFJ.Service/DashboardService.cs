@@ -32,6 +32,7 @@ namespace WFJ.Service
             adminDashboardViewModel.FinalDemands = new List<DashboardBaseModel>();
             adminDashboardViewModel.ActionRequireds = new List<ActionRequiredViewModel>();
             adminDashboardViewModel.ApprovedPayements = new List<ApprovedRecentPayementViewModel>();
+            adminDashboardViewModel.RemittancePayements = new List<ApprovedRecentPayementViewModel>();
 
             //Bind Data
             adminDashboardViewModel.RecentlyOpenedClients = GetRecentlyOpenedClient();
@@ -39,6 +40,7 @@ namespace WFJ.Service
             adminDashboardViewModel.FinalDemands = GetFinalDemand(formId);
             adminDashboardViewModel.ActionRequireds = GetActionRequired(formId);
             adminDashboardViewModel.ApprovedPayements = GetApprovedPayment((int)ApproveStatus.Approved, formId);
+            adminDashboardViewModel.RemittancePayements = GetRemittancePayment(Convert.ToInt32(ConfigurationManager.AppSettings["SevenDays"]), formId);
             return adminDashboardViewModel;
         }
 
@@ -55,6 +57,7 @@ namespace WFJ.Service
             userDashboardViewModel.ActionRequireds = GetActionRequired(formId);
             userDashboardViewModel.ApprovedPayements = GetApprovedPayment((int)ApproveStatus.Unapproved, formId);
             userDashboardViewModel.FollowUpAccounts = GetFollowUpAccounts(formId);
+            userDashboardViewModel.RemittancePayements = GetRemittancePayment(Convert.ToInt32(ConfigurationManager.AppSettings["SevenDays"]), formId);
             return userDashboardViewModel;
         }
 
@@ -71,6 +74,7 @@ namespace WFJ.Service
             clientDashboardViewModel.RecentAccountView = GetRecentAccountView(Convert.ToInt32(ConfigurationManager.AppSettings["TenDays"]), formId, AccountActivity.Accounts.ToString());
             clientDashboardViewModel.RecentActivityView = GetRecentActivityView(Convert.ToInt32(ConfigurationManager.AppSettings["TenDays"]), formId, AccountActivity.Activity.ToString());
             clientDashboardViewModel.ApprovedPayements =  GetApprovedPayment((int)ApproveStatus.Unapproved, formId);
+            clientDashboardViewModel.RemittancePayements = GetRemittancePayment(Convert.ToInt32(ConfigurationManager.AppSettings["SevenDays"]), formId);
             return clientDashboardViewModel;
         }
 
@@ -145,7 +149,7 @@ namespace WFJ.Service
             if(formFieldsId > 0)
             {
                 IFormDataRepository _formDataRepository = new FormDataRepository();
-                return _formDataRepository.GetAll().Where(x => x.FormFieldID == formFieldsId && requestids.Contains(x.RequestID.Value)).Sum(x => long.Parse(x.FieldValue));
+                return _formDataRepository.GetAll().Where(x => x.FormFieldID == formFieldsId && requestids.Contains(x.RequestID.Value)).Sum(x => Convert.ToInt64(x.FieldValue));
             }
             else
             {
@@ -492,6 +496,32 @@ namespace WFJ.Service
                 .OrderBy(x => x.ClientName).ThenBy(x => x.CustomerName).ThenBy(x => x.FormName).ThenBy(x => x.PaymentDate)
                 .ToList();
             return approvedPayements;
+        }
+
+        private List<ApprovedRecentPayementViewModel> GetRemittancePayment(int days, int formId)
+        {
+            List<ApprovedRecentPayementViewModel> remittancePayements = new List<ApprovedRecentPayementViewModel>();
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            IStatusCodesRepository _statusCodesRepository = new StatusCodesRepository();
+            IPaymentsRepository _paymentRepository = new PaymentsRepository();
+            remittancePayements = _paymentRepository.GetRemittancePaymentAndXDays(days, formId)
+                .Select(x => new ApprovedRecentPayementViewModel
+                {
+                    FormName = x.Request?.Form?.FormName,
+                    PaymentAmount = x.Amount,
+                    PaymentDate = x.PaymentDate.HasValue ? x.PaymentDate.Value.ToString("MM/dd/yyyy") : "",
+                    PaymentType = x.PaymentType?.PaymentTypeDesc,
+                    WFJFees = x.WFJFees,
+                    InvoicDate = x.WFJInvoiceDatePaid.HasValue ? x.WFJInvoiceDatePaid.Value.ToString("MM/dd/yyyy") : "",
+                    CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.Request?.FormID)),
+                    ClientName = x.Request?.Form.Client.ClientName,
+                    Status = GetStatus(Convert.ToInt32(x.Request?.StatusCode), Convert.ToInt32(x.Request?.Form.ID)),
+                    InvoiceNumber = x.CheckNumber,
+                    PaymentId = x.ID
+                })
+                .OrderBy(x => x.ClientName).ThenBy(x => x.CustomerName).ThenBy(x => x.FormName).ThenBy(x => x.PaymentDate)
+                .ToList();
+            return remittancePayements;
         }
 
         private List<DashboardBaseModel> GetFollowUpAccounts(int formId)

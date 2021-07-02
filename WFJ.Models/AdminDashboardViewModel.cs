@@ -13,6 +13,6 @@ namespace WFJ.Models
         public List<ActionRequiredViewModel> ActionRequireds { get; set; }
         public List<DashboardBaseModel> FinalDemands { get; set; }
         public List<ApprovedRecentPayementViewModel> ApprovedPayements { get; set; }
-        public List<ApprovedRecentPayementViewModel> RemitPayements { get; set; }
+        public List<ApprovedRecentPayementViewModel> RemittancePayements { get; set; }
     }
 }

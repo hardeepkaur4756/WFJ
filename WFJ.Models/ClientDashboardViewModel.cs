@@ -12,7 +12,8 @@ namespace WFJ.Models
         public List<RecentAccountActivityViewModel> RecentActivityView { get; set; }
         public List<ApprovedRecentPayementViewModel> ApprovedPayements { get; set; }
         public List<ChartBaseModel> GetActiveStatusPieChartData { get; set; }
-        
+        public List<ApprovedRecentPayementViewModel> RemittancePayements { get; set; }
+
     }
 
     public class ChartBaseModel
