@@ -60,7 +60,7 @@ namespace WFJ.Service
                     PaymentType = x.PaymentType?.PaymentTypeDesc,
                     CheckNumber = x.CheckNumber,
                     PaymentAmount = x.Amount,
-                    PaymentAmountStr = (x.Amount ?? 0) > 0 ? _currencyRepo.GetById(x.currencyID)?.currencyCode == "USD" ? $"${x.Amount}" : $"{x.Amount} {_currencyRepo.GetById(x.currencyID)?.currencyCode}"  : "",
+                    PaymentAmountStr = (x.Amount ?? 0) > 0 ? _currencyRepo.GetById(x.currencyID)?.currencyCode == "USD" ? $"${x.Amount.Value.ToString("#,##0.00")}" : $"{x.Amount.Value.ToString("#,##0.00")} {_currencyRepo.GetById(x.currencyID)?.currencyCode}"  : "",
                     Currency = x.currencyID,
                     WFJFees = x.WFJFees,
                     WFJFeesStr = (x.WFJFees ?? 0) > 0 ? _currencyRepo.GetById(x.currencyID)?.currencyCode == "USD" ? $"${x.WFJFees}" : $"{x.WFJFees} {_currencyRepo.GetById(x.currencyID)?.currencyCode}" : "",

@@ -23,9 +23,17 @@ namespace WFJ.Service
 
         }
 
-        public List<SelectListItem> GetFormTypesDropdown()
+        public List<SelectListItem> GetFormTypesDropdown(int clientId = 0)
         {
-            var formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
+            List<SelectListItem> formTypes = new List<SelectListItem>();
+            if (clientId > 0)
+            {
+                formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null && x.Forms.Any(y=>y.ClientID == clientId)).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
+            }
+            else
+            {
+                formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
+            }
             return DropdownHelpers.PrependALL(formTypes);
         }
 

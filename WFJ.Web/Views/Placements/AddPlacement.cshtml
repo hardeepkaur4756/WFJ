@@ -56,6 +56,21 @@
 
                     <div class="form-group">
                         <button type="button" class="btn btn-secondary">PDF</button>
+                        @if (Model.isEditMode)
+                        {
+                            <button type="button" class="btn btn-secondary" onclick="copyPlacement('@Model.Request.FormID','@Model.Request.ID')">Copy</button>
+
+                            if (Model.UserType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+                            {
+                                var activeHtml = "Active";
+                                if (Model.Request?.active == 1)
+                                {
+                                    activeHtml = "Inactive";
+                                }
+                                <a href="javascript:void(0)" class="btn btn-secondary active-inactive" onclick="activeInactive('@Model.Request.active')">@activeHtml</a>
+                            }
+                        }
+                        <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
                         <a href="@Url.Action("ViewPlacements", "Placements", new { id = Model.FormDetail?.ID })" class="btn btn-primary pull-right">Return to List</a>
                     </div>
 
@@ -77,12 +92,29 @@
                                     </div>
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
+                                            <label>Request Date</label>
+                                            @Html.TextBoxFor(x => x.Request.RequestDateString, new { @Class = "form-control jdate-picker" })
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+
+                                    @*If the value in clients.regionName = "NONE" (case insensitive), then the Region field can be omitted.  You can save a "0" in the database (requests.levelID) for the Region.*@
+                                    <div class="col-lg-6 col-xl-4" style="@(Model.FormDetail?.ClientLevelName != null && Model.FormDetail?.ClientLevelName.ToLower() == "none" ? "display:none;" : "")">
+                                        <div class="form-group">
+                                            <label>Region</label>
+                                            @Html.DropDownListFor(x => x.Request.LevelID, new SelectList(Model.RegionList, "Value", "Text"), "Select", new { @Class = "form-control" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-xl-4">
+                                        <div class="form-group">
                                             <label>Assigned Collector</label>
                                             @Html.DropDownListFor(x => x.Request.AssignedCollectorID, new SelectList(Model.Collectors, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Status</label>
@@ -104,26 +136,15 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-xl-4">
-                                        <div class="form-group">
-                                            <label>Request Date</label>
-                                            @Html.TextBoxFor(x => x.Request.RequestDateString, new { @Class = "form-control jdate-picker" })
-                                        </div>
-                                    </div>
+
+                                </div>
+                                <div class="row">
+
+
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>WFJ File Close Date</label>
                                             @Html.TextBoxFor(x => x.Request.CompletionDateString, new { @Class = "form-control jdate-picker" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-
-                                    @*If the value in clients.regionName = "NONE" (case insensitive), then the Region field can be omitted.  You can save a "0" in the database (requests.levelID) for the Region.*@
-                                    <div class="col-lg-6 col-xl-4" style="@(Model.FormDetail?.ClientLevelName != null && Model.FormDetail?.ClientLevelName.ToLower() == "none" ? "display:none;" : "")">
-                                        <div class="form-group">
-                                            <label>Region</label>
-                                            @Html.DropDownListFor(x => x.Request.LevelID, new SelectList(Model.RegionList, "Value", "Text"), "Select", new { @Class = "form-control" })
                                         </div>
                                     </div>
 
@@ -457,14 +478,14 @@
                                                 <ul class="update-associate">
                                                     @{
                                                         var amountDetail = Model.summaryInformation.Payments;
-                                                        <li>Balance Due:<span class="paymentBalanceDue">$@amountDetail.BalanceDue</span></li>
+                                                        <li>Balance Due:<span class="paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</span></li>
                                                         if (amountDetail.isPaymentFieldShow)
                                                         {
                                                             <li>
-                                                                Total Customer Payments/Credits:<span class="paymentTotalPayment">$@amountDetail.TotalPayment</span>
+                                                                Total Customer Payments/Credits:<span class="paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</span>
                                                             </li>
                                                             <li>
-                                                                Remaining Amount Due:<span class="paymentRemainingAmount">$@amountDetail.RemainingAmount</span>
+                                                                Remaining Amount Due:<span class="paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</span>
                                                             </li>
                                                             <li>
                                                                 Last Payment Date:<span>@amountDetail.LastPaymentDate</span>
@@ -574,21 +595,21 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue</p>
+                                                        <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment</p>
+                                                        <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount</p>
+                                                        <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -657,17 +678,17 @@
                                                         {
                                                             if (amountDetail.BalanceDueCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue</p>
+                                                                <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue @amountDetail.BalanceDueCurrency</p>
+                                                                <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue.ToString("#,##0.00") @amountDetail.BalanceDueCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue</p>
+                                                            <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>
@@ -679,17 +700,17 @@
                                                         {
                                                             if (amountDetail.TotalPaymentCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment</p>
+                                                                <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment @amountDetail.TotalPaymentCurrency</p>
+                                                                <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment.ToString("#,##0.00") @amountDetail.TotalPaymentCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment</p>
+                                                            <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>
@@ -701,17 +722,17 @@
                                                         {
                                                             if (amountDetail.RemainingAmountCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount</p>
+                                                                <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount @amountDetail.RemainingAmountCurrency</p>
+                                                                <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount.ToString("#,##0.00") @amountDetail.RemainingAmountCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount</p>
+                                                            <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>

@@ -205,6 +205,7 @@ namespace WFJ.Web.Controllers
                 userType = 0;
                 userAccess = 0;
             }
-        }
+        }       
+       
     }
 }

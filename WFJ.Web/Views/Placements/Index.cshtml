@@ -47,6 +47,34 @@
         var isFirstTime = true;
         $(document).ready(function () {
             GetDataTable();
+            $("#ddlClient").change(function () {
+                var val = parseInt($(this).val());
+                if (isNaN(val)) { val = 0; }
+                if (val == -1) { val = 0;}
+                    var gData = {};
+                    gData.clientId = parseInt(val);
+                    var jsonData = JSON.stringify(gData);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Placements/GetPlacementsType",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: jsonData,
+                        success: function (response) {
+                            console.log(response);
+                            $('#ddlFormType')
+                                .find('option')
+                                .remove()
+                                .end();
+                            $.each(response, function (inx, val) {
+                                console.log(val.Text);
+                                var optionText = val.Text;
+                                var optionValue = val.Value;
+                                $('#ddlFormType').append(`<option value="${optionValue}">${optionText}</option>`);
+                            });
+                        }
+                    });
+            });
         });
         $("#searchBtn").click(function () {
             var clientId = $('#ddlClient option:selected').val();

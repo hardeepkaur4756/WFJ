@@ -38,13 +38,15 @@ namespace WFJ.Service
             recentAccountActivity.UserID = UserID;
             recentAccountActivity.Type = type;
 
-            recentAccountActivity = _recentAccountActivitiesRepo.GetRecentAccountActivity(recentAccountActivity);
-            if(recentAccountActivity!=null)
+            // getting from DB
+            var recentAccountAct = _recentAccountActivitiesRepo.GetRecentAccountActivity(recentAccountActivity);
+            // update
+            if(recentAccountAct != null)
             {
-                recentAccountActivity.CreatedDate = DateTime.Now;
-                _recentAccountActivitiesRepo.Update(recentAccountActivity);
+                recentAccountAct.CreatedDate = DateTime.Now;
+                _recentAccountActivitiesRepo.Update(recentAccountAct);
             }
-           
+           //Insert
             else
             {
                 _recentAccountActivitiesRepo.Add(recentAccountActivity);

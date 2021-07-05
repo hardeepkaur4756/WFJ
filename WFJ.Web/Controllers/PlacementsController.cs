@@ -219,7 +219,7 @@ namespace WFJ.Web.Controllers
                     UserType = UserType,
                     ClientId = Convert.ToInt32(form.ClientID),
                     isEditMode = Convert.ToInt32(requestId) > 0 && Convert.ToInt32(copy) == 0 ? true : false,
-                    RequestorName = form.ClientName == null ? "Requestor" : form.ClientName,
+                    RequestorName = form.Client == null || form.Client.RequestorTitle == null ? "Requestor" : form.Client.RequestorTitle,
                     FormDetail = form,
                     NotesSendToDropdown = new List<SelectListItem>(),
                     summaryInformation = _formService.GetSummaryInformation(form.Client, userDetail),
@@ -724,6 +724,12 @@ namespace WFJ.Web.Controllers
                 DocumentType = _codeService.GetAllByType("REQUESTDOCTYPE")
             };
             return this.RenderPartialViewToString("_requestDocumentGrid", requestDocumentViewModels);
+        }
+
+        [HttpPost]
+        public JsonResult GetPlacementsType(int clientId)
+        {
+            return Json(_formTypeService.GetFormTypesDropdown(clientId), JsonRequestBehavior.AllowGet);
         }
     }
 }

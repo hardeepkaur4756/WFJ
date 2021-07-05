@@ -12,6 +12,7 @@ using WFJ.Service.Model;
 
 namespace WFJ.Web.Controllers
 {
+    [CustomAttribute.AuthorizeActivity((int)Web.Models.Enums.UserType.None)]
     public class DashboardController : Controller
     {
         public IErrorLogService _errorLogService = new ErrorLogService();
@@ -41,18 +42,18 @@ namespace WFJ.Web.Controllers
                 selectedFormId = Convert.ToInt32(formId);
             }
 
-            //if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+           // if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
             //{
                 dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
             //}
             //if (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser)
             //{
                 dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
-            //  }
+            //}
             //if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
             //{
                 dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
-           // }
+            //}
 
             dashboardViewModel.FormId = selectedFormId;
             return View(dashboardViewModel);

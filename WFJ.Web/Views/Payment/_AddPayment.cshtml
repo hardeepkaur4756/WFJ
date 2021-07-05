@@ -34,7 +34,7 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label for="noteDate">Check Number*</label>
+                <label for="noteDate">Customer Check Number*</label>
                 @Html.TextBoxFor(x => x.CheckNumber, new { @Class = "form-control", id = "checkNumber" })
             </div>
         </div>
@@ -58,19 +58,19 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="noteDate">WFJ Reference Number</label>
+                <label for="noteDate">WFJ Check/Invoice Number</label>
                 @Html.TextBoxFor(x => x.WFJReferenceNumber, new { @Class = "form-control", id = "WFJReferenceNumber" })
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>WFJ Reference Date</label>
+                <label>WFJ Processed Date</label>
                 @Html.TextBoxFor(x => x.WFJReferenceDate, new { @Class = "form-control", id = "WFJReferenceDate" })
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>WFJ Invoice Paid Date</label>
+                <label>WFJ Fee Receipt Date</label>
                 @Html.TextBoxFor(x => x.WFJInvoiceDatePaid, new { @Class = "form-control", id = "WFJInvoiceDatePaid" })
             </div>
         </div>
