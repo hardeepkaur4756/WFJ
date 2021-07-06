@@ -47,7 +47,7 @@ namespace WFJ.Web.Controllers
                     placementsFilterViewModel = new PlacementsFilterViewModel()
                     {
                         client = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _userClientService.GetUserClients((UserType)((byte)UserType), UserId, 1) : _clientService.GetActiveInactiveOrderedList((UserType)((byte)UserType)),
-                        placementTypeModels = _formTypeService.GetFormTypesDropdown(),
+                        placementTypeModels = UserType == (int)Web.Models.Enums.UserType.ClientUser ? _formTypeService.GetClientsFormTypesDropdown(UserId) : _formTypeService.GetFormTypesDropdown(),
                     }
                 };
 

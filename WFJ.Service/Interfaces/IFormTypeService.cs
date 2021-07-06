@@ -12,5 +12,6 @@ namespace WFJ.Service.Interfaces
     {
         List<FormTypeModel> GetAll();
         List<SelectListItem> GetFormTypesDropdown(int clientId = 0);
+        List<SelectListItem> GetClientsFormTypesDropdown(int userId);
     }
 }

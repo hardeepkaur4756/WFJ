@@ -23,6 +23,15 @@ namespace WFJ.Service
 
         }
 
+        public List<SelectListItem> GetClientsFormTypesDropdown(int userId)
+        {
+            List<SelectListItem> formTypes = new List<SelectListItem>();
+            IUserClientRepository _UserClientRepo = new UserClientRepository();
+            var clientIds = _UserClientRepo.GetByUserId(userId).Select(x=>x.ClientID);
+            formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null && x.Forms.Any(y => clientIds.Contains(y.ClientID))).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
+            return formTypes;
+        }
+
         public List<SelectListItem> GetFormTypesDropdown(int clientId = 0)
         {
             List<SelectListItem> formTypes = new List<SelectListItem>();
@@ -36,8 +45,5 @@ namespace WFJ.Service
             }
             return DropdownHelpers.PrependALL(formTypes);
         }
-
-
-
     }
 }
