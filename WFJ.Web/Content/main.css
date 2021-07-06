@@ -6440,3 +6440,20 @@ td .td-with-inline-icons {
     margin-left: 140px;
 }
 
+.tab-content-scroll .card {
+    height:500px;
+    overflow-y:auto;
+}
+
+    .tab-content-scroll .card::-webkit-scrollbar {
+        width: 1em;
+    }
+
+    .tab-content-scroll .card::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab-content-scroll .card::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
