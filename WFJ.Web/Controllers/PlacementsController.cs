@@ -729,7 +729,25 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public JsonResult GetPlacementsType(int clientId)
         {
-            return Json(_formTypeService.GetFormTypesDropdown(clientId), JsonRequestBehavior.AllowGet);
+            GetSessionUser(out UserId, out UserType, out UserAccess);
+            List<SelectListItem> placementTypes = new List<SelectListItem>();
+            if(UserType == (int)Web.Models.Enums.UserType.ClientUser)
+            {
+                if (clientId == 0)
+                {
+                    placementTypes = _formTypeService.GetClientsFormTypesDropdown(UserId);
+                    
+                }
+                else
+                {
+                    placementTypes = _formTypeService.GetFormTypesDropdown(clientId);
+                }
+            }
+            else
+            {
+                placementTypes = _formTypeService.GetFormTypesDropdown(clientId);
+            }
+            return Json(placementTypes, JsonRequestBehavior.AllowGet);
         }
     }
 }

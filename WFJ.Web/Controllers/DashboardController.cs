@@ -35,7 +35,10 @@ namespace WFJ.Web.Controllers
             int selectedFormId = 0;
             if(Convert.ToInt32(formId) == 0)
             {
-                selectedFormId  = int.Parse(dashboardViewModel.DashbaordFilter.FirstOrDefault().Value);
+                if (dashboardViewModel.DashbaordFilter.Any())
+                {
+                    selectedFormId = Convert.ToInt32(dashboardViewModel.DashbaordFilter.FirstOrDefault().Value);
+                }
             }
             else
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+
 using WFJ.Helper;
 using WFJ.Models;
 using WFJ.Repository;
@@ -13,7 +14,7 @@ using WFJ.Service.Interfaces;
 
 namespace WFJ.Service
 {
-   public class FormTypeService: IFormTypeService
+    public class FormTypeService : IFormTypeService
     {
         IFormTypeRepository formTypeRepository = new FormTypeRepository();
         public List<FormTypeModel> GetAll()
@@ -27,7 +28,7 @@ namespace WFJ.Service
         {
             List<SelectListItem> formTypes = new List<SelectListItem>();
             IUserClientRepository _UserClientRepo = new UserClientRepository();
-            var clientIds = _UserClientRepo.GetByUserId(userId).Select(x=>x.ClientID);
+            var clientIds = _UserClientRepo.GetByUserId(userId).Select(x => x.ClientID).ToList();
             formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null && x.Forms.Any(y => clientIds.Contains(y.ClientID))).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
             return formTypes;
         }
@@ -37,7 +38,7 @@ namespace WFJ.Service
             List<SelectListItem> formTypes = new List<SelectListItem>();
             if (clientId > 0)
             {
-                formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null && x.Forms.Any(y=>y.ClientID == clientId)).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
+                formTypes = formTypeRepository.GetAll().ToList().Where(x => x.FormType1 != null && x.Forms.Any(y => y.ClientID == clientId)).Select(x => new SelectListItem { Text = x.FormType1, Value = x.FormTypeID.ToString() }).ToList();
             }
             else
             {
