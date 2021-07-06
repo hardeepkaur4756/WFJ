@@ -520,14 +520,14 @@
                                                 <ul class="update-associate">
                                                     @{
                                                         var amountDetail = Model.summaryInformation.Payments;
-                                                        <li>Balance Due:<span class="paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</span></li>
+                                                        <li>Balance Due:<span class="paymentBalanceDue">$@amountDetail.BalanceDue?.ToString("#,##0.00")</span></li>
                                                         if (amountDetail.isPaymentFieldShow)
                                                         {
                                                             <li>
-                                                                Total Customer Payments/Credits:<span class="paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</span>
+                                                                Total Customer Payments/Credits:<span class="paymentTotalPayment">$@amountDetail.TotalPayment?.ToString("#,##0.00")</span>
                                                             </li>
                                                             <li>
-                                                                Remaining Amount Due:<span class="paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</span>
+                                                                Remaining Amount Due:<span class="paymentRemainingAmount">$@amountDetail.RemainingAmount?.ToString("#,##0.00")</span>
                                                             </li>
                                                             <li>
                                                                 Last Payment Date:<span>@amountDetail.LastPaymentDate</span>
@@ -637,21 +637,21 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Balance Due:</label>
-                                                        <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</p>
+                                                        <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue?.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Total Customer Payments/Credits:</label>
-                                                        <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</p>
+                                                        <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment?.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Remaining Amount Due:</label>
-                                                        <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
+                                                        <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount?.ToString("#,##0.00")</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -720,17 +720,17 @@
                                                         {
                                                             if (amountDetail.BalanceDueCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue.ToString("#,##0.00")</p>
+                                                                <p class="for-bold paymentBalanceDue">$@amountDetail.BalanceDue?.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue.ToString("#,##0.00") @amountDetail.BalanceDueCurrency</p>
+                                                                <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue?.ToString("#,##0.00") @amountDetail.BalanceDueCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue.ToString("#,##0.00")</p>
+                                                            <p class="for-bold paymentBalanceDue">@amountDetail.BalanceDue?.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>
@@ -742,17 +742,17 @@
                                                         {
                                                             if (amountDetail.TotalPaymentCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment.ToString("#,##0.00")</p>
+                                                                <p class="for-bold paymentTotalPayment">$@amountDetail.TotalPayment?.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment.ToString("#,##0.00") @amountDetail.TotalPaymentCurrency</p>
+                                                                <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment?.ToString("#,##0.00") @amountDetail.TotalPaymentCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment.ToString("#,##0.00")</p>
+                                                            <p class="for-bold paymentTotalPayment">@amountDetail.TotalPayment?.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>
@@ -764,17 +764,17 @@
                                                         {
                                                             if (amountDetail.RemainingAmountCurrency == "USD")
                                                             {
-                                                                <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
+                                                                <p class="for-bold paymentRemainingAmount">$@amountDetail.RemainingAmount?.ToString("#,##0.00")</p>
 
                                                             }
                                                             else
                                                             {
-                                                                <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount.ToString("#,##0.00") @amountDetail.RemainingAmountCurrency</p>
+                                                                <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount?.ToString("#,##0.00") @amountDetail.RemainingAmountCurrency</p>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount.ToString("#,##0.00")</p>
+                                                            <p class="for-bold paymentRemainingAmount">@amountDetail.RemainingAmount?.ToString("#,##0.00")</p>
                                                         }
                                                     </div>
                                                 </div>
