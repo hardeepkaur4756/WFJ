@@ -33,6 +33,7 @@
     int userType = Model.UserType;
     bool AssociateCounselVisible = true;//Model.FormDetail.ClientID == 1 && Model.FormDetail.FormTypeID != 10;
     string localCounselTabLabel = Model.FormDetail?.LocalCounselTabLabel;
+    var selectionListId = Convert.ToInt32(FieldTypes.SelectionList);
 
 }
 @*<script src="~/vendors/jquery/jquery-3.3.1.min.js"></script>*@
@@ -70,7 +71,7 @@
                                 <a href="javascript:void(0)" class="btn btn-secondary active-inactive" onclick="activeInactive('@Model.Request.active')">@activeHtml</a>
                             }
                         }
-                        <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
+                        <button class="btn btn-primary btnSubmit" type="button">Submit</button>
                         <a href="@Url.Action("ViewPlacements", "Placements", new { id = Model.FormDetail?.ID })" class="btn btn-primary pull-right">Return to List</a>
                     </div>
 
@@ -117,10 +118,11 @@
 
                                     @if (Model.CollectorStatusList != null)
                                     {
+                                        
                                         <div class="col-lg-6 col-xl-4">
                                             <div class="form-group">
                                                 <input type="hidden" value="@Model.CollectorStatusList.FirstOrDefault().FormFieldID" class="formFieldId" />
-                                                <input type="hidden" value="7" class="formFieldTypeId" />
+                                                <input type="hidden" value="@selectionListId" class="formFieldTypeId" />
                                                 <label>Collector Status</label>
                                                 <select data-type="dropdown" class="form-control answer">
                                                     <option value="">--Select--</option>
@@ -184,7 +186,7 @@
                                         <div class="col-lg-6 col-xl-4">
                                             <div class="form-group">
                                                  <input type="hidden" value="@Model.AssistantList.FirstOrDefault().FormFieldID" class="formFieldId" />
-                                                <input type="hidden" value="7" class="formFieldTypeId" />
+                                                <input type="hidden" value="@selectionListId" class="formFieldTypeId" />
                                                 <label>Collector Status</label>
                                                 <select data-type="dropdown" class="form-control answer">
                                                     <option value="">--Select--</option>
@@ -468,7 +470,7 @@
                                         <a href="javascript:void(0)" class="btn btn-secondary active-inactive" onclick="activeInactive('@Model.Request.active')">@activeHtml</a>
                                     }
                                 }
-                                <button class="btn btn-primary" type="button" id="btnSubmit">Submit</button>
+                                <button class="btn btn-primary btnSubmit" type="button">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -1122,7 +1124,7 @@
 
         var validator = $("#placementForm").validate();
 
-        $("#btnSubmit").click(function () {
+        $(".btnSubmit").click(function () {
             var statusCode = $.trim($("#Request_StatusCode").find(":selected").text());
             var completeDate = $.trim($("#Request_CompletionDateString").val());
             var statusLevel = $("#Request_StatusCode").find(':selected').data("statuslevel");

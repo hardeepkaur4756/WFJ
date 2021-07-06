@@ -245,10 +245,11 @@ namespace WFJ.Web.Controllers
                         {
                             model.CollectorStatusId = "";
                         }
+                        model.FormFieldsList.Remove(collectorStatus);
                     }
 
                     /// assistance
-                    var assistance = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim().Contains("assistance"));
+                    var assistance = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim().Contains("assistant"));
                     if (assistance != null)
                     {
                         model.AssistantList = assistance.FormSelectionLists.ToList();
@@ -260,6 +261,7 @@ namespace WFJ.Web.Controllers
                         {
                             model.AssistantId = "";
                         }
+                        model.FormFieldsList.Remove(assistance);
                     }
                 }
 
