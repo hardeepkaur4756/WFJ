@@ -96,7 +96,7 @@
                                             @Html.TextBoxFor(x => x.Request.RequestDateString, new { @Class = "form-control jdate-picker" })
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row">
 
@@ -115,6 +115,27 @@
                                         </div>
                                     </div>
 
+                                    @if (Model.CollectorStatusList != null)
+                                    {
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="form-group">
+                                                <input type="hidden" value="@Model.CollectorStatusList.FirstOrDefault().FormFieldID" class="formFieldId" />
+                                                <input type="hidden" value="7" class="formFieldTypeId" />
+                                                <label>Collector Status</label>
+                                                <select data-type="dropdown" class="form-control answer">
+                                                    <option value="">--Select--</option>
+                                                    @foreach (var option in Model.CollectorStatusList.OrderBy(x => x.SeqNo))
+                                                    {
+                                                        var optionSelected = option.Code == Model.CollectorStatusId ? "selected" : "";
+                                                        <option value="@option.Code" @optionSelected>@option.TextValue</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>Status</label>
@@ -137,10 +158,6 @@
                                         </div>
                                     </div>
 
-                                </div>
-                                <div class="row">
-
-
                                     <div class="col-lg-6 col-xl-4">
                                         <div class="form-group">
                                             <label>WFJ File Close Date</label>
@@ -159,6 +176,29 @@
                                     }
 
                                 </div>
+
+                                <div class="row">
+
+                                    @if (Model.AssistantList != null)
+                                    {
+                                        <div class="col-lg-6 col-xl-4">
+                                            <div class="form-group">
+                                                 <input type="hidden" value="@Model.AssistantList.FirstOrDefault().FormFieldID" class="formFieldId" />
+                                                <input type="hidden" value="7" class="formFieldTypeId" />
+                                                <label>Collector Status</label>
+                                                <select data-type="dropdown" class="form-control answer">
+                                                    <option value="">--Select--</option>
+                                                    @foreach (var option in Model.AssistantList.OrderBy(x => x.SeqNo))
+                                                    {
+                                                        var optionSelected = option.Code == Model.AssistantId ? "selected" : "";
+                                                        <option value="@option.Code" @optionSelected>@option.TextValue</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
                                 <div class="row">
                                     <div class="col-lg-12 col-xl-12">
                                         <div class="form-group">

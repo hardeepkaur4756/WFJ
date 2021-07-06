@@ -24,6 +24,10 @@ namespace WFJ.Models
         public List<StatusCodesModel> StatusList { get; set; }
         public List<SelectListItem> RegionList { get; set; }
         public List<SelectListItem> AdminStaffList { get; set; }
+        public IEnumerable<FormSelectionListViewModel> CollectorStatusList { get; set; }
+        public IEnumerable<FormSelectionListViewModel> AssistantList { get; set; }
+        public string CollectorStatusId { get; set; }
+        public string AssistantId { get; set; }
 
         public RequestViewModel Request { get; set; }
         public int? UserAccess { get; set; }
@@ -49,7 +53,7 @@ namespace WFJ.Models
         public bool IsAssignedFile { get; set; }
     }
 
-
+    
 
     public class FormSectionViewModel
     {

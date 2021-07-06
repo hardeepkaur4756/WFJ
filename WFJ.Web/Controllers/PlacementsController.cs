@@ -230,6 +230,39 @@ namespace WFJ.Web.Controllers
                     associateCounselModel = associateCounsel
                 };
 
+                if (model.FormFieldsList.Any())
+                {
+                    /// Collector Status
+                    var collectorStatus = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim().Contains("collector status"));
+                    if (collectorStatus != null)
+                    {
+                        model.CollectorStatusList = collectorStatus.FormSelectionLists.ToList();
+                        if(collectorStatus.FormData != null)
+                        {
+                            model.CollectorStatusId = collectorStatus.FormData.FieldValue;
+                        }
+                        else
+                        {
+                            model.CollectorStatusId = "";
+                        }
+                    }
+
+                    /// assistance
+                    var assistance = model.FormFieldsList.FirstOrDefault(x => x.FieldName.ToLower().Trim().Contains("assistance"));
+                    if (assistance != null)
+                    {
+                        model.AssistantList = assistance.FormSelectionLists.ToList();
+                        if (assistance.FormData != null)
+                        {
+                            model.AssistantId = assistance.FormData.FieldValue;
+                        }
+                        else
+                        {
+                            model.AssistantId = "";
+                        }
+                    }
+                }
+
                 #region Bind PaymentInformation in Summary
                 string customerPhone = string.Empty;
                 decimal balanceDue = 0;
