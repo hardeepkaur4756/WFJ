@@ -13,6 +13,8 @@ namespace WFJ.Models
         public int? ComplianceDuration { get; set; }
         public string LastNote { get; set; }
         public string LastNoteDate { get; set; }
+        public int RequestId { get; set; }
+        public int FormId { get; set; }
     }
 }
 

@@ -381,6 +381,8 @@ namespace WFJ.Service
                     recentlyOpenedAccountViewModel.ClientName = request.ClientName;
                     recentlyOpenedAccountViewModel.Status = GetStatus(Convert.ToInt32(request.StatusCode), Convert.ToInt32(request.FormId));
                     recentlyOpenedAccountViewModel.CustomerName = GetCustomerName(request.RequestId, Convert.ToInt32(request.FormId));
+                    recentlyOpenedAccountViewModel.RequestId = request.RequestId;
+                    recentlyOpenedAccountViewModel.FormId = Convert.ToInt32(request.FormId);
                     recentlyOpenedAccountViewModels.Add(recentlyOpenedAccountViewModel);
                 }
             }
@@ -419,7 +421,9 @@ namespace WFJ.Service
                     ComplianceDuration = ComplianceDuration(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
                     LastNoteDate = x.LastNoteDate.HasValue ? x.LastNoteDate.Value.ToString("MM/dd/yyyy") : "",
                     LastNote = x.RequestNotes.Any() ? x.RequestNotes.OrderByDescending(y => y.NotesDate)?
-                    .FirstOrDefault()?.Notes : ""
+                    .FirstOrDefault()?.Notes : "",
+                    RequestId = x.ID,
+                    FormId = Convert.ToInt32(x.FormID)
                 }).OrderBy(x => x.AttorneyName).ThenBy(x => x.ClientName).ThenBy(x => x.Status).ThenBy(x => x.CustomerName).ToList();
 
             return actionRequiredViewModels;
@@ -533,7 +537,8 @@ namespace WFJ.Service
                     CustomerName = GetCustomerName(x.ID, Convert.ToInt32(x.FormID)),
                     ClientName = x.Form?.Client?.ClientName,
                     Status = GetStatus(Convert.ToInt32(x.StatusCode), Convert.ToInt32(x.FormID)),
-                    RequestId = x.ID
+                    RequestId = x.ID,
+                    FormId = Convert.ToInt32(x.FormID)
                 }).ToList();
         }
 

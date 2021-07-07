@@ -29,7 +29,7 @@
                                     {
                                         <tr class="zoom">
                                             <td>@account.ClientName</td>
-                                            <td>@account.CustomerName</td>
+                                            <td><a href="javascript:void(0);" onclick="redirectToPlacement(@account.FormId,@account.RequestId)">@account.CustomerName</a></td>
                                             <td>@account.Status</td>
                                         </tr>
                                     }
@@ -98,7 +98,7 @@
                                 <tr class="zoom">
                                     <td>@request.AttorneyName</td>
                                     <td>@request.ClientName</td>
-                                    <td>@request.CustomerName</td>
+                                    <td><a href="javascript:void(0);" onclick="redirectToPlacement(@request.FormId,@request.RequestId)">@request.CustomerName</a></td>
                                     <td>@request.Status</td>
                                     <td>@request.ComplianceDuration</td>
                                     <td>@request.LastNoteDate</td>
