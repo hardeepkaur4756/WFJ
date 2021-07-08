@@ -173,20 +173,24 @@ namespace WFJ.Service
             getPlacementData = GetPlacementData(formId);
             getCollectedData = GetPlacementCollectedData(formId);
             StackBarChartModel chartModel = new StackBarChartModel();
-            chartModel.data = getPlacementData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" }; 
+            
+            chartModel.label = (DateTime.Now.Year - 2).ToString() + " Files";
+            chartModel.data = getPlacementData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };//
             chartModel.backgroundColor = new string[] { "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "1";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
-            chartModel.data = getCollectedData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
+            chartModel.label = (DateTime.Now.Year - 2).ToString() + " Prints";
+            chartModel.data = getCollectedData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
             chartModel.backgroundColor = new string[] { "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "1";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
+            chartModel.label = (DateTime.Now.Year - 1).ToString() + " Files";
             chartModel.data = getPlacementData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };
             chartModel.backgroundColor = new string[] { "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03" };
             chartModel.fillColor = "#000000";
@@ -194,6 +198,7 @@ namespace WFJ.Service
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
+            chartModel.label = (DateTime.Now.Year - 1).ToString() + " Prints";
             chartModel.data = getCollectedData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray();
             chartModel.backgroundColor = new string[] { "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb" };
             chartModel.fillColor = "#000000";
@@ -201,18 +206,22 @@ namespace WFJ.Service
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
-            chartModel.data = getPlacementData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };//
+            chartModel.label = DateTime.Now.Year.ToString() + " Files";
+            chartModel.data = getPlacementData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" }; 
             chartModel.backgroundColor = new string[] { "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "3";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
-            chartModel.data = getCollectedData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
+            chartModel.label = DateTime.Now.Year.ToString() + " Prints";
+            chartModel.data = getCollectedData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
             chartModel.backgroundColor = new string[] { "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "3";
             stackBarChartModels.Add(chartModel);
+
+
             return stackBarChartModels;
         }
 

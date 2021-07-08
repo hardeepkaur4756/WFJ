@@ -137,7 +137,12 @@ function bindLineChartUser() {
                 },
                 options: {
                     legend: {
-                        display: false
+                        display: true,
+                        position: 'bottom'
+                    },
+                    responsive: true,
+                    interaction: {
+                        intersect: false,
                     },
                     scales: {
                         xAxes: [{
@@ -146,6 +151,10 @@ function bindLineChartUser() {
                         yAxes: [{
                             stacked: true
                         }],
+                    },
+                    title: {
+                        display: true,
+                        text: 'Placements and Collections by Month'
                     }
                 }
             });

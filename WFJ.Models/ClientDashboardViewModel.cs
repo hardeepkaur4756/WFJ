@@ -37,6 +37,7 @@ namespace WFJ.Models
 
     public class StackBarChartModel
     {
+        public string label { get; set; }
         public string[] backgroundColor { get; set; }
         public string fillColor { get; set; }
         public string[] data { get; set; }
