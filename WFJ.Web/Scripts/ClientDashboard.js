@@ -146,6 +146,10 @@ function bindLineChart() {
                         yAxes: [{
                             stacked: true
                         }],
+                    },
+                    title: {
+                        display: true,
+                        text: 'Placements and Collections by Month'// + selectionLabel(response.label)
                     }
                 }
             });
