@@ -173,48 +173,46 @@ namespace WFJ.Service
             getPlacementData = GetPlacementData(formId);
             getCollectedData = GetPlacementCollectedData(formId);
             StackBarChartModel chartModel = new StackBarChartModel();
-            chartModel.data = new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" }; //getPlacementData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1" };
+            chartModel.data = getPlacementData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" }; 
+            chartModel.backgroundColor = new string[] { "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1", "#0D47A1" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "1";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
             chartModel.data = getCollectedData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31" };
+            chartModel.backgroundColor = new string[] { "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31", "#f55f31" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "1";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
-            chartModel.data = new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };//getPlacementData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03" };
+            chartModel.data = getPlacementData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };
+            chartModel.backgroundColor = new string[] { "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03", "#fcba03" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "2";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
             chartModel.data = getCollectedData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb" };
+            chartModel.backgroundColor = new string[] { "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb", "#83d4eb" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "2";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
-            chartModel.data = new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };//getPlacementData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3" };
+            chartModel.data = getPlacementData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray(); //new string[] { "1000", "2000", "1000", "2000", "1000", "2000", "1000", "2000", "1000", "8000", "1000", "8000" };//
+            chartModel.backgroundColor = new string[] { "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3", "#210be3" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "3";
             stackBarChartModels.Add(chartModel);
 
             chartModel = new StackBarChartModel();
             chartModel.data = getCollectedData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
-            chartModel.backgroundColor = new string[] { "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b" };
+            chartModel.backgroundColor = new string[] { "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b", "#612c2b" };
             chartModel.fillColor = "#000000";
             chartModel.stack = "3";
             stackBarChartModels.Add(chartModel);
-
-            //var chartData = Newtonsoft.Json.JsonConvert.SerializeObject(stackBarChartModels);
             return stackBarChartModels;
         }
 
@@ -271,7 +269,7 @@ namespace WFJ.Service
             {
                 ChartBaseModel order = new ChartBaseModel();
                 order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
-                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
+                order.Value = last3rdYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? last3rdYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
                 chartBaseModel3Yearly.ChartBaseModellast3rdYear.Add(order);
             }
 
