@@ -12,10 +12,12 @@ namespace WFJ.Service.Interfaces
         (Form form, List<SelectListItem>) GetDashboardFilters(int userType, int userId);
         ClientDashboardViewModel GetClientDashboardData(int formId);
         List<ChartBaseModel> GetActiveStatusPieChartData(int formId);
-        ChartBaseModelYearly GetPlacementsLineChartData(int formId);
+        ChartBaseModel3Yearly GetPlacementData(int formId);
         ChartBaseModelYearly GetDollarsPlacedLineChartData(int formId);
-        ChartBaseModelYearly GetPlacementCollectedLineChartData(int formId);
+        ChartBaseModel3Yearly GetPlacementCollectedData(int formId);
         ChartBaseModelYearly GetDollarsCollectedLineChartData(int formId);
+
+        List<StackBarChartModel> GetPlacementAndCollectedBarChartData(int formId);
 
 
 

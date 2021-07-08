@@ -12,62 +12,6 @@ function bindLineChart() {
 
     $.ajax({
         type: "POST",
-        url: "/Dashboard/GetPlacementsData",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: jsonData,
-        success: function (response) {
-            var aData = response.ChartBaseModelPreviousYear;
-            var data = [];
-            var label = [];
-            var dataPrevious = [];
-            $.each(aData, function (inx, val) {
-                var obj = {};
-                if (val.Value == null) {
-                    data.push(0);
-                } else {
-                    data.push(val.Value);
-                }
-                label.push(val.Name);
-            });
-
-            $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
-                dataPrevious.push(val.Value);
-            });
-
-            var lineData = {
-                datasets: [{
-                    data: data,
-                    borderColor: "#3e95cd",
-                    label: "No. of Placements",
-                    fill: false,
-                },
-                {
-                    data: dataPrevious,
-                    borderColor: "#A30000",
-                    label: "No. of Placements",
-                    fill: false,
-                }
-                ],
-                labels: label
-            };
-
-            var context = document.getElementById("placement-data-chart").getContext("2d");
-            myLineChart = new Chart(context, {
-                type: 'line',
-                data: lineData,
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Placement'// + selectionLabel(response.label)
-                    }
-                }
-            });
-        }
-    });
-
-    $.ajax({
-        type: "POST",
         url: "/Dashboard/GetDollarsPlacedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -124,62 +68,6 @@ function bindLineChart() {
 
     $.ajax({
         type: "POST",
-        url: "/Dashboard/GetPlacementCollectedData",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: jsonData,
-        success: function (response) {
-            var aData = response.ChartBaseModelPreviousYear;
-            var data = [];
-            var label = [];
-            var dataPrevious = [];
-            $.each(aData, function (inx, val) {
-                var obj = {};
-                if (val.Value == null) {
-                    data.push(0);
-                } else {
-                    data.push(val.Value);
-                }
-                label.push(val.Name);
-            });
-
-            $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
-                dataPrevious.push(val.Value);
-            });
-
-            var lineData = {
-                datasets: [{
-                    data: data,
-                    borderColor: "#3e95cd",
-                    label: "Dollar Collection",
-                    fill: false,
-                },
-                {
-                    data: dataPrevious,
-                    borderColor: "#A30000",
-                    label: "Dollar Collection",
-                    fill: false,
-                }
-                ],
-                labels: label
-            };
-
-            var context = document.getElementById("placement-collected-chart").getContext("2d");
-            myLineChart = new Chart(context, {
-                type: 'line',
-                data: lineData,
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Placement Dollars'
-                    }
-                }
-            });
-        }
-    });
-
-    $.ajax({
-        type: "POST",
         url: "/Dashboard/GetDollarsCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -228,6 +116,36 @@ function bindLineChart() {
                     title: {
                         display: true,
                         text: 'Collected Dollars'// + selectionLabel(response.label)
+                    }
+                }
+            });
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/GetPlacementAndCollectedData",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: jsonData,
+        success: function (response) {
+            new Chart(document.getElementById("placement-collected-data-chart").getContext("2d"), {
+                type: 'bar',
+                data: {
+                    labels: ["Jan", "Feb", 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: response
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }],
                     }
                 }
             });
@@ -313,4 +231,5 @@ function bindPieChart() {
         }
     });
 }
+
 

@@ -28,6 +28,20 @@ namespace WFJ.Models
         public List<ChartBaseModel> ChartBaseModelPreviousYear { get; set; }
     }
 
+    public class ChartBaseModel3Yearly
+    {
+        public List<ChartBaseModel> ChartBaseModelCurrentYear { get; set; }
+        public List<ChartBaseModel> ChartBaseModelPreviousYear { get; set; }
+        public List<ChartBaseModel> ChartBaseModellast3rdYear { get; set; }
+    }
+
+    public class StackBarChartModel
+    {
+        public string[] backgroundColor { get; set; }
+        public string fillColor { get; set; }
+        public string[] data { get; set; }
+        public string stack { get; set; }
+    }
 
 
 }

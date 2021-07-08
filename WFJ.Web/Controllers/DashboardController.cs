@@ -70,30 +70,23 @@ namespace WFJ.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetPlacementsData(int formId)
-        {
-            var chartBaseModel = _dashboardService.GetPlacementsLineChartData(formId);
-            return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
         public JsonResult GetDollarsPlacedData(int formId)
         {
             var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult GetPlacementCollectedData(int formId)
+        public JsonResult GetPlacementAndCollectedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(formId);
+            var chartBaseModel = _dashboardService.GetPlacementAndCollectedBarChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpPost]
         public JsonResult GetDollarsCollectedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetPlacementCollectedLineChartData(formId);
+            var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 

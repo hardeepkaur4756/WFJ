@@ -47,10 +47,10 @@
             </div>
             <div class="col-12 col-lg-12 col-xl-8">
                 <div class="row">
-                    <div class="col-12 col-sm-6 mt-3">
+                    <div class="col-12 col-sm-12 mt-3">
                         <div class="card">
                             <div class="card-body fixed-height-chart">
-                                <canvas id="placement-data-chart"></canvas>
+                                <canvas id="placement-collected-data-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -58,13 +58,6 @@
                         <div class="card">
                             <div class="card-body fixed-height-chart">
                                 <canvas id="dollars-placed-chart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 mt-3">
-                        <div class="card">
-                            <div class="card-body fixed-height-chart">
-                                <canvas id="placement-collected-chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -122,7 +115,7 @@
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="recent-payment" role="tabpanel" aria-labelledby="recent-payment-tab">
-                    
+
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -155,47 +148,47 @@
                         </div>
                     </div>
                 </div>
-                
-                    <div class="tab-pane fade" id="remittance" role="tabpanel" aria-labelledby="remittance-tab">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table font-w-600 mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Account Name</th>
-                                                <th>Payment Date</th>
-                                                <th>Payment Amount</th>
-                                                <th>WFJ Fees</th>
-                                                <th>Remit Date</th>
-                                                <th>Check Number</th>
+
+                <div class="tab-pane fade" id="remittance" role="tabpanel" aria-labelledby="remittance-tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table font-w-600 mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Account Name</th>
+                                            <th>Payment Date</th>
+                                            <th>Payment Amount</th>
+                                            <th>WFJ Fees</th>
+                                            <th>Remit Date</th>
+                                            <th>Check Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var request in Model.ApprovedPayements)
+                                        {
+                                            <tr class="zoom">
+                                                <td>@request.ClientName</td>
+                                                <td>@request.PaymentDate</td>
+                                                <td>@request.PaymentAmount</td>
+                                                <td>@request.WFJFees</td>
+                                                <td>@request.InvoicDate</td>
+                                                <td>@request.InvoiceNumber</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var request in Model.ApprovedPayements)
-                                            {
-                                                <tr class="zoom">
-                                                    <td>@request.ClientName</td>
-                                                    <td>@request.PaymentDate</td>
-                                                    <td>@request.PaymentAmount</td>
-                                                    <td>@request.WFJFees</td>
-                                                    <td>@request.InvoicDate</td>
-                                                    <td>@request.InvoiceNumber</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        
                     </div>
+
                 </div>
-
-
             </div>
-            
+
+
         </div>
+
+    </div>
 
     <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
         <div class="card">

@@ -11,7 +11,7 @@ function bindLineChartUser() {
 
     $.ajax({
         type: "POST",
-        url: "/Dashboard/GetPlacementsData",
+        url: "/Dashboard/GetDollarsCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: jsonData,
@@ -38,27 +38,27 @@ function bindLineChartUser() {
                 datasets: [{
                     data: data,
                     borderColor: "#3e95cd",
-                    label: "No. of Placements",
+                    label: "Dollar Collection",
                     fill: false,
                 },
                 {
                     data: dataPrevious,
                     borderColor: "#A30000",
-                    label: "No. of Placements",
+                    label: "Dollar Collection",
                     fill: false,
                 }
                 ],
                 labels: label
             };
 
-            var context = document.getElementById("placement-data-chart-user").getContext("2d");
+            var context = document.getElementById("dollars-collected-chart-user").getContext("2d");
             myLineChartUser = new Chart(context, {
                 type: 'line',
                 data: lineData,
                 options: {
                     title: {
                         display: true,
-                        text: 'Placement'// + selectionLabel(response.label)
+                        text: 'Collected Dollars'// + selectionLabel(response.label)
                     }
                 }
             });
@@ -121,112 +121,31 @@ function bindLineChartUser() {
         }
     });
 
+
     $.ajax({
         type: "POST",
-        url: "/Dashboard/GetPlacementCollectedData",
+        url: "/Dashboard/GetPlacementAndCollectedData",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: jsonData,
         success: function (response) {
-            var aData = response.ChartBaseModelPreviousYear;
-            var data = [];
-            var label = [];
-            var dataPrevious = [];
-            $.each(aData, function (inx, val) {
-                var obj = {};
-                if (val.Value == null) {
-                    data.push(0);
-                } else {
-                    data.push(val.Value);
-                }
-                label.push(val.Name);
-            });
-
-            $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
-                dataPrevious.push(val.Value);
-            });
-
-            var lineData = {
-                datasets: [{
-                    data: data,
-                    borderColor: "#3e95cd",
-                    label: "Dollar Collection",
-                    fill: false,
+            new Chart(document.getElementById("placement-collected-data-chart-user").getContext("2d"), {
+                type: 'bar',
+                data: {
+                    labels: ["Jan", "Feb", 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: response
                 },
-                {
-                    data: dataPrevious,
-                    borderColor: "#A30000",
-                    label: "Dollar Collection",
-                    fill: false,
-                }
-                ],
-                labels: label
-            };
-
-            var context = document.getElementById("placement-collected-chart-user").getContext("2d");
-            myLineChartUser = new Chart(context, {
-                type: 'line',
-                data: lineData,
                 options: {
-                    title: {
-                        display: true,
-                        text: 'Placement Dollars'
-                    }
-                }
-            });
-        }
-    });
-
-    $.ajax({
-        type: "POST",
-        url: "/Dashboard/GetDollarsCollectedData",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: jsonData,
-        success: function (response) {
-            var aData = response.ChartBaseModelPreviousYear;
-            var data = [];
-            var label = [];
-            var dataPrevious = [];
-            $.each(aData, function (inx, val) {
-                var obj = {};
-                if (val.Value == null) {
-                    data.push(0);
-                } else {
-                    data.push(val.Value);
-                }
-                label.push(val.Name);
-            });
-
-            $.each(response.ChartBaseModelCurrentYear, function (inx, val) {
-                dataPrevious.push(val.Value);
-            });
-
-            var lineData = {
-                datasets: [{
-                    data: data,
-                    borderColor: "#3e95cd",
-                    label: "Dollar Collection",
-                    fill: false,
-                },
-                {
-                    data: dataPrevious,
-                    borderColor: "#A30000",
-                    label: "Dollar Collection",
-                    fill: false,
-                }
-                ],
-                labels: label
-            };
-
-            var context = document.getElementById("dollars-collected-chart-user").getContext("2d");
-            myLineChartUser = new Chart(context, {
-                type: 'line',
-                data: lineData,
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Collected Dollars'// + selectionLabel(response.label)
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }],
                     }
                 }
             });

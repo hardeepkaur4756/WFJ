@@ -94,7 +94,7 @@ namespace WFJ.Service
         }
 
 
-        public ChartBaseModelYearly GetPlacementsLineChartData(int formId)
+        public ChartBaseModel3Yearly GetPlacementData(int formId)
         {
             IRequestsRepository _requestsRepository = new RequestsRepository();
             var request = _requestsRepository.GetByFormId(formId);
@@ -114,9 +114,108 @@ namespace WFJ.Service
                     Value = x.Count().ToString()
                 }).ToList();
 
-            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
+            var last3rdYear = request.Where(x => x.RequestDate.HasValue && x.RequestDate.Value.Year == DateTime.Now.Year - 2)
+               .GroupBy(x => x.RequestDate.Value.Month)
+               .Select(x => new ChartBaseModel
+               {
+                   Name = x.Key.ToString(),
+                   Value = x.Count().ToString()
+               }).ToList();
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear, last3rdYear);
 
             return chartBaseModel;
+        }
+
+        public ChartBaseModel3Yearly GetPlacementCollectedData(int formId)
+        {
+            IRequestsRepository _requestsRepository = new RequestsRepository();
+            IPaymentsRepository _paymentsRepository = new PaymentsRepository();
+
+            var request = _requestsRepository.GetByFormId(formId);
+            var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
+
+            var currentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
+                .GroupBy(x => x.PaymentDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                }).ToList();
+
+            var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
+                 .GroupBy(x => x.PaymentDate.Value.Month)
+                  .Select(x => new ChartBaseModel
+                  {
+                      Name = x.Key.ToString(),
+                      Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                  }).ToList();
+
+            var last3rdYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 2)
+               .GroupBy(x => x.PaymentDate.Value.Month)
+                .Select(x => new ChartBaseModel
+                {
+                    Name = x.Key.ToString(),
+                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                }).ToList();
+
+
+            var chartBaseModel = BindDataMonthly(currentYear, lastYear, last3rdYear);
+            return chartBaseModel;
+        }
+
+        public List<StackBarChartModel> GetPlacementAndCollectedBarChartData(int formId)
+        {
+            List<StackBarChartModel> stackBarChartModels = new List<StackBarChartModel>();
+            ChartBaseModel3Yearly getPlacementData = new ChartBaseModel3Yearly();
+            ChartBaseModel3Yearly getCollectedData = new ChartBaseModel3Yearly();
+
+            getPlacementData = GetPlacementData(formId);
+            getCollectedData = GetPlacementCollectedData(formId);
+            StackBarChartModel chartModel = new StackBarChartModel();
+            chartModel.data = getPlacementData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "1";
+            stackBarChartModels.Add(chartModel);
+
+            chartModel = new StackBarChartModel();
+            chartModel.data = getCollectedData.ChartBaseModelCurrentYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "1";
+            stackBarChartModels.Add(chartModel);
+
+            chartModel = new StackBarChartModel();
+            chartModel.data = getPlacementData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "2";
+            stackBarChartModels.Add(chartModel);
+
+            chartModel = new StackBarChartModel();
+            chartModel.data = getCollectedData.ChartBaseModelPreviousYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "2";
+            stackBarChartModels.Add(chartModel);
+
+            chartModel = new StackBarChartModel();
+            chartModel.data = getPlacementData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "3";
+            stackBarChartModels.Add(chartModel);
+
+            chartModel = new StackBarChartModel();
+            chartModel.data = getCollectedData.ChartBaseModellast3rdYear.Select(x => x.Value).ToArray();
+            chartModel.backgroundColor = new string[] { "#673AB7", "#90A4AE" };
+            chartModel.fillColor = "#000000";
+            chartModel.stack = "3";
+            stackBarChartModels.Add(chartModel);
+
+            //var chartData = Newtonsoft.Json.JsonConvert.SerializeObject(stackBarChartModels);
+            return stackBarChartModels;
         }
 
         private static ChartBaseModelYearly BindDataMonthly(List<ChartBaseModel> currentYear, List<ChartBaseModel> lastYear)
@@ -142,6 +241,41 @@ namespace WFJ.Service
                 chartBaseModelYearly.ChartBaseModelPreviousYear.Add(order);
             }
             return chartBaseModelYearly;
+        }
+
+        private static ChartBaseModel3Yearly BindDataMonthly(List<ChartBaseModel> currentYear, List<ChartBaseModel> lastYear, List<ChartBaseModel> last3rdYear)
+        {
+            ChartBaseModel3Yearly chartBaseModel3Yearly = new ChartBaseModel3Yearly();
+            chartBaseModel3Yearly.ChartBaseModelCurrentYear = new List<ChartBaseModel>();
+            chartBaseModel3Yearly.ChartBaseModelPreviousYear = new List<ChartBaseModel>();
+            chartBaseModel3Yearly.ChartBaseModellast3rdYear = new List<ChartBaseModel>();
+
+            IEnumerable<int> months = Enumerable.Range(1, 12);
+            foreach (var month in months)
+            {
+                ChartBaseModel order = new ChartBaseModel();
+                order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                order.Value = currentYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? currentYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
+                chartBaseModel3Yearly.ChartBaseModelCurrentYear.Add(order);
+            }
+
+            foreach (var month in months)
+            {
+                ChartBaseModel order = new ChartBaseModel();
+                order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
+                chartBaseModel3Yearly.ChartBaseModelPreviousYear.Add(order);
+            }
+
+            foreach (var month in months)
+            {
+                ChartBaseModel order = new ChartBaseModel();
+                order.Name = new DateTime(2020, month, 1).ToString("MMM", CultureInfo.InvariantCulture);
+                order.Value = lastYear.FirstOrDefault(x => int.Parse(x.Name) == month) != null ? lastYear.FirstOrDefault(x => int.Parse(x.Name) == month)?.Value : "0";
+                chartBaseModel3Yearly.ChartBaseModellast3rdYear.Add(order);
+            }
+
+            return chartBaseModel3Yearly;
         }
 
         private long GetBalanceDue(List<int> requestids,int formFieldsId)
@@ -184,34 +318,7 @@ namespace WFJ.Service
             return chartBaseModel;
         }
 
-        public ChartBaseModelYearly GetPlacementCollectedLineChartData(int formId)
-        {
-            IRequestsRepository _requestsRepository = new RequestsRepository();
-            IPaymentsRepository _paymentsRepository = new PaymentsRepository();
-
-            var request = _requestsRepository.GetByFormId(formId);
-            var payments = _paymentsRepository.GetByReqestIds(request.Select(x => x.ID).ToList());
-
-            var currentYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year)
-                .GroupBy(x => x.PaymentDate.Value.Month)
-                .Select(x => new ChartBaseModel
-                {
-                    Name = x.Key.ToString(),
-                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
-                }).ToList();
-
-           var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
-                .GroupBy(x => x.PaymentDate.Value.Month)
-                 .Select(x => new ChartBaseModel
-                 {
-                     Name = x.Key.ToString(),
-                     Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
-                 }).ToList();
-
-
-            var chartBaseModel = BindDataMonthly(currentYear, lastYear);
-            return chartBaseModel;
-        }
+        
 
         public ChartBaseModelYearly GetDollarsCollectedLineChartData(int formId)
         {
