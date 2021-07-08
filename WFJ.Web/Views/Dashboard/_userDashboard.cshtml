@@ -12,7 +12,7 @@
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Follow Up Account</h6>
                 </div>
-                <div class="card-body table-responsive p-0">
+                <div class="card-body table-responsive p-0 div-scroll">
                     <table class="table font-w-600 mb-0">
                         <thead>
                             <tr>
@@ -72,7 +72,7 @@
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Action Required</h6>
                 </div>
-                <div class="card-body table-responsive p-0">
+                <div class="card-body table-responsive p-0 div-scroll">
                     <table class="table font-w-600 mb-0">
                         <thead>
                             <tr>
@@ -108,7 +108,7 @@
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Recently Opened Account</h6>
                 </div>
-                <div class="card-body table-responsive p-0">
+                <div class="card-body table-responsive p-0 div-scroll">
                     <table class="table font-w-600 mb-0">
                         <thead>
                             <tr>
@@ -157,7 +157,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive div-scroll">
                                     <table class="table font-w-600 mb-0">
                                         <thead>
                                             <tr>
@@ -201,7 +201,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table font-w-600 mb-0">
+                                    <table class="table font-w-600 mb-0 div-scroll">
                                         <thead>
                                             <tr>
                                                 <th>Approve Payment</th>
@@ -218,7 +218,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var request in Model.ApprovedPayements)
+                                            @foreach (var request in Model.RemittancePayements)
                                             {
                                                 <tr class="zoom">
                                                     <td><input id="@request.PaymentId" type="checkbox" onclick="approvePayment('@request.PaymentId',this)" /></td>
