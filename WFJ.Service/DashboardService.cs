@@ -276,18 +276,17 @@ namespace WFJ.Service
             return chartBaseModel3Yearly;
         }
 
-        private long GetBalanceDue(List<int> requestids,int formFieldsId)
+        private decimal GetBalanceDue(List<int> requestids, int formFieldsId)
         {
-            if(formFieldsId > 0)
+            if (formFieldsId > 0)
             {
                 IFormDataRepository _formDataRepository = new FormDataRepository();
-                return _formDataRepository.GetAll().Where(x => x.FormFieldID == formFieldsId && requestids.Contains(x.RequestID.Value)).Sum(x => Convert.ToInt64(x.FieldValue));
+                return _formDataRepository.GetAll().Where(x => x.FormFieldID == formFieldsId && requestids.Contains(x.RequestID.Value)).Select(x => Convert.ToDecimal(x.FieldValue)).Sum();
             }
             else
             {
                 return 0;
             }
-            
         }
 
         public ChartBaseModelYearly GetDollarsPlacedLineChartData(int formId)
