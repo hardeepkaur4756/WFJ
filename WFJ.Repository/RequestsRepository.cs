@@ -20,9 +20,9 @@ namespace WFJ.Repository
 
         public IEnumerable<Request> GetRequestsList(int formId, int requestor, int assignedAtorney, int collector, int statusCode, int statusLevel, int levelId, DateTime? beginDate, DateTime? endDate, bool archived, bool activeOnly)
         {
-            IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x=>x.Form).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel).Include(x=>x.Level);
+            IEnumerable<Request> requests = _context.Requests.Where(x => x.FormID == formId).Include(x => x.Form).Include(x => x.User).Include(x => x.User1).Include(x => x.Personnel).Include(x => x.Level);
 
-            if(archived == true)
+            if (archived == true)
             {
                 requests = requests.Where(x => x.CompletionDate != null);
             }
@@ -43,11 +43,11 @@ namespace WFJ.Repository
             {
                 requests = requests.Where(x => x.AssignedCollectorID == collector);
             }
-            if(statusCode != -1)
+            if (statusCode != -1)
             {
                 requests = requests.Where(x => x.StatusCode == statusCode);
             }
-            if(statusLevel != -1)
+            if (statusLevel != -1)
             {
                 var statusCodes = _statusCodesRepo.GetByFormID(formId).Where(x => x.StatusLevel == 1).Select(x => x.StatusCode1).ToArray();
                 requests = requests.Where(x => statusCodes.Contains(x.StatusCode));
@@ -60,11 +60,11 @@ namespace WFJ.Repository
             {
                 requests = requests.Where(x => x.RequestDate != null && x.RequestDate >= beginDate);
             }
-            if(endDate != null)
+            if (endDate != null)
             {
                 requests = requests.Where(x => x.RequestDate != null && x.RequestDate <= endDate);
             }
-            if(activeOnly == true)
+            if (activeOnly == true)
             {
                 requests = requests.Where(x => x.active == 1);
             }
@@ -85,7 +85,7 @@ namespace WFJ.Repository
         public Request GetRequestWithDetail(int requestId)
         {
             return _context.Requests.Include(x => x.User) // collector
-                .Include(x=>x.RequestNotes)
+                .Include(x => x.RequestNotes)
                 .Include(x => x.User1) // Requestor
                 .Include(x => x.Personnel).FirstOrDefault(x => x.ID == requestId);
         }
@@ -95,7 +95,7 @@ namespace WFJ.Repository
             DateTime date = DateTime.Now.AddDays(days);
             if (formId > 0)
             {
-                return _context.Requests.Where(x => x.Requestor!=null && x.FormID == formId && x.RequestDate >= date && x.StatusCode != null);
+                return _context.Requests.Where(x => x.Requestor != null && x.FormID == formId && x.RequestDate >= date && x.StatusCode != null);
 
             }
             else
@@ -129,17 +129,17 @@ namespace WFJ.Repository
 
         public IEnumerable<Request> FollowUpAccounts(int formId)
         {
-            if(formId > 0)
+            DateTime todayDate = DateTime.UtcNow.Date;
+            if (formId > 0)
             {
                 return _context.Requests.Where(x => x.Form != null && x.Form.ID == formId
-                && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
+                && x.RequestNotes.Any(y => DbFunctions.TruncateTime(y.FollowupDate) == todayDate && y.AlreadySeen != true));
             }
             else
             {
-                return _context.Requests.Where(x => x.Form != null && x.RequestNotes.Any(y => y.FollowupDate == DateTime.UtcNow && y.AlreadySeen != true));
+                return _context.Requests.Where(x => x.Form != null && x.RequestNotes.Any(y => DbFunctions.TruncateTime(y.FollowupDate) == todayDate && y.AlreadySeen != true));
             }
-                
-        } // is case me kya hoga means all forms ka data wo kis base pe layega
+        } 
 
 
         public IEnumerable<Request> GetByFormId(int formId)

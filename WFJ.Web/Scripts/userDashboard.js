@@ -168,7 +168,7 @@ function approvePayment(paymentId, obj) {
                 dataType: "json",
                 success: function (resp) {
                     if (resp.success === true) {
-                        $.notify("Payments approve successfully.", "success");
+                        $.notify("Payment approved successfully.", "success");
                         $(obj).parent().parent().remove();
                     }
                     else {
@@ -211,6 +211,6 @@ function RequestNoteAlreadySeen(requestId, obj) {
             });
 
         }, function myfunction() {
-            $("#" + paymentId).prop("checked", false);
+            $("#" + requestId).prop("checked", false);
         });
 }

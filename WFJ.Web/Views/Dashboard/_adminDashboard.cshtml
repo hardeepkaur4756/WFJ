@@ -3,11 +3,6 @@
 <div>
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-6 mt-3">
-
-
-
-
-
             <div class="card">
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Recently Opened Account</h6>
@@ -79,7 +74,7 @@
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Action Required</h6>
                 </div>
-                <div class="card-body table-responsive p-0">
+                <div class="card-body table-responsive p-0 div-scroll">
                     <table class="table font-w-600 mb-0" id="action-required">
                         <thead>
                             <tr>
@@ -115,7 +110,7 @@
                 <div class="card-header justify-content-between align-items-center">
                     <h6 class="card-title">Final Demand Required</h6>
                 </div>
-                <div class="card-body table-responsive p-0">
+                <div class="card-body table-responsive p-0 div-scroll">
                     <table class="table font-w-600 mb-0" id="final-demand-required">
                         <thead>
                             <tr>
@@ -159,7 +154,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive div-scroll">
                                     <table class="table font-w-600 mb-0" id="approved-payment">
                                         <thead>
                                             <tr>
@@ -200,7 +195,7 @@
                     <div class="tab-pane fade" id="remittance" role="tabpanel" aria-labelledby="remittance-tab">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive div-scroll">
                                     <table class="table font-w-600 mb-0" id="approved-payment">
                                         <thead>
                                             <tr>
@@ -217,7 +212,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var request in Model.ApprovedPayements)
+                                            @foreach (var request in Model.RemittancePayements)
                                             {
                                                 <tr class="zoom">
                                                     <td>@request.ClientName</td>
