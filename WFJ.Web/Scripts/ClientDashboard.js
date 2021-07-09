@@ -4,7 +4,9 @@ function bindLineChart() {
     if (myLineChart) {
         myLineChart.destroy();
     }
-
+    $(".outer-loader1").fadeIn();
+    $(".outer-loader2").fadeIn();
+    $(".outer-loader3").fadeIn();
     var gData = {};
     var formId = $("#ddlLocalCounselState").val();
     gData.formId = parseInt(formId);
@@ -63,6 +65,10 @@ function bindLineChart() {
                     }
                 }
             });
+            $(".outer-loader1").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader1").fadeOut();
         }
     });
 
@@ -119,6 +125,10 @@ function bindLineChart() {
                     }
                 }
             });
+            $(".outer-loader2").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader2").fadeOut();
         }
     });
 
@@ -158,6 +168,10 @@ function bindLineChart() {
                     }
                 }
             });
+            $(".outer-loader3").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader3").fadeOut();
         }
     });
 }
@@ -172,6 +186,7 @@ function getRandomColor() {
 }
 
 function bindPieChart() {
+    $(".outer-loader").fadeIn();
     var gData = {};
     var formId = $("#ddlLocalCounselState").val();
     gData.formId = parseInt(formId);
@@ -183,7 +198,6 @@ function bindPieChart() {
         data: jsonData,
         dataType: "json",
         success: function (data) {
-
             var datasetLabel = [];
             var datasetValue = [];
             var datasetColor = [];
@@ -231,12 +245,14 @@ function bindPieChart() {
                     var ctx = document.getElementById('chartjs-other-pie').getContext('2d');
                     window.myDoughnut = new Chart(ctx, config);
                 }
+                $(".outer-loader").fadeOut("slow");
             } else {
                 $("#noChartData").text("No chart data available");
+                $(".outer-loader").fadeOut("slow");
             }
-            
         },
         "error": function (data) {
+            $(".outer-loader").fadeOut("slow");
         }
     });
 }
