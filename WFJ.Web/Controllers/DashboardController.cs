@@ -45,18 +45,18 @@ namespace WFJ.Web.Controllers
                 selectedFormId = Convert.ToInt32(formId);
             }
 
-           // if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
-            //{
+            if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+            {
                 dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
-            //}
-            //if (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser)
-            //{
+            }
+            if (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser)
+            {
                 dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
-            //}
-            //if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
-            //{
+            }
+            if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
+            {
                 dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
-            //}
+            }
 
             dashboardViewModel.FormId = selectedFormId;
             return View(dashboardViewModel);
@@ -86,7 +86,7 @@ namespace WFJ.Web.Controllers
         [HttpPost]
         public JsonResult GetDollarsCollectedData(int formId)
         {
-            var chartBaseModel = _dashboardService.GetDollarsPlacedLineChartData(formId);
+            var chartBaseModel = _dashboardService.GetDollarsCollectedLineChartData(formId);
             return Json(chartBaseModel, JsonRequestBehavior.AllowGet);
         }
 

@@ -82,7 +82,7 @@ namespace WFJ.Service
         {
             List<ChartBaseModel> activeStatusPieChartData = new List<ChartBaseModel>();
             IRequestsRepository _requestsRepository = new RequestsRepository();
-            var request = _requestsRepository.GetByFormId(formId);
+            var request = _requestsRepository.GetByFormId(formId).Where(x=>x.active == 1);
             activeStatusPieChartData = request.GroupBy(x => x.StatusCode).ToList()
                 .Select(x => new ChartBaseModel
                 {
@@ -140,7 +140,7 @@ namespace WFJ.Service
                 .Select(x => new ChartBaseModel
                 {
                     Name = x.Key.ToString(),
-                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                    Value = x.Count().ToString()
                 }).ToList();
 
             var lastYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 1)
@@ -148,7 +148,7 @@ namespace WFJ.Service
                   .Select(x => new ChartBaseModel
                   {
                       Name = x.Key.ToString(),
-                      Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                      Value = x.Count().ToString()
                   }).ToList();
 
             var last3rdYear = payments.Where(x => x.PaymentDate.HasValue && x.PaymentDate.Value.Year == DateTime.Now.Year - 2)
@@ -156,7 +156,7 @@ namespace WFJ.Service
                 .Select(x => new ChartBaseModel
                 {
                     Name = x.Key.ToString(),
-                    Value = x.OrderBy(y => y.PaymentDate).FirstOrDefault()?.Amount.ToString()
+                    Value = x.Count().ToString()
                 }).ToList();
 
 
