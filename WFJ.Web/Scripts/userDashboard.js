@@ -3,7 +3,9 @@ function bindLineChartUser() {
     if (myLineChartUser) {
         myLineChartUser.destroy();
     }
-
+    $(".outer-loader4").fadeIn();
+    $(".outer-loader5").fadeIn();
+    $(".outer-loader6").fadeIn();
     var gData = {};
     var formId = $("#ddlLocalCounselState").val();
     gData.formId = parseInt(formId);
@@ -62,6 +64,10 @@ function bindLineChartUser() {
                     }
                 }
             });
+            $(".outer-loader4").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader4").fadeOut();
         }
     });
 
@@ -118,6 +124,10 @@ function bindLineChartUser() {
                     }
                 }
             });
+            $(".outer-loader5").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader5").fadeOut();
         }
     });
 
@@ -158,6 +168,10 @@ function bindLineChartUser() {
                     }
                 }
             });
+            $(".outer-loader6").fadeOut();
+        },
+        "error": function (data) {
+            $(".outer-loader6").fadeOut();
         }
     });
 }
