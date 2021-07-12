@@ -27,8 +27,9 @@
                 </div>
                 @if (userType == (int)WFJ.Service.Model.UserType.WFJUser || userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
                 {
+                    <span>Client View</span>
                     <label class="switch">
-                        <input type="checkbox" @checkValue name="showClientView" onclick="ShowClientView()">
+                        <input type="checkbox" @checkValue name="showClientView" onclick="ShowClientView(this)">
                         <span class="slider round"></span>
                     </label>
                 }
@@ -42,12 +43,12 @@
                 @Html.Partial("_clientDashboard", Model.ClientDashboard)
             }
 
-            @if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
+            @if (!showClientView || userType == (int)WFJ.Service.Model.UserType.WFJUser)
             {
                 @Html.Partial("_userDashboard", Model.UserDashboard)
             }
 
-            @if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+            @if (!showClientView || userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
             {
                 @Html.Partial("_adminDashboard", Model.AdminDashboard)
             }
@@ -65,24 +66,14 @@
 
         });
 
-        function ShowClientView() {
-           var formId = $("#ddlLocalCounselState").val()
-            if ($('input[name="showClientView"]:checked')) {
-                @{
-                    Session["ShowClientView"] = true;
-                }
-
-                window.location.href = "/Dashboard/Index?formId=" + formId;
-
+        function ShowClientView(obj) {
+            var formId = $("#ddlLocalCounselState").val()
+            if ($(obj).prop("checked") == true) {
+                window.location.href = "/Dashboard/Index?formId=" + formId + "&viewId=1";
             }
             else {
-                 @*@{
-                    Session["ShowClientView"] = false;
-                }*@
-                alert($("#ddlLocalCounselState").val());
+                window.location.href = "/Dashboard/Index?formId=" + formId + "&viewId=0";
             }
-
-            //window.location.href = "/Dashboard/Index?formId=" + formId;
         }
 
         $("#recently-open-account").dataTable({
@@ -187,65 +178,3 @@
 
     </script>
 }
-
-<style>
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-    input:checked + .slider {
-        background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-</style>

@@ -26,6 +26,11 @@ namespace WFJ.Web.Controllers
         // GET: Dashboard
         public ActionResult Index(int? formId)
         {
+            var viewId = Request.QueryString["viewID"];
+
+            if (!string.IsNullOrWhiteSpace(viewId))
+                Session["ShowClientView"] = viewId == "1" ? true : false;
+
             GetSessionUser(out UserId, out UserType, out UserAccess);
             int userId = Convert.ToInt32(Session["UserId"]);
             int userType = Convert.ToInt32(Session["UserType"]);
