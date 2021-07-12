@@ -45,11 +45,13 @@ namespace WFJ.Web.Controllers
                 selectedFormId = Convert.ToInt32(formId);
             }
 
+            bool showClientView = Convert.ToBoolean(Session["ShowClientView"]);
+
             if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
             {
                 dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
             }
-            if (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser)
+            if (showClientView || (userType == (int)WFJ.Service.Model.UserType.ClientAdministrator || userType == (int)WFJ.Service.Model.UserType.ClientManager || userType == (int)WFJ.Service.Model.UserType.ClientUser))
             {
                 dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
             }

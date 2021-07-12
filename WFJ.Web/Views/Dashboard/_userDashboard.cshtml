@@ -4,7 +4,19 @@
         height: 200px;
         width: 400px;
     }
+
+    @{
+        string checkValue = string.Empty;
+        if (Convert.ToBoolean(Session["ShowClientView"]))
+        {
+            checkValue = "checked";
+        }
+        }
 </style>
+<label class="switch">
+    <input type="checkbox" @checkValue name="showClientView" onclick="ShowClientView()">
+    <span class="slider round"></span>
+</label>
 <div>
     <div class="row">
         <div class="col-12 col-md-12 col-lg-12 col-xl-4 mt-3">
@@ -41,21 +53,21 @@
             <div class="row">
                 <div class="col-12 col-sm-12 mt-3">
                     <div class="card">
-                        <div class="card-body cus-canvas"">
+                        <div class="card-body cus-canvas" ">
                             <div class="outer-loader4"><div class="loader-custom"></div></div>
                             <canvas id="placement-collected-data-chart-user"></canvas>
                         </div>
                     </div>
                 </div>
 
-                
+
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12 col-sm-6 mt-3">
             <div class="card">
-                <div class="card-body cus-canvas"">
+                <div class="card-body cus-canvas" ">
                     <div class="outer-loader5"><div class="loader-custom"></div></div>
                     <canvas id="dollars-placed-chart-user"></canvas>
                 </div>
@@ -97,7 +109,7 @@
                                 <tr class="zoom">
                                     <td>@request.AttorneyName</td>
                                     <td>@request.ClientName</td>
-                                     <td><a href="javascript:void(0);" onclick="redirectToPlacement(@request.FormId,@request.RequestId)">@request.CustomerName</a></td>
+                                    <td><a href="javascript:void(0);" onclick="redirectToPlacement(@request.FormId,@request.RequestId)">@request.CustomerName</a></td>
                                     <td>@request.Status</td>
                                     <td>@request.ComplianceDuration</td>
                                     <td>@request.LastNoteDate</td>
@@ -254,7 +266,7 @@
 
 
 
-          
+
         </div>
     </div>
 

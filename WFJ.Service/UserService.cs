@@ -191,6 +191,7 @@ namespace WFJ.Service
                         if (user.Active == 1)
                         {
                             HttpContext.Current.Session["UserType"] = user.UserType;
+                            HttpContext.Current.Session["ShowClientView"] = false;
                             HttpContext.Current.Session["UserId"] = Convert.ToString(user.UserID);
                             HttpContext.Current.Session["UserAccess"] = Convert.ToString(user.UserAccess);
                             //if (user.PasswordExpirationDate != null && (DateTime.Now >= Convert.ToDateTime(user.PasswordExpirationDate.Value.AddDays(Convert.ToInt32(ConfigurationManager.AppSettings["ExpiryDays"])))))
