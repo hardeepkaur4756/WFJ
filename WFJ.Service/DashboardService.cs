@@ -446,7 +446,7 @@ namespace WFJ.Service
             //return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0)
             //  ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.Client.ID + "-" + x.ID }).ToList());
             return (documents.FirstOrDefault(), documents?.Where(x => x.Client != null && x.Client.ID > 0).OrderBy(x=>x.Client.ClientName).ThenBy(x=>x.FormName)
-              ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + "(" + x.FormName + ")", Value = x.ID.ToString() }).ToList());
+              ?.Select(x => new SelectListItem() { Text = x.Client.ClientName + " (" + x.FormName + ")", Value = x.ID.ToString() }).ToList());
         }
 
         /// <summary>

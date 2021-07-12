@@ -38,7 +38,7 @@ namespace WFJ.Web.Controllers
             var selectedForm = new Form();
             (selectedForm, dashboardViewModel.DashbaordFilter) = _dashboardService.GetDashboardFilters(userType, userId);
             int selectedFormId = 0;
-            if(Convert.ToInt32(formId) == 0)
+            if (Convert.ToInt32(formId) == 0)
             {
                 if (dashboardViewModel.DashbaordFilter.Any())
                 {
@@ -52,7 +52,7 @@ namespace WFJ.Web.Controllers
 
             bool showClientView = Convert.ToBoolean(Session["ShowClientView"]);
 
-            if (userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+            if (!showClientView && userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
             {
                 dashboardViewModel.AdminDashboard = _dashboardService.GetAdminDashboardData(selectedFormId);
             }
@@ -60,7 +60,7 @@ namespace WFJ.Web.Controllers
             {
                 dashboardViewModel.ClientDashboard = _dashboardService.GetClientDashboardData(selectedFormId);
             }
-            if (userType == (int)WFJ.Service.Model.UserType.WFJUser)
+            if (!showClientView && userType == (int)WFJ.Service.Model.UserType.WFJUser)
             {
                 dashboardViewModel.UserDashboard = _dashboardService.GetUserDashboardData(selectedFormId);
             }
