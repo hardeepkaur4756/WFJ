@@ -15,24 +15,39 @@
 }
 <div>
     <main>
-        <div>
+        <div class="container-fluid">
             <br />
             <br />
-            <div class="row">
-                <div class="col-md-4 col-xl-3 pull-right">
-                    <label for="ddlClient" class="pull-right" style="font-size:18px">Form Type:</label>
+            <div class="row mb-4">
+                <div class="col-xl-6 d-flex align-items-center">
+                    <div class="form-row align-items-center">
+                        <label for="ddlClient" class="col-md-auto mb-0">Form Type:</label>
+                        <div class="col-md">
+                            @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.DashbaordFilter, "Value", "Text", Model.FormId), new { @Class = "form-control houseCounselOther", })
+
+                        </div>
+                    </div>
+                    
+                   
                 </div>
-                <div class="col-md-8 col-xl-9">
-                    @Html.DropDownList("ddlLocalCounselState", new SelectList(Model.DashbaordFilter, "Value", "Text", Model.FormId), new { @Class = "form-control houseCounselOther", @style = "width:500px" })
+                <div class="col-xl-6">
+                    @if (userType == (int)WFJ.Service.Model.UserType.WFJUser || userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
+                    {
+
+                       
+                        <div class="form-row justify-content-end align-items-center">
+                        <label class="col-md-auto mb-0">Client View</label>
+                        <div class="col-md-auto">
+                            <label class="switch">
+            <input type="checkbox" @checkValue name="showClientView" onclick="ShowClientView(this)">
+            <span class="slider round"></span>
+        </label>
+                        </div>
+                        </div>
+
+                    }
                 </div>
-                @if (userType == (int)WFJ.Service.Model.UserType.WFJUser || userType == (int)WFJ.Service.Model.UserType.SystemAdministrator)
-                {
-                    <span style="margin-left:30px">Client View</span>
-                    <label class="switch">
-                        <input type="checkbox" @checkValue name="showClientView" onclick="ShowClientView(this)">
-                        <span class="slider round"></span>
-                    </label>
-                }
+                
                 </div>
                 
         </div>

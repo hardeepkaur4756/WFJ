@@ -3411,6 +3411,7 @@ path.domain {
         background: transparent;
     }
 
+
     .custom-control .custom-control-input:checked ~ .custom-control-label::before {
         border-color: var(--primarycolor);
         background-color: var(--primarycolor);
@@ -6543,10 +6544,9 @@ td .td-with-inline-icons {
     overflow-y: auto;
 }
 
-.div-scroll .dataTables_scrollBody
-{
-    overflow:inherit !important;
-}
+    .div-scroll .dataTables_scrollBody, .div-scroll .dataTables_scrollHead {
+        overflow: inherit !important;
+    }
 
 .div-scroll::-webkit-scrollbar {
     width: 1em;
@@ -6562,14 +6562,15 @@ td .td-with-inline-icons {
     }
 
 
-    
+
 
 .switch {
     position: relative;
     display: inline-block;
     width: 60px;
-    height: 34px;
-    margin-left : 30px;
+    height: 30px;
+    margin-left: 0;
+    margin-bottom: 0;
 }
 
     .switch input {
@@ -6593,8 +6594,8 @@ td .td-with-inline-icons {
     .slider:before {
         position: absolute;
         content: "";
-        height: 26px;
-        width: 26px;
+        height: 23px;
+        width: 23px;
         left: 4px;
         bottom: 4px;
         background-color: white;
@@ -6603,7 +6604,7 @@ td .td-with-inline-icons {
     }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #1b3a68;
 }
 
 input:focus + .slider {
@@ -6611,9 +6612,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    -webkit-transform: translateX(29px);
+    -ms-transform: translateX(29px);
+    transform: translateX(29px);
 }
 
 /* Rounded sliders */
