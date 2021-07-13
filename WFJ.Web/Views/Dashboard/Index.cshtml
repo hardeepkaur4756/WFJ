@@ -167,6 +167,25 @@
             }
         });
 
+        $("#recent-activities").dataTable({
+            "sScrollY": 500,
+            "bScrollCollapse": true,
+            "bPaginate": true,
+            "bFilter": false,
+            "bSort": false,
+            "bInfo": false,
+            "bSortClasses": false,
+            "paging": true,
+            drawCallback: function () {
+                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                pagination.toggle(this.api().page.info().pages > 1);
+                var rowCount = this.fnSettings().fnRecordsDisplay();
+                if (rowCount <= 10 || isNaN(rowCount)) {
+                    $('.dataTables_length').hide();
+                }
+            }
+        });
+
         $("#approved-payment").dataTable({
             "sScrollY": 500,
             "bScrollCollapse": true,
