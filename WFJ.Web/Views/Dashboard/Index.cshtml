@@ -92,7 +92,7 @@
         }
 
         $("#recently-open-account").dataTable({
-            "sScrollY": 500,
+            "sScrollY": 300,
             "bScrollCollapse": true,
             "bPaginate": true,
             "bFilter": false,
@@ -130,7 +130,7 @@
         });
 
         $("#action-required").dataTable({
-            "sScrollY": 500,
+            "sScrollY": 300,
             "bScrollCollapse": true,
             "bPaginate": true,
             "bFilter": false,
@@ -149,7 +149,7 @@
         });
 
         $("#final-demand-required").dataTable({
-            "sScrollY": 500,
+            "sScrollY": 300,
             "bScrollCollapse": true,
             "bPaginate": true,
             "bFilter": false,
@@ -168,7 +168,7 @@
         });
 
         $("#recent-activities").dataTable({
-            "sScrollY": 500,
+            "sScrollY": 300,
             "bScrollCollapse": true,
             "bPaginate": true,
             "bFilter": false,
@@ -187,7 +187,26 @@
         });
 
         $("#approved-payment").dataTable({
-            "sScrollY": 500,
+            "sScrollY": 300,
+            "bScrollCollapse": true,
+            "bPaginate": true,
+            "bFilter": false,
+            "bSort": false,
+            "bInfo": false,
+            "bSortClasses": false,
+            "paging": true,
+            drawCallback: function () {
+                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                pagination.toggle(this.api().page.info().pages > 1);
+                var rowCount = this.fnSettings().fnRecordsDisplay();
+                if (rowCount <= 10 || isNaN(rowCount)) {
+                    $('.dataTables_length').hide();
+                }
+            }
+        });
+
+        $("#follow-up-accounts").dataTable({
+            "sScrollY": 300,
             "bScrollCollapse": true,
             "bPaginate": true,
             "bFilter": false,
