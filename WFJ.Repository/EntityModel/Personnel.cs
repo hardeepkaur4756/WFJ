@@ -18,7 +18,6 @@ namespace WFJ.Repository.EntityModel
         public Personnel()
         {
             this.Requests = new HashSet<Request>();
-            this.Users = new HashSet<User>();
             this.PersonnelClients = new HashSet<PersonnelClient>();
         }
     
@@ -48,8 +47,6 @@ namespace WFJ.Repository.EntityModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonnelClient> PersonnelClients { get; set; }
     }

@@ -70,9 +70,9 @@ namespace WFJ.Service
                     Client = x.Request?.Form?.Client?.ClientName,
 
                     Customer = x.Request.FormID.HasValue ? _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
-                    .FirstOrDefault(y => y.FieldName?.ToLower()?.Trim() == "customer name")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?
+                    .FirstOrDefault(y => y.FieldName != null && y.FieldName.ToLower().Trim().Contains("customer name"))?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?
                     .FirstOrDefault(z => z.FormFieldID == (_formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)?
-                    .FirstOrDefault(s => s.FieldName.ToLower().Trim() == "customer name")?.ID)).FieldValue : "" : "",
+                    .FirstOrDefault(s => s.FieldName != null && s.FieldName.ToLower().Trim().Contains("customer name"))?.ID)).FieldValue : "" : "",
 
                     Acct = x.Request.FormID.HasValue ? _formfieldRepo.GetFormFieldsByFormID(x.Request.FormID.Value)
                     .FirstOrDefault(y => y.FieldName.ToLower().Trim() == "customer account #")?.ID > 0 ? _formDataRepo.GetByRequestId(x.Request.ID)?

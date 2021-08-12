@@ -37,11 +37,11 @@ namespace WFJ.Repository
         public T Update(T record)
         {
             _table.AddOrUpdate(record);
-            if (_context.Entry(record).State == EntityState.Detached)
-            {
-                _context.Entry(record).State = EntityState.Modified;
-                _table.Attach(record);
-            }
+            //if (_context.Entry(record).State == EntityState.Detached)
+            //{
+            //    _context.Entry(record).State = EntityState.Added;
+            //    _table.Attach(record);
+            //}
             _context.SaveChanges();
             return record;
         }

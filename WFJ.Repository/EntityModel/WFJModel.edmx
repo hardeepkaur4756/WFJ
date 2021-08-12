@@ -4036,7 +4036,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <Property Name="CommunityActivities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isShareholder" Type="Byte" />
           <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__Assign__36F11965" FromRole="Personnel" ToRole="Request" />
-          <NavigationProperty Name="Users" Relationship="WFJDBModel.UserAttorneys" FromRole="Personnel" ToRole="User" />
           <NavigationProperty Name="PersonnelClients" Relationship="WFJDBModel.FK__Personnel__Perso__30441BD6" FromRole="Personnel" ToRole="PersonnelClient" />
         </EntityType>
         <EntityType Name="PersonnelRequest">
@@ -5083,7 +5082,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
           <NavigationProperty Name="Requests" Relationship="WFJDBModel.FK__Requests__Assign__35FCF52C" FromRole="User" ToRole="Request" />
           <NavigationProperty Name="Requests1" Relationship="WFJDBModel.FK__Requests__Reques__3508D0F3" FromRole="User" ToRole="Request" />
           <NavigationProperty Name="RecentAccountActivities" Relationship="WFJDBModel.FK_RecentAccountActivities_Users" FromRole="User" ToRole="RecentAccountActivity" />
-          <NavigationProperty Name="Personnels" Relationship="WFJDBModel.UserAttorneys" FromRole="User" ToRole="Personnel" />
         </EntityType>
         <Association Name="FK_UserAccessID">
           <End Type="WFJDBModel.AccessLevel" Role="AccessLevel" Multiplicity="0..1">
@@ -5736,10 +5734,6 @@ warning 6002: The table/view 'wfj_testdb.dbo.sequences' does not have a primary 
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="UserAttorneys">
-          <End Type="WFJDBModel.User" Role="User" Multiplicity="*" />
-          <End Type="WFJDBModel.Personnel" Role="Personnel" Multiplicity="*" />
         </Association>
         <EntityType Name="PersonnelClient">
           <Key>
