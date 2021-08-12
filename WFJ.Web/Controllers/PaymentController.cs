@@ -124,16 +124,12 @@ namespace WFJ.Web.Controllers
                 model.PaymentTypes = _paymentTypeService.GetPaymentTypeDropdown();
                 model.Currencies = _currencyService.GetCurrencyDropdown();
                 model.Currency = _currencyService.GetDefaultCurrencyId("USD");
-
-                // Inserting and updating the data into RecentAccountActivity
-                _recentAcctActService.AddEdit(Convert.ToInt32(model.RequestId), UserId, AccountActivity.Activity.ToString());
-
                 return Json(new { Success = true, Html = this.RenderPartialViewToString("_AddPayment", model) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 _errorLogService.Add(new ErrorLogModel() { Page = "RequestNotes/AddEditNote", CreatedBy = UserId, CreateDate = DateTime.Now, ErrorText = ex.ToMessageAndCompleteStacktrace() });
-                return Json(new { Message = "Sorry, An error occurred!", Success = false });
+                return Json(new { Html="",Message = "Sorry, An error occurred!", Success = false });
             }
 
         }
